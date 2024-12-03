@@ -1,56 +1,9 @@
-namespace Microsoft.Projects.Project.Job;
-
-using Microsoft.Assembly.Document;
-using Microsoft.Bank.BankAccount;
-using Microsoft.CRM.BusinessRelation;
-using Microsoft.CRM.Contact;
-using Microsoft.EServices.OnlineMap;
-using Microsoft.Finance.Currency;
-using Microsoft.Finance.Dimension;
-using Microsoft.Foundation.Address;
-using Microsoft.Foundation.Comment;
-using Microsoft.Foundation.NoSeries;
-using Microsoft.Foundation.PaymentTerms;
-using Microsoft.Projects.Project.Archive;
-using Microsoft.Foundation.Reporting;
-using Microsoft.Integration.Graph;
-using Microsoft.Inventory.Item;
-using Microsoft.Inventory.Location;
-using Microsoft.Inventory.Tracking;
-using Microsoft.Pricing.Asset;
-using Microsoft.Pricing.Calculation;
-using Microsoft.Pricing.PriceList;
-using Microsoft.Pricing.Source;
-using Microsoft.Projects.Project.Journal;
-using Microsoft.Projects.Project.Ledger;
-using Microsoft.Projects.Project.Planning;
-using Microsoft.Projects.Project.Setup;
-using Microsoft.Projects.Project.WIP;
-using Microsoft.Projects.Resources.Resource;
-using Microsoft.Projects.TimeSheet;
-using Microsoft.Purchases.Document;
-using Microsoft.Purchases.Setup;
-using Microsoft.Sales.Customer;
-using Microsoft.Sales.Document;
-using Microsoft.Sales.Pricing;
-using Microsoft.Sales.Setup;
-using Microsoft.Utilities;
-using Microsoft.Warehouse.Activity;
-using Microsoft.Warehouse.Request;
-using Microsoft.Warehouse.Structure;
-using Microsoft.Warehouse.Worksheet;
-using System.Email;
-using System.Globalization;
-using System.Reflection;
-using System.Security.User;
-using System.Utilities;
-
-table 50100 Job
+table 50200 Contrato
 {
-    Caption = 'Project';
+    Caption = 'Contratos';
     DataCaptionFields = "No.", Description;
-    DrillDownPageID = "Job List";
-    LookupPageID = "Job List";
+    DrillDownPageID = "Contrato List";
+    LookupPageID = "Contrato List";
     DataClassification = CustomerContent;
 
     fields
@@ -69,8 +22,8 @@ table 50100 Job
                     exit;
 
                 if "No." <> xRec."No." then begin
-                    JobsSetup.Get();
-                    NoSeries.TestManual(JobsSetup."Job Nos.");
+                    ContratosSetup.Get();
+                    NoSeries.TestManual(ContratosSetup."Job Nos.");
                     "No. Series" := '';
                 end;
             end;
@@ -132,62 +85,62 @@ table 50100 Job
                 CheckDate();
             end;
         }
-        field(19; Status; Enum "Job Status")
+        field(19; Status; Enum "Contrato Status")
         {
             Caption = 'Status';
             InitValue = Open;
 
-            trigger OnValidate()
-            var
-                JobPlanningLine: Record "Job Planning Line";
-                ATOLink: Record "Assemble-to-Order Link";
-                JobPlanningLineReserve: Codeunit "Job Planning Line-Reserve";
-                ConfirmManagement: Codeunit "Confirm Management";
-                IsHandled: Boolean;
-                UndidCompleteStatus: Boolean;
-                ShouldDeleteReservationEntries: Boolean;
-            begin
-                IsHandled := false;
-                OnBeforeValidateStatus(Rec, xRec, CurrFieldNo, IsHandled);
-                if IsHandled then
-                    exit;
+            // trigger OnValidate()
+            // var
+            //     ContratoPlanningLine: Record "Contrato Planning Line";
+            //     ATOLink: Record "Assemble-to-Order Link";
+            //     ContratoPlanningLineReserve: Codeunit "Job Planning Line-Reserve";
+            //     ConfirmManagement: Codeunit "Confirm Management";
+            //     IsHandled: Boolean;
+            //     UndidCompleteStatus: Boolean;
+            //     ShouldDeleteReservationEntries: Boolean;
+            // begin
+            //     IsHandled := false;
+            //     OnBeforeValidateStatus(Rec, xRec, CurrFieldNo, IsHandled);
+            //     if IsHandled then
+            //         exit;
 
-                if xRec.Status <> Status then begin
-                    if Status = Status::Completed then
-                        Validate(Complete, true);
-                    if xRec.Status = xRec.Status::Completed then begin
-                        IsHandled := false;
-                        OnValidateStatusOnBeforeConfirm(Rec, xRec, UndidCompleteStatus, IsHandled);
-                        if not IsHandled then
-                            if ConfirmManagement.GetResponseOrDefault(StatusChangeQst, true) then begin
-                                Validate(Complete, false);
-                                UndidCompleteStatus := true;
-                            end else
-                                Status := xRec.Status;
-                    end;
-                    Modify();
+            //     if xRec.Status <> Status then begin
+            //         if Status = Status::Completed then
+            //             Validate(Complete, true);
+            //         if xRec.Status = xRec.Status::Completed then begin
+            //             IsHandled := false;
+            //             OnValidateStatusOnBeforeConfirm(Rec, xRec, UndidCompleteStatus, IsHandled);
+            //             if not IsHandled then
+            //                 if ConfirmManagement.GetResponseOrDefault(StatusChangeQst, true) then begin
+            //                     Validate(Complete, false);
+            //                     UndidCompleteStatus := true;
+            //                 end else
+            //                     Status := xRec.Status;
+            //         end;
+            //         Modify();
 
-                    ATOLink.CheckIfAssembleToOrderLinkExist(Rec);
-                    CheckIfTimeSheetLineLinkExist();
+            //         ATOLink.CheckIfAssembleToOrderLinkExist(Rec);
+            //         CheckIfTimeSheetLineLinkExist();
 
-                    JobPlanningLine.SetCurrentKey("Job No.");
-                    JobPlanningLine.SetRange("Job No.", "No.");
-                    if JobPlanningLine.FindSet() then begin
-                        ShouldDeleteReservationEntries := CheckReservationEntries();
-                        repeat
-                            if ShouldDeleteReservationEntries then
-                                JobPlanningLineReserve.DeleteLineInternal(JobPlanningLine, false);
-                            ATOLink.MakeAsmOrderLinkedToJobPlanningOrderLine(JobPlanningLine);
-                            JobPlanningLine.Validate(Status, Status);
-                            JobPlanningLine.Modify();
-                        until JobPlanningLine.Next() = 0;
-                        PerformAutoReserve(JobPlanningLine);
-                        if UndidCompleteStatus then
-                            JobPlanningLine.CreateWarehouseRequest();
-                    end;
-                    JobArchiveManagement.AutoArchiveJob(Rec);
-                end;
-            end;
+            //         ContratoPlanningLine.SetCurrentKey("Job No.");
+            //         ContratoPlanningLine.SetRange("Job No.", "No.");
+            //         if ContratoPlanningLine.FindSet() then begin
+            //             ShouldDeleteReservationEntries := CheckReservationEntries();
+            //             repeat
+            //                 if ShouldDeleteReservationEntries then
+            //                     ContratoPlanningLineReserve.DeleteLineInternal(ContratoPlanningLine, false);
+            //                 ATOLink.MakeAsmOrderLinkedToContratoPlanningOrderLine(ContratoPlanningLine);
+            //                 ContratoPlanningLine.Validate(Status, Status);
+            //                 ContratoPlanningLine.Modify();
+            //             until ContratoPlanningLine.Next() = 0;
+            //             PerformAutoReserve(ContratoPlanningLine);
+            //             if UndidCompleteStatus then
+            //                 ContratoPlanningLine.CreateWarehouseRequest();
+            //         end;
+            //         ContratoArchiveManagement.AutoArchiveContrato(Rec);
+            //     end;
+            // end;
         }
         field(20; "Person Responsible"; Code[20])
         {
@@ -218,28 +171,28 @@ table 50100 Job
                 Rec.ValidateShortcutDimCode(2, "Global Dimension 2 Code");
             end;
         }
-        field(23; "Job Posting Group"; Code[20])
+        field(23; "Contrato Posting Group"; Code[20])
         {
             Caption = 'Project Posting Group';
-            TableRelation = "Job Posting Group";
+            TableRelation = "Contrato Posting Group";
         }
-        field(24; Blocked; Enum "Job Blocked")
-        {
-            Caption = 'Blocked';
-        }
+        // field(24; Blocked; Enum "Job Blocked")
+        // {
+        //     Caption = 'Blocked';
+        // }
         field(29; "Last Date Modified"; Date)
         {
             Caption = 'Last Date Modified';
             Editable = false;
         }
-        field(30; Comment; Boolean)
-        {
-            CalcFormula = exist("Comment Line" where("Table Name" = const(Job),
-                                                      "No." = field("No.")));
-            Caption = 'Comment';
-            Editable = false;
-            FieldClass = FlowField;
-        }
+        // field(30; Comment; Boolean)
+        // {
+        //     CalcFormula = exist("Comment Line" where("Table Name" = const(Job),
+        //                                               "No." = field("No.")));
+        //     Caption = 'Comment';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
         field(31; "Customer Disc. Group"; Code[20])
         {
             Caption = 'Customer Disc. Group';
@@ -259,7 +212,7 @@ table 50100 Job
             trigger OnValidate()
             begin
                 if ("Location Code" <> xRec."Location Code") then
-                    MessageIfJobTaskExist(FieldCaption("Location Code"));
+                    MessageIfContratoTaskExist(FieldCaption("Location Code"));
 
                 SetDefaultBin();
             end;
@@ -273,7 +226,7 @@ table 50100 Job
             trigger OnValidate()
             begin
                 if ("Bin Code" <> xRec."Bin Code") then
-                    MessageIfJobTaskExist(FieldCaption("Bin Code"));
+                    MessageIfContratoTaskExist(FieldCaption("Bin Code"));
             end;
         }
         field(41; "Language Code"; Code[10])
@@ -281,18 +234,18 @@ table 50100 Job
             Caption = 'Language Code';
             TableRelation = Language;
         }
-        field(49; "Scheduled Res. Qty."; Decimal)
-        {
-            CalcFormula = sum("Job Planning Line"."Quantity (Base)" where("Job No." = field("No."),
-                                                                           "Schedule Line" = const(true),
-                                                                           Type = const(Resource),
-                                                                           "No." = field("Resource Filter"),
-                                                                           "Planning Date" = field("Planning Date Filter")));
-            Caption = 'Scheduled Res. Qty.';
-            DecimalPlaces = 0 : 5;
-            Editable = false;
-            FieldClass = FlowField;
-        }
+        // field(49; "Scheduled Res. Qty."; Decimal)
+        // {
+        //     CalcFormula = sum("Contrato Planning Line"."Quantity (Base)" where("Job No." = field("No."),
+        //                                                                    "Schedule Line" = const(true),
+        //                                                                    Type = const(Resource),
+        //                                                                    "No." = field("Resource Filter"),
+        //                                                                    "Planning Date" = field("Planning Date Filter")));
+        //     Caption = 'Scheduled Res. Qty.';
+        //     DecimalPlaces = 0 : 5;
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
         field(50; "Resource Filter"; Code[20])
         {
             Caption = 'Resource Filter';
@@ -310,18 +263,18 @@ table 50100 Job
             FieldClass = FlowFilter;
             TableRelation = "Resource Group";
         }
-        field(56; "Scheduled Res. Gr. Qty."; Decimal)
-        {
-            CalcFormula = sum("Job Planning Line"."Quantity (Base)" where("Job No." = field("No."),
-                                                                           "Schedule Line" = const(true),
-                                                                           Type = const(Resource),
-                                                                           "Resource Group No." = field("Resource Gr. Filter"),
-                                                                           "Planning Date" = field("Planning Date Filter")));
-            Caption = 'Scheduled Res. Gr. Qty.';
-            DecimalPlaces = 0 : 5;
-            Editable = false;
-            FieldClass = FlowField;
-        }
+        // field(56; "Scheduled Res. Gr. Qty."; Decimal)
+        // {
+        //     CalcFormula = sum("Contrato Planning Line"."Quantity (Base)" where("Job No." = field("No."),
+        //                                                                    "Schedule Line" = const(true),
+        //                                                                    Type = const(Resource),
+        //                                                                    "Resource Group No." = field("Resource Gr. Filter"),
+        //                                                                    "Planning Date" = field("Planning Date Filter")));
+        //     Caption = 'Scheduled Res. Gr. Qty.';
+        //     DecimalPlaces = 0 : 5;
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
         field(57; Picture; BLOB)
         {
             Caption = 'Picture';
@@ -454,29 +407,29 @@ table 50100 Job
             Caption = 'Task Billing Method';
             DataClassification = CustomerContent;
 
-            trigger OnValidate()
-            var
-                JobTask: Record "Job Task";
-                RecRef: RecordRef;
-                FldRef: FieldRef;
-            begin
-                JobTask.SetRange("Job No.", "No.");
-                if JobTask.IsEmpty() then
-                    exit;
+            // trigger OnValidate()
+            // var
+            //     ContratoTask: Record "Contrato Task";
+            //     RecRef: RecordRef;
+            //     FldRef: FieldRef;
+            // begin
+            //     ContratoTask.SetRange("Job No.", "No.");
+            //     if ContratoTask.IsEmpty() then
+            //         exit;
 
-                if ("Task Billing Method" = "Task Billing Method"::"One customer") and
-                    (xRec."Task Billing Method" = XRec."Task Billing Method"::"Multiple customers") then begin
-                    RecRef.GetTable(Rec);
-                    FldRef := RecRef.Field(Rec.FieldNo("Task Billing Method"));
-                    Error(UpdateBillingMethodErr, FldRef.GetEnumValueCaption(Rec."Task Billing Method".AsInteger() + 1), FieldCaption("Task Billing Method"), TableCaption());
-                end;
+            //     if ("Task Billing Method" = "Task Billing Method"::"One customer") and
+            //         (xRec."Task Billing Method" = XRec."Task Billing Method"::"Multiple customers") then begin
+            //         RecRef.GetTable(Rec);
+            //         FldRef := RecRef.Field(Rec.FieldNo("Task Billing Method"));
+            //         Error(UpdateBillingMethodErr, FldRef.GetEnumValueCaption(Rec."Task Billing Method".AsInteger() + 1), FieldCaption("Task Billing Method"), TableCaption());
+            //     end;
 
-                if "Task Billing Method" = "Task Billing Method"::"Multiple customers" then
-                    if not Confirm(UpdateBillingMethodQst, true) then
-                        Error('');
+            //     if "Task Billing Method" = "Task Billing Method"::"Multiple customers" then
+            //         if not Confirm(UpdateBillingMethodQst, true) then
+            //             Error('');
 
-                InitCustomerOnJobTasks();
-            end;
+            //     InitCustomerOnContratoTasks();
+            // end;
         }
         field(117; Reserve; Enum "Reserve Method")
         {
@@ -487,38 +440,38 @@ table 50100 Job
         {
             Caption = 'Image';
         }
-        field(1000; "WIP Method"; Code[20])
-        {
-            Caption = 'WIP Method';
-            TableRelation = "Job WIP Method".Code where(Valid = const(true));
+        // field(1000; "WIP Method"; Code[20])
+        // {
+        //     Caption = 'WIP Method';
+        //     TableRelation = "Job WIP Method".Code where(Valid = const(true));
 
-            trigger OnValidate()
-            var
-                JobTask: Record "Job Task";
-                JobWIPMethod: Record "Job WIP Method";
-                ConfirmManagement: Codeunit "Confirm Management";
-                NewWIPMethod: Code[20];
-            begin
-                if "WIP Posting Method" = "WIP Posting Method"::"Per Job Ledger Entry" then begin
-                    JobWIPMethod.Get("WIP Method");
-                    if not JobWIPMethod."WIP Cost" then
-                        Error(WIPPostMethodErr, FieldCaption("WIP Posting Method"), FieldCaption("WIP Method"), JobWIPMethod.FieldCaption("WIP Cost"));
-                    if not JobWIPMethod."WIP Sales" then
-                        Error(WIPPostMethodErr, FieldCaption("WIP Posting Method"), FieldCaption("WIP Method"), JobWIPMethod.FieldCaption("WIP Sales"));
-                end;
+        //     trigger OnValidate()
+        //     var
+        //         ContratoTask: Record "Contrato Task";
+        //         ContratoWIPMethod: Record "Job WIP Method";
+        //         ConfirmManagement: Codeunit "Confirm Management";
+        //         NewWIPMethod: Code[20];
+        //     begin
+        //         if "WIP Posting Method" = "WIP Posting Method"::"Per Job Ledger Entry" then begin
+        //             ContratoWIPMethod.Get("WIP Method");
+        //             if not ContratoWIPMethod."WIP Cost" then
+        //                 Error(WIPPostMethodErr, FieldCaption("WIP Posting Method"), FieldCaption("WIP Method"), ContratoWIPMethod.FieldCaption("WIP Cost"));
+        //             if not ContratoWIPMethod."WIP Sales" then
+        //                 Error(WIPPostMethodErr, FieldCaption("WIP Posting Method"), FieldCaption("WIP Method"), ContratoWIPMethod.FieldCaption("WIP Sales"));
+        //         end;
 
-                JobTask.SetRange("Job No.", "No.");
-                JobTask.SetRange("WIP-Total", JobTask."WIP-Total"::Total);
-                if JobTask.FindFirst() then
-                    if ConfirmManagement.GetResponseOrDefault(StrSubstNo(WIPMethodQst, JobTask.FieldCaption("WIP Method"), JobTask.TableCaption(), JobTask."WIP-Total"), true) then begin
-                        JobTask.ModifyAll("WIP Method", "WIP Method", true);
-                        // An additional FIND call requires since JobTask.MODIFYALL changes the Job's information
-                        NewWIPMethod := "WIP Method";
-                        Find();
-                        "WIP Method" := NewWIPMethod;
-                    end;
-            end;
-        }
+        //         ContratoTask.SetRange("Job No.", "No.");
+        //         ContratoTask.SetRange("WIP-Total", ContratoTask."WIP-Total"::Total);
+        //         if ContratoTask.FindFirst() then
+        //             if ConfirmManagement.GetResponseOrDefault(StrSubstNo(WIPMethodQst, ContratoTask.FieldCaption("WIP Method"), ContratoTask.TableCaption(), ContratoTask."WIP-Total"), true) then begin
+        //                 ContratoTask.ModifyAll("WIP Method", "WIP Method", true);
+        //                 // An additional FIND call requires since ContratoTask.MODIFYALL changes the Job's information
+        //                 NewWIPMethod := "WIP Method";
+        //                 Find();
+        //                 "WIP Method" := NewWIPMethod;
+        //             end;
+        //     end;
+        // }
         field(1001; "Currency Code"; Code[10])
         {
             Caption = 'Currency Code';
@@ -534,14 +487,14 @@ table 50100 Job
                     exit;
 
                 if "Currency Code" <> xRec."Currency Code" then
-                    if not JobLedgEntryExist() then begin
+                    if not ContratoLedgEntryExist() then begin
                         CurrencyUpdatePlanningLines();
                         CurrencyUpdatePurchLines();
                     end else
                         Error(AssociatedEntriesExistErr, FieldCaption("Currency Code"), TableCaption);
                 if "Currency Code" <> '' then begin
                     Validate("Invoice Currency Code", '');
-                    ClearInvCurrencyCodeOnJobTasks();
+                    ClearInvCurrencyCodeOnContratoTasks();
                 end;
             end;
         }
@@ -591,46 +544,46 @@ table 50100 Job
             Caption = 'Planning Date Filter';
             FieldClass = FlowFilter;
         }
-        field(1005; "Total WIP Cost Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = - sum("Job WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
-                                                                         "Job Complete" = const(false),
-                                                                         Type = filter("Accrued Costs" | "Applied Costs" | "Recognized Costs")));
-            Caption = 'Total WIP Cost Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1006; "Total WIP Cost G/L Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = - sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
-                                                                             Reversed = const(false),
-                                                                             "Job Complete" = const(false),
-                                                                             Type = filter("Accrued Costs" | "Applied Costs" | "Recognized Costs")));
-            Caption = 'Total WIP Cost G/L Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1007; "WIP Entries Exist"; Boolean)
-        {
-            CalcFormula = exist("Job WIP Entry" where("Job No." = field("No.")));
-            Caption = 'WIP Entries Exist';
-            FieldClass = FlowField;
-        }
+        // field(1005; "Total WIP Cost Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = - sum("Contrato WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
+        //                                                                  "Job Complete" = const(false),
+        //                                                                  Type = filter("Accrued Costs" | "Applied Costs" | "Recognized Costs")));
+        //     Caption = 'Total WIP Cost Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1006; "Total WIP Cost G/L Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = - sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
+        //                                                                      Reversed = const(false),
+        //                                                                      "Job Complete" = const(false),
+        //                                                                      Type = filter("Accrued Costs" | "Applied Costs" | "Recognized Costs")));
+        //     Caption = 'Total WIP Cost G/L Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1007; "WIP Entries Exist"; Boolean)
+        // {
+        //     CalcFormula = exist("Contrato WIP Entry" where("Job No." = field("No.")));
+        //     Caption = 'WIP Entries Exist';
+        //     FieldClass = FlowField;
+        // }
         field(1008; "WIP Posting Date"; Date)
         {
             Caption = 'WIP Posting Date';
             Editable = false;
         }
-        field(1009; "WIP G/L Posting Date"; Date)
-        {
-            CalcFormula = min("Job WIP G/L Entry"."WIP Posting Date" where(Reversed = const(false),
-                                                                            "Job No." = field("No.")));
-            Caption = 'WIP G/L Posting Date';
-            Editable = false;
-            FieldClass = FlowField;
-        }
+        // field(1009; "WIP G/L Posting Date"; Date)
+        // {
+        //     CalcFormula = min("Job WIP G/L Entry"."WIP Posting Date" where(Reversed = const(false),
+        //                                                                     "Job No." = field("No.")));
+        //     Caption = 'WIP G/L Posting Date';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
         field(1011; "Invoice Currency Code"; Code[10])
         {
             Caption = 'Invoice Currency Code';
@@ -640,7 +593,7 @@ table 50100 Job
             begin
                 if ("Invoice Currency Code" <> xRec."Invoice Currency Code") and ("Task Billing Method" = "Task Billing Method"::"Multiple customers")
                     and ("Invoice Currency Code" <> '') then
-                    MessageIfJobTaskExist(FieldCaption("Invoice Currency Code"));
+                    MessageIfContratoTaskExist(FieldCaption("Invoice Currency Code"));
 
                 if "Invoice Currency Code" <> '' then
                     Validate("Currency Code", '');
@@ -669,222 +622,222 @@ table 50100 Job
             trigger OnValidate()
             begin
                 if Complete <> xRec.Complete then
-                    ChangeJobCompletionStatus();
+                    ChangeContratoCompletionStatus();
             end;
         }
-        field(1017; "Recog. Sales Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = - sum("Job WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
-                                                                         Type = filter("Recognized Sales")));
-            Caption = 'Recog. Sales Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1018; "Recog. Sales G/L Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = - sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
-                                                                             Reversed = const(false),
-                                                                             Type = filter("Recognized Sales")));
-            Caption = 'Recog. Sales G/L Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1019; "Recog. Costs Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = sum("Job WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
-                                                                        Type = filter("Recognized Costs")));
-            Caption = 'Recog. Costs Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1020; "Recog. Costs G/L Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
-                                                                            Reversed = const(false),
-                                                                            Type = filter("Recognized Costs")));
-            Caption = 'Recog. Costs G/L Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1021; "Total WIP Sales Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = sum("Job WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
-                                                                        "Job Complete" = const(false),
-                                                                        Type = filter("Accrued Sales" | "Applied Sales" | "Recognized Sales")));
-            Caption = 'Total WIP Sales Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1022; "Total WIP Sales G/L Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
-                                                                            Reversed = const(false),
-                                                                            "Job Complete" = const(false),
-                                                                            Type = filter("Accrued Sales" | "Applied Sales" | "Recognized Sales")));
-            Caption = 'Total WIP Sales G/L Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1023; "WIP Completion Calculated"; Boolean)
-        {
-            CalcFormula = exist("Job WIP Entry" where("Job No." = field("No."),
-                                                       "Job Complete" = const(true)));
-            Caption = 'WIP Completion Calculated';
-            FieldClass = FlowField;
-        }
-        field(1024; "Next Invoice Date"; Date)
-        {
-            CalcFormula = min("Job Planning Line"."Planning Date" where("Job No." = field("No."),
-                                                                         "Contract Line" = const(true),
-                                                                         "Qty. to Invoice" = filter(<> 0)));
-            Caption = 'Next Invoice Date';
-            FieldClass = FlowField;
-        }
+        // field(1017; "Recog. Sales Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = - sum("Contrato WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
+        //                                                                  Type = filter("Recognized Sales")));
+        //     Caption = 'Recog. Sales Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1018; "Recog. Sales G/L Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = - sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
+        //                                                                      Reversed = const(false),
+        //                                                                      Type = filter("Recognized Sales")));
+        //     Caption = 'Recog. Sales G/L Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1019; "Recog. Costs Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = sum("Contrato WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
+        //                                                                 Type = filter("Recognized Costs")));
+        //     Caption = 'Recog. Costs Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1020; "Recog. Costs G/L Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
+        //                                                                     Reversed = const(false),
+        //                                                                     Type = filter("Recognized Costs")));
+        //     Caption = 'Recog. Costs G/L Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1021; "Total WIP Sales Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = sum("Contrato WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
+        //                                                                 "Job Complete" = const(false),
+        //                                                                 Type = filter("Accrued Sales" | "Applied Sales" | "Recognized Sales")));
+        //     Caption = 'Total WIP Sales Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1022; "Total WIP Sales G/L Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
+        //                                                                     Reversed = const(false),
+        //                                                                     "Job Complete" = const(false),
+        //                                                                     Type = filter("Accrued Sales" | "Applied Sales" | "Recognized Sales")));
+        //     Caption = 'Total WIP Sales G/L Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1023; "WIP Completion Calculated"; Boolean)
+        // {
+        //     CalcFormula = exist("Contrato WIP Entry" where("Job No." = field("No."),
+        //                                                "Job Complete" = const(true)));
+        //     Caption = 'WIP Completion Calculated';
+        //     FieldClass = FlowField;
+        // }
+        // field(1024; "Next Invoice Date"; Date)
+        // {
+        //     CalcFormula = min("Contrato Planning Line"."Planning Date" where("Job No." = field("No."),
+        //                                                                  "Contract Line" = const(true),
+        //                                                                  "Qty. to Invoice" = filter(<> 0)));
+        //     Caption = 'Next Invoice Date';
+        //     FieldClass = FlowField;
+        // }
         field(1025; "Apply Usage Link"; Boolean)
         {
             Caption = 'Apply Usage Link';
 
-            trigger OnValidate()
-            var
-                JobPlanningLine: Record "Job Planning Line";
-                JobLedgerEntry: Record "Job Ledger Entry";
-                JobUsageLink: Record "Job Usage Link";
-                NewApplyUsageLink: Boolean;
-            begin
-                if "Apply Usage Link" then begin
-                    JobLedgerEntry.SetCurrentKey("Job No.");
-                    JobLedgerEntry.SetRange("Job No.", "No.");
-                    JobLedgerEntry.SetRange("Entry Type", JobLedgerEntry."Entry Type"::Usage);
-                    if JobLedgerEntry.FindFirst() then begin
-                        JobUsageLink.SetRange("Entry No.", JobLedgerEntry."Entry No.");
-                        if JobUsageLink.IsEmpty() then
-                            Error(ApplyUsageLinkErr, TableCaption);
-                    end;
+            // trigger OnValidate()
+            // var
+            //     ContratoPlanningLine: Record "Contrato Planning Line";
+            //     ContratoLedgerEntry: Record "Contrato Ledger Entry";
+            //     ContratoUsageLink: Record "Contrato Usage Link";
+            //     NewApplyUsageLink: Boolean;
+            // begin
+            //     if "Apply Usage Link" then begin
+            //         ContratoLedgerEntry.SetCurrentKey("Job No.");
+            //         ContratoLedgerEntry.SetRange("Job No.", "No.");
+            //         ContratoLedgerEntry.SetRange("Entry Type", ContratoLedgerEntry."Entry Type"::Usage);
+            //         if ContratoLedgerEntry.FindFirst() then begin
+            //             ContratoUsageLink.SetRange("Entry No.", ContratoLedgerEntry."Entry No.");
+            //             if ContratoUsageLink.IsEmpty() then
+            //                 Error(ApplyUsageLinkErr, TableCaption);
+            //         end;
 
-                    JobPlanningLine.SetCurrentKey("Job No.");
-                    JobPlanningLine.SetRange("Job No.", "No.");
-                    JobPlanningLine.SetRange("Schedule Line", true);
-                    if JobPlanningLine.FindSet() then begin
-                        repeat
-                            JobPlanningLine.Validate("Usage Link", true);
-                            if JobPlanningLine."Planning Date" = 0D then
-                                JobPlanningLine.Validate("Planning Date", WorkDate());
-                            JobPlanningLine.Modify(true);
-                        until JobPlanningLine.Next() = 0;
+            //         ContratoPlanningLine.SetCurrentKey("Job No.");
+            //         ContratoPlanningLine.SetRange("Job No.", "No.");
+            //         ContratoPlanningLine.SetRange("Schedule Line", true);
+            //         if ContratoPlanningLine.FindSet() then begin
+            //             repeat
+            //                 ContratoPlanningLine.Validate("Usage Link", true);
+            //                 if ContratoPlanningLine."Planning Date" = 0D then
+            //                     ContratoPlanningLine.Validate("Planning Date", WorkDate());
+            //                 ContratoPlanningLine.Modify(true);
+            //             until ContratoPlanningLine.Next() = 0;
 
-                        NewApplyUsageLink := "Apply Usage Link";
-                        RefreshModifiedRec();
-                        "Apply Usage Link" := NewApplyUsageLink;
-                    end;
-                end;
-            end;
+            //             NewApplyUsageLink := "Apply Usage Link";
+            //             RefreshModifiedRec();
+            //             "Apply Usage Link" := NewApplyUsageLink;
+            //         end;
+            //     end;
+            // end;
         }
-        field(1026; "WIP Warnings"; Boolean)
-        {
-            CalcFormula = exist("Job WIP Warning" where("Job No." = field("No.")));
-            Caption = 'WIP Warnings';
-            Editable = false;
-            FieldClass = FlowField;
-        }
+        // field(1026; "WIP Warnings"; Boolean)
+        // {
+        //     CalcFormula = exist("Job WIP Warning" where("Job No." = field("No.")));
+        //     Caption = 'WIP Warnings';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
         field(1027; "WIP Posting Method"; Option)
         {
             Caption = 'WIP Posting Method';
             OptionCaption = 'Per Project,Per Project Ledger Entry';
             OptionMembers = "Per Job","Per Job Ledger Entry";
 
-            trigger OnValidate()
-            var
-                JobLedgerEntry: Record "Job Ledger Entry";
-                JobWIPEntry: Record "Job WIP Entry";
-                JobWIPMethod: Record "Job WIP Method";
-            begin
-                if xRec."WIP Posting Method" = "WIP Posting Method"::"Per Job Ledger Entry" then begin
-                    JobLedgerEntry.SetRange("Job No.", "No.");
-                    JobLedgerEntry.SetFilter("Amt. Posted to G/L", '<>%1', 0);
-                    if not JobLedgerEntry.IsEmpty() then
-                        Error(WIPAlreadyPostedErr, FieldCaption("WIP Posting Method"), xRec."WIP Posting Method");
-                end;
+            // trigger OnValidate()
+            // var
+            //     ContratoLedgerEntry: Record "Contrato Ledger Entry";
+            //     ContratoWIPEntry: Record "Contrato WIP Entry";
+            //     ContratoWIPMethod: Record "Job WIP Method";
+            // begin
+            //     if xRec."WIP Posting Method" = "WIP Posting Method"::"Per Job Ledger Entry" then begin
+            //         ContratoLedgerEntry.SetRange("Job No.", "No.");
+            //         ContratoLedgerEntry.SetFilter("Amt. Posted to G/L", '<>%1', 0);
+            //         if not ContratoLedgerEntry.IsEmpty() then
+            //             Error(WIPAlreadyPostedErr, FieldCaption("WIP Posting Method"), xRec."WIP Posting Method");
+            //     end;
 
-                JobWIPEntry.SetRange("Job No.", "No.");
-                if not JobWIPEntry.IsEmpty() then
-                    Error(WIPAlreadyAssociatedErr, FieldCaption("WIP Posting Method"));
+            //     ContratoWIPEntry.SetRange("Job No.", "No.");
+            //     if not ContratoWIPEntry.IsEmpty() then
+            //         Error(WIPAlreadyAssociatedErr, FieldCaption("WIP Posting Method"));
 
-                if "WIP Posting Method" = "WIP Posting Method"::"Per Job Ledger Entry" then begin
-                    JobWIPMethod.Get("WIP Method");
-                    if not JobWIPMethod."WIP Cost" then
-                        Error(WIPPostMethodErr, FieldCaption("WIP Posting Method"), FieldCaption("WIP Method"), JobWIPMethod.FieldCaption("WIP Cost"));
-                    if not JobWIPMethod."WIP Sales" then
-                        Error(WIPPostMethodErr, FieldCaption("WIP Posting Method"), FieldCaption("WIP Method"), JobWIPMethod.FieldCaption("WIP Sales"));
-                end;
-            end;
+            //     if "WIP Posting Method" = "WIP Posting Method"::"Per Job Ledger Entry" then begin
+            //         ContratoWIPMethod.Get("WIP Method");
+            //         if not ContratoWIPMethod."WIP Cost" then
+            //             Error(WIPPostMethodErr, FieldCaption("WIP Posting Method"), FieldCaption("WIP Method"), ContratoWIPMethod.FieldCaption("WIP Cost"));
+            //         if not ContratoWIPMethod."WIP Sales" then
+            //             Error(WIPPostMethodErr, FieldCaption("WIP Posting Method"), FieldCaption("WIP Method"), ContratoWIPMethod.FieldCaption("WIP Sales"));
+            //     end;
+            // end;
         }
-        field(1028; "Applied Costs G/L Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = - sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
-                                                                             Reverse = const(false),
-                                                                             "Job Complete" = const(false),
-                                                                             Type = filter("Applied Costs")));
-            Caption = 'Applied Costs G/L Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1029; "Applied Sales G/L Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = - sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
-                                                                             Reverse = const(false),
-                                                                             "Job Complete" = const(false),
-                                                                             Type = filter("Applied Sales")));
-            Caption = 'Applied Sales G/L Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1030; "Calc. Recog. Sales Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = sum("Job Task"."Recognized Sales Amount" where("Job No." = field("No.")));
-            Caption = 'Calc. Recog. Sales Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1031; "Calc. Recog. Costs Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = sum("Job Task"."Recognized Costs Amount" where("Job No." = field("No.")));
-            Caption = 'Calc. Recog. Costs Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1032; "Calc. Recog. Sales G/L Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = sum("Job Task"."Recognized Sales G/L Amount" where("Job No." = field("No.")));
-            Caption = 'Calc. Recog. Sales G/L Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1033; "Calc. Recog. Costs G/L Amount"; Decimal)
-        {
-            AutoFormatType = 1;
-            CalcFormula = sum("Job Task"."Recognized Costs G/L Amount" where("Job No." = field("No.")));
-            Caption = 'Calc. Recog. Costs G/L Amount';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(1034; "WIP Completion Posted"; Boolean)
-        {
-            CalcFormula = exist("Job WIP G/L Entry" where("Job No." = field("No."),
-                                                           "Job Complete" = const(true)));
-            Caption = 'WIP Completion Posted';
-            FieldClass = FlowField;
-        }
+        // field(1028; "Applied Costs G/L Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = - sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
+        //                                                                      Reverse = const(false),
+        //                                                                      "Job Complete" = const(false),
+        //                                                                      Type = filter("Applied Costs")));
+        //     Caption = 'Applied Costs G/L Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1029; "Applied Sales G/L Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = - sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
+        //                                                                      Reverse = const(false),
+        //                                                                      "Job Complete" = const(false),
+        //                                                                      Type = filter("Applied Sales")));
+        //     Caption = 'Applied Sales G/L Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1030; "Calc. Recog. Sales Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = sum("Contrato Task"."Recognized Sales Amount" where("Job No." = field("No.")));
+        //     Caption = 'Calc. Recog. Sales Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1031; "Calc. Recog. Costs Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = sum("Contrato Task"."Recognized Costs Amount" where("Job No." = field("No.")));
+        //     Caption = 'Calc. Recog. Costs Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1032; "Calc. Recog. Sales G/L Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = sum("Contrato Task"."Recognized Sales G/L Amount" where("Job No." = field("No.")));
+        //     Caption = 'Calc. Recog. Sales G/L Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1033; "Calc. Recog. Costs G/L Amount"; Decimal)
+        // {
+        //     AutoFormatType = 1;
+        //     CalcFormula = sum("Contrato Task"."Recognized Costs G/L Amount" where("Job No." = field("No.")));
+        //     Caption = 'Calc. Recog. Costs G/L Amount';
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+        // field(1034; "WIP Completion Posted"; Boolean)
+        // {
+        //     CalcFormula = exist("Job WIP G/L Entry" where("Job No." = field("No."),
+        //                                                    "Job Complete" = const(true)));
+        //     Caption = 'WIP Completion Posted';
+        //     FieldClass = FlowField;
+        // }
         field(1035; "Over Budget"; Boolean)
         {
             Caption = 'Over Budget';
@@ -1072,7 +1025,7 @@ table 50100 Job
             trigger OnValidate()
             begin
                 if ("Ship-to Code" <> xRec."Ship-to Code") and ("Task Billing Method" = "Task Billing Method"::"Multiple customers") then
-                    MessageIfJobTaskExist(FieldCaption("Ship-to Code"));
+                    MessageIfContratoTaskExist(FieldCaption("Ship-to Code"));
 
                 ShipToCodeValidate();
             end;
@@ -1163,7 +1116,7 @@ table 50100 Job
             trigger OnValidate()
             begin
                 if ("External Document No." <> xRec."External Document No.") and ("Task Billing Method" = "Task Billing Method"::"Multiple customers") then
-                    MessageIfJobTaskExist(FieldCaption("External Document No."));
+                    MessageIfContratoTaskExist(FieldCaption("External Document No."));
             end;
         }
         field(4001; "Payment Method Code"; Code[10])
@@ -1174,7 +1127,7 @@ table 50100 Job
             trigger OnValidate()
             begin
                 if ("Payment Method Code" <> xRec."Payment Method Code") and ("Task Billing Method" = "Task Billing Method"::"Multiple customers") then
-                    MessageIfJobTaskExist(FieldCaption("Payment Method Code"));
+                    MessageIfContratoTaskExist(FieldCaption("Payment Method Code"));
             end;
         }
         field(4002; "Payment Terms Code"; Code[10])
@@ -1185,7 +1138,7 @@ table 50100 Job
             trigger OnValidate()
             begin
                 if ("Payment Terms Code" <> xRec."Payment Terms Code") and ("Task Billing Method" = "Task Billing Method"::"Multiple customers") then
-                    MessageIfJobTaskExist(FieldCaption("Payment Terms Code"));
+                    MessageIfContratoTaskExist(FieldCaption("Payment Terms Code"));
             end;
         }
         field(4003; "Your Reference"; Text[35])
@@ -1195,7 +1148,7 @@ table 50100 Job
             trigger OnValidate()
             begin
                 if ("Your Reference" <> xRec."Your Reference") and ("Task Billing Method" = "Task Billing Method"::"Multiple customers") then
-                    MessageIfJobTaskExist(FieldCaption("Your Reference"));
+                    MessageIfContratoTaskExist(FieldCaption("Your Reference"));
             end;
         }
         field(7000; "Price Calculation Method"; Enum "Price Calculation Method")
@@ -1226,7 +1179,7 @@ table 50100 Job
         }
         field(7300; "Completely Picked"; Boolean)
         {
-            CalcFormula = min("Job Planning Line"."Completely Picked" where("Job No." = field("No.")));
+            CalcFormula = min("Contrato Planning Line"."Completely Picked" where("Job No." = field("No.")));
             Caption = 'Completely Picked';
             FieldClass = FlowField;
         }
@@ -1276,11 +1229,11 @@ table 50100 Job
     begin
         ConfirmDeletion();
 
-        MoveEntries.MoveJobEntries(Rec);
+        //MoveEntries.MoveJobEntries(Rec);
 
-        JobArchiveManagement.AutoArchiveJob(Rec);
+        //ContratoArchiveManagement.AutoArchiveContrato(Rec);
 
-        DeleteRelatedJobTasks();
+        DeleteRelatedContratoTasks();
 
         CommentLine.SetRange("Table Name", CommentLine."Table Name"::Job);
         CommentLine.SetRange("No.", "No.");
@@ -1289,29 +1242,29 @@ table 50100 Job
         DimMgt.DeleteDefaultDim(DATABASE::Job, "No.");
 
         if "Project Manager" <> '' then
-            RemoveFromMyJobs();
+            RemoveFromMyContratos();
 
         // Delete all warehouse requests and warehouse pick requests associated with the Job
-        WhseRequest.DeleteRequest(Database::Job, 0, "No.");
+        WhseRequest.DeleteRequest(Database::Contrato, 0, "No.");
         DeleteWhsePickRelation();
     end;
 
     trigger OnInsert()
     begin
-        JobsSetup.Get();
+        ContratosSetup.Get();
 
-        InitJobNo();
+        InitContratoNo();
         InitBillToCustomerNo();
 
         if not "Apply Usage Link" then
-            Validate("Apply Usage Link", JobsSetup."Apply Usage Link by Default");
+            Validate("Apply Usage Link", ContratosSetup."Apply Usage Link by Default");
         if not "Allow Schedule/Contract Lines" then
-            Validate("Allow Schedule/Contract Lines", JobsSetup."Allow Sched/Contract Lines Def");
-        if "WIP Method" = '' then
-            Validate("WIP Method", JobsSetup."Default WIP Method");
-        InitDefaultJobPostingGroup();
-        Validate("WIP Posting Method", JobsSetup."Default WIP Posting Method");
-        "Task Billing Method" := JobsSetup."Default Task Billing Method";
+            Validate("Allow Schedule/Contract Lines", ContratosSetup."Allow Sched/Contract Lines Def");
+        // if "WIP Method" = '' then
+        //     Validate("WIP Method", ContratosSetup."Default WIP Method");
+        InitDefaultContratoPostingGroup();
+        Validate("WIP Posting Method", ContratosSetup."Default WIP Posting Method");
+        "Task Billing Method" := ContratosSetup."Default Task Billing Method";
 
         InitGlobalDimFromDefalutDim();
         InitWIPFields();
@@ -1320,7 +1273,7 @@ table 50100 Job
         "Last Date Modified" := "Creation Date";
 
         if ("Project Manager" <> '') and (Status = Status::Open) then
-            AddToMyJobs("Project Manager");
+            AddToMyContratos("Project Manager");
 
         OnAfterOnInsert(Rec, xRec);
     end;
@@ -1329,38 +1282,38 @@ table 50100 Job
     begin
         "Last Date Modified" := Today;
 
-        CheckRemoveFromMyJobsFromModify();
+        CheckRemoveFromMyContratosFromModify();
 
         if ("Project Manager" <> '') and (xRec."Project Manager" <> "Project Manager") then
             if Status = Status::Open then
-                AddToMyJobs("Project Manager");
+                AddToMyContratos("Project Manager");
     end;
 
     trigger OnRename()
     begin
-        UpdateJobNoInReservationEntries();
+        UpdateContratoNoInReservationEntries();
         DimMgt.RenameDefaultDim(DATABASE::Job, xRec."No.", "No.");
         CommentLine.RenameCommentLine(CommentLine."Table Name"::Job, xRec."No.", "No.");
         "Last Date Modified" := Today;
     end;
 
     var
-        JobsSetup: Record "Jobs Setup";
+        ContratosSetup: Record "Contratos Setup";
         PostCode: Record "Post Code";
-        Job: Record Job;
+        Job: Record Contrato;
         Cust: Record Customer;
         Cont: Record Contact;
         ContBusinessRelation: Record "Contact Business Relation";
         CommentLine: Record "Comment Line";
         Location: Record Location;
         MoveEntries: Codeunit MoveEntries;
-        JobArchiveManagement: Codeunit "Job Archive Management";
+        ContratoArchiveManagement: Codeunit "Job Archive Management";
         HideValidationDialog: Boolean;
 
         AssociatedEntriesExistErr: Label 'You cannot change %1 because one or more entries are associated with this %2.', Comment = '%1 = Name of field used in the error; %2 = The name of the Project table';
         StatusChangeQst: Label 'This will delete any unposted WIP entries for this project and allow you to reverse the completion postings for this project.\\Do you wish to continue?';
-        ContactBusRelDiffCompErr: Label 'Contact %1 %2 is related to a different company than customer %3.', Comment = '%1 = The contact number; %2 = The contact''s name; %3 = The Bill-To Customer Number associated with this job';
-        ContactBusRelErr: Label 'Contact %1 %2 is not related to customer %3.', Comment = '%1 = The contact number; %2 = The contact''s name; %3 = The Bill-To Customer Number associated with this job';
+        ContactBusRelDiffCompErr: Label 'Contact %1 %2 is related to a different company than customer %3.', Comment = '%1 = The contact number; %2 = The contact''s name; %3 = The Bill-To Customer Number associated with this Job';
+        ContactBusRelErr: Label 'Contact %1 %2 is not related to customer %3.', Comment = '%1 = The contact number; %2 = The contact''s name; %3 = The Bill-To Customer Number associated with this Job';
         ContactBusRelMissingErr: Label 'Contact %1 %2 is not related to a customer.', Comment = '%1 = The contact number; %2 = The contact''s name';
         TestBlockedErr: Label '%1 %2 must not be blocked with type %3.', Comment = '%1 = The Project table name; %2 = The Project number; %3 = The value of the Blocked field';
         ReverseCompletionEntriesMsg: Label 'You must run the %1 function to reverse the completion entries that have already been posted for this project.', Comment = '%1 = The name of the Project Post WIP to G/L report';
@@ -1371,7 +1324,7 @@ table 50100 Job
         WIPAlreadyAssociatedErr: Label '%1 cannot be modified because the project has associated project WIP entries.', Comment = '%1 = The name of the WIP Posting Method field';
         WIPPostMethodErr: Label 'The selected %1 requires the %2 to have %3 enabled.', Comment = '%1 = The name of the WIP Posting Method field; %2 = The name of the WIP Method field; %3 = The field caption represented by the value of this project''s WIP method';
         EndingDateChangedMsg: Label '%1 is set to %2.', Comment = '%1 = The name of the Ending Date field; %2 = This project''s Ending Date value';
-        UpdateJobTaskDimQst: Label 'You have changed a dimension.\\Do you want to update the lines?';
+        UpdateContratoTaskDimQst: Label 'You have changed a dimension.\\Do you want to update the lines?';
         RunWIPFunctionsQst: Label 'You must run the Project Calculate WIP function to create completion entries for this project. \Do you want to run this function now?';
         ReservEntriesItemTrackLinesDeleteQst: Label 'All reservation entries and item tracking lines for this project will be deleted. \Do you want to continue?';
         ReservEntriesItemTrackLinesExistErr: Label 'You cannot set the status to %1 because the project has reservations or item tracking lines on the project planning lines.', Comment = '%1=The project status name';
@@ -1400,23 +1353,23 @@ table 50100 Job
         DimMgt: Codeunit DimensionManagement;
         SkipSellToContact: Boolean;
 
-    procedure AssistEdit(OldJob: Record Job) Result: Boolean
+    procedure AssistEdit(OldContrato: Record Contrato) Result: Boolean
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
 #if not CLEAN24
-        OnBeforeAssistEdit(Rec, OldJob, Result, IsHandled, NoSeriesMgt);
+        OnBeforeAssistEdit(Rec, OldContrato, Result, IsHandled, NoSeriesMgt);
 #else
-        OnBeforeAssistEdit(Rec, OldJob, Result, IsHandled);
+        OnBeforeAssistEdit(Rec, OldContrato, Result, IsHandled);
 #endif
         if IsHandled then
             exit(Result);
 
         Job := Rec;
-        JobsSetup.Get();
-        JobsSetup.TestField("Job Nos.");
-        if NoSeries.LookupRelatedNoSeries(JobsSetup."Job Nos.", OldJob."No. Series", Job."No. Series") then begin
+        ContratosSetup.Get();
+        ContratosSetup.TestField("Job Nos.");
+        if NoSeries.LookupRelatedNoSeries(ContratosSetup."Job Nos.", OldContrato."No. Series", Job."No. Series") then begin
             Job."No." := NoSeries.GetNextNo(Job."No. Series");
             Rec := Job;
             exit(true);
@@ -1459,45 +1412,45 @@ table 50100 Job
                 exit(CustomerPriceGroup."Price Calculation Method");
     end;
 
-    local procedure CheckRemoveFromMyJobsFromModify()
+    local procedure CheckRemoveFromMyContratosFromModify()
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckRemoveFromMyJobsFromModify(Rec, xRec, IsHandled);
+        OnBeforeCheckRemoveFromMyContratosFromModify(Rec, xRec, IsHandled);
         if IsHandled then
             exit;
 
         if (("Project Manager" <> xRec."Project Manager") and (xRec."Project Manager" <> '')) or (Status <> Status::Open) then
-            RemoveFromMyJobs();
+            RemoveFromMyContratos();
     end;
 
-    local procedure InitJobNo()
+    local procedure InitContratoNo()
     var
-        Job2: Record Job;
+        Contrato2: Record Contrato;
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeInitJobNo(Rec, xRec, IsHandled);
+        OnBeforeInitContratoNo(Rec, xRec, IsHandled);
         if IsHandled then
             exit;
 
         if "No." = '' then begin
-            JobsSetup.TestField("Job Nos.");
+            ContratosSetup.TestField("Job Nos.");
 #if not CLEAN24
-            NoSeriesMgt.RaiseObsoleteOnBeforeInitSeries(JobsSetup."Job Nos.", xRec."No. Series", 0D, "No.", "No. Series", IsHandled);
+            NoSeriesMgt.RaiseObsoleteOnBeforeInitSeries(ContratosSetup."Job Nos.", xRec."No. Series", 0D, "No.", "No. Series", IsHandled);
             if not IsHandled then begin
 #endif
-                "No. Series" := JobsSetup."Job Nos.";
+                "No. Series" := ContratosSetup."Job Nos.";
                 if NoSeries.AreRelated("No. Series", xRec."No. Series") then
                     "No. Series" := xRec."No. Series";
                 "No." := NoSeries.GetNextNo("No. Series");
-                Job2.ReadIsolation(IsolationLevel::ReadUncommitted);
-                Job2.SetLoadFields("No.");
-                while Job2.Get("No.") do
+                Contrato2.ReadIsolation(IsolationLevel::ReadUncommitted);
+                Contrato2.SetLoadFields("No.");
+                while Contrato2.Get("No.") do
                     "No." := NoSeries.GetNextNo("No. Series");
 #if not CLEAN24
-                NoSeriesMgt.RaiseObsoleteOnAfterInitSeries("No. Series", JobsSetup."Job Nos.", 0D, "No.");
+                NoSeriesMgt.RaiseObsoleteOnAfterInitSeries("No. Series", ContratosSetup."Job Nos.", 0D, "No.");
             end;
 #endif
         end;
@@ -1552,7 +1505,7 @@ table 50100 Job
         DimMgt.ValidateDimValueCode(FieldNumber, ShortcutDimCode);
         if not IsTemporary then begin
             DimMgt.SaveDefaultDim(DATABASE::Job, "No.", FieldNumber, ShortcutDimCode);
-            UpdateJobTaskDimension(FieldNumber, ShortcutDimCode);
+            UpdateContratoTaskDimension(FieldNumber, ShortcutDimCode);
             Modify();
         end;
 
@@ -1591,25 +1544,25 @@ table 50100 Job
         end;
     end;
 
-    procedure JobLedgEntryExist() Result: Boolean
+    procedure ContratoLedgEntryExist() Result: Boolean
     var
-        JobLedgEntry: Record "Job Ledger Entry";
+        ContratoLedgEntry: Record "Contrato Ledger Entry";
     begin
-        Clear(JobLedgEntry);
-        JobLedgEntry.SetCurrentKey("Job No.");
-        JobLedgEntry.SetRange("Job No.", "No.");
-        Result := not JobLedgEntry.IsEmpty();
-        OnAfterJobLedgEntryExist(JobLedgEntry, Result);
+        Clear(ContratoLedgEntry);
+        ContratoLedgEntry.SetCurrentKey("Job No.");
+        ContratoLedgEntry.SetRange("Job No.", "No.");
+        Result := not ContratoLedgEntry.IsEmpty();
+        //OnAfterContratoLedgEntryExist(ContratoLedgEntry, Result);
     end;
 
-    procedure SalesJobLedgEntryExist() Result: Boolean
+    procedure SalesContratoLedgEntryExist() Result: Boolean
     var
-        JobLedgEntry: Record "Job Ledger Entry";
+        ContratoLedgEntry: Record "Contrato Ledger Entry";
     begin
-        JobLedgEntry.SetCurrentKey("Job No.");
-        JobLedgEntry.SetRange("Job No.", "No.");
-        JobLedgEntry.SetRange("Entry Type", JobLedgEntry."Entry Type"::Sale);
-        Result := not JobLedgEntry.IsEmpty();
+        ContratoLedgEntry.SetCurrentKey("Job No.");
+        ContratoLedgEntry.SetRange("Job No.", "No.");
+        ContratoLedgEntry.SetRange("Entry Type", ContratoLedgEntry."Entry Type"::Sale);
+        Result := not ContratoLedgEntry.IsEmpty();
     end;
 
     procedure SalesLineExist() Result: Boolean
@@ -1624,14 +1577,14 @@ table 50100 Job
         Result := not SalesLine.IsEmpty();
     end;
 
-    procedure JobPlanningLineExist() Result: Boolean
+    procedure ContratoPlanningLineExist() Result: Boolean
     var
-        JobPlanningLine: Record "Job Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.Init();
-        JobPlanningLine.SetRange("Job No.", "No.");
-        Result := not JobPlanningLine.IsEmpty();
-        OnAfterJobPlanningLineExist(JobPlanningLine, Result);
+        ContratoPlanningLine.Init();
+        ContratoPlanningLine.SetRange("Job No.", "No.");
+        Result := not ContratoPlanningLine.IsEmpty();
+        OnAfterContratoPlanningLineExist(ContratoPlanningLine, Result);
     end;
 
     procedure UpdateBillToCust(ContactNo: Code[20])
@@ -1690,11 +1643,11 @@ table 50100 Job
         Error(ContactBusRelMissingErr, Cont."No.", Cont.Name);
     end;
 
-    procedure SelltoCustomerNoOnAfterValidate(var JobRec: Record "Job"; var xJobRec: Record "Job")
+    procedure SelltoCustomerNoOnAfterValidate(var ContratoRec: Record "Contrato"; var xContratoRec: Record "Contrato")
     begin
-        if JobRec.GetFilter("Sell-to Customer No.") = xJobRec."Sell-to Customer No." then
-            if JobRec."Sell-to Customer No." <> xJobRec."Sell-to Customer No." then
-                JobRec.SetRange("Sell-to Customer No.");
+        if ContratoRec.GetFilter("Sell-to Customer No.") = xContratoRec."Sell-to Customer No." then
+            if ContratoRec."Sell-to Customer No." <> xContratoRec."Sell-to Customer No." then
+                ContratoRec.SetRange("Sell-to Customer No.");
     end;
 
     procedure LookupSellToCustomerName(var CustomerName: Text): Boolean
@@ -1723,7 +1676,7 @@ table 50100 Job
     procedure InitWIPFields()
     begin
         "WIP Posting Date" := 0D;
-        "WIP G/L Posting Date" := 0D;
+        //"WIP G/L Posting Date" := 0D;
     end;
 
     local procedure InitGlobalDimFromDefalutDim()
@@ -1749,14 +1702,14 @@ table 50100 Job
         if IsHandled then
             exit;
 
-        if Blocked = Blocked::" " then
-            exit;
-        Error(TestBlockedErr, TableCaption(), "No.", Blocked);
+        // if Blocked = Blocked::" " then
+        //     exit;
+        // Error(TestBlockedErr, TableCaption(), "No.", Blocked);
     end;
 
     procedure CurrencyUpdatePlanningLines()
     var
-        JobPlanningLine: Record "Job Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         IsHandled: Boolean;
     begin
         IsHandled := false;
@@ -1764,18 +1717,18 @@ table 50100 Job
         if IsHandled then
             exit;
 
-        JobPlanningLine.SetRange("Job No.", "No.");
-        JobPlanningLine.SetAutoCalcFields("Qty. Transferred to Invoice");
-        JobPlanningLine.LockTable();
-        if JobPlanningLine.Find('-') then
+        ContratoPlanningLine.SetRange("Job No.", "No.");
+        ContratoPlanningLine.SetAutoCalcFields("Qty. Transferred to Invoice");
+        ContratoPlanningLine.LockTable();
+        if ContratoPlanningLine.Find('-') then
             repeat
-                OnCurrencyUpdatePlanningLinesOnBeforeUpdateJobPlanningLine(Job, JobPlanningLine);
-                if JobPlanningLine."Qty. Transferred to Invoice" <> 0 then
+                OnCurrencyUpdatePlanningLinesOnBeforeUpdateContratoPlanningLine(Job, ContratoPlanningLine);
+                if ContratoPlanningLine."Qty. Transferred to Invoice" <> 0 then
                     Error(AssociatedEntriesExistErr, FieldCaption("Currency Code"), TableCaption);
-                JobPlanningLine.Validate("Currency Code", "Currency Code");
-                JobPlanningLine.Validate("Currency Date");
-                JobPlanningLine.Modify();
-            until JobPlanningLine.Next() = 0;
+                ContratoPlanningLine.Validate("Currency Code", "Currency Code");
+                ContratoPlanningLine.Validate("Currency Date");
+                ContratoPlanningLine.Modify();
+            until ContratoPlanningLine.Next() = 0;
     end;
 
     procedure TestStatusCompleted()
@@ -1806,14 +1759,14 @@ table 50100 Job
             until PurchLine.Next() = 0;
     end;
 
-    local procedure ChangeJobCompletionStatus()
+    local procedure ChangeContratoCompletionStatus()
     var
         WhseRequest: Record "Warehouse Request";
-        JobCalcWIP: Codeunit "Job Calculate WIP";
+        ContratoCalcWIP: Codeunit "Job Calculate WIP";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeChangeJobCompletionStatus(Rec, xRec, IsHandled);
+        OnBeforeChangeContratoCompletionStatus(Rec, xRec, IsHandled);
         if IsHandled then
             exit;
 
@@ -1821,15 +1774,15 @@ table 50100 Job
             Validate("Ending Date", CalcEndingDate());
             Message(EndingDateChangedMsg, FieldCaption("Ending Date"), "Ending Date");
 
-            WhseRequest.DeleteRequest(Database::Job, 0, "No.");
+            WhseRequest.DeleteRequest(Database::Contrato, 0, "No.");
             DeleteWhsePickRelation();
         end else begin
-            JobCalcWIP.ReOpenJob("No.");
+            ContratoCalcWIP.ReOpenJob("No.");
             "WIP Posting Date" := 0D;
             Message(ReverseCompletionEntriesMsg, GetReportCaption(REPORT::"Job Post WIP to G/L"));
         end;
 
-        OnAfterChangeJobCompletionStatus(Rec, xRec);
+        OnAfterChangeContratoCompletionStatus(Rec, xRec);
     end;
 
     procedure CreateInvtPutAwayPick()
@@ -1841,7 +1794,7 @@ table 50100 Job
         WhseRequest.Reset();
         WhseRequest.SetCurrentKey("Source Document", "Source No.");
         WhseRequest.SetRange("Source Document", WhseRequest."Source Document"::"Job Usage");
-        WhseRequest.SetRange("Source Type", Database::Job);
+        WhseRequest.SetRange("Source Type", Database::Contrato);
         WhseRequest.SetRange("Source No.", "No.");
         REPORT.RunModal(REPORT::"Create Invt Put-away/Pick/Mvmt", true, false, WhseRequest);
     end;
@@ -1850,34 +1803,34 @@ table 50100 Job
     var
         OnlineMapManagement: Codeunit "Online Map Management";
     begin
-        OnlineMapManagement.MakeSelectionIfMapEnabled(Database::Job, GetPosition());
+        OnlineMapManagement.MakeSelectionIfMapEnabled(Database::Contrato, GetPosition());
     end;
 
     procedure GetQuantityAvailable(ItemNo: Code[20]; LocationCode: Code[10]; VariantCode: Code[10]; InEntryType: Option Usage,Sale,Both; Direction: Option Positive,Negative,Both): Decimal
     var
-        JobLedgEntry: Record "Job Ledger Entry";
+        ContratoLedgEntry: Record "Contrato Ledger Entry";
     begin
-        Clear(JobLedgEntry);
-        JobLedgEntry.SetCurrentKey("Job No.", "Entry Type", Type, "No.");
-        JobLedgEntry.SetRange("Job No.", "No.");
+        Clear(ContratoLedgEntry);
+        ContratoLedgEntry.SetCurrentKey("Job No.", "Entry Type", Type, "No.");
+        ContratoLedgEntry.SetRange("Job No.", "No.");
         if not (InEntryType = InEntryType::Both) then
-            JobLedgEntry.SetRange("Entry Type", InEntryType);
-        JobLedgEntry.SetRange(Type, JobLedgEntry.Type::Item);
-        JobLedgEntry.SetRange("No.", ItemNo);
+            ContratoLedgEntry.SetRange("Entry Type", InEntryType);
+        ContratoLedgEntry.SetRange(Type, ContratoLedgEntry.Type::Item);
+        ContratoLedgEntry.SetRange("No.", ItemNo);
         case Direction of
             Direction::Both:
                 begin
-                    JobLedgEntry.SetRange("Location Code", LocationCode);
-                    JobLedgEntry.SetRange("Variant Code", VariantCode);
+                    ContratoLedgEntry.SetRange("Location Code", LocationCode);
+                    ContratoLedgEntry.SetRange("Variant Code", VariantCode);
                 end;
             Direction::Positive:
-                JobLedgEntry.SetFilter("Quantity (Base)", '>0');
+                ContratoLedgEntry.SetFilter("Quantity (Base)", '>0');
             Direction::Negative:
-                JobLedgEntry.SetFilter("Quantity (Base)", '<0');
+                ContratoLedgEntry.SetFilter("Quantity (Base)", '<0');
         end;
-        OnGetQuantityAvailableOnAfterSetFiltersOnJobLedgerEntry(ItemNo, LocationCode, VariantCode, InEntryType, Direction, JobLedgEntry);
-        JobLedgEntry.CalcSums("Quantity (Base)");
-        exit(JobLedgEntry."Quantity (Base)");
+        //OnGetQuantityAvailableOnAfterSetFiltersOnContratoLedgerEntry(ItemNo, LocationCode, VariantCode, InEntryType, Direction, ContratoLedgEntry);
+        ContratoLedgEntry.CalcSums("Quantity (Base)");
+        exit(ContratoLedgEntry."Quantity (Base)");
     end;
 
     local procedure CheckDate()
@@ -1888,82 +1841,82 @@ table 50100 Job
 
     procedure CalcAccWIPCostsAmount(): Decimal
     begin
-        exit("Total WIP Cost Amount" + "Applied Costs G/L Amount");
+        //exit("Total WIP Cost Amount" + "Applied Costs G/L Amount");
     end;
 
     procedure CalcAccWIPSalesAmount(): Decimal
     begin
-        exit("Total WIP Sales Amount" - "Applied Sales G/L Amount");
+        //exit("Total WIP Sales Amount" - "Applied Sales G/L Amount");
     end;
 
     procedure CalcRecognizedProfitAmount() Result: Decimal
     begin
-        CalcFields("Calc. Recog. Sales Amount", "Calc. Recog. Costs Amount");
-        Result := "Calc. Recog. Sales Amount" - "Calc. Recog. Costs Amount";
+        // CalcFields("Calc. Recog. Sales Amount", "Calc. Recog. Costs Amount");
+        // Result := "Calc. Recog. Sales Amount" - "Calc. Recog. Costs Amount";
         OnAfterCalcRecognizedProfitAmount(Result);
     end;
 
     procedure CalcRecognizedProfitPercentage(): Decimal
     begin
-        if "Calc. Recog. Sales Amount" <> 0 then
-            exit((CalcRecognizedProfitAmount() / "Calc. Recog. Sales Amount") * 100);
-        exit(0);
+        // if "Calc. Recog. Sales Amount" <> 0 then
+        //     exit((CalcRecognizedProfitAmount() / "Calc. Recog. Sales Amount") * 100);
+        // exit(0);
     end;
 
     procedure CalcRecognizedProfitGLAmount(): Decimal
     begin
-        CalcFields("Calc. Recog. Sales G/L Amount", "Calc. Recog. Costs G/L Amount");
-        exit("Calc. Recog. Sales G/L Amount" - "Calc. Recog. Costs G/L Amount");
+        // CalcFields("Calc. Recog. Sales G/L Amount", "Calc. Recog. Costs G/L Amount");
+        // exit("Calc. Recog. Sales G/L Amount" - "Calc. Recog. Costs G/L Amount");
     end;
 
     procedure CalcRecognProfitGLPercentage(): Decimal
     begin
-        if "Calc. Recog. Sales G/L Amount" <> 0 then
-            exit((CalcRecognizedProfitGLAmount() / "Calc. Recog. Sales G/L Amount") * 100);
-        exit(0);
+        // if "Calc. Recog. Sales G/L Amount" <> 0 then
+        //     exit((CalcRecognizedProfitGLAmount() / "Calc. Recog. Sales G/L Amount") * 100);
+        // exit(0);
     end;
 
     procedure CopyDefaultDimensionsFromCustomer()
     var
         CustDefaultDimension: Record "Default Dimension";
-        JobDefaultDimension: Record "Default Dimension";
-        Job2: Record Job;
+        ContratoDefaultDimension: Record "Default Dimension";
+        Contrato2: Record Contrato;
         IsHandled: Boolean;
-        JobExistsInDB: Boolean;
+        ContratoExistsInDB: Boolean;
     begin
         IsHandled := false;
         OnBeforeCopyDefaultDimensionsFromCustomer(Rec, IsHandled, CurrFieldNo);
         if IsHandled then
             exit;
 
-        Job2.SetRange("No.", Rec."No.");
-        JobExistsInDB := not Job2.IsEmpty();
-        if JobExistsInDB then
+        Contrato2.SetRange("No.", Rec."No.");
+        ContratoExistsInDB := not Contrato2.IsEmpty();
+        if ContratoExistsInDB then
             Rec.Modify();
 
         DimMgt.SetSkipUpdateDimensions(Rec."Task Billing Method" = Rec."Task Billing Method"::"Multiple customers");
 
-        JobDefaultDimension.SetRange("Table ID", DATABASE::Job);
-        JobDefaultDimension.SetRange("No.", "No.");
-        if JobDefaultDimension.FindSet() then
+        ContratoDefaultDimension.SetRange("Table ID", DATABASE::Job);
+        ContratoDefaultDimension.SetRange("No.", "No.");
+        if ContratoDefaultDimension.FindSet() then
             repeat
-                DimMgt.DefaultDimOnDelete(JobDefaultDimension);
+                DimMgt.DefaultDimOnDelete(ContratoDefaultDimension);
                 DimMgt.SetSkipChangeDimensionsQst(true);
-                JobDefaultDimension.Delete();
-            until JobDefaultDimension.Next() = 0;
-        if JobExistsInDB then
+                ContratoDefaultDimension.Delete();
+            until ContratoDefaultDimension.Next() = 0;
+        if ContratoExistsInDB then
             Rec.Get(Rec."No.");
 
         CustDefaultDimension.SetRange("Table ID", DATABASE::Customer);
         CustDefaultDimension.SetRange("No.", "Bill-to Customer No.");
         if CustDefaultDimension.FindSet() then
             repeat
-                JobDefaultDimension.Init();
-                JobDefaultDimension.TransferFields(CustDefaultDimension);
-                JobDefaultDimension."Table ID" := DATABASE::Job;
-                JobDefaultDimension."No." := "No.";
-                JobDefaultDimension.Insert();
-                DimMgt.DefaultDimOnInsert(JobDefaultDimension);
+                ContratoDefaultDimension.Init();
+                ContratoDefaultDimension.TransferFields(CustDefaultDimension);
+                ContratoDefaultDimension."Table ID" := DATABASE::Job;
+                ContratoDefaultDimension."No." := "No.";
+                ContratoDefaultDimension.Insert();
+                DimMgt.DefaultDimOnInsert(ContratoDefaultDimension);
             until CustDefaultDimension.Next() = 0;
 
         OnCopyDefaultDimensionsFromCustomerOnBeforeUpdateDefaultDim(Rec, CurrFieldNo);
@@ -1972,7 +1925,7 @@ table 50100 Job
 
     procedure PercentCompleted() Result: Decimal
     var
-        JobCalcStatistics: Codeunit "Job Calculate Statistics";
+        ContratoCalcStatistics: Codeunit "Contrato Calculate Statistics";
         CL: array[16] of Decimal;
         IsHandled: Boolean;
     begin
@@ -1981,9 +1934,9 @@ table 50100 Job
         if IsHandled then
             exit(Result);
 
-        JobCalcStatistics.JobCalculateCommonFilters(Rec);
-        JobCalcStatistics.CalculateAmounts();
-        JobCalcStatistics.GetLCYCostAmounts(CL);
+        //ContratoCalcStatistics.ContratoCalculateCommonFilters(Rec);
+        ContratoCalcStatistics.CalculateAmounts();
+        ContratoCalcStatistics.GetLCYCostAmounts(CL);
         if CL[4] <> 0 then
             exit((CL[8] / CL[4]) * 100);
         exit(0);
@@ -1991,7 +1944,7 @@ table 50100 Job
 
     procedure PercentInvoiced() Result: Decimal
     var
-        JobCalcStatistics: Codeunit "Job Calculate Statistics";
+        ContratoCalcStatistics: Codeunit "Contrato Calculate Statistics";
         PL: array[16] of Decimal;
         IsHandled: Boolean;
     begin
@@ -2000,9 +1953,9 @@ table 50100 Job
         if IsHandled then
             exit(Result);
 
-        JobCalcStatistics.JobCalculateCommonFilters(Rec);
-        JobCalcStatistics.CalculateAmounts();
-        JobCalcStatistics.GetLCYPriceAmounts(PL);
+        //ContratoCalcStatistics.ContratoCalculateCommonFilters(Rec);
+        ContratoCalcStatistics.CalculateAmounts();
+        ContratoCalcStatistics.GetLCYPriceAmounts(PL);
         if PL[12] <> 0 then
             exit((PL[16] / PL[12]) * 100);
         exit(0);
@@ -2010,7 +1963,7 @@ table 50100 Job
 
     procedure PercentOverdue() Result: Decimal
     var
-        JobPlanningLine: Record "Job Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         QtyOverdue: Decimal;
         QtyTotal: Decimal;
         IsHandled: Boolean;
@@ -2020,21 +1973,21 @@ table 50100 Job
         if IsHandled then
             exit(Result);
 
-        JobPlanningLine.SetRange("Job No.", "No.");
-        QtyTotal := JobPlanningLine.Count();
+        ContratoPlanningLine.SetRange("Job No.", "No.");
+        QtyTotal := ContratoPlanningLine.Count();
         if QtyTotal = 0 then
             exit(0);
-        JobPlanningLine.SetFilter("Planning Date", '<%1', WorkDate());
-        JobPlanningLine.SetFilter("Remaining Qty.", '>%1', 0);
-        QtyOverdue := JobPlanningLine.Count();
+        ContratoPlanningLine.SetFilter("Planning Date", '<%1', WorkDate());
+        ContratoPlanningLine.SetFilter("Remaining Qty.", '>%1', 0);
+        QtyOverdue := ContratoPlanningLine.Count();
         exit((QtyOverdue / QtyTotal) * 100);
     end;
 
-    local procedure UpdateJobNoInReservationEntries()
+    local procedure UpdateContratoNoInReservationEntries()
     var
         ReservEntry: Record "Reservation Entry";
     begin
-        ReservEntry.SetFilter("Source Type", '%1|%2', DATABASE::"Job Planning Line", DATABASE::"Job Journal Line");
+        ReservEntry.SetFilter("Source Type", '%1|%2', DATABASE::"Contrato Planning Line", DATABASE::"Contrato Journal Line");
         ReservEntry.SetRange("Source ID", xRec."No.");
         ReservEntry.ModifyAll("Source ID", "No.", true);
     end;
@@ -2048,7 +2001,7 @@ table 50100 Job
         ReservationToDeleteExists := false;
 
         if Status <> Status::Open then begin
-            ReservationEntry.SetRange("Source Type", DATABASE::"Job Planning Line");
+            ReservationEntry.SetRange("Source Type", DATABASE::"Contrato Planning Line");
             ReservationEntry.SetRange("Source ID", "No.");
             ReservationToDeleteExists := not ReservationEntry.IsEmpty();
             if ReservationToDeleteExists then
@@ -2059,87 +2012,87 @@ table 50100 Job
         exit(ReservationToDeleteExists);
     end;
 
-    procedure PerformAutoReserve(var JobPlanningLine: Record "Job Planning Line")
+    procedure PerformAutoReserve(var ContratoPlanningLine: Record "Contrato Planning Line")
     var
-        JobPlanningLineReserve: Codeunit "Job Planning Line-Reserve";
+        ContratoPlanningLineReserve: Codeunit "Job Planning Line-Reserve";
         ReservationManagement: Codeunit "Reservation Management";
         QtyToReserve: Decimal;
         QtyToReserveBase: Decimal;
         FullAutoReservation: Boolean;
         AutoReservePossible: Boolean;
     begin
-        JobPlanningLine.SetRange(Status, JobPlanningLine.Status::Order);
-        JobPlanningLine.SetRange(Reserve, JobPlanningLine.Reserve::Always);
-        JobPlanningLine.SetFilter("Remaining Qty. (Base)", '<>%1', 0);
-        AutoReservePossible := JobPlanningLine.FindSet();
+        ContratoPlanningLine.SetRange(Status, ContratoPlanningLine.Status::Order);
+        ContratoPlanningLine.SetRange(Reserve, ContratoPlanningLine.Reserve::Always);
+        ContratoPlanningLine.SetFilter("Remaining Qty. (Base)", '<>%1', 0);
+        AutoReservePossible := ContratoPlanningLine.FindSet();
         if AutoReservePossible then begin
             repeat
-                JobPlanningLineReserve.ReservQuantity(JobPlanningLine, QtyToReserve, QtyToReserveBase);
-                ReservationManagement.SetReservSource(JobPlanningLine);
-                ReservationManagement.AutoReserve(FullAutoReservation, '', JobPlanningLine."Planning Date", QtyToReserve, QtyToReserveBase);
+                //ContratoPlanningLineReserve.ReservQuantity(ContratoPlanningLine, QtyToReserve, QtyToReserveBase);
+                ReservationManagement.SetReservSource(ContratoPlanningLine);
+                ReservationManagement.AutoReserve(FullAutoReservation, '', ContratoPlanningLine."Planning Date", QtyToReserve, QtyToReserveBase);
                 AutoReservePossible := AutoReservePossible and FullAutoReservation;
-                JobPlanningLine.UpdatePlanned();
-            until JobPlanningLine.Next() = 0;
+                ContratoPlanningLine.UpdatePlanned();
+            until ContratoPlanningLine.Next() = 0;
             if not AutoReservePossible then
                 Message(AutoReserveNotPossibleMsg);
         end;
     end;
 
-    local procedure UpdateJobTaskDimension(FieldNumber: Integer; ShortcutDimCode: Code[20])
+    local procedure UpdateContratoTaskDimension(FieldNumber: Integer; ShortcutDimCode: Code[20])
     var
-        JobTask: Record "Job Task";
+        ContratoTask: Record "Contrato Task";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeUpdateJobTaskDimension(Rec, FieldNumber, ShortcutDimCode, IsHandled);
+        OnBeforeUpdateContratoTaskDimension(Rec, FieldNumber, ShortcutDimCode, IsHandled);
         if IsHandled then
             exit;
 
         if GuiAllowed() and (not GetHideValidationDialog()) then
-            if not Confirm(UpdateJobTaskDimQst, false) then
+            if not Confirm(UpdateContratoTaskDimQst, false) then
                 exit;
 
-        JobTask.SetRange("Job No.", "No.");
-        if JobTask.FindSet(true) then
+        ContratoTask.SetRange("Job No.", "No.");
+        if ContratoTask.FindSet(true) then
             repeat
                 case FieldNumber of
                     1:
-                        JobTask.Validate("Global Dimension 1 Code", ShortcutDimCode);
+                        ContratoTask.Validate("Global Dimension 1 Code", ShortcutDimCode);
                     2:
-                        JobTask.Validate("Global Dimension 2 Code", ShortcutDimCode);
+                        ContratoTask.Validate("Global Dimension 2 Code", ShortcutDimCode);
                 end;
-                JobTask.Modify();
-            until JobTask.Next() = 0;
+                ContratoTask.Modify();
+            until ContratoTask.Next() = 0;
     end;
 
-    procedure UpdateOverBudgetValue(JobNo: Code[20]; Usage: Boolean; Cost: Decimal)
+    procedure UpdateOverBudgetValue(ContratoNo: Code[20]; Usage: Boolean; Cost: Decimal)
     var
-        JobLedgerEntry: Record "Job Ledger Entry";
-        JobPlanningLine: Record "Job Planning Line";
+        ContratoLedgerEntry: Record "Contrato Ledger Entry";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         UsageCost: Decimal;
         ScheduleCost: Decimal;
         NewOverBudget: Boolean;
         IsHandled: Boolean;
     begin
-        OnBeforeUpdateOverBudgetValue(Rec, JobNo, Usage, Cost, IsHandled);
+        OnBeforeUpdateOverBudgetValue(Rec, ContratoNo, Usage, Cost, IsHandled);
         if IsHandled then
             exit;
 
-        if "No." <> JobNo then
-            if not Get(JobNo) then
+        if "No." <> ContratoNo then
+            if not Get(ContratoNo) then
                 exit;
 
-        JobLedgerEntry.SetRange("Job No.", JobNo);
-        JobLedgerEntry.CalcSums("Total Cost (LCY)");
-        if JobLedgerEntry."Total Cost (LCY)" = 0 then
+        ContratoLedgerEntry.SetRange("Job No.", ContratoNo);
+        ContratoLedgerEntry.CalcSums("Total Cost (LCY)");
+        if ContratoLedgerEntry."Total Cost (LCY)" = 0 then
             exit;
 
-        UsageCost := JobLedgerEntry."Total Cost (LCY)";
+        UsageCost := ContratoLedgerEntry."Total Cost (LCY)";
 
-        JobPlanningLine.SetRange("Job No.", JobNo);
-        JobPlanningLine.SetRange("Schedule Line", true);
-        JobPlanningLine.CalcSums("Total Cost (LCY)");
-        ScheduleCost := JobPlanningLine."Total Cost (LCY)";
+        ContratoPlanningLine.SetRange("Job No.", ContratoNo);
+        ContratoPlanningLine.SetRange("Schedule Line", true);
+        ContratoPlanningLine.CalcSums("Total Cost (LCY)");
+        ScheduleCost := ContratoPlanningLine."Total Cost (LCY)";
 
         if Usage then
             UsageCost += Cost
@@ -2154,48 +2107,48 @@ table 50100 Job
 
 #if not CLEAN23
     [Obsolete('This method always returns true. Remove this method.', '23.0')]
-    procedure IsJobSimplificationAvailable(): Boolean
+    procedure IsContratoSimplificationAvailable(): Boolean
     begin
         exit(true);
     end;
 #endif
 
-    local procedure AddToMyJobs(ProjectManager: Code[50])
+    local procedure AddToMyContratos(ProjectManager: Code[50])
     var
-        MyJob: Record "My Job";
+        MyContrato: Record "My Job";
     begin
         if Status <> Status::Open then
             exit;
 
-        if MyJob.Get(ProjectManager, "No.") then begin
-            MyJob.Description := Description;
-            MyJob."Bill-to Name" := "Bill-to Name";
-            MyJob."Percent Completed" := PercentCompleted();
-            MyJob."Percent Invoiced" := PercentInvoiced();
-            MyJob.Modify();
+        if MyContrato.Get(ProjectManager, "No.") then begin
+            MyContrato.Description := Description;
+            MyContrato."Bill-to Name" := "Bill-to Name";
+            MyContrato."Percent Completed" := PercentCompleted();
+            MyContrato."Percent Invoiced" := PercentInvoiced();
+            MyContrato.Modify();
         end else begin
-            MyJob.Init();
-            MyJob."User ID" := ProjectManager;
-            MyJob."Job No." := "No.";
-            MyJob.Description := Description;
-            MyJob.Status := Status;
-            MyJob."Bill-to Name" := "Bill-to Name";
-            MyJob."Percent Completed" := PercentCompleted();
-            MyJob."Percent Invoiced" := PercentInvoiced();
-            MyJob."Exclude from Business Chart" := false;
-            MyJob.Insert();
+            MyContrato.Init();
+            MyContrato."User ID" := ProjectManager;
+            MyContrato."Job No." := "No.";
+            MyContrato.Description := Description;
+            MyContrato.Status := Status;
+            MyContrato."Bill-to Name" := "Bill-to Name";
+            MyContrato."Percent Completed" := PercentCompleted();
+            MyContrato."Percent Invoiced" := PercentInvoiced();
+            MyContrato."Exclude from Business Chart" := false;
+            MyContrato.Insert();
         end;
     end;
 
-    local procedure RemoveFromMyJobs()
+    local procedure RemoveFromMyContratos()
     var
-        MyJob: Record "My Job";
+        MyContrato: Record "My Job";
     begin
-        MyJob.SetFilter("Job No.", '=%1', "No.");
-        if MyJob.FindSet() then
+        MyContrato.SetFilter("Job No.", '=%1', "No.");
+        if MyContrato.FindSet() then
             repeat
-                MyJob.Delete();
-            until MyJob.Next() = 0;
+                MyContrato.Delete();
+            until MyContrato.Next() = 0;
     end;
 
     local procedure DeleteWhsePickRelation()
@@ -2210,20 +2163,20 @@ table 50100 Job
         ItemTrackingMgt.DeleteWhseItemTrkgLines(DATABASE::Job, 0, Rec."No.", '', 0, 0, '', false);
     end;
 
-    local procedure DeleteRelatedJobTasks()
+    local procedure DeleteRelatedContratoTasks()
     var
-        JobTask: Record "Job Task";
+        ContratoTask: Record "Contrato Task";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeDeleteRelatedJobTasks(Rec, xRec, IsHandled);
+        OnBeforeDeleteRelatedContratoTasks(Rec, xRec, IsHandled);
         if IsHandled then
             exit;
 
-        JobTask.SetCurrentKey("Job No.");
-        JobTask.SetRange("Job No.", "No.");
-        JobTask.SuspendDeletionCheck(true);
-        JobTask.DeleteAll(true);
+        ContratoTask.SetCurrentKey("Job No.");
+        ContratoTask.SetRange("Job No.", "No.");
+        ContratoTask.SuspendDeletionCheck(true);
+        ContratoTask.DeleteAll(true);
     end;
 
     procedure ToPriceSource(var PriceSource: Record "Price Source"; PriceType: Enum "Price Type")
@@ -2234,18 +2187,18 @@ table 50100 Job
         PriceSource.Validate("Source No.", "No.");
     end;
 
-    procedure SetJobDiffBuff(var TempJobDifferenceBuffer: Record "Job Difference Buffer" temporary; JobNo: Code[20]; JobTaskNo: Code[20]; JobTaskType: Option Posting,Heading,Total,"Begin-Total","End-Total"; Type: Option Resource,Item,"G/L Account",Text; No: Code[20]; LocationCode: Code[10]; VariantCode: Code[10]; UnitofMeasureCode: Code[10]; WorkTypeCode: Code[10])
+    procedure SetContratoDiffBuff(var TempContratoDifferenceBuffer: Record "Contrato Difference Buffer" temporary; ContratoNo: Code[20]; ContratoTaskNo: Code[20]; ContratoTaskType: Option Posting,Heading,Total,"Begin-Total","End-Total"; Type: Option Resource,Item,"G/L Account",Text; No: Code[20]; LocationCode: Code[10]; VariantCode: Code[10]; UnitofMeasureCode: Code[10]; WorkTypeCode: Code[10])
     begin
-        TempJobDifferenceBuffer.Init();
-        TempJobDifferenceBuffer."Job No." := JobNo;
-        TempJobDifferenceBuffer."Job Task No." := JobTaskNo;
-        if JobTaskType = JobTaskType::Posting then begin
-            TempJobDifferenceBuffer.Type := "Job Planning Line Type".FromInteger(Type);
-            TempJobDifferenceBuffer."No." := No;
-            TempJobDifferenceBuffer."Location Code" := LocationCode;
-            TempJobDifferenceBuffer."Variant Code" := VariantCode;
-            TempJobDifferenceBuffer."Unit of Measure code" := UnitofMeasureCode;
-            TempJobDifferenceBuffer."Work Type Code" := WorkTypeCode;
+        TempContratoDifferenceBuffer.Init();
+        TempContratoDifferenceBuffer."Job No." := ContratoNo;
+        TempContratoDifferenceBuffer."Job Task No." := ContratoTaskNo;
+        if ContratoTaskType = ContratoTaskType::Posting then begin
+            TempContratoDifferenceBuffer.Type := "Job Planning Line Type".FromInteger(Type);
+            TempContratoDifferenceBuffer."No." := No;
+            TempContratoDifferenceBuffer."Location Code" := LocationCode;
+            TempContratoDifferenceBuffer."Variant Code" := VariantCode;
+            TempContratoDifferenceBuffer."Unit of Measure code" := UnitofMeasureCode;
+            TempContratoDifferenceBuffer."Work Type Code" := WorkTypeCode;
         end;
     end;
 
@@ -2291,28 +2244,28 @@ table 50100 Job
           ReportDistributionMgt.GetFullDocumentTypeText(Rec), FieldNo("Bill-to Customer No."), ShowDialog);
     end;
 
-    procedure RecalculateJobWIP()
+    procedure RecalculateContratoWIP()
     var
-        Job: Record Job;
+        Job: Record Contrato;
         ConfirmManagement: Codeunit "Confirm Management";
-        JobCalculateWIP: Report "Job Calculate WIP";
+        ContratoCalculateWIP: Report "Job Calculate WIP";
         Confirmed: Boolean;
         IsHandled: Boolean;
     begin
-        OnBeforeRecalculateJobWIP(Rec, IsHandled);
+        OnBeforeRecalculateContratoWIP(Rec, IsHandled);
         if IsHandled then
             exit;
 
         Job.Get("No.");
-        if Job."WIP Method" = '' then
-            exit;
+        // if Job."WIP Method" = '' then
+        //     exit;
 
         Job.SetRecFilter();
         Confirmed := ConfirmManagement.GetResponseOrDefault(RunWIPFunctionsQst, true);
         Commit();
-        JobCalculateWIP.UseRequestPage(not Confirmed);
-        JobCalculateWIP.SetTableView(Job);
-        JobCalculateWIP.Run();
+        ContratoCalculateWIP.UseRequestPage(not Confirmed);
+        ContratoCalculateWIP.SetTableView(Job);
+        ContratoCalculateWIP.Run();
     end;
 
     local procedure GetReportCaption(ReportID: Integer): Text
@@ -2325,18 +2278,18 @@ table 50100 Job
 
     local procedure CalcEndingDate() EndingDate: Date
     var
-        JobLedgerEntry: Record "Job Ledger Entry";
+        ContratoLedgerEntry: Record "Contrato Ledger Entry";
     begin
         if "Ending Date" = 0D then
             EndingDate := WorkDate()
         else
             EndingDate := "Ending Date";
 
-        JobLedgerEntry.SetRange("Job No.", "No.");
-        JobLedgerEntry.SetCurrentKey("Job No.", "Posting Date");
-        if JobLedgerEntry.FindLast() then
-            if JobLedgerEntry."Posting Date" > EndingDate then
-                EndingDate := JobLedgerEntry."Posting Date";
+        ContratoLedgerEntry.SetRange("Job No.", "No.");
+        ContratoLedgerEntry.SetCurrentKey("Job No.", "Posting Date");
+        if ContratoLedgerEntry.FindLast() then
+            if ContratoLedgerEntry."Posting Date" > EndingDate then
+                EndingDate := ContratoLedgerEntry."Posting Date";
 
         if "Ending Date" >= EndingDate then
             EndingDate := "Ending Date";
@@ -2405,11 +2358,11 @@ table 50100 Job
         exit('');
     end;
 
-    procedure CalcJobTaskLinesEditable() IsEditable: Boolean;
+    procedure CalcContratoTaskLinesEditable() IsEditable: Boolean;
     begin
         IsEditable := "Bill-to Customer No." <> '';
 
-        OnAfterCalcJobTaskLinesEditable(Rec, IsEditable);
+        OnAfterCalcContratoTaskLinesEditable(Rec, IsEditable);
     end;
 
     procedure ShipToAddressEqualsSellToAddress() Result: Boolean
@@ -2475,13 +2428,13 @@ table 50100 Job
         exit(HideValidationDialog);
     end;
 
-    procedure SellToCustomerNoUpdated(var Job: Record Job; var xJob: Record Job)
+    procedure SellToCustomerNoUpdated(var Job: Record Contrato; var xContrato: Record Contrato)
     var
         SellToCustomer: Record Customer;
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeSellToCustomerNoUpdated(Job, xJob, CurrFieldNo, IsHandled, SkipSellToContact);
+        OnBeforeSellToCustomerNoUpdated(Job, xContrato, CurrFieldNo, IsHandled, SkipSellToContact);
         if IsHandled then
             exit;
         if Job."Sell-to Customer No." <> '' then begin
@@ -2492,12 +2445,12 @@ table 50100 Job
                 SellToCustomer.CheckBlockedCustOnDocs(SellToCustomer, Enum::"Sales Document Type"::Order, false, false);
         end;
 
-        CheckSellToCustomerAssosEntriesExist(Job, xJob);
+        CheckSellToCustomerAssosEntriesExist(Job, xContrato);
 
-        if (xJob."Sell-to Customer No." <> '') and (not GetHideValidationDialog()) and GuiAllowed() then
+        if (xContrato."Sell-to Customer No." <> '') and (not GetHideValidationDialog()) and GuiAllowed() then
             if not Confirm(ConfirmChangeQst, false, SellToCustomerTxt) then begin
-                Job."Sell-to Customer No." := xJob."Sell-to Customer No.";
-                Job."Sell-to Customer Name" := xJob."Sell-to Customer Name";
+                Job."Sell-to Customer No." := xContrato."Sell-to Customer No.";
+                Job."Sell-to Customer Name" := xContrato."Sell-to Customer Name";
                 exit;
             end;
 
@@ -2531,7 +2484,7 @@ table 50100 Job
             Job."Sell-to Contact" := '';
             Job."Sell-to Contact No." := '';
         end;
-        OnSellToCustomerNoUpdatedOnAfterTransferFieldsFromCust(Job, xJob, SellToCustomer);
+        OnSellToCustomerNoUpdatedOnAfterTransferFieldsFromCust(Job, xContrato, SellToCustomer);
 
         if SellToCustomer."Bill-to Customer No." <> '' then
             Job.Validate("Bill-to Customer No.", SellToCustomer."Bill-to Customer No.")
@@ -2539,42 +2492,42 @@ table 50100 Job
             Job.Validate("Bill-to Customer No.", Rec."Sell-to Customer No.");
 
         if
-            (xJob.ShipToNameEqualsSellToName() and xJob.ShipToAddressEqualsSellToAddress()) or
-            ((xJob."Ship-to Code" <> '') and (xJob."Sell-to Customer No." <> Job."Sell-to Customer No."))
+            (xContrato.ShipToNameEqualsSellToName() and xContrato.ShipToAddressEqualsSellToAddress()) or
+            ((xContrato."Ship-to Code" <> '') and (xContrato."Sell-to Customer No." <> Job."Sell-to Customer No."))
         then
             Job.SyncShipToWithSellTo();
 
-        OnAfterSellToCustomerNoUpdated(Job, xJob, SellToCustomer);
+        OnAfterSellToCustomerNoUpdated(Job, xContrato, SellToCustomer);
     end;
 
-    local procedure CheckSellToCustomerAssosEntriesExist(var Job: Record Job; var xJob: Record Job)
+    local procedure CheckSellToCustomerAssosEntriesExist(var Job: Record Contrato; var xContrato: Record Contrato)
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckSellToCustomerAssosEntriesExist(Job, xJob, IsHandled);
+        OnBeforeCheckSellToCustomerAssosEntriesExist(Job, xContrato, IsHandled);
         if not IsHandled then
-            if (Job."Sell-to Customer No." = '') or (Job."Sell-to Customer No." <> xJob."Sell-to Customer No.") then
-                if Job.SalesJobLedgEntryExist() then
-                    ThrowAssociatedEntriesExistError(Job, xJob, Job.FieldNo("Sell-to Customer No."), Job.FieldCaption("Sell-to Customer No."));
+            if (Job."Sell-to Customer No." = '') or (Job."Sell-to Customer No." <> xContrato."Sell-to Customer No.") then
+                if Job.SalesContratoLedgEntryExist() then
+                    ThrowAssociatedEntriesExistError(Job, xContrato, Job.FieldNo("Sell-to Customer No."), Job.FieldCaption("Sell-to Customer No."));
     end;
 
-    local procedure BillToCustomerNoUpdated(var Job: Record Job; var xJob: Record Job)
+    local procedure BillToCustomerNoUpdated(var Job: Record Contrato; var xContrato: Record Contrato)
     var
         BillToCustomer: Record Customer;
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeBillToCustomerNoUpdated(Job, xJob, CurrFieldNo, IsHandled);
+        OnBeforeBillToCustomerNoUpdated(Job, xContrato, CurrFieldNo, IsHandled);
         if IsHandled then
             exit;
 
-        CheckBillToCustomerAssosEntriesExist(Job, xJob);
+        CheckBillToCustomerAssosEntriesExist(Job, xContrato);
 
-        if (xJob."Bill-to Customer No." <> '') and (not GetHideValidationDialog()) and GuiAllowed() then
+        if (xContrato."Bill-to Customer No." <> '') and (not GetHideValidationDialog()) and GuiAllowed() then
             if not Confirm(ConfirmChangeQst, false, BillToCustomerTxt) then begin
-                Job."Bill-to Customer No." := xJob."Bill-to Customer No.";
-                Job."Bill-to Name" := xJob."Bill-to Name";
+                Job."Bill-to Customer No." := xContrato."Bill-to Customer No.";
+                Job."Bill-to Name" := xContrato."Bill-to Name";
                 exit;
             end;
 
@@ -2596,12 +2549,12 @@ table 50100 Job
             Job."Payment Terms Code" := BillToCustomer."Payment Terms Code";
 
             IsHandled := false;
-            OnUpdateCustOnBeforeAssignIncoiceCurrencyCode(Job, xJob, BillToCustomer, IsHandled);
+            OnUpdateCustOnBeforeAssignIncoiceCurrencyCode(Job, xContrato, BillToCustomer, IsHandled);
             if not IsHandled then
                 "Invoice Currency Code" := BillToCustomer."Currency Code";
 
             IsHandled := false;
-            OnBillToCustomerNoUpdatedOnBeforeAssignCurrencyCode(Job, xJob, BillToCustomer, IsHandled);
+            OnBillToCustomerNoUpdatedOnBeforeAssignCurrencyCode(Job, xContrato, BillToCustomer, IsHandled);
             if not IsHandled then
                 if "Invoice Currency Code" <> '' then
                     Validate("Currency Code", '');
@@ -2610,7 +2563,7 @@ table 50100 Job
             Job."Customer Price Group" := BillToCustomer."Customer Price Group";
             Job."Language Code" := BillToCustomer."Language Code";
             IsHandled := false;
-            OnBillToCustomerNoUpdatedOnBeforeUpdateBillToContact(Job, xJob, BillToCustomer, IsHandled);
+            OnBillToCustomerNoUpdatedOnBeforeUpdateBillToContact(Job, xContrato, BillToCustomer, IsHandled);
             if not IsHandled then
                 UpdateBillToContact(Job."Bill-to Customer No.");
 
@@ -2634,27 +2587,27 @@ table 50100 Job
             Job."Payment Terms Code" := '';
         end;
 
-        if (xJob."Bill-to Customer No." <> '') and (Job."Bill-to Customer No." <> xJob."Bill-to Customer No.") then
-            UpdateCostPricesOnRelatedJobPlanningLines(Job);
+        if (xContrato."Bill-to Customer No." <> '') and (Job."Bill-to Customer No." <> xContrato."Bill-to Customer No.") then
+            UpdateCostPricesOnRelatedContratoPlanningLines(Job);
 
-        OnAfterBillToCustomerNoUpdated(Job, xJob, BillToCustomer, CurrFieldNo);
+        OnAfterBillToCustomerNoUpdated(Job, xContrato, BillToCustomer, CurrFieldNo);
     end;
 
-    local procedure UpdateCostPricesOnRelatedJobPlanningLines(var Job: Record Job)
+    local procedure UpdateCostPricesOnRelatedContratoPlanningLines(var Job: Record Contrato)
     var
-        JobPlanningLine: Record "Job Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         ConfirmManagement: Codeunit "Confirm Management";
         ConfirmResult: Boolean;
         IsHandled: Boolean;
     begin
-        JobPlanningLine.SetRange("Job No.", Job."No.");
-        JobPlanningLine.SetFilter(Type, '<>%1', JobPlanningLine.Type::Text);
-        JobPlanningLine.SetFilter("No.", '<>%1', '');
-        if JobPlanningLine.IsEmpty() then
+        ContratoPlanningLine.SetRange("Job No.", Job."No.");
+        ContratoPlanningLine.SetFilter(Type, '<>%1', ContratoPlanningLine.Type::Text);
+        ContratoPlanningLine.SetFilter("No.", '<>%1', '');
+        if ContratoPlanningLine.IsEmpty() then
             exit;
 
         IsHandled := false;
-        OnUpdateCostPricesOnRelatedJobPlanningLinesOnBeforeConfirmUpdate(Job, ConfirmResult, IsHandled);
+        OnUpdateCostPricesOnRelatedContratoPlanningLinesOnBeforeConfirmUpdate(Job, ConfirmResult, IsHandled);
         if not IsHandled then begin
             if not Job.GetHideValidationDialog() then
                 if not ConfirmResult then
@@ -2663,37 +2616,37 @@ table 50100 Job
         if not ConfirmResult then
             exit;
 
-        JobPlanningLine.FindSet(true);
+        ContratoPlanningLine.FindSet(true);
         repeat
-            JobPlanningLine."Line Amount" := 0;
-            JobPlanningLine.UpdateAllAmounts();
-            JobPlanningLine.Modify(true);
-        until JobPlanningLine.Next() = 0;
+            ContratoPlanningLine."Line Amount" := 0;
+            ContratoPlanningLine.UpdateAllAmounts();
+            ContratoPlanningLine.Modify(true);
+        until ContratoPlanningLine.Next() = 0;
 
-        OnAfterUpdateCostPricesOnRelatedJobPlanningLines(Job);
+        OnAfterUpdateCostPricesOnRelatedContratoPlanningLines(Job);
     end;
 
-    local procedure CheckBillToCustomerAssosEntriesExist(var Job: Record Job; var xJob: Record Job)
+    local procedure CheckBillToCustomerAssosEntriesExist(var Job: Record Contrato; var xContrato: Record Contrato)
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckBillToCustomerAssosEntriesExist(Job, xJob, IsHandled);
+        OnBeforeCheckBillToCustomerAssosEntriesExist(Job, xContrato, IsHandled);
         if not IsHandled then
-            if (Job."Bill-to Customer No." = '') or (Job."Bill-to Customer No." <> xJob."Bill-to Customer No.") then begin
-                if Job.SalesJobLedgEntryExist() then
-                    ThrowAssociatedEntriesExistError(Job, xJob, Job.FieldNo("Bill-to Customer No."), Job.FieldCaption("Bill-to Customer No."));
+            if (Job."Bill-to Customer No." = '') or (Job."Bill-to Customer No." <> xContrato."Bill-to Customer No.") then begin
+                if Job.SalesContratoLedgEntryExist() then
+                    ThrowAssociatedEntriesExistError(Job, xContrato, Job.FieldNo("Bill-to Customer No."), Job.FieldCaption("Bill-to Customer No."));
                 if Job.SalesLineExist() then
-                    ThrowAssociatedEntriesExistError(Job, xJob, Job.FieldNo("Bill-to Customer No."), Job.FieldCaption("Bill-to Customer No."));
+                    ThrowAssociatedEntriesExistError(Job, xContrato, Job.FieldNo("Bill-to Customer No."), Job.FieldCaption("Bill-to Customer No."));
             end;
     end;
 
-    local procedure ThrowAssociatedEntriesExistError(var Job: Record Job; xJob: Record Job; CallingFieldNo: Integer; FieldCaption: Text)
+    local procedure ThrowAssociatedEntriesExistError(var Job: Record Contrato; xContrato: Record Contrato; CallingFieldNo: Integer; FieldCaption: Text)
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeThrowAssociatedEntriesExistError(Job, xJob, CallingFieldNo, CurrFieldNo, IsHandled);
+        OnBeforeThrowAssociatedEntriesExistError(Job, xContrato, CallingFieldNo, CurrFieldNo, IsHandled);
         if IsHandled then
             exit;
 
@@ -2701,7 +2654,7 @@ table 50100 Job
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeThrowAssociatedEntriesExistError(var Job: Record Job; xJob: Record Job; CallingFieldNo: Integer; CurrentFieldNo: Integer; var IsHandled: Boolean)
+    local procedure OnBeforeThrowAssociatedEntriesExistError(var Job: Record Contrato; xContrato: Record Contrato; CallingFieldNo: Integer; CurrentFieldNo: Integer; var IsHandled: Boolean)
     begin
     end;
 
@@ -2740,7 +2693,7 @@ table 50100 Job
 
     procedure CreateWarehousePick()
     var
-        JobPlanningLine: Record "Job Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         ItemTrackingMgt: Codeunit "Item Tracking Management";
     begin
         TestField(Status, Status::Open);
@@ -2748,16 +2701,16 @@ table 50100 Job
         if "Completely Picked" then
             Error(WhseCompletelyPickedErr);
 
-        JobPlanningLine.SetRange("Job No.", "No.");
-        JobPlanningLine.SetFilter("Line Type", '<>%1', JobPlanningLine."Line Type"::Billable);
-        JobPlanningLine.SetRange(Type, JobPlanningLine.Type::Item);
-        JobPlanningLine.SetFilter("Quantity", '>0');
-        JobPlanningLine.SetLoadFields(JobPlanningLine."Job No.", JobPlanningLine."Job Contract Entry No.", JobPlanningLine."Line No.");
+        ContratoPlanningLine.SetRange("Job No.", "No.");
+        ContratoPlanningLine.SetFilter("Line Type", '<>%1', ContratoPlanningLine."Line Type"::Billable);
+        ContratoPlanningLine.SetRange(Type, ContratoPlanningLine.Type::Item);
+        ContratoPlanningLine.SetFilter("Quantity", '>0');
+        ContratoPlanningLine.SetLoadFields(ContratoPlanningLine."Job No.", ContratoPlanningLine."Job Contract Entry No.", ContratoPlanningLine."Line No.");
 
-        if JobPlanningLine.FindSet() then begin
+        if ContratoPlanningLine.FindSet() then begin
             repeat
-                ItemTrackingMgt.InitItemTrackingForTempWhseWorksheetLine(Enum::"Warehouse Worksheet Document Type"::Job, JobPlanningLine."Job No.", JobPlanningLine."Job Contract Entry No.", DATABASE::Job, 0, JobPlanningLine."Job No.", JobPlanningLine."Job Contract Entry No.", JobPlanningLine."Line No.");
-            until JobPlanningLine.Next() = 0;
+                ItemTrackingMgt.InitItemTrackingForTempWhseWorksheetLine(Enum::"Warehouse Worksheet Document Type"::Job, ContratoPlanningLine."Job No.", ContratoPlanningLine."Job Contract Entry No.", DATABASE::Job, 0, ContratoPlanningLine."Job No.", ContratoPlanningLine."Job Contract Entry No.", ContratoPlanningLine."Line No.");
+            until ContratoPlanningLine.Next() = 0;
             Commit();
             RunCreatePickFromWhseSource()
         end
@@ -2769,42 +2722,42 @@ table 50100 Job
     var
         CreatePickFromWhseSource: Report "Whse.-Source - Create Document";
     begin
-        CreatePickFromWhseSource.SetJob(Rec);
+        //CreatePickFromWhseSource.SetJob(Rec);
         CreatePickFromWhseSource.SetHideValidationDialog(false);
         CreatePickFromWhseSource.UseRequestPage(true);
         CreatePickFromWhseSource.RunModal();
         CreatePickFromWhseSource.GetResultMessage(Enum::"Warehouse Activity Type"::Pick.AsInteger());
     end;
 
-    local procedure InitDefaultJobPostingGroup()
+    local procedure InitDefaultContratoPostingGroup()
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeInitDefaultJobPostingGroup(Rec, IsHandled);
+        OnBeforeInitDefaultContratoPostingGroup(Rec, IsHandled);
         if IsHandled then
             exit;
 
-        if "Job Posting Group" = '' then
-            Validate("Job Posting Group", JobsSetup."Default Job Posting Group");
+        if "Contrato Posting Group" = '' then
+            Validate("Contrato Posting Group", ContratosSetup."Default Job Posting Group");
     end;
 
     internal procedure GetQtyReservedFromStockState() Result: Enum "Reservation From Stock"
     var
-        JobPlanningLineLocal: Record "Job Planning Line";
-        JobPlanningLineReserve: Codeunit "Job Planning Line-Reserve";
+        ContratoPlanningLineLocal: Record "Contrato Planning Line";
+        ContratoPlanningLineReserve: Codeunit "Job Planning Line-Reserve";
         QtyReservedFromStock: Decimal;
     begin
-        QtyReservedFromStock := JobPlanningLineReserve.GetReservedQtyFromInventory(Rec);
+        //QtyReservedFromStock := ContratoPlanningLineReserve.GetReservedQtyFromInventory(Rec);
 
-        JobPlanningLineLocal.SetRange("Job No.", Rec."No.");
-        JobPlanningLineLocal.SetRange(Type, JobPlanningLineLocal.Type::Item);
-        JobPlanningLineLocal.CalcSums("Remaining Qty. (Base)");
+        ContratoPlanningLineLocal.SetRange("Job No.", Rec."No.");
+        ContratoPlanningLineLocal.SetRange(Type, ContratoPlanningLineLocal.Type::Item);
+        ContratoPlanningLineLocal.CalcSums("Remaining Qty. (Base)");
 
         case QtyReservedFromStock of
             0:
                 exit(Result::None);
-            JobPlanningLineLocal."Remaining Qty. (Base)":
+            ContratoPlanningLineLocal."Remaining Qty. (Base)":
                 exit(Result::Full);
             else
                 exit(Result::Partial);
@@ -2929,73 +2882,73 @@ table 50100 Job
             Location.Get(LocationCode);
     end;
 
-    local procedure MessageIfJobTaskExist(ChangedFieldName: Text[100])
+    local procedure MessageIfContratoTaskExist(ChangedFieldName: Text[100])
     var
         MessageText: Text;
     begin
-        if JobTaskExist() and not GetHideValidationDialog() then begin
+        if ContratoTaskExist() and not GetHideValidationDialog() then begin
             MessageText := StrSubstNo(TasksNotUpdatedMsg, ChangedFieldName);
             MessageText := StrSubstNo(SplitMessageTxt, MessageText, UpdateTasksManuallyMsg);
             Message(MessageText);
         end;
     end;
 
-    procedure JobTaskExist(): Boolean
+    procedure ContratoTaskExist(): Boolean
     var
-        JobTask: Record "Job Task";
+        ContratoTask: Record "Contrato Task";
     begin
-        JobTask.SetRange("Job No.", "No.");
-        exit(not JobTask.IsEmpty());
+        ContratoTask.SetRange("Job No.", "No.");
+        exit(not ContratoTask.IsEmpty());
     end;
 
-    local procedure InitCustomerOnJobTasks()
+    local procedure InitCustomerOnContratoTasks()
     var
-        JobTask: Record "Job Task";
+        ContratoTask: Record "Contrato Task";
     begin
         if "Sell-to Customer No." = '' then
             exit;
 
-        JobTask.SetRange("Job No.", "No.");
-        JobTask.SetRange("Job Task Type", JobTask."Job Task Type"::Posting);
-        JobTask.SetFilter("Sell-to Customer No.", '%1', '');
-        if JobTask.FindSet(true) then
+        ContratoTask.SetRange("Job No.", "No.");
+        ContratoTask.SetRange("Job Task Type", ContratoTask."Job Task Type"::Posting);
+        ContratoTask.SetFilter("Sell-to Customer No.", '%1', '');
+        if ContratoTask.FindSet(true) then
             repeat
-                JobTask.Validate("Sell-to Customer No.", "Sell-to Customer No.");
+                ContratoTask.Validate("Sell-to Customer No.", "Sell-to Customer No.");
                 if "Bill-to Customer No." <> "Sell-to Customer No." then begin
-                    JobTask.SetHideValidationDialog(true);
-                    JobTask.Validate("Bill-to Customer No.", "Bill-to Customer No.");
+                    ContratoTask.SetHideValidationDialog(true);
+                    ContratoTask.Validate("Bill-to Customer No.", "Bill-to Customer No.");
                 end;
-                JobTask.Modify(true);
-            until JobTask.Next() = 0;
+                ContratoTask.Modify(true);
+            until ContratoTask.Next() = 0;
     end;
 
-    local procedure ClearInvCurrencyCodeOnJobTasks()
+    local procedure ClearInvCurrencyCodeOnContratoTasks()
     var
-        JobTask: Record "Job Task";
+        ContratoTask: Record "Contrato Task";
     begin
-        JobTask.SetLoadFields("Invoice Currency Code");
-        JobTask.SetRange("Job No.", "No.");
-        JobTask.SetFilter("Invoice Currency Code", '<>%1', '');
-        if JobTask.IsEmpty() then
+        ContratoTask.SetLoadFields("Invoice Currency Code");
+        ContratoTask.SetRange("Job No.", "No.");
+        ContratoTask.SetFilter("Invoice Currency Code", '<>%1', '');
+        if ContratoTask.IsEmpty() then
             exit;
 
-        JobTask.ModifyAll("Invoice Currency Code", '');
+        ContratoTask.ModifyAll("Invoice Currency Code", '');
     end;
 
     local procedure ConfirmDeletion()
     var
-        JobPlanningLine: Record "Job Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         Confirmed: Boolean;
     begin
-        JobPlanningLine.SetRange("Job No.", "No.");
-        if JobPlanningLine.FindSet() then
+        ContratoPlanningLine.SetRange("Job No.", "No.");
+        if ContratoPlanningLine.FindSet() then
             repeat
-                if JobPlanningLine."Qty. Posted" < JobPlanningLine."Qty. Picked" then begin
+                if ContratoPlanningLine."Qty. Posted" < ContratoPlanningLine."Qty. Picked" then begin
                     if not Confirm(ConfirmDeleteQst) then
                         Error('');
                     Confirmed := true;
                 end;
-            until (JobPlanningLine.Next() = 0) or Confirmed;
+            until (ContratoPlanningLine.Next() = 0) or Confirmed;
     end;
 
     local procedure CheckIfTimeSheetLineLinkExist()
@@ -3008,7 +2961,7 @@ table 50100 Job
         if IsHandled then
             exit;
 
-        TimeSheetLine.CheckIfTimeSheetLineLinkExist(Rec);
+        //TimeSheetLine.CheckIfTimeSheetLineLinkExist(Rec);
     end;
 
     [IntegrationEvent(true, false)]
@@ -3017,321 +2970,320 @@ table 50100 Job
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCalcJobTaskLinesEditable(var Job: Record Job; var IsEditable: Boolean)
+    local procedure OnAfterCalcContratoTaskLinesEditable(var Job: Record Contrato; var IsEditable: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeBillToCustomerNoUpdated(var Job: Record Job; var xJob: Record Job; CallingFieldNo: Integer; var IsHandled: Boolean)
+    local procedure OnBeforeBillToCustomerNoUpdated(var Job: Record Contrato; var xContrato: Record Contrato; CallingFieldNo: Integer; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterBillToCustomerNoUpdated(var Job: Record Job; xJob: Record Job; BillToCustomer: Record Customer; CallingFieldNo: Integer)
+    local procedure OnAfterBillToCustomerNoUpdated(var Job: Record Contrato; xContrato: Record Contrato; BillToCustomer: Record Customer; CallingFieldNo: Integer)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterJobLedgEntryExist(var JobLedgerEntry: Record "Job Ledger Entry"; var Result: Boolean)
+    local procedure OnAfterContratoLedgEntryExist(var ContratoLedgerEntry: Record "Contrato Ledger Entry"; var Result: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterJobPlanningLineExist(var JobPlanningLine: Record "Job Planning Line"; var Result: Boolean)
+    local procedure OnAfterContratoPlanningLineExist(var ContratoPlanningLine: Record "Contrato Planning Line"; var Result: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterOnInsert(var Job: Record Job; var xJob: Record Job)
+    local procedure OnAfterOnInsert(var Job: Record Contrato; var xContrato: Record Contrato)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterValidateShortcutDimCode(var Job: Record Job; var xJob: Record Job; FieldNumber: Integer; var ShortcutDimCode: Code[20])
+    local procedure OnAfterValidateShortcutDimCode(var Job: Record Contrato; var xContrato: Record Contrato; FieldNumber: Integer; var ShortcutDimCode: Code[20])
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterChangeJobCompletionStatus(var Job: Record Job; var xJob: Record Job)
+    local procedure OnAfterChangeContratoCompletionStatus(var Job: Record Contrato; var xContrato: Record Contrato)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterShipToCodeValidate(var Job: Record Job; ShipToAddress: Record "Ship-to Address")
+    local procedure OnAfterShipToCodeValidate(var Job: Record Contrato; ShipToAddress: Record "Ship-to Address")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterUpdateBillToContact(var Job: Record Job; xJob: Record Job)
+    local procedure OnAfterUpdateBillToContact(var Job: Record Contrato; xContrato: Record Contrato)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeChangeJobCompletionStatus(var Job: Record Job; var xJob: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeChangeContratoCompletionStatus(var Job: Record Contrato; var xContrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
 #if not CLEAN24
     [IntegrationEvent(false, false)]
     [Obsolete('Parameter NoSeriesMgt is obsolete and will be removed, update your subscriber accordingly.', '24.0')]
-    local procedure OnBeforeAssistEdit(var Job: Record Job; var OldJob: Record Job; var Result: Boolean; var IsHandled: Boolean; var NoSeriesManagement: Codeunit NoSeriesManagement)
+    local procedure OnBeforeAssistEdit(var Job: Record Contrato; var OldContrato: Record Contrato; var Result: Boolean; var IsHandled: Boolean; var NoSeriesManagement: Codeunit NoSeriesManagement)
     begin
     end;
 #else
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeAssistEdit(var Job: Record Job; var OldJob: Record Job; var Result: Boolean; var IsHandled: Boolean)
+    local procedure OnBeforeAssistEdit(var Job: Record Contrato; var OldContrato: Record Contrato; var Result: Boolean; var IsHandled: Boolean)
     begin
     end;
 #endif
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckContactBillToCustomerBusRelation(var Job: Record Job; Contact: Record Contact; var IsHandled: Boolean)
+    local procedure OnBeforeCheckContactBillToCustomerBusRelation(var Job: Record Contrato; Contact: Record Contact; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeShowContactBillToCustomerBusRelationMissingError(var Job: Record Job; Contact: Record Contact; var IsHandled: Boolean)
+    local procedure OnBeforeShowContactBillToCustomerBusRelationMissingError(var Job: Record Contrato; Contact: Record Contact; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckRemoveFromMyJobsFromModify(var Job: Record Job; var xJob: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeCheckRemoveFromMyContratosFromModify(var Job: Record Contrato; var xContrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCopyDefaultDimensionsFromCustomer(var Job: Record Job; var IsHandled: Boolean; CurrentFieldNo: Integer)
+    local procedure OnBeforeCopyDefaultDimensionsFromCustomer(var Job: Record Contrato; var IsHandled: Boolean; CurrentFieldNo: Integer)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforePercentCompleted(var Job: Record Job; var Result: Decimal; var IsHandled: Boolean)
+    local procedure OnBeforePercentCompleted(var Job: Record Contrato; var Result: Decimal; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforePercentInvoiced(var Job: Record Job; var Result: Decimal; var IsHandled: Boolean)
+    local procedure OnBeforePercentInvoiced(var Job: Record Contrato; var Result: Decimal; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforePercentOverdue(var Job: Record Job; var Result: Decimal; var IsHandled: Boolean)
+    local procedure OnBeforePercentOverdue(var Job: Record Contrato; var Result: Decimal; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeDeleteRelatedJobTasks(var Job: Record Job; var xJob: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeDeleteRelatedContratoTasks(var Job: Record Contrato; var xContrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInitJobNo(var Job: Record Job; var xJob: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeInitContratoNo(var Job: Record Contrato; var xContrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInitGlobalDimFromDefalutDim(var Job: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeInitGlobalDimFromDefalutDim(var Job: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInitBillToCustomerNo(var Job: Record Job; var xJob: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeInitBillToCustomerNo(var Job: Record Contrato; var xContrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeRecalculateJobWIP(var Job: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeRecalculateContratoWIP(var Job: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeTestBlocked(var Job: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeTestBlocked(var Job: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateJobTaskDimension(var Job: Record Job; FieldNumber: Integer; ShortcutDimCode: Code[20]; var IsHandled: Boolean)
+    local procedure OnBeforeUpdateContratoTaskDimension(var Job: Record Contrato; FieldNumber: Integer; ShortcutDimCode: Code[20]; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateBillToCustomerNo(var Job: Record Job; var IsHandled: Boolean; xJob: Record Job; CallingFieldNo: Integer)
+    local procedure OnBeforeValidateBillToCustomerNo(var Job: Record Contrato; var IsHandled: Boolean; xContrato: Record Contrato; CallingFieldNo: Integer)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateCurrencyCode(var Job: Record Job; xJob: Record Job; CallingFieldNo: Integer; var IsHandled: Boolean)
+    local procedure OnBeforeValidateCurrencyCode(var Job: Record Contrato; xContrato: Record Contrato; CallingFieldNo: Integer; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateBillToContactNo(var Job: Record Job; xJob: Record Job; CallingFieldNo: Integer; var IsHandled: Boolean)
+    local procedure OnBeforeValidateBillToContactNo(var Job: Record Contrato; xContrato: Record Contrato; CallingFieldNo: Integer; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateNo(var Job: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeValidateNo(var Job: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateShortcutDimCode(var Job: Record Job; var xJob: Record Job; FieldNumber: Integer; var ShortcutDimCode: Code[20]; var IsHandled: Boolean)
+    local procedure OnBeforeValidateShortcutDimCode(var Job: Record Contrato; var xContrato: Record Contrato; FieldNumber: Integer; var ShortcutDimCode: Code[20]; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateStatus(var Job: Record Job; xJob: Record Job; CurrentFieldNo: Integer; var IsHandled: Boolean)
+    local procedure OnBeforeValidateStatus(var Job: Record Contrato; xContrato: Record Contrato; CurrentFieldNo: Integer; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateOverBudgetValue(var Job: Record Job; JobNo: Code[20]; Usage: Boolean; Cost: Decimal; var IsHandled: Boolean)
+    local procedure OnBeforeUpdateOverBudgetValue(var Job: Record Contrato; ContratoNo: Code[20]; Usage: Boolean; Cost: Decimal; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeSellToCustomerNoUpdated(var Job: Record Job; var xJob: Record Job; CallingFieldNo: Integer; var IsHandled: Boolean; var SkipSellToContact: Boolean)
+    local procedure OnBeforeSellToCustomerNoUpdated(var Job: Record Contrato; var xContrato: Record Contrato; CallingFieldNo: Integer; var IsHandled: Boolean; var SkipSellToContact: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterSellToCustomerNoUpdated(var Job: Record Job; xJob: Record Job; SellToCustomer: Record Customer)
+    local procedure OnAfterSellToCustomerNoUpdated(var Job: Record Contrato; xContrato: Record Contrato; SellToCustomer: Record Customer)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    protected procedure OnSellToCustomerNoUpdatedOnAfterTransferFieldsFromCust(var Job: Record Job; xJob: Record Job; SellToCustomer: Record Customer)
+    protected procedure OnSellToCustomerNoUpdatedOnAfterTransferFieldsFromCust(var Job: Record Contrato; xContrato: Record Contrato; SellToCustomer: Record Customer)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnGetQuantityAvailableOnAfterSetFiltersOnJobLedgerEntry(ItemNo: Code[20]; LocationCode: Code[10]; VariantCode: Code[10]; InEntryType: Option; Direction: Option; var JobLedgerEntry: Record "Job Ledger Entry")
+    local procedure OnGetQuantityAvailableOnAfterSetFiltersOnContratoLedgerEntry(ItemNo: Code[20]; LocationCode: Code[10]; VariantCode: Code[10]; InEntryType: Option; Direction: Option; var ContratoLedgerEntry: Record "Contrato Ledger Entry")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnUpdateBillToCustOnAfterAssignBillToContact(var Job: Record Job; Contact: Record Contact)
+    local procedure OnUpdateBillToCustOnAfterAssignBillToContact(var Job: Record Contrato; Contact: Record Contact)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnUpdateCustOnBeforeAssignIncoiceCurrencyCode(var Job: Record Job; xJob: Record Job; Customer: Record Customer; var IsHandled: Boolean)
+    local procedure OnUpdateCustOnBeforeAssignIncoiceCurrencyCode(var Job: Record Contrato; xContrato: Record Contrato; Customer: Record Customer; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateBillToCity(var Job: Record Job; var PostCode: Record "Post Code"; CurrentFieldNo: Integer; var IsHandled: Boolean);
+    local procedure OnBeforeValidateBillToCity(var Job: Record Contrato; var PostCode: Record "Post Code"; CurrentFieldNo: Integer; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateBillToPostCode(var Job: Record Job; var PostCode: Record "Post Code"; CurrentFieldNo: Integer; var IsHandled: Boolean);
+    local procedure OnBeforeValidateBillToPostCode(var Job: Record Contrato; var PostCode: Record "Post Code"; CurrentFieldNo: Integer; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateSellToCity(var Job: Record Job; var PostCode: Record "Post Code"; CurrentFieldNo: Integer; var IsHandled: Boolean);
+    local procedure OnBeforeValidateSellToCity(var Job: Record Contrato; var PostCode: Record "Post Code"; CurrentFieldNo: Integer; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateShipToCity(var Job: Record Job; var PostCode: Record "Post Code"; CurrentFieldNo: Integer; var IsHandled: Boolean);
+    local procedure OnBeforeValidateShipToCity(var Job: Record Contrato; var PostCode: Record "Post Code"; CurrentFieldNo: Integer; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckSellToCustomerAssosEntriesExist(var Job: Record Job; var xJob: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeCheckSellToCustomerAssosEntriesExist(var Job: Record Contrato; var xContrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckBillToCustomerAssosEntriesExist(var Job: Record Job; var xJob: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeCheckBillToCustomerAssosEntriesExist(var Job: Record Contrato; var xContrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeTestStatusCompleted(var Job: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeTestStatusCompleted(var Job: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCopyDefaultDimensionsFromCustomerOnBeforeUpdateDefaultDim(var Job: Record Job; CallingFieldNo: Integer)
+    local procedure OnCopyDefaultDimensionsFromCustomerOnBeforeUpdateDefaultDim(var Job: Record Contrato; CallingFieldNo: Integer)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnValidateSellToCustomerNoOnBeforeCheckBlockedCustOnDocs(var Job: Record Job; var Cust: Record Customer; var IsHandled: Boolean)
+    local procedure OnValidateSellToCustomerNoOnBeforeCheckBlockedCustOnDocs(var Job: Record Contrato; var Cust: Record Customer; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInitDefaultJobPostingGroup(var Job: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeInitDefaultContratoPostingGroup(var Job: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnValidateStatusOnBeforeConfirm(var Job: Record "Job"; xJob: Record "Job"; var UndidCompleteStatus: Boolean; var IsHandled: Boolean)
+    local procedure OnValidateStatusOnBeforeConfirm(var Job: Record "Contrato"; xContrato: Record "Contrato"; var UndidCompleteStatus: Boolean; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCurrencyUpdatePlanningLines(var Job: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeCurrencyUpdatePlanningLines(var Job: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBillToCustomerNoUpdatedOnBeforeAssignCurrencyCode(var Job: Record Job; xJob: Record Job; Customer: Record Customer; var IsHandled: Boolean)
+    local procedure OnBillToCustomerNoUpdatedOnBeforeAssignCurrencyCode(var Job: Record Contrato; xContrato: Record Contrato; Customer: Record Customer; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBillToCustomerNoUpdatedOnBeforeUpdateBillToContact(var Job: Record Job; xJob: Record Job; Customer: Record Customer; var IsHandled: Boolean)
+    local procedure OnBillToCustomerNoUpdatedOnBeforeUpdateBillToContact(var Job: Record Contrato; xContrato: Record Contrato; Customer: Record Customer; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCurrencyUpdatePlanningLinesOnBeforeUpdateJobPlanningLine(var Job: Record Job; var JobPlanningLine: Record "Job Planning Line")
+    local procedure OnCurrencyUpdatePlanningLinesOnBeforeUpdateContratoPlanningLine(var Job: Record Contrato; var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateSellToCustomerName(var Job: Record "Job"; var Customer: Record Customer; var IsHandled: Boolean)
+    local procedure OnBeforeValidateSellToCustomerName(var Job: Record "Contrato"; var Customer: Record Customer; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeShowSellToContactBusinessRelationNotFoundError(var Job: Record Job; Contact: Record Contact; var IsHandled: Boolean)
+    local procedure OnBeforeShowSellToContactBusinessRelationNotFoundError(var Job: Record Contrato; Contact: Record Contact; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterSyncShipToWithSellTo(var Job: Record Job)
+    local procedure OnAfterSyncShipToWithSellTo(var Job: Record Contrato)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterShipToAddressEqualsSellToAddress(var Job: Record Job; var Result: Boolean)
+    local procedure OnAfterShipToAddressEqualsSellToAddress(var Job: Record Contrato; var Result: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterUpdateCostPricesOnRelatedJobPlanningLines(var Job: Record Job)
+    local procedure OnAfterUpdateCostPricesOnRelatedContratoPlanningLines(var Job: Record Contrato)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateSellToCust(var Job: Record Job; var ContactNo: Code[20]; var IsHandled: Boolean)
+    local procedure OnBeforeUpdateSellToCust(var Job: Record Contrato; var ContactNo: Code[20]; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnUpdateCostPricesOnRelatedJobPlanningLinesOnBeforeConfirmUpdate(var Job: Record Job; var ConfirmResult: Boolean; var IsHandled: Boolean)
+    local procedure OnUpdateCostPricesOnRelatedContratoPlanningLinesOnBeforeConfirmUpdate(var Job: Record Contrato; var ConfirmResult: Boolean; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckIfTimeSheetLineLinkExist(var Job: Record Job; var IsHandled: Boolean)
+    local procedure OnBeforeCheckIfTimeSheetLineLinkExist(var Job: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 }
-
