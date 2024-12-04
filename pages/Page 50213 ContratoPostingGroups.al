@@ -1,6 +1,6 @@
 page 50213 "Contrato Posting Groups"
 {
-    AdditionalSearchTerms = 'Job Posting Groups';
+    AdditionalSearchTerms = 'Contrato Posting Groups';
     ApplicationArea = Jobs;
     Caption = 'Project Posting Groups';
     PageType = List;
@@ -34,7 +34,7 @@ page 50213 "Contrato Posting Groups"
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies an account that accumulates postings when the costs recognized, based on the invoiced value of the project, are greater than the current usage total posted If the WIP method for the project is Cost Value or Cost of Sales. The account is normally a balance sheet accrued expense liability account.';
                 }
-                field("Job Costs Applied Account"; Rec."Job Costs Applied Account")
+                field("Contrato Costs Applied Account"; Rec."Job Costs Applied Account")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the balancing account for WIP Cost account for projects. The account is normally an expense (credit) account.';
@@ -54,7 +54,7 @@ page 50213 "Contrato Posting Groups"
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the balancing account for the WIP Costs account.';
                 }
-                field("Job Costs Adjustment Account"; Rec."Job Costs Adjustment Account")
+                field("Contrato Costs Adjustment Account"; Rec."Job Costs Adjustment Account")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the balancing account to WIP Accrued Costs account if the work in process (WIP) method for the project is Cost Value or Cost of Sales. The account is normally an expense account.';
@@ -74,12 +74,12 @@ page 50213 "Contrato Posting Groups"
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the account for the invoiced value, for the project for project tasks, with this posting group. The account is normally a Balance sheet liability account.';
                 }
-                field("Job Sales Applied Account"; Rec."Job Sales Applied Account")
+                field("Contrato Sales Applied Account"; Rec."Job Sales Applied Account")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the balancing account to WIP Invoiced Sales Account. The account is normally a contra (or debit) income account.';
                 }
-                field("Job Sales Adjustment Account"; Rec."Job Sales Adjustment Account")
+                field("Contrato Sales Adjustment Account"; Rec."Job Sales Adjustment Account")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the balancing account to the WIP Accrued Sales account if the work in process (WIP) Method for the project is the Sales Value. The account is normally an income account.';

@@ -799,45 +799,45 @@ table 50200 Contrato
         //     Editable = false;
         //     FieldClass = FlowField;
         // }
-        // field(1030; "Calc. Recog. Sales Amount"; Decimal)
-        // {
-        //     AutoFormatType = 1;
-        //     CalcFormula = sum("Contrato Task"."Recognized Sales Amount" where("Job No." = field("No.")));
-        //     Caption = 'Calc. Recog. Sales Amount';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-        // field(1031; "Calc. Recog. Costs Amount"; Decimal)
-        // {
-        //     AutoFormatType = 1;
-        //     CalcFormula = sum("Contrato Task"."Recognized Costs Amount" where("Job No." = field("No.")));
-        //     Caption = 'Calc. Recog. Costs Amount';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-        // field(1032; "Calc. Recog. Sales G/L Amount"; Decimal)
-        // {
-        //     AutoFormatType = 1;
-        //     CalcFormula = sum("Contrato Task"."Recognized Sales G/L Amount" where("Job No." = field("No.")));
-        //     Caption = 'Calc. Recog. Sales G/L Amount';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-        // field(1033; "Calc. Recog. Costs G/L Amount"; Decimal)
-        // {
-        //     AutoFormatType = 1;
-        //     CalcFormula = sum("Contrato Task"."Recognized Costs G/L Amount" where("Job No." = field("No.")));
-        //     Caption = 'Calc. Recog. Costs G/L Amount';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-        // field(1034; "WIP Completion Posted"; Boolean)
-        // {
-        //     CalcFormula = exist("Job WIP G/L Entry" where("Job No." = field("No."),
-        //                                                    "Job Complete" = const(true)));
-        //     Caption = 'WIP Completion Posted';
-        //     FieldClass = FlowField;
-        // }
+        field(1030; "Calc. Recog. Sales Amount"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = sum("Contrato Task"."Recognized Sales Amount" where("Job No." = field("No.")));
+            Caption = 'Calc. Recog. Sales Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(1031; "Calc. Recog. Costs Amount"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = sum("Contrato Task"."Recognized Costs Amount" where("Job No." = field("No.")));
+            Caption = 'Calc. Recog. Costs Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(1032; "Calc. Recog. Sales G/L Amount"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = sum("Contrato Task"."Recognized Sales G/L Amount" where("Job No." = field("No.")));
+            Caption = 'Calc. Recog. Sales G/L Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(1033; "Calc. Recog. Costs G/L Amount"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = sum("Contrato Task"."Recognized Costs G/L Amount" where("Job No." = field("No.")));
+            Caption = 'Calc. Recog. Costs G/L Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(1034; "WIP Completion Posted"; Boolean)
+        {
+            CalcFormula = exist("Job WIP G/L Entry" where("Job No." = field("No."),
+                                                           "Job Complete" = const(true)));
+            Caption = 'WIP Completion Posted';
+            FieldClass = FlowField;
+        }
         field(1035; "Over Budget"; Boolean)
         {
             Caption = 'Over Budget';
@@ -1851,29 +1851,29 @@ table 50200 Contrato
 
     procedure CalcRecognizedProfitAmount() Result: Decimal
     begin
-        // CalcFields("Calc. Recog. Sales Amount", "Calc. Recog. Costs Amount");
-        // Result := "Calc. Recog. Sales Amount" - "Calc. Recog. Costs Amount";
+        CalcFields("Calc. Recog. Sales Amount", "Calc. Recog. Costs Amount");
+        Result := "Calc. Recog. Sales Amount" - "Calc. Recog. Costs Amount";
         OnAfterCalcRecognizedProfitAmount(Result);
     end;
 
     procedure CalcRecognizedProfitPercentage(): Decimal
     begin
-        // if "Calc. Recog. Sales Amount" <> 0 then
-        //     exit((CalcRecognizedProfitAmount() / "Calc. Recog. Sales Amount") * 100);
-        // exit(0);
+        if "Calc. Recog. Sales Amount" <> 0 then
+            exit((CalcRecognizedProfitAmount() / "Calc. Recog. Sales Amount") * 100);
+        exit(0);
     end;
 
     procedure CalcRecognizedProfitGLAmount(): Decimal
     begin
-        // CalcFields("Calc. Recog. Sales G/L Amount", "Calc. Recog. Costs G/L Amount");
-        // exit("Calc. Recog. Sales G/L Amount" - "Calc. Recog. Costs G/L Amount");
+        CalcFields("Calc. Recog. Sales G/L Amount", "Calc. Recog. Costs G/L Amount");
+        exit("Calc. Recog. Sales G/L Amount" - "Calc. Recog. Costs G/L Amount");
     end;
 
     procedure CalcRecognProfitGLPercentage(): Decimal
     begin
-        // if "Calc. Recog. Sales G/L Amount" <> 0 then
-        //     exit((CalcRecognizedProfitGLAmount() / "Calc. Recog. Sales G/L Amount") * 100);
-        // exit(0);
+        if "Calc. Recog. Sales G/L Amount" <> 0 then
+            exit((CalcRecognizedProfitGLAmount() / "Calc. Recog. Sales G/L Amount") * 100);
+        exit(0);
     end;
 
     procedure CopyDefaultDimensionsFromCustomer()
@@ -1913,14 +1913,14 @@ table 50200 Contrato
             repeat
                 ContratoDefaultDimension.Init();
                 ContratoDefaultDimension.TransferFields(CustDefaultDimension);
-                ContratoDefaultDimension."Table ID" := DATABASE::Job;
+                ContratoDefaultDimension."Table ID" := DATABASE::Contrato;
                 ContratoDefaultDimension."No." := "No.";
                 ContratoDefaultDimension.Insert();
                 DimMgt.DefaultDimOnInsert(ContratoDefaultDimension);
             until CustDefaultDimension.Next() = 0;
 
         OnCopyDefaultDimensionsFromCustomerOnBeforeUpdateDefaultDim(Rec, CurrFieldNo);
-        DimMgt.UpdateDefaultDim(DATABASE::Job, "No.", "Global Dimension 1 Code", "Global Dimension 2 Code");
+        DimMgt.UpdateDefaultDim(DATABASE::Contrato, "No.", "Global Dimension 1 Code", "Global Dimension 2 Code");
     end;
 
     procedure PercentCompleted() Result: Decimal
@@ -1934,7 +1934,7 @@ table 50200 Contrato
         if IsHandled then
             exit(Result);
 
-        //ContratoCalcStatistics.ContratoCalculateCommonFilters(Rec);
+        ContratoCalcStatistics.ContratoCalculateCommonFilters(Rec);
         ContratoCalcStatistics.CalculateAmounts();
         ContratoCalcStatistics.GetLCYCostAmounts(CL);
         if CL[4] <> 0 then
@@ -1953,7 +1953,7 @@ table 50200 Contrato
         if IsHandled then
             exit(Result);
 
-        //ContratoCalcStatistics.ContratoCalculateCommonFilters(Rec);
+        ContratoCalcStatistics.ContratoCalculateCommonFilters(Rec);
         ContratoCalcStatistics.CalculateAmounts();
         ContratoCalcStatistics.GetLCYPriceAmounts(PL);
         if PL[12] <> 0 then

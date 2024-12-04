@@ -1,7 +1,7 @@
 
 table 50201 "Contrato Planning Line"
 {
-    Caption = 'Job Planning Line';
+    Caption = 'Contrato Planning Line';
     DrillDownPageID = "Contrato Planning Lines";
     LookupPageID = "Contrato Planning Lines";
     DataClassification = CustomerContent;

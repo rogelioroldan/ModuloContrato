@@ -25,7 +25,7 @@ codeunit 50200 "Contrato Calculate Statistics"
         I: Integer;
     begin
         if JobLevel then
-            JobCalculateCommonFilters(Job2)
+            ContratoCalculateCommonFilters(Job2)
         else
             JTCalculateCommonFilters(JT, Job2, true);
         CalculateAmounts();
@@ -140,7 +140,7 @@ codeunit 50200 "Contrato Calculate Statistics"
             Amt[6] := Round(Amt[3] / Amt[4] * 100);
     end;
 
-    procedure JobCalculateCommonFilters(var Job: Record Contrato)
+    procedure ContratoCalculateCommonFilters(var Job: Record Contrato)
     begin
         ClearAll();
         JobPlanningLine.SetCurrentKey("Job No.", "Job Task No.");

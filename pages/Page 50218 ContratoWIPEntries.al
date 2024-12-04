@@ -1,6 +1,6 @@
 page 50218 "Contrato WIP Entries"
 {
-    AdditionalSearchTerms = 'Job WIP Entries';
+    AdditionalSearchTerms = 'Contrato WIP Entries';
     ApplicationArea = Jobs;
     Caption = 'Project WIP Entries';
     DataCaptionFields = "Job No.";
@@ -26,17 +26,17 @@ page 50218 "Contrato WIP Entries"
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the document number you entered in the Document No. field on the Options FastTab in the Project Calculate WIP batch job.';
                 }
-                field("Job No."; Rec."Job No.")
+                field("Contrato No."; Rec."Job No.")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the number of the related project.';
                 }
-                field("Job Complete"; Rec."Job Complete")
+                field("Contrato Complete"; Rec."Job Complete")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies whether the Project WIP Entry was created for a project with a Completed status.';
                 }
-                field("Job WIP Total Entry No."; Rec."Job WIP Total Entry No.")
+                field("Contrato WIP Total Entry No."; Rec."Job WIP Total Entry No.")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the entry number of the WIP total.';

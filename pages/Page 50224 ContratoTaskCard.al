@@ -1,5 +1,4 @@
-
-page 50205 "Contrato Task Card"
+page 50224 "Contrato Task Card"
 {
     Caption = 'Contrato Task Card';
     DataCaptionExpression = Rec.Caption();
@@ -13,7 +12,7 @@ page 50205 "Contrato Task Card"
             group(General)
             {
                 Caption = 'General';
-                field("Job Task No."; Rec."Job Task No.")
+                field("Contrato Task No."; Rec."Job Task No.")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the number of the related project task.';
@@ -23,7 +22,7 @@ page 50205 "Contrato Task Card"
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies a description of the project task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the project planning line.';
                 }
-                field("Job Task Type"; Rec."Job Task Type")
+                field("Contrato Task Type"; Rec."Job Task Type")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the purpose of the account. Newly created accounts are automatically assigned the Posting account type, but you can change this. Choose the field to select one of the following five options:';
@@ -180,7 +179,7 @@ page 50205 "Contrato Task Card"
                     ToolTip = 'Specifies the number of blank lines that you want inserted before this project task in reports that shows project tasks.';
                 }
             }
-            part(JobPlanningLines; "Job Planning Lines Part")
+            part(ContratoPlanningLines; "Contrato Planning Lines Part")
             {
                 ApplicationArea = Jobs;
                 SubPageLink = "Job No." = field("Job No."),
@@ -579,9 +578,9 @@ page 50205 "Contrato Task Card"
     {
         area(navigation)
         {
-            group("&Job Task")
+            group("&Contrato Task")
             {
-                Caption = '&Job Task';
+                Caption = '&Contrato Task';
                 Image = Task;
                 action(Dimensions)
                 {
@@ -604,11 +603,11 @@ page 50205 "Contrato Task Card"
 
                     trigger OnAction()
                     var
-                        Job: Record Contrato;
+                        Contrato: Record Contrato;
                         AssembleToOrderLink: Record "Assemble-to-Order Link";
                     begin
-                        Job.Get(Rec."Job No.");
-                        //AssembleToOrderLink.ShowAsmOrders(Job, Rec."Job Task No.");
+                        Contrato.Get(Rec."Job No.");
+                        //AssembleToOrderLink.ShowAsmOrders(Contrato, Rec."Job Task No.");
                     end;
                 }
             }
@@ -723,7 +722,7 @@ page 50205 "Contrato Task Card"
         }
         area(reporting)
         {
-            action("Report Job Task Quote")
+            action("Report Contrato Task Quote")
             {
                 ApplicationArea = Suite;
                 Caption = 'Preview Contrato Task Quote';
@@ -743,7 +742,7 @@ page 50205 "Contrato Task Card"
                         ReportSelection.Usage::"Job Task Quote", JobTask, true, Rec.FieldNo("Bill-to Customer No."));
                 end;
             }
-            action("Send Job Task Quote")
+            action("Send Contrato Task Quote")
             {
                 ApplicationArea = Suite;
                 Caption = 'Send Contrato Task Quote';
@@ -763,10 +762,10 @@ page 50205 "Contrato Task Card"
             {
                 Caption = 'Print/Send', Comment = 'Generated from the PromotedActionCategories property index 7.';
 
-                actionref("Report Job Task Quote_Promoted"; "Report Job Task Quote")
+                actionref("Report Contrato Task Quote_Promoted"; "Report Contrato Task Quote")
                 {
                 }
-                actionref("Send Job Task Quote_Promoted"; "Send Job Task Quote")
+                actionref("Send Contrato Task Quote_Promoted"; "Send Contrato Task Quote")
                 {
                 }
             }
@@ -815,15 +814,15 @@ page 50205 "Contrato Task Card"
 
     local procedure ActivateFields()
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         PriceCalculationMgt: Codeunit "Price Calculation Mgt.";
     begin
         IsBillToCountyVisible := FormatAddress.UseCounty(Rec."Bill-to Country/Region Code");
         IsSellToCountyVisible := FormatAddress.UseCounty(Rec."Sell-to Country/Region Code");
         IsShipToCountyVisible := FormatAddress.UseCounty(Rec."Ship-to Country/Region Code");
 
-        if Job.Get(Rec."Job No.") then
-            PerTaskBillingFieldsVisible := Job."Task Billing Method" = Job."Task Billing Method"::"Multiple customers";
+        if Contrato.Get(Rec."Job No.") then
+            PerTaskBillingFieldsVisible := Contrato."Task Billing Method" = Contrato."Task Billing Method"::"Multiple customers";
 
         ExtendedPriceEnabled := PriceCalculationMgt.IsExtendedPriceCalculationEnabled();
     end;
@@ -862,10 +861,10 @@ page 50205 "Contrato Task Card"
 
     local procedure UpdateInvoiceCurrencyCodeEditable()
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
     begin
-        if Job.Get(Rec."Job No.") then
-            InvoiceCurrencyCodeEditable := Job."Currency Code" = '';
+        if Contrato.Get(Rec."Job No.") then
+            InvoiceCurrencyCodeEditable := Contrato."Currency Code" = '';
     end;
 
     local procedure SetControlVisibility()

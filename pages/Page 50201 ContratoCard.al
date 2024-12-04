@@ -1,11 +1,11 @@
 
 page 50201 "Contrato Card"
 {
-    Caption = 'Job Card';
+    Caption = 'Contrato Card';
     PageType = Document;
     RefreshOnActivate = true;
     SourceTable = Contrato;
-    AdditionalSearchTerms = 'Job Card';
+    AdditionalSearchTerms = 'Contrato Card';
 
     layout
     {
@@ -291,7 +291,7 @@ page 50201 "Contrato Card"
                 {
                     ApplicationArea = All;
                     Importance = Additional;
-                    ToolTip = 'Specifies how WIP posting is performed. Per Job: The total WIP costs and the sales value is used to calculate WIP. Per Job Ledger Entry: The accumulated values of WIP costs and sales are used to calculate WIP.';
+                    ToolTip = 'Specifies how WIP posting is performed. Per Contrato: The total WIP costs and the sales value is used to calculate WIP. Per Contrato Ledger Entry: The accumulated values of WIP costs and sales are used to calculate WIP.';
                 }
                 field("Allow Schedule/Contract Lines"; Rec."Allow Schedule/Contract Lines")
                 {
@@ -745,12 +745,12 @@ page 50201 "Contrato Card"
                 field("Exch. Calculation (Cost)"; Rec."Exch. Calculation (Cost)")
                 {
                     ApplicationArea = Suite;
-                    ToolTip = 'Specifies how project costs are calculated if you change the Currency Date or the Currency Code fields on a project planning Line or run the Change Job Planning Line Dates batch job. Fixed LCY option: The project costs in the local currency are fixed. Any change in the currency exchange rate will change the value of project costs in a foreign currency. Fixed FCY option: The project costs in a foreign currency are fixed. Any change in the currency exchange rate will change the value of project costs in the local currency.';
+                    ToolTip = 'Specifies how project costs are calculated if you change the Currency Date or the Currency Code fields on a project planning Line or run the Change Contrato Planning Line Dates batch job. Fixed LCY option: The project costs in the local currency are fixed. Any change in the currency exchange rate will change the value of project costs in a foreign currency. Fixed FCY option: The project costs in a foreign currency are fixed. Any change in the currency exchange rate will change the value of project costs in the local currency.';
                 }
                 field("Exch. Calculation (Price)"; Rec."Exch. Calculation (Price)")
                 {
                     ApplicationArea = Suite;
-                    ToolTip = 'Specifies how project sales prices are calculated if you change the Currency Date or the Currency Code fields on a project planning Line or run the Change Job Planning Line Dates batch job. Fixed LCY option: The project prices in the local currency are fixed. Any change in the currency exchange rate will change the value of project prices in a foreign currency. Fixed FCY option: The project prices in a foreign currency are fixed. Any change in the currency exchange rate will change the value of project prices in the local currency.';
+                    ToolTip = 'Specifies how project sales prices are calculated if you change the Currency Date or the Currency Code fields on a project planning Line or run the Change Contrato Planning Line Dates batch job. Fixed LCY option: The project prices in the local currency are fixed. Any change in the currency exchange rate will change the value of project prices in a foreign currency. Fixed FCY option: The project prices in a foreign currency are fixed. Any change in the currency exchange rate will change the value of project prices in the local currency.';
                 }
                 field("Language Code"; Rec."Language Code")
                 {
@@ -768,7 +768,7 @@ page 50201 "Contrato Card"
                     field("WIP Posting Date"; Rec."WIP Posting Date")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the posting date that was entered when the Job Calculate WIP batch job was last run.';
+                        ToolTip = 'Specifies the posting date that was entered when the Contrato Calculate WIP batch job was last run.';
                     }
                     // field("Total WIP Sales Amount"; Rec."Total WIP Sales Amount")
                     // {
@@ -931,10 +931,10 @@ page 50201 "Contrato Card"
                               "Planning Date Filter" = field("Planning Date Filter");
                 Visible = false;
             }
-            part("Job Details"; "Contrato Cost Factbox")
+            part("Contrato Details"; "Contrato Cost Factbox")
             {
                 ApplicationArea = All;
-                Caption = 'Job Details';
+                Caption = 'Contrato Details';
                 SubPageLink = "No." = field("No.");
             }
             systempart(Control1900383207; Links)
@@ -954,14 +954,14 @@ page 50201 "Contrato Card"
     {
         area(navigation)
         {
-            group("&Job")
+            group("&Contrato")
             {
-                Caption = '&Job';
+                Caption = '&Contrato';
                 Image = Job;
                 action(JobPlanningLines)
                 {
                     ApplicationArea = All;
-                    Caption = 'Job &Planning Lines';
+                    Caption = 'Contrato &Planning Lines';
                     Image = JobLines;
                     ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (Budget) or you can specify what you actually agreed with your customer that he should pay for the project (Billable).';
 
@@ -1338,18 +1338,18 @@ page 50201 "Contrato Card"
             {
                 Caption = 'Plan&ning';
                 Image = Planning;
-                action("Resource &Allocated per Job")
+                action("Resource &Allocated per Contrato")
                 {
                     ApplicationArea = All;
-                    Caption = 'Resource &Allocated per Job';
+                    Caption = 'Resource &Allocated per Contrato';
                     Image = ViewJob;
                     RunObject = Page "Resource Allocated per Job";
                     ToolTip = 'View this project''s resource allocation.';
                 }
-                action("Res. Gr. All&ocated per Job")
+                action("Res. Gr. All&ocated per Contrato")
                 {
                     ApplicationArea = All;
-                    Caption = 'Res. Gr. All&ocated per Job';
+                    Caption = 'Res. Gr. All&ocated per Contrato';
                     Image = ResourceGroup;
                     RunObject = Page "Res. Gr. Allocated per Job";
                     ToolTip = 'View the project''s resource group allocation.';
@@ -1441,13 +1441,13 @@ page 50201 "Contrato Card"
             {
                 Caption = '&Copy';
                 Image = Copy;
-                action("Copy Job Tasks &from...")
+                action("Copy Contrato Tasks &from...")
                 {
                     ApplicationArea = All;
-                    Caption = 'Copy Job Tasks &from...';
+                    Caption = 'Copy Contrato Tasks &from...';
                     Ellipsis = true;
                     Image = CopyToTask;
-                    ToolTip = 'Open the Copy Job Tasks page.';
+                    ToolTip = 'Open the Copy Contrato Tasks page.';
 
                     trigger OnAction()
                     var
@@ -1457,10 +1457,10 @@ page 50201 "Contrato Card"
                         CopyJobTasks.RunModal();
                     end;
                 }
-                action("Copy Job Tasks &to...")
+                action("Copy Contrato Tasks &to...")
                 {
                     ApplicationArea = All;
-                    Caption = 'Copy Job Tasks &to...';
+                    Caption = 'Copy Contrato Tasks &to...';
                     Ellipsis = true;
                     Image = CopyFromTask;
                     ToolTip = 'Open the Copy Projects To page.';
@@ -1484,17 +1484,17 @@ page 50201 "Contrato Card"
                     Caption = '&Calculate WIP';
                     Ellipsis = true;
                     Image = CalculateWIP;
-                    ToolTip = 'Run the Job Calculate WIP batch job.';
+                    ToolTip = 'Run the Contrato Calculate WIP batch job.';
 
                     trigger OnAction()
                     var
-                        Job: Record Contrato;
+                        Contrato: Record Contrato;
                         JobCalculateWIP: Report "Job Calculate WIP";
                     begin
                         Rec.TestField(Rec."No.");
-                        Job.Copy(Rec);
-                        Job.SetRange("No.", Rec."No.");
-                        JobCalculateWIP.SetTableView(Job);
+                        Contrato.Copy(Rec);
+                        Contrato.SetRange("No.", Rec."No.");
+                        JobCalculateWIP.SetTableView(Contrato);
                         JobCalculateWIP.Run();
                     end;
                 }
@@ -1505,16 +1505,16 @@ page 50201 "Contrato Card"
                     Ellipsis = true;
                     Image = PostOrder;
                     ShortCutKey = 'F9';
-                    ToolTip = 'Run the Job Post WIP to G/L batch job.';
+                    ToolTip = 'Run the Contrato Post WIP to G/L batch job.';
 
                     trigger OnAction()
                     var
-                        Job: Record Contrato;
+                        Contrato: Record Contrato;
                     begin
                         Rec.TestField("No.");
-                        Job.Copy(Rec);
-                        Job.SetRange("No.", Rec."No.");
-                        REPORT.RunModal(REPORT::"Job Post WIP to G/L", true, false, Job);
+                        Contrato.Copy(Rec);
+                        Contrato.SetRange("No.", Rec."No.");
+                        REPORT.RunModal(REPORT::"Job Post WIP to G/L", true, false, Contrato);
                     end;
                 }
             }
@@ -1555,10 +1555,10 @@ page 50201 "Contrato Card"
                 Caption = 'F&unctions';
                 Image = "Action";
 
-                action("Archive Job")
+                action("Archive Contrato")
                 {
                     ApplicationArea = All;
-                    Caption = 'Archi&ve Job';
+                    Caption = 'Archi&ve Contrato';
                     Image = Archive;
                     ToolTip = 'Send the project to the archive. Later, you can restore the archived project.';
 
@@ -1572,126 +1572,126 @@ page 50201 "Contrato Card"
         }
         area(reporting)
         {
-            action("Job Actual to Budget")
+            action("Contrato Actual to Budget")
             {
                 ApplicationArea = Suite;
-                Caption = 'Job Actual to Budget';
+                Caption = 'Contrato Actual to Budget';
                 Image = "Report";
                 RunObject = Report "Job Actual To Budget";
                 ToolTip = 'Compare budgeted and usage amounts for selected projects. All lines of the selected project show quantity, total cost, and line amount.';
                 Visible = false;
             }
-            action("Job Cost Budget")
+            action("Contrato Cost Budget")
             {
                 ApplicationArea = All;
-                Caption = 'Job Cost Budget';
+                Caption = 'Contrato Cost Budget';
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
                 RunObject = Report "Job Cost Budget";
                 ToolTip = 'View the project cost budgets for specific projects or for all projects. This report lists the step, task, and phase and the description of the activity. For each activity, the report includes the quantity, unit and total cost, and unit and total price.';
             }
-            action("Job Analysis")
+            action("Contrato Analysis")
             {
                 ApplicationArea = Suite;
-                Caption = 'Job Analysis';
+                Caption = 'Contrato Analysis';
                 Image = "Report";
                 RunObject = Report "Job Analysis";
                 ToolTip = 'Analyze the project, such as the budgeted prices, usage prices, and billable prices, and then compares the three sets of prices.';
             }
-            action("Job - Planning Lines")
+            action("Contrato - Planning Lines")
             {
                 ApplicationArea = Suite;
-                Caption = 'Job - Planning Lines';
+                Caption = 'Contrato - Planning Lines';
                 Image = "Report";
                 RunObject = Report "Job - Planning Lines";
                 ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (budget) or you can specify what you actually agreed with your customer that he should pay for the project (billable).';
             }
-            action("Job - Suggested Billing")
+            action("Contrato - Suggested Billing")
             {
                 ApplicationArea = Suite;
-                Caption = 'Job - Suggested Billing';
+                Caption = 'Contrato - Suggested Billing';
                 Image = "Report";
                 RunObject = Report "Job Suggested Billing";
                 ToolTip = 'View a list of all projects, grouped by customer, how much the customer has already been invoiced, and how much remains to be invoiced, that is, the suggested billing.';
                 Visible = false;
             }
-            action("Job Cost Transaction Detail")
+            action("Contrato Cost Transaction Detail")
             {
                 ApplicationArea = All;
-                Caption = 'Job Cost Transaction Detail';
+                Caption = 'Contrato Cost Transaction Detail';
                 Image = "Report";
                 RunObject = Report "Job Cost Transaction Detail";
                 ToolTip = 'List the details of your project transactions. The report includes the project number and description followed by a list of the transactions that occurred in the period you specify.';
             }
-            action("Job Actual to Budget (Cost)")
+            action("Contrato Actual to Budget (Cost)")
             {
                 ApplicationArea = All;
-                Caption = 'Job Actual to Budget (Cost)';
+                Caption = 'Contrato Actual to Budget (Cost)';
                 Image = "Report";
                 RunObject = Report "Job Actual to Budget (Cost)";
                 ToolTip = 'Compare the actual cost of your projects to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
             }
-            action("Job Actual to Budget (Price)")
+            action("Contrato Actual to Budget (Price)")
             {
                 ApplicationArea = All;
-                Caption = 'Job Actual to Budget (Price)';
+                Caption = 'Contrato Actual to Budget (Price)';
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
                 RunObject = Report "Job Actual to Budget (Price)";
                 ToolTip = 'Compare the actual price of your projects to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
             }
-            action("Open Purchase Invoices by Job")
+            action("Open Purchase Invoices by Contrato")
             {
                 ApplicationArea = All;
-                Caption = 'Open Purchase Invoices by Job';
+                Caption = 'Open Purchase Invoices by Contrato';
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
                 RunObject = Report "Open Purchase Invoices by Job";
                 ToolTip = 'View open purchase invoices by project.';
             }
-            action("Open Sales Invoices by Job")
+            action("Open Sales Invoices by Contrato")
             {
                 ApplicationArea = All;
-                Caption = 'Open Sales Invoices by Job';
+                Caption = 'Open Sales Invoices by Contrato';
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
                 RunObject = Report "Open Sales Invoices by Job";
                 ToolTip = 'View open sales invoices by project.';
             }
-            action("Job Cost Suggested Billing")
+            action("Contrato Cost Suggested Billing")
             {
                 ApplicationArea = All;
-                Caption = 'Job Cost Suggested Billing';
+                Caption = 'Contrato Cost Suggested Billing';
                 Image = "Report";
                 RunObject = Report "Job Cost Suggested Billing";
                 ToolTip = 'Get suggestions on the amount you should bill a customer for a project. The suggested billing is based on the actual cost of the project less any amount that has already been invoiced to the customer.';
             }
-            action("Report Job Quote")
+            action("Report Contrato Quote")
             {
                 ApplicationArea = Suite;
-                Caption = 'Preview Job Quote';
+                Caption = 'Preview Contrato Quote';
                 Image = "Report";
-                ToolTip = 'Open the Job Quote report.';
+                ToolTip = 'Open the Contrato Quote report.';
 
                 trigger OnAction()
                 var
-                    Job: Record Contrato;
+                    Contrato: Record Contrato;
                     ReportSelection: Record "Report Selections";
                 begin
-                    Job.SetCurrentKey("No.");
-                    Job.SetRange("No.", Rec."No.");
+                    Contrato.SetCurrentKey("No.");
+                    Contrato.SetRange("No.", Rec."No.");
                     ReportSelection.PrintWithDialogForCust(
-                        ReportSelection.Usage::JQ, Job, true, Rec.FieldNo("Bill-to Customer No."));
+                        ReportSelection.Usage::JQ, Contrato, true, Rec.FieldNo("Bill-to Customer No."));
                 end;
             }
-            action("Send Job Quote")
+            action("Send Contrato Quote")
             {
                 ApplicationArea = Suite;
-                Caption = 'Send Job Quote';
+                Caption = 'Send Contrato Quote';
                 Image = SendTo;
                 ToolTip = 'Send the project quote to the customer. You can change the way that the document is sent in the window that appears.';
 
@@ -1707,10 +1707,10 @@ page 50201 "Contrato Card"
             {
                 Caption = 'Process', Comment = 'Generated from the PromotedActionCategories property index 1.';
 
-                actionref("Copy Job Tasks &from..._Promoted"; "Copy Job Tasks &from...")
+                actionref("Copy Contrato Tasks &from..._Promoted"; "Copy Contrato Tasks &from...")
                 {
                 }
-                actionref("Copy Job Tasks &to..._Promoted"; "Copy Job Tasks &to...")
+                actionref("Copy Contrato Tasks &to..._Promoted"; "Copy Contrato Tasks &to...")
                 {
                 }
                 actionref("Create Inventory Pick_Promoted"; "Create Inventory Pick")
@@ -1724,10 +1724,10 @@ page 50201 "Contrato Card"
             {
                 Caption = 'Print/Send', Comment = 'Generated from the PromotedActionCategories property index 7.';
 
-                actionref("Report Job Quote_Promoted"; "Report Job Quote")
+                actionref("Report Contrato Quote_Promoted"; "Report Contrato Quote")
                 {
                 }
-                actionref("Send Job Quote_Promoted"; "Send Job Quote")
+                actionref("Send Contrato Quote_Promoted"; "Send Contrato Quote")
                 {
                 }
             }
@@ -1813,7 +1813,7 @@ page 50201 "Contrato Card"
             }
             group(Category_Category7)
             {
-                Caption = 'Job', Comment = 'Generated from the PromotedActionCategories property index 6.';
+                Caption = 'Contrato', Comment = 'Generated from the PromotedActionCategories property index 6.';
 
                 actionref("&Dimensions_Promoted"; "&Dimensions")
                 {
@@ -1850,19 +1850,19 @@ page 50201 "Contrato Card"
             {
                 Caption = 'Report', Comment = 'Generated from the PromotedActionCategories property index 2.';
 
-                actionref("Job Actual to Budget (Cost)_Promoted"; "Job Actual to Budget (Cost)")
+                actionref("Contrato Actual to Budget (Cost)_Promoted"; "Contrato Actual to Budget (Cost)")
                 {
                 }
-                actionref("Job Analysis_Promoted"; "Job Analysis")
+                actionref("Contrato Analysis_Promoted"; "Contrato Analysis")
                 {
                 }
-                actionref("Job - Planning Lines_Promoted"; "Job - Planning Lines")
+                actionref("Contrato - Planning Lines_Promoted"; "Contrato - Planning Lines")
                 {
                 }
-                actionref("Job Cost Suggested Billing_Promoted"; "Job Cost Suggested Billing")
+                actionref("Contrato Cost Suggested Billing_Promoted"; "Contrato Cost Suggested Billing")
                 {
                 }
-                actionref("Job Cost Transaction Detail_Promoted"; "Job Cost Transaction Detail")
+                actionref("Contrato Cost Transaction Detail_Promoted"; "Contrato Cost Transaction Detail")
                 {
                 }
             }
@@ -1892,7 +1892,7 @@ page 50201 "Contrato Card"
         SellToContact.GetOrClear(Rec."Sell-to Contact No.");
         BillToContact.GetOrClear(Rec."Bill-to Contact No.");
         UpdateBillToInformationEditable();
-        //JobTaskLinesEditable := Rec.CalcJobTaskLinesEditable();
+        JobTaskLinesEditable := Rec.CalcContratoTaskLinesEditable();
         CurrPage.JobTaskLines.Page.SetPerTaskBillingFieldsVisible(Rec."Task Billing Method" = Rec."Task Billing Method"::"Multiple customers");
         CurrPage.Update(false);
     end;

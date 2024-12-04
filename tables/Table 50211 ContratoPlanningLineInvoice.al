@@ -1,6 +1,6 @@
 table 50211 "Contrato Planning Line Invoice"
 {
-    Caption = 'Job Planning Line Invoice';
+    Caption = 'Contrato Planning Line Invoice';
     DrillDownPageID = "Contrato Invoices";
     LookupPageID = "Contrato Invoices";
     DataClassification = CustomerContent;

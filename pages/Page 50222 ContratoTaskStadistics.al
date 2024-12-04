@@ -1349,7 +1349,7 @@ page 50222 "Contrato Task Statistics"
     trigger OnAfterGetCurrRecord()
     begin
         Clear(JobCalcStatistics);
-        JobCalcStatistics.JTCalculateCommonFilters(Rec, Job, false);
+        JobCalcStatistics.JTCalculateCommonFilters(Rec, Contrato, false);
         JobCalcStatistics.CalculateAmounts();
         JobCalcStatistics.GetLCYCostAmounts(CL);
         JobCalcStatistics.GetLCYPriceAmounts(PL);
@@ -1358,7 +1358,7 @@ page 50222 "Contrato Task Statistics"
     end;
 
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobCalcStatistics: Codeunit "Contrato Calculate Statistics";
         CL: array[16] of Decimal;
         PL: array[16] of Decimal;

@@ -60,7 +60,7 @@ page 50202 "Contrato Invoices"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the amount of the unit costs that has been posted from the invoice or credit memo. The amount is calculated based on Quantity, Unit Cost, and Line Discount %.';
                 }
-                field("Job Ledger Entry No."; Rec."Job Ledger Entry No.")
+                field("Contrato Ledger Entry No."; Rec."Job Ledger Entry No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies a link to the project ledger entry that was created when the document was posted.';
@@ -129,10 +129,10 @@ page 50202 "Contrato Invoices"
         DetailLevel: Option All,"Per Job","Per Job Task","Per Job Planning Line";
         ShowDetails: Boolean;
 
-    procedure SetPrJob(Job: Record Contrato)
+    procedure SetPrJob(Contrato: Record Contrato)
     begin
         DetailLevel := DetailLevel::"Per Job";
-        JobNo := Job."No.";
+        JobNo := Contrato."No.";
     end;
 
     procedure SetPrJobTask(JobTask: Record "Contrato Task")

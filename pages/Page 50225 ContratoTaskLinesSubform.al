@@ -16,7 +16,7 @@ page 50206 "Contrato Task Lines Subform"
                 IndentationColumn = DescriptionIndent;
                 IndentationControls = Description;
                 ShowCaption = false;
-                field("Job No."; Rec."Job No.")
+                field("Contrato No."; Rec."Job No.")
                 {
                     ApplicationArea = Basic, Suite, Jobs;
                     Style = Strong;
@@ -24,7 +24,7 @@ page 50206 "Contrato Task Lines Subform"
                     ToolTip = 'Specifies the number of the related project.';
                     Visible = false;
                 }
-                field("Job Task No."; Rec."Job Task No.")
+                field("Contrato Task No."; Rec."Job Task No.")
                 {
                     ApplicationArea = Basic, Suite, Jobs;
                     Style = Strong;
@@ -38,7 +38,7 @@ page 50206 "Contrato Task Lines Subform"
                     StyleExpr = StyleIsStrong;
                     ToolTip = 'Specifies a description of the project task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the project planning line.';
                 }
-                field("Job Task Type"; Rec."Job Task Type")
+                field("Contrato Task Type"; Rec."Job Task Type")
                 {
                     ApplicationArea = Basic, Suite, Jobs;
                     ToolTip = 'Specifies the purpose of the account. Newly created accounts are automatically assigned the Posting account type, but you can change this. Choose the field to select one of the following five options:';
@@ -263,14 +263,14 @@ page 50206 "Contrato Task Lines Subform"
             group(Line)
             {
                 Caption = 'Line';
-                group("&Job")
+                group("&Contrato")
                 {
-                    Caption = '&Job';
+                    Caption = '&Contrato';
                     Image = Job;
-                    action(JobPlanningLines)
+                    action(ContratoPlanningLines)
                     {
                         ApplicationArea = Jobs;
-                        Caption = 'Job &Planning Lines';
+                        Caption = 'Contrato &Planning Lines';
                         Image = JobLines;
                         Scope = Repeater;
                         ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (budget) or you can specify what you actually agreed with your customer that he should pay for the project (billable).';
@@ -346,15 +346,15 @@ page 50206 "Contrato Task Lines Subform"
 
                         trigger OnAction()
                         var
-                            Job: Record Contrato;
+                            Contrato: Record Contrato;
                             JobTask: Record "Contrato Task";
                         begin
                             Rec.TestField("Job No.");
-                            Job.Get(Rec."Job No.");
-                            // if Job.Blocked = Job.Blocked::All then
-                            //     Job.TestBlocked();
+                            Contrato.Get(Rec."Job No.");
+                            // if Contrato.Blocked = Contrato.Blocked::All then
+                            //     Contrato.TestBlocked();
 
-                            JobTask.SetRange("Job No.", Job."No.");
+                            JobTask.SetRange("Job No.", Contrato."No.");
                             if Rec."Job Task No." <> '' then
                                 JobTask.SetRange("Job Task No.", Rec."Job Task No.");
 
@@ -381,7 +381,7 @@ page 50206 "Contrato Task Lines Subform"
                 {
                     Caption = 'History';
                     Image = History;
-                    action("Job Ledger E&ntries")
+                    action("Contrato Ledger E&ntries")
                     {
                         ApplicationArea = Jobs;
                         Caption = 'Project Ledger E&ntries';
@@ -408,16 +408,16 @@ page 50206 "Contrato Task Lines Subform"
 
                         trigger OnAction()
                         var
-                            Job: Record Contrato;
+                            Contrato: Record Contrato;
                             JobTask: Record "Contrato Task";
                         begin
                             Rec.TestField("Job No.");
-                            Job.Get(Rec."Job No.");
-                            // if Job.Blocked = Job.Blocked::All then
-                            //     Job.TestBlocked();
+                            Contrato.Get(Rec."Job No.");
+                            // if Contrato.Blocked = Contrato.Blocked::All then
+                            //     Contrato.TestBlocked();
 
                             Rec.TestField("Job Task No.");
-                            JobTask.SetRange("Job No.", Job."No.");
+                            JobTask.SetRange("Job No.", Contrato."No.");
                             JobTask.SetRange("Job Task No.", Rec."Job Task No.");
 
                             REPORT.RunModal(REPORT::"Job Split Planning Line", true, false, JobTask);
@@ -433,15 +433,15 @@ page 50206 "Contrato Task Lines Subform"
 
                         trigger OnAction()
                         var
-                            Job: Record Contrato;
+                            Contrato: Record Contrato;
                             JobTask: Record "Contrato Task";
                         begin
                             Rec.TestField("Job No.");
-                            Job.Get(Rec."Job No.");
-                            // if Job.Blocked = Job.Blocked::All then
-                            //     Job.TestBlocked();
+                            Contrato.Get(Rec."Job No.");
+                            // if Contrato.Blocked = Contrato.Blocked::All then
+                            //     Contrato.TestBlocked();
 
-                            JobTask.SetRange("Job No.", Job."No.");
+                            JobTask.SetRange("Job No.", Contrato."No.");
                             if Rec."Job Task No." <> '' then
                                 JobTask.SetRange("Job Task No.", Rec."Job Task No.");
 
@@ -460,7 +460,7 @@ page 50206 "Contrato Task Lines Subform"
                     {
                         Caption = '&Copy';
                         Image = Copy;
-                        action("Copy Job Planning Lines &from...")
+                        action("Copy Contrato Planning Lines &from...")
                         {
                             ApplicationArea = Jobs;
                             Caption = 'Copy Project Planning Lines &from...';
@@ -477,7 +477,7 @@ page 50206 "Contrato Task Lines Subform"
                                 CopyJobPlanningLines.RunModal();
                             end;
                         }
-                        action("Copy Job Planning Lines &to...")
+                        action("Copy Contrato Planning Lines &to...")
                         {
                             ApplicationArea = Jobs;
                             Caption = 'Copy Project Planning Lines &to...';
@@ -509,12 +509,12 @@ page 50206 "Contrato Task Lines Subform"
 
                             trigger OnAction()
                             var
-                                Job: Record Contrato;
+                                Contrato: Record Contrato;
                             begin
                                 Rec.TestField("Job No.");
-                                Job.Get(Rec."Job No.");
-                                Job.SetRange("No.", Job."No.");
-                                REPORT.RunModal(REPORT::"Job Calculate WIP", true, false, Job);
+                                Contrato.Get(Rec."Job No.");
+                                Contrato.SetRange("No.", Contrato."No.");
+                                REPORT.RunModal(REPORT::"Job Calculate WIP", true, false, Contrato);
                             end;
                         }
                         action("<Action49>")
@@ -528,12 +528,12 @@ page 50206 "Contrato Task Lines Subform"
 
                             trigger OnAction()
                             var
-                                Job: Record Contrato;
+                                Contrato: Record Contrato;
                             begin
                                 Rec.TestField("Job No.");
-                                Job.Get(Rec."Job No.");
-                                Job.SetRange("No.", Job."No.");
-                                REPORT.RunModal(REPORT::"Job Post WIP to G/L", true, false, Job);
+                                Contrato.Get(Rec."Job No.");
+                                Contrato.SetRange("No.", Contrato."No.");
+                                REPORT.RunModal(REPORT::"Job Post WIP to G/L", true, false, Contrato);
                             end;
                         }
                     }

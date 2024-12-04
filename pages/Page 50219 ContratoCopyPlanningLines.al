@@ -39,7 +39,7 @@ page 50219 "Copy Contrato Planning Lines"
                     begin
                         if SourceJobNo <> '' then begin
                             JobTask.SetRange("Job No.", SourceJobNo);
-                            if PAGE.RunModal(PAGE::"Job Task List", JobTask) = ACTION::LookupOK then
+                            if PAGE.RunModal(PAGE::"Contrato Task List", JobTask) = ACTION::LookupOK then
                                 SourceJobTaskNo := JobTask."Job Task No.";
                         end;
                     end;
@@ -104,7 +104,7 @@ page 50219 "Copy Contrato Planning Lines"
                     begin
                         if TargetJobNo <> '' then begin
                             JobTask.SetRange("Job No.", TargetJobNo);
-                            if PAGE.RunModal(PAGE::"Job Task List", JobTask) = ACTION::LookupOK then
+                            if PAGE.RunModal(PAGE::"Contrato Task List", JobTask) = ACTION::LookupOK then
                                 TargetJobTaskNo := JobTask."Job Task No.";
                         end;
                     end;
@@ -176,15 +176,15 @@ page 50219 "Copy Contrato Planning Lines"
 
     local procedure ValidateUserInput()
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
     begin
         if SourceJobNo = '' then
-            Error(Text004, Job.TableCaption());
+            Error(Text004, Contrato.TableCaption());
         if (SourceJobTaskNo = '') or not SourceJobTask.Get(SourceJobNo, SourceJobTaskNo) then
             Error(Text004, SourceJobTask.TableCaption());
 
         if TargetJobNo = '' then
-            Error(Text005, Job.TableCaption());
+            Error(Text005, Contrato.TableCaption());
         if (TargetJobTaskNo = '') or not TargetJobTask.Get(TargetJobNo, TargetJobTaskNo) then
             Error(Text005, TargetJobTask.TableCaption());
     end;

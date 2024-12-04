@@ -1,6 +1,6 @@
 table 50213 "Contratos Setup"
 {
-    Caption = 'Job Setup';
+    Caption = 'Contrato Setup';
     DataClassification = CustomerContent;
 
     fields
@@ -11,7 +11,7 @@ table 50213 "Contratos Setup"
         }
         field(2; "Job Nos."; Code[20])
         {
-            Caption = 'Job Nos.';
+            Caption = 'Contrato Nos.';
             TableRelation = "No. Series";
         }
         field(3; "Apply Usage Link by Default"; Boolean)

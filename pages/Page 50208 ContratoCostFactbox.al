@@ -1,6 +1,6 @@
 page 50208 "Contrato Cost Factbox"
 {
-    Caption = 'Job Details';
+    Caption = 'Contrato Details';
     Editable = false;
     LinksAllowed = false;
     PageType = CardPart;
@@ -13,7 +13,7 @@ page 50208 "Contrato Cost Factbox"
             field("No."; Rec."No.")
             {
                 ApplicationArea = Jobs;
-                Caption = 'Job No.';
+                Caption = 'Contrato No.';
                 ToolTip = 'Specifies the project number.';
 
                 trigger OnDrillDown()
@@ -337,42 +337,42 @@ page 50208 "Contrato Cost Factbox"
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeOnDrillDownBillablePriceLCY(var Job: Record Contrato; var IsHandled: Boolean);
+    local procedure OnBeforeOnDrillDownBillablePriceLCY(var Contrato: Record Contrato; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeOnDrillDownBillablePriceLCYTotal(var Job: Record Contrato; var IsHandled: Boolean);
+    local procedure OnBeforeOnDrillDownBillablePriceLCYTotal(var Contrato: Record Contrato; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeOnDrillDownBillablePriceLCYGLAcc(var Job: Record Contrato; var IsHandled: Boolean);
+    local procedure OnBeforeOnDrillDownBillablePriceLCYGLAcc(var Contrato: Record Contrato; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeOnDrillDownBillablePriceLCYItem(var Job: Record Contrato; var IsHandled: Boolean);
+    local procedure OnBeforeOnDrillDownBillablePriceLCYItem(var Contrato: Record Contrato; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeOnDrillDownInvoicedPriceLCYGLAcc(var Job: Record Contrato; var IsHandled: Boolean);
+    local procedure OnBeforeOnDrillDownInvoicedPriceLCYGLAcc(var Contrato: Record Contrato; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeOnDrillDownInvoicedPriceLCYTotal(var Job: Record Contrato; var IsHandled: Boolean);
+    local procedure OnBeforeOnDrillDownInvoicedPriceLCYTotal(var Contrato: Record Contrato; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeOnDrillDownInvoicedPriceLCYItem(var Job: Record Contrato; var IsHandled: Boolean);
+    local procedure OnBeforeOnDrillDownInvoicedPriceLCYItem(var Contrato: Record Contrato; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeOnDrillDownInvoicedPriceLCY(var Job: Record Contrato; var IsHandled: Boolean);
+    local procedure OnBeforeOnDrillDownInvoicedPriceLCY(var Contrato: Record Contrato; var IsHandled: Boolean);
     begin
     end;
 }

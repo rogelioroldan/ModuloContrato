@@ -1,6 +1,6 @@
 page 50209 "Contrato Ledger Entries"
 {
-    AdditionalSearchTerms = 'Job Ledger Entries';
+    AdditionalSearchTerms = 'Contrato Ledger Entries';
     ApplicationArea = All;
     Caption = 'Project Ledger Entries';
     DataCaptionFields = "Job No.";
@@ -36,13 +36,13 @@ page 50209 "Contrato Ledger Entries"
                     Editable = false;
                     ToolTip = 'Specifies the document number on the project ledger entry.';
                 }
-                field("Job No."; Rec."Job No.")
+                field("Contrato No."; Rec."Job No.")
                 {
                     ApplicationArea = Jobs;
                     Editable = false;
                     ToolTip = 'Specifies the number of the project.';
                 }
-                field("Job Task No."; Rec."Job Task No.")
+                field("Contrato Task No."; Rec."Job Task No.")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the number of the related project task.';

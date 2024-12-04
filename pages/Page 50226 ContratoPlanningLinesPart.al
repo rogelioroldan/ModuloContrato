@@ -1,9 +1,9 @@
-page 50203 "Contrato Planning Lines"
+page 50226 "Contrato Planning Lines Part"
 {
     AutoSplitKey = true;
     Caption = 'Contrato Planning Lines';
     DataCaptionExpression = Rec.Caption();
-    PageType = List;
+    PageType = ListPart;
     SourceTable = "Contrato Planning Line";
 
     layout
@@ -525,227 +525,28 @@ page 50203 "Contrato Planning Lines"
                 }
             }
         }
-        area(factboxes)
-        {
-            systempart(Control1900383207; Links)
-            {
-                ApplicationArea = RecordLinks;
-                Visible = false;
-            }
-            systempart(Control1905767507; Notes)
-            {
-                ApplicationArea = Notes;
-                Visible = false;
-            }
-        }
     }
 
     actions
     {
-        area(navigation)
-        {
-            group("Contrato Planning &Line")
-            {
-                Caption = 'Contrato Planning &Line';
-                Image = Line;
-                action("Linked Contrato Ledger E&ntries")
-                {
-                    ApplicationArea = Suite;
-                    Caption = 'Linked Contrato Ledger E&ntries';
-                    Image = JobLedger;
-                    ShortCutKey = 'Ctrl+F7';
-                    ToolTip = 'View project ledger entries related to the project planning line.';
-
-                    trigger OnAction()
-                    var
-                        JobLedgerEntry: Record "Contrato Ledger Entry";
-                        JobUsageLink: Record "Contrato Usage Link";
-                        JobLedgerEntries: Page "Contrato Ledger Entries";
-                    begin
-                        JobUsageLink.SetRange("Job No.", Rec."Job No.");
-                        JobUsageLink.SetRange("Job Task No.", Rec."Job Task No.");
-                        JobUsageLink.SetRange("Line No.", Rec."Line No.");
-                        if JobUsageLink.FindSet() then
-                            repeat
-                                JobLedgerEntry.Get(JobUsageLink."Entry No.");
-                                JobLedgerEntry.Mark := true;
-                            until JobUsageLink.Next() = 0;
-
-                        JobLedgerEntry.MarkedOnly(true);
-                        Clear(JobLedgerEntries);
-                        JobLedgerEntries.SetTableView(JobLedgerEntry);
-                        JobLedgerEntries.Run();
-                    end;
-                }
-                action("&Reservation Entries")
-                {
-                    AccessByPermission = TableData Item = R;
-                    ApplicationArea = Reservation;
-                    Caption = '&Reservation Entries';
-                    Image = ReservationLedger;
-                    ToolTip = 'View all reservations that are made for the item, either manually or automatically.';
-
-                    trigger OnAction()
-                    begin
-                        Rec.ShowReservationEntries(true);
-                    end;
-                }
-                separator(Action133)
-                {
-                }
-                action(OrderPromising)
-                {
-                    ApplicationArea = OrderPromising;
-                    Caption = 'Order &Promising';
-                    Image = OrderPromising;
-                    ToolTip = 'Calculate the shipment and delivery dates based on the item''s known and expected availability dates, and then promise the dates to the customer.';
-
-                    trigger OnAction()
-                    begin
-                        Rec.ShowOrderPromisingLine();
-                    end;
-                }
-                action(SendToCalendar)
-                {
-                    AccessByPermission = TableData "Job Planning Line - Calendar" = RIM;
-                    ApplicationArea = Jobs;
-                    Caption = 'Send to Calendar';
-                    Image = CalendarChanged;
-                    RunObject = Codeunit "Job Planning Line - Calendar";
-                    RunPageOnRec = true;
-                    ToolTip = 'Create a calendar appointment for the resource on each project planning line.';
-                    Visible = CanSendToCalendar;
-                }
-                action("Put-away/Pick Lines/Movement Lines")
-                {
-                    ApplicationArea = Warehouse;
-                    Caption = 'Put-away/Pick Lines/Movement Lines';
-                    Image = PutawayLines;
-                    RunObject = Page "Warehouse Activity Lines";
-                    RunPageLink = "Source Type" = filter(167),
-                                  "Source Subtype" = const("0"),
-                                  "Source No." = field("Job No."),
-                                  "Source Line No." = field("Job Contract Entry No.");
-                    ToolTip = 'View the list of ongoing inventory put-aways, picks, or movements for the project.';
-                }
-                action(ItemTrackingLines)
-                {
-                    ApplicationArea = ItemTracking;
-                    Caption = 'Item Tracking Lines';
-                    Image = ItemTrackingLines;
-                    ShortCutKey = 'Ctrl+Alt+I';
-                    ToolTip = 'View or edit serial numbers and lot numbers that are assigned to the item on the project planning line.';
-
-                    trigger OnAction()
-                    begin
-                        //Rec.OpenItemTrackingLines();
-                    end;
-                }
-                group("Assemble to Order")
-                {
-                    Caption = 'Assemble to Order';
-                    Image = AssemblyBOM;
-                    action(AssembleToOrderLines)
-                    {
-                        AccessByPermission = TableData "BOM Component" = R;
-                        ApplicationArea = Assembly;
-                        Image = AssemblyBOM;
-                        Caption = 'Assemble-to-Order Lines';
-                        ToolTip = 'View any linked assembly order lines if the documents represents an assemble-to-order project.';
-
-                        trigger OnAction()
-                        begin
-                            Rec.ShowAsmToJobPlanningLines();
-                        end;
-                    }
-                }
-            }
-        }
         area(processing)
         {
             group("F&unctions")
             {
                 Caption = 'F&unctions';
                 Image = "Action";
-                action(CreateJobJournalLines)
-                {
-                    ApplicationArea = Jobs;
-                    Caption = 'Create Contrato &Journal Lines';
-                    Image = PostOrder;
-                    ToolTip = 'Use a batch job to help you create sales journal lines for the involved project planning lines.';
-
-                    trigger OnAction()
-                    var
-                        JobPlanningLine: Record "Contrato Planning Line";
-                        JobJnlLine: Record "Contrato Journal Line";
-                        JobTransferLine: Codeunit "Contrato Transfer Line";
-                        JobTransferJobPlanningLine: Page "Job Transfer Job Planning Line";
-                    begin
-                        if JobTransferJobPlanningLine.RunModal() = ACTION::OK then begin
-                            JobPlanningLine.Copy(Rec);
-                            CurrPage.SetSelectionFilter(JobPlanningLine);
-
-                            JobPlanningLine.SetFilter(Type, '<>%1', JobPlanningLine.Type::Text);
-                            if JobPlanningLine.FindSet() then
-                                repeat
-                                    JobTransferLine.FromPlanningLineToJnlLine(
-                                      JobPlanningLine, JobTransferJobPlanningLine.GetPostingDate(), JobTransferJobPlanningLine.GetJobJournalTemplateName(),
-                                      JobTransferJobPlanningLine.GetJobJournalBatchName(), JobJnlLine);
-                                until JobPlanningLine.Next() = 0;
-
-                            CurrPage.Update(false);
-                            Message(Text002, JobPlanningLine.TableCaption(), JobJnlLine.TableCaption());
-                        end;
-                    end;
-                }
                 action("&Open Contrato Journal")
                 {
                     ApplicationArea = Jobs;
                     Caption = '&Open Contrato Journal';
                     Image = Journals;
-                    RunObject = Page "Job Journal";
+                    RunObject = Page "Contrato Journal";
                     RunPageLink = "Job No." = field("Job No."),
                                   "Job Task No." = field("Job Task No.");
                     ToolTip = 'Open the project journal, for example, to post usage for a project.';
                 }
                 separator(Action16)
                 {
-                }
-                action("Create &Sales Invoice")
-                {
-                    ApplicationArea = Jobs;
-                    Caption = 'Create &Sales Invoice';
-                    Ellipsis = true;
-                    Image = JobSalesInvoice;
-                    ToolTip = 'Use a batch job to help you create sales invoices for the involved project tasks.';
-
-                    trigger OnAction()
-                    var
-                        IsHandled: Boolean;
-                    begin
-                        IsHandled := false;
-                        OnCreateSalesInvoiceOnBeforeAction(Rec, IsHandled);
-                        if not IsHandled then
-                            CreateSalesInvoice(false);
-                    end;
-                }
-                action("Create Sales &Credit Memo")
-                {
-                    ApplicationArea = Jobs;
-                    Caption = 'Create Sales &Credit Memo';
-                    Ellipsis = true;
-                    Image = CreditMemo;
-                    ToolTip = 'Create a sales credit memo for the selected project planning line.';
-
-                    trigger OnAction()
-                    var
-                        IsHandled: Boolean;
-                    begin
-                        IsHandled := false;
-                        OnCreateSalesCreditMemoOnBeforeAction(Rec, IsHandled);
-                        if not IsHandled then
-                            CreateSalesInvoice(true);
-                    end;
                 }
                 action("Sales &Invoices/Credit Memos")
                 {
@@ -788,39 +589,6 @@ page 50203 "Contrato Planning Lines"
                         Rec.ShowTracking();
                     end;
                 }
-                separator(Action130)
-                {
-                }
-                action(DemandOverview)
-                {
-                    ApplicationArea = Planning;
-                    Caption = '&Demand Overview';
-                    Image = Forecast;
-                    ToolTip = 'Get an overview of demand planning related to projects, such as the availability of spare parts or other items that you may use in a project. For example, you can determine whether the item you need is in stock, and if it is not, you can determine when the item will be in stock.';
-
-                    trigger OnAction()
-                    var
-                        DemandOverview: Page "Demand Overview";
-                    begin
-                        DemandOverview.SetCalculationParameter(true);
-
-                        DemandOverview.Initialize(0D, 3, Rec."Job No.", '', '');
-                        DemandOverview.RunModal();
-                    end;
-                }
-                action(ExplodeBOM_Functions)
-                {
-                    AccessByPermission = TableData "BOM Component" = R;
-                    ApplicationArea = Suite;
-                    Caption = 'E&xplode BOM';
-                    Image = ExplodeBOM;
-                    ToolTip = 'Add a line for each component on the bill of materials for the selected item. For example, this is useful for selling the parent item as a kit. CAUTION: The line for the parent item will be deleted and only its description will display. To undo this action, delete the component lines and add a line for the parent item again.';
-
-                    trigger OnAction()
-                    begin
-                        ExplodeBOM();
-                    end;
-                }
                 action(SelectMultiItems)
                 {
                     AccessByPermission = TableData Item = R;
@@ -828,7 +596,6 @@ page 50203 "Contrato Planning Lines"
                     Caption = 'Select items';
                     Image = NewItem;
                     Ellipsis = true;
-                    Visible = SelectMultipleItemsVisible;
                     ToolTip = 'Add two or more items from the full list of available items.';
 
                     trigger OnAction()
@@ -836,115 +603,23 @@ page 50203 "Contrato Planning Lines"
                         Rec.SelectMultipleItems();
                     end;
                 }
-            }
-        }
-        area(reporting)
-        {
-            action("Contrato Actual to Budget (Cost)")
-            {
-                ApplicationArea = Jobs;
-                Caption = 'Contrato Actual to Budget (Cost)';
-                Image = "Report";
-                RunObject = Report "Job Actual to Budget (Cost)";
-                ToolTip = 'Compare budgeted and usage amounts for selected projects. All lines of the selected project show quantity, total cost, and line amount.';
-            }
-            action("<Report Contrato Actual to Budget (Price)>")
-            {
-                ApplicationArea = Jobs;
-                Caption = 'Contrato Actual to Budget (Price)';
-                Image = "Report";
-                RunObject = Report "Job Actual to Budget (Price)";
-                ToolTip = 'Compare the actual price of your projects to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
-            }
-            action("Contrato Analysis")
-            {
-                ApplicationArea = Jobs;
-                Caption = 'Contrato Analysis';
-                Image = "Report";
-                RunObject = Report "Job Analysis";
-                ToolTip = 'Analyze the project, such as the scheduled prices, usage prices, and contract prices, and then compares the three sets of prices.';
-            }
-            action("Contrato - Planning Lines")
-            {
-                ApplicationArea = Jobs;
-                Caption = 'Contrato - Planning Lines';
-                Image = "Report";
-                RunObject = Report "Job - Planning Lines";
-                ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (Budget) or you can specify what you actually agreed with your customer that he should pay for the project (Billable).';
-            }
-            action("Contrato - Suggested Billing")
-            {
-                ApplicationArea = Jobs;
-                Caption = 'Contrato - Suggested Billing';
-                Image = "Report";
-                RunObject = Report "Job Cost Suggested Billing";
-                ToolTip = 'View a list of all projects, grouped by customer, how much the customer has already been invoiced, and how much remains to be invoiced, that is, the suggested billing.';
-            }
-            action("Jobs - Transaction Detail")
-            {
-                ApplicationArea = Jobs;
-                Caption = 'Projects - Transaction Detail';
-                Image = "Report";
-                //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                //PromotedCategory = "Report";
-                RunObject = Report "Job Cost Transaction Detail";
-                ToolTip = 'View all postings with entries for a selected project for a selected period, which have been charged to a certain project. At the end of each project list, the amounts are totaled separately for the Sales and Usage entry types.';
-            }
-        }
-        area(Promoted)
-        {
-            group(Category_Process)
-            {
-                Caption = 'Process', Comment = 'Generated from the PromotedActionCategories property index 1.';
+                group("Assemble to Order")
+                {
+                    Caption = 'Assemble to Order';
+                    Image = AssemblyBOM;
+                    action(AssembleToOrderLines)
+                    {
+                        AccessByPermission = TableData "BOM Component" = R;
+                        ApplicationArea = Assembly;
+                        Image = AssemblyBOM;
+                        Caption = 'Assemble-to-Order Lines';
+                        ToolTip = 'View any linked assembly order lines if the documents represents an assemble-to-order project.';
 
-                actionref("Create &Sales Invoice_Promoted"; "Create &Sales Invoice")
-                {
-                }
-                actionref(CreateJobJournalLines_Promoted; CreateJobJournalLines)
-                {
-                }
-                actionref("Sales &Invoices/Credit Memos_Promoted"; "Sales &Invoices/Credit Memos")
-                {
-                }
-                actionref("Create Sales &Credit Memo_Promoted"; "Create Sales &Credit Memo")
-                {
-                }
-                actionref(Reserve_Promoted; Reserve)
-                {
-                }
-                actionref(ItemTrackingLines_Promoted; ItemTrackingLines)
-                {
-                }
-                actionref("&Open Contrato Journal_Promoted"; "&Open Contrato Journal")
-                {
-                }
-            }
-            group(Category_Category4)
-            {
-                Caption = 'Outlook', Comment = 'Generated from the PromotedActionCategories property index 3.';
-
-                actionref(SendToCalendar_Promoted; SendToCalendar)
-                {
-                }
-            }
-            group(Category_Report)
-            {
-                Caption = 'Report', Comment = 'Generated from the PromotedActionCategories property index 2.';
-
-                actionref("Contrato Actual to Budget (Cost)_Promoted"; "Contrato Actual to Budget (Cost)")
-                {
-                }
-                actionref("<Report Contrato Actual to Budget (Price)>_Promoted"; "<Report Contrato Actual to Budget (Price)>")
-                {
-                }
-                actionref("Contrato Analysis_Promoted"; "Contrato Analysis")
-                {
-                }
-                actionref("Contrato - Planning Lines_Promoted"; "Contrato - Planning Lines")
-                {
-                }
-                actionref("Contrato - Suggested Billing_Promoted"; "Contrato - Suggested Billing")
-                {
+                        trigger OnAction()
+                        begin
+                            Rec.ShowAsmToJobPlanningLines();
+                        end;
+                    }
                 }
             }
         }
@@ -1012,20 +687,16 @@ page 50203 "Contrato Planning Lines"
     begin
         Rec.FilterGroup := 2;
         if Rec.GetFilter("Job No.") <> '' then
-            // if Job.Get(Rec.GetRangeMin("Job No.")) then
-            //     CurrPage.Editable(not (Job.Blocked = Job.Blocked::All));
-
-        SelectMultipleItemsVisible := Rec.GetFilter("Job Task No.") <> '';
+            // if Contrato.Get(Rec.GetRangeMin("Job No.")) then
+            //     CurrPage.Editable(not (Contrato.Blocked = Contrato.Blocked::All));
         Rec.FilterGroup := 0;
     end;
 
     var
         JobCreateInvoice: Codeunit "Contrato Create-Invoice";
         Text001: Label 'This project planning line was automatically generated. Do you want to continue?';
-        Text002: Label 'The %1 was successfully transferred to a %2.';
         ExtendedPriceEnabled: Boolean;
         VariantCodeMandatory: Boolean;
-        SelectMultipleItemsVisible: Boolean;
 
     protected var
         JobTaskNoVisible: Boolean;
@@ -1046,17 +717,6 @@ page 50203 "Contrato Planning Lines"
         LineAmountEditable: Boolean;
         UnitCostEditable: Boolean;
         CanSendToCalendar: Boolean;
-
-    local procedure CreateSalesInvoice(CrMemo: Boolean)
-    var
-        JobPlanningLine: Record "Contrato Planning Line";
-        JobCreateInvoice: Codeunit "Contrato Create-Invoice";
-    begin
-        Rec.TestField("Line No.");
-        JobPlanningLine.Copy(Rec);
-        CurrPage.SetSelectionFilter(JobPlanningLine);
-        JobCreateInvoice.CreateSalesInvoice(JobPlanningLine, CrMemo)
-    end;
 
     protected procedure SetEditable(Edit: Boolean)
     begin
@@ -1179,11 +839,6 @@ page 50203 "Contrato Planning Lines"
         exit(Rec."Qty. Transferred to Invoice" = 0);
     end;
 
-    procedure ExplodeBOM()
-    begin
-        Codeunit.Run(Codeunit::"Job-Explode BOM", Rec);
-    end;
-
     [IntegrationEvent(true, false)]
     local procedure OnAfterNoOnAfterValidate(var JobPlanningLine: Record "Contrato Planning Line")
     begin
@@ -1196,16 +851,6 @@ page 50203 "Contrato Planning Lines"
 
     [IntegrationEvent(true, false)]
     local procedure OnAfterIsTypeFieldEditable(var JobPlanningLine: Record "Contrato Planning Line"; var TypeFieldEditable: Boolean; var IsHandled: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(true, false)]
-    local procedure OnCreateSalesCreditMemoOnBeforeAction(var JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean);
-    begin
-    end;
-
-    [IntegrationEvent(true, false)]
-    local procedure OnCreateSalesInvoiceOnBeforeAction(var JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean);
     begin
     end;
 

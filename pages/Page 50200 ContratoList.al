@@ -7,7 +7,7 @@ page 50200 "Contrato List"
     CardPageID = "Contrato Card";
     Editable = false;
     PageType = List;
-    QueryCategory = 'Job';
+    QueryCategory = 'Contrato';
     SourceTable = Contrato;
     UsageCategory = Lists;
 
@@ -129,7 +129,7 @@ page 50200 "Contrato List"
                 ApplicationArea = All;
                 SubPageLink = "No." = field("No.");
             }
-            part("Job Details"; "Contrato Cost Factbox")
+            part("Contrato Details"; "Contrato Cost Factbox")
             {
                 ApplicationArea = All;
                 Caption = 'Contrato Details';
@@ -158,14 +158,14 @@ page 50200 "Contrato List"
     {
         area(navigation)
         {
-            group("&Job")
+            group("&Contrato")
             {
-                Caption = '&Job';
+                Caption = '&Contrato';
                 Image = Signature;
-                action("Job Task &Lines")
+                action("Contrato Task &Lines")
                 {
                     ApplicationArea = All;
-                    Caption = 'Job Task &Lines';
+                    Caption = 'Contrato Task &Lines';
                     Image = TaskList;
                     RunObject = Page "Contrato Task Lines";
                     RunPageLink = "Job No." = field("No.");
@@ -196,11 +196,11 @@ page 50200 "Contrato List"
 
                         trigger OnAction()
                         var
-                            Job: Record Contrato;
+                            Contrato: Record Contrato;
                             DefaultDimensionsMultiple: Page "Default Dimensions-Multiple";
                         begin
-                            CurrPage.SetSelectionFilter(Job);
-                            DefaultDimensionsMultiple.SetMultiRecord(Job, Rec.FieldNo("No."));
+                            CurrPage.SetSelectionFilter(Contrato);
+                            DefaultDimensionsMultiple.SetMultiRecord(Contrato, Rec.FieldNo("No."));
                             DefaultDimensionsMultiple.RunModal();
                         end;
                     }
@@ -478,18 +478,18 @@ page 50200 "Contrato List"
             {
                 Caption = 'Plan&ning';
                 Image = Planning;
-                action("Resource &Allocated per Job")
+                action("Resource &Allocated per Contrato")
                 {
                     ApplicationArea = All;
-                    Caption = 'Resource &Allocated per Job';
+                    Caption = 'Resource &Allocated per Contrato';
                     Image = ViewJob;
                     RunObject = Page "Resource Allocated per Job";
                     ToolTip = 'View this project''s resource allocation.';
                 }
-                action("Res. Group All&ocated per Job")
+                action("Res. Group All&ocated per Contrato")
                 {
                     ApplicationArea = All;
-                    Caption = 'Res. Group All&ocated per Job';
+                    Caption = 'Res. Group All&ocated per Contrato';
                     Image = ViewJob;
                     RunObject = Page "Res. Gr. Allocated per Job";
                     ToolTip = 'View the project''s resource group allocation.';
@@ -522,7 +522,7 @@ page 50200 "Contrato List"
                 action(CopyJob)
                 {
                     ApplicationArea = All;
-                    Caption = '&Copy Job';
+                    Caption = '&Copy Contrato';
                     Ellipsis = true;
                     Image = CopyFromTask;
                     ToolTip = 'Copy a project and its project tasks, planning lines, and prices.';
@@ -535,13 +535,39 @@ page 50200 "Contrato List"
                         CopyJob.RunModal();
                     end;
                 }
-                action("Create Job &Sales Invoice")
+                action("Create Contrato &Sales Invoice")
                 {
                     ApplicationArea = All;
-                    Caption = 'Create Job &Sales Invoice';
+                    Caption = 'Create Contrato &Sales Invoice';
                     Image = JobSalesInvoice;
                     RunObject = Report "Job Create Sales Invoice";
                     ToolTip = 'Use a batch job to help you create project sales invoices for the involved project planning lines.';
+                }
+                action(UploadFile)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Anexos/Hoja de trabajo y tabla de amortización';
+                    ToolTip = 'Permite cargar un archivo PDF o Excel para procesarlo.';
+                    trigger OnAction()
+                    var
+                        InStream: InStream;
+                        OutStream: OutStream;
+                        FileName: Text;
+                        FileExtension: Text[10];
+                        TempBlobStorage: Codeunit "Temp Blob";
+                    begin
+                        if UploadIntoStream('Seleccione un archivo', '', '', FileName, InStream) then begin
+                            FileExtension := LowerCase(CopyStr(FileName, StrLen(FileName) - 2));
+
+                            if FileExtension in ['pdf', 'xls', 'xlsx'] then begin
+                                TempBlobStorage.CreateOutStream(OutStream);
+                                CopyStream(OutStream, InStream);
+                                Message('Archivo cargado exitosamente: %1', FileName);
+                            end else
+                                Error('Formato no compatible. Solo se permiten archivos PDF o Excel.');
+                        end else
+                            Message('No se seleccionó ningún archivo.');
+                    end;
                 }
                 group(Action7)
                 {
@@ -555,17 +581,17 @@ page 50200 "Contrato List"
                         Image = CalculateWIP;
                         //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                         //PromotedCategory = Process;
-                        ToolTip = 'Run the Job Calculate WIP batch job.';
+                        ToolTip = 'Run the Contrato Calculate WIP batch job.';
 
                         trigger OnAction()
                         var
-                            Job: Record Contrato;
+                            Contrato: Record Contrato;
                             JobCalculateWIP: Report "Job Calculate WIP";
                         begin
                             Rec.TestField("No.");
-                            Job.Copy(Rec);
-                            Job.SetRange("No.", Rec."No.");
-                            JobCalculateWIP.SetTableView(Job);
+                            Contrato.Copy(Rec);
+                            Contrato.SetRange("No.", Rec."No.");
+                            JobCalculateWIP.SetTableView(Contrato);
                             JobCalculateWIP.Run();
                         end;
                     }
@@ -577,16 +603,16 @@ page 50200 "Contrato List"
                         Image = PostOrder;
                         //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                         //PromotedCategory = Process;
-                        ToolTip = 'Run the Job Post WIP to G/L batch job.';
+                        ToolTip = 'Run the Contrato Post WIP to G/L batch job.';
 
                         trigger OnAction()
                         var
-                            Job: Record Contrato;
+                            Contrato: Record Contrato;
                         begin
                             Rec.TestField("No.");
-                            Job.Copy(Rec);
-                            Job.SetRange("No.", Rec."No.");
-                            REPORT.RunModal(REPORT::"Job Post WIP to G/L", true, false, Job);
+                            Contrato.Copy(Rec);
+                            Contrato.SetRange("No.", Rec."No.");
+                            REPORT.RunModal(REPORT::"Job Post WIP to G/L", true, false, Contrato);
                         end;
                     }
                 }
@@ -594,62 +620,70 @@ page 50200 "Contrato List"
         }
         area(reporting)
         {
-            action("Job Actual to Budget")
+            action("Contrato Actual to Budget")
             {
                 ApplicationArea = All;
-                Caption = 'Job Actual to Budget';
+                Caption = 'Contrato Actual to Budget';
                 Image = "Report";
                 RunObject = Report "Job Actual To Budget";
                 ToolTip = 'Compare budgeted and usage amounts for selected projects. All lines of the selected project show quantity, total cost, and line amount.';
                 Visible = false;
             }
-            action("Job Actual to Budget (Cost)")
+            action("Contrato Actual to Budget (Cost)")
             {
                 ApplicationArea = All;
-                Caption = 'Job Actual to Budget (Cost)';
+                Caption = 'Contrato Actual to Budget (Cost)';
                 Image = "Report";
                 RunObject = Report "Job Actual to Budget (Cost)";
                 ToolTip = 'Compare budgeted and usage amounts for selected projects. All lines of the selected project show quantity, total cost, and line amount.';
             }
-            action("Job Actual to Budget (Price)")
+            action("Contrato Actual to Budget (Price)")
             {
                 ApplicationArea = All;
-                Caption = 'Job Actual to Budget (Price)';
+                Caption = 'Contrato Actual to Budget (Price)';
                 Image = "Report";
                 RunObject = Report "Job Actual to Budget (Price)";
                 ToolTip = 'Compare the actual price of your jobs to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
             }
-            action("Job Analysis")
+            action("Contrato Analysis")
             {
                 ApplicationArea = All;
-                Caption = 'Job Analysis';
+                Caption = 'Contrato Analysis';
                 Image = "Report";
                 RunObject = Report "Job Analysis";
                 ToolTip = 'Analyze the project, such as the budgeted prices, usage prices, and contract prices, and then compares the three sets of prices.';
             }
-            action("Job - Planning Lines")
+            action("Contrato - Planning Lines")
             {
                 ApplicationArea = All;
-                Caption = 'Job - Planning Lines';
+                Caption = 'Contrato - Planning Lines';
                 Image = "Report";
                 RunObject = Report "Job - Planning Lines";
                 ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (budget) or you can specify what you actually agreed with your customer that he should pay for the project (billable).';
             }
-            action("Job - Suggested Billing")
+            action("Contrato - Suggested Billing")
             {
                 ApplicationArea = All;
-                Caption = 'Job - Suggested Billing';
+                Caption = 'Contrato - Suggested Billing';
                 Image = "Report";
                 RunObject = Report "Job Suggested Billing";
                 ToolTip = 'View a list of all projects, grouped by customer, how much the customer has already been invoiced, and how much remains to be invoiced, that is, the suggested billing.';
                 Visible = false;
             }
-            action("Job Cost Suggested Billing")
+            action("Contrato Cost Suggested Billing")
             {
                 ApplicationArea = All;
-                Caption = 'Job Cost Suggested Billing';
+                Caption = 'Contrato Cost Suggested Billing';
                 Image = "Report";
                 RunObject = Report "Job Cost Suggested Billing";
+                ToolTip = 'View a list of all projects, grouped by customer, how much the customer has already been invoiced, and how much remains to be invoiced, that is, the suggested billing.';
+            }
+            action("Generar Factura Producto")
+            {
+                ApplicationArea = All;
+                Caption = 'Generar Factura Producto';
+                Image = "Report";
+                RunObject = Report "Contrato Producto Factura";
                 ToolTip = 'View a list of all projects, grouped by customer, how much the customer has already been invoiced, and how much remains to be invoiced, that is, the suggested billing.';
             }
             action("Customer Jobs (Cost)")
@@ -683,10 +717,10 @@ page 50200 "Contrato List"
                 RunObject = Report "Customer Jobs (Price)";
                 ToolTip = 'View projects and project prices by customer. The report only includes projects that are marked as completed.';
             }
-            action("Items per Job")
+            action("Items per Contrato")
             {
                 ApplicationArea = All;
-                Caption = 'Items per Job';
+                Caption = 'Items per Contrato';
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
@@ -714,17 +748,17 @@ page 50200 "Contrato List"
 
                 trigger OnAction()
                 var
-                    Job: Record Contrato;
+                    Contrato: Record Contrato;
                 begin
-                    //Job := Rec;
-                    CurrPage.SetSelectionFilter(Job);
-                    Job.PrintRecords(true);
+                    //Contrato := Rec;
+                    CurrPage.SetSelectionFilter(Contrato);
+                    Contrato.PrintRecords(true);
                 end;
             }
-            action("Send Job Quote")
+            action("Send Contrato Quote")
             {
                 ApplicationArea = All;
-                Caption = 'Send Job Quote';
+                Caption = 'Send Contrato Quote';
                 Image = SendTo;
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
@@ -739,10 +773,10 @@ page 50200 "Contrato List"
             {
                 Caption = 'Financial Management';
                 Image = "Report";
-                action("Job WIP to G/L")
+                action("Contrato WIP to G/L")
                 {
                     ApplicationArea = All;
-                    Caption = 'Job WIP to G/L';
+                    Caption = 'Contrato WIP to G/L';
                     Image = "Report";
                     //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                     //PromotedCategory = "Report";
@@ -765,7 +799,7 @@ page 50200 "Contrato List"
                     ToolTip = 'View all postings with entries for a selected project for a selected period, which have been charged to a certain project. At the end of each project list, the amounts are totaled separately for the Sales and Usage entry types.';
                     Visible = false;
                 }
-                action("Job Cost Transaction Detail")
+                action("Contrato Cost Transaction Detail")
                 {
                     ApplicationArea = All;
                     Caption = 'Projects Cost Transaction Detail';
@@ -778,7 +812,7 @@ page 50200 "Contrato List"
                 action("Contrato Register")
                 {
                     ApplicationArea = All;
-                    Caption = 'Job Register';
+                    Caption = 'Contrato Register';
                     Image = "Report";
                     //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                     //PromotedCategory = "Report";
@@ -796,13 +830,13 @@ page 50200 "Contrato List"
                 actionref(CopyJob_Promoted; CopyJob)
                 {
                 }
-                actionref("Create Job &Sales Invoice_Promoted"; "Create Job &Sales Invoice")
+                actionref("Create Contrato &Sales Invoice_Promoted"; "Create Contrato &Sales Invoice")
                 {
                 }
             }
             group(Category_Category5)
             {
-                Caption = 'Job', Comment = 'Generated from the PromotedActionCategories property index 4.';
+                Caption = 'Contrato', Comment = 'Generated from the PromotedActionCategories property index 4.';
 
                 group(Category_Dimensions)
                 {
@@ -825,7 +859,7 @@ page 50200 "Contrato List"
                 actionref(SalesInvoicesCreditMemos_Promoted; SalesInvoicesCreditMemos)
                 {
                 }
-                actionref("Job Task &Lines_Promoted"; "Job Task &Lines")
+                actionref("Contrato Task &Lines_Promoted"; "Contrato Task &Lines")
                 {
                 }
                 actionref("Ledger E&ntries_Promoted"; "Ledger E&ntries")
@@ -921,19 +955,22 @@ page 50200 "Contrato List"
             {
                 Caption = 'Report', Comment = 'Generated from the PromotedActionCategories property index 2.';
 
-                actionref("Job - Planning Lines_Promoted"; "Job - Planning Lines")
+                actionref("Contrato - Planning Lines_Promoted"; "Contrato - Planning Lines")
                 {
                 }
-                actionref("Job Actual to Budget (Cost)_Promoted"; "Job Actual to Budget (Cost)")
+                actionref("Contrato Actual to Budget (Cost)_Promoted"; "Contrato Actual to Budget (Cost)")
                 {
                 }
-                actionref("Job Actual to Budget (Price)_Promoted"; "Job Actual to Budget (Price)")
+                actionref("Contrato Actual to Budget (Price)_Promoted"; "Contrato Actual to Budget (Price)")
                 {
                 }
-                actionref("Job Analysis_Promoted"; "Job Analysis")
+                actionref("Contrato Analysis_Promoted"; "Contrato Analysis")
                 {
                 }
-                actionref("Job Cost Suggested Billing_Promoted"; "Job Cost Suggested Billing")
+                actionref("Contrato Cost Suggested Billing_Promoted"; "Contrato Cost Suggested Billing")
+                {
+                }
+                actionref("Contrato Cost Suggested Billing_2Promoted"; "Generar Factura Producto")
                 {
                 }
             }
@@ -961,10 +998,10 @@ page 50200 "Contrato List"
 
     trigger OnAfterGetCurrRecord()
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
     begin
-        CurrPage.SetSelectionFilter(Job);
-        CurrPage.PowerBIEmbeddedReportPart.PAGE.SetFilterToMultipleValues(Job, Job.FieldNo("No."));
+        CurrPage.SetSelectionFilter(Contrato);
+        CurrPage.PowerBIEmbeddedReportPart.PAGE.SetFilterToMultipleValues(Contrato, Contrato.FieldNo("No."));
     end;
 
     trigger OnOpenPage()

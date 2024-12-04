@@ -1,9 +1,9 @@
 page 50216 "Contratos Setup"
 {
-    AccessByPermission = TableData Job = R;
-    AdditionalSearchTerms = 'Job setup, Job Setup';
+    AccessByPermission = TableData Contrato = R;
+    AdditionalSearchTerms = 'Contrato setup, Contrato Setup';
     ApplicationArea = All;
-    Caption = 'Job Setup';
+    Caption = 'Contrato Setup';
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = Card;
@@ -17,7 +17,7 @@ page 50216 "Contratos Setup"
             group(General)
             {
                 Caption = 'General';
-                field("Automatic Update Job Item Cost"; Rec."Automatic Update Job Item Cost")
+                field("Automatic Update Contrato Item Cost"; Rec."Automatic Update Job Item Cost")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies in the Projects Setup window that cost changes are automatically adjusted each time the Adjust Cost - Item Entries batch job is run. The adjustment process and its results are the same as when you run the Update Project Item Cost batch job.';
@@ -43,7 +43,7 @@ page 50216 "Contratos Setup"
                     ApplicationArea = All;
                     ToolTip = 'Specifies how the default WIP method is to be applied when posting Work in Process (WIP) to the general ledger. By default, it is applied per project.';
                 }
-                field("Default Job Posting Group"; Rec."Default Job Posting Group")
+                field("Default Contrato Posting Group"; Rec."Default Job Posting Group")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the default posting group to be applied when you create a new project. This group is used whenever you create a project, but you can modify the value on the project card.';
@@ -59,7 +59,7 @@ page 50216 "Contratos Setup"
                     Importance = Additional;
                     ToolTip = 'Specifies the position of your company logo on business letters and documents.';
                 }
-                field("Document No. Is Job No."; Rec."Document No. Is Job No.")
+                field("Document No. Is Contrato No."; Rec."Document No. Is Job No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies that the project number is also the document number in the ledger entries posted for the project.';
@@ -83,12 +83,12 @@ page 50216 "Contratos Setup"
             group(Numbering)
             {
                 Caption = 'Numbering';
-                field("Job Nos."; Rec."Job Nos.")
+                field("Contrato Nos."; Rec."Job Nos.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the code for the number series that will be used to assign numbers to projects. To see the number series that have been set up in the No. Series table, click the drop-down arrow in the field.';
                 }
-                field("Job WIP Nos."; Rec."Job WIP Nos.")
+                field("Contrato WIP Nos."; Rec."Job WIP Nos.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the code for the number series that will be used to assign numbers to project WIP documents. To see the number series that have been set up in the No. Series table, click the drop-down arrow in the field.';

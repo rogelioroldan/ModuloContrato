@@ -1,7 +1,7 @@
 
 page 50204 "Contrato Task Lines"
 {
-    Caption = 'Job Task Lines';
+    Caption = 'Contrato Task Lines';
     DataCaptionFields = "Job No.";
     PageType = List;
     SaveValues = true;
@@ -16,7 +16,7 @@ page 50204 "Contrato Task Lines"
                 IndentationColumn = DescriptionIndent;
                 IndentationControls = Description;
                 ShowCaption = false;
-                field("Job No."; Rec."Job No.")
+                field("Contrato No."; Rec."Job No.")
                 {
                     ApplicationArea = Jobs;
                     Style = Strong;
@@ -24,7 +24,7 @@ page 50204 "Contrato Task Lines"
                     ToolTip = 'Specifies the number of the related project.';
                     Visible = false;
                 }
-                field("Job Task No."; Rec."Job Task No.")
+                field("Contrato Task No."; Rec."Job Task No.")
                 {
                     ApplicationArea = Jobs;
                     Style = Strong;
@@ -38,7 +38,7 @@ page 50204 "Contrato Task Lines"
                     StyleExpr = StyleIsStrong;
                     ToolTip = 'Specifies a description of the project task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the project planning line.';
                 }
-                field("Job Task Type"; Rec."Job Task Type")
+                field("Contrato Task Type"; Rec."Job Task Type")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the purpose of the account. Newly created accounts are automatically assigned the Posting account type, but you can change this. Choose the field to select one of the following five options:';
@@ -221,14 +221,14 @@ page 50204 "Contrato Task Lines"
     {
         area(navigation)
         {
-            group("&Job Task")
+            group("&Contrato Task")
             {
-                Caption = '&Job Task';
+                Caption = '&Contrato Task';
                 Image = Task;
                 action(JobPlanningLines)
                 {
                     ApplicationArea = Jobs;
-                    Caption = 'Job &Planning Lines';
+                    Caption = 'Contrato &Planning Lines';
                     Image = JobLines;
                     ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (budget) or you can specify what you actually agreed with your customer that they should pay for the project (billable).';
 
@@ -252,20 +252,20 @@ page 50204 "Contrato Task Lines"
                 action(JobTaskStatistics)
                 {
                     ApplicationArea = Jobs;
-                    Caption = 'Job Task &Statistics';
+                    Caption = 'Contrato Task &Statistics';
                     Image = StatisticsDocument;
-                    RunObject = Page "Job Task Statistics";
+                    RunObject = Page "Contrato Task Statistics";
                     RunPageLink = "Job No." = field("Job No."),
                                   "Job Task No." = field("Job Task No.");
                     ShortCutKey = 'F7';
                     ToolTip = 'View statistics for the project task.';
                 }
-                action("Job &Task Card")
+                action("Contrato &Task Card")
                 {
                     ApplicationArea = Jobs;
-                    Caption = 'Job &Task Card';
+                    Caption = 'Contrato &Task Card';
                     Image = Task;
-                    RunObject = Page "Job Task Card";
+                    RunObject = Page "Contrato Task Card";
                     RunPageLink = "Job No." = field("Job No."),
                                   "Job Task No." = field("Job Task No.");
                     ShortCutKey = 'Shift+F7';
@@ -284,7 +284,7 @@ page 50204 "Contrato Task Lines"
                         ApplicationArea = Dimensions;
                         Caption = 'Dimensions-&Single';
                         Image = Dimensions;
-                        RunObject = Page "Job Task Dimensions";
+                        RunObject = Page "Contrato Task Dimensions";
                         RunPageLink = "Job No." = field("Job No."),
                                       "Job Task No." = field("Job Task No.");
                         ShortCutKey = 'Alt+D';
@@ -359,10 +359,10 @@ page 50204 "Contrato Task Lines"
             {
                 Caption = 'History';
                 Image = History;
-                action("Job Ledger E&ntries")
+                action("Contrato Ledger E&ntries")
                 {
                     ApplicationArea = Jobs;
-                    Caption = 'Job Ledger E&ntries';
+                    Caption = 'Contrato Ledger E&ntries';
                     Image = JobLedger;
                     RunObject = Page "Contrato Ledger Entries";
                     RunPageLink = "Job No." = field("Job No."),
@@ -384,7 +384,7 @@ page 50204 "Contrato Task Lines"
                 action(CRMGoToProduct)
                 {
                     ApplicationArea = Suite;
-                    Caption = 'Job Task in Field Service';
+                    Caption = 'Contrato Task in Field Service';
                     Image = CoupledItem;
                     ToolTip = 'Open the coupled Dynamics 365 Field Service entity.';
                     ObsoleteReason = 'Field Service is moved to Field Service Integration app.';
@@ -498,15 +498,15 @@ page 50204 "Contrato Task Lines"
 
                     trigger OnAction()
                     var
-                        Job: Record Contrato;
+                        Contrato: Record Contrato;
                         JobTask: Record "Contrato Task";
                     begin
                         Rec.TestField("Job No.");
-                        Job.Get(Rec."Job No.");
+                        Contrato.Get(Rec."Job No.");
                         // if Job.Blocked = Job.Blocked::All then
                         //     Job.TestBlocked();
 
-                        JobTask.SetRange("Job No.", Job."No.");
+                        JobTask.SetRange("Job No.", Contrato."No.");
                         if Rec."Job Task No." <> '' then
                             JobTask.SetRange("Job Task No.", Rec."Job Task No.");
 
@@ -528,16 +528,16 @@ page 50204 "Contrato Task Lines"
 
                     trigger OnAction()
                     var
-                        Job: Record Contrato;
+                        Contrato: Record Contrato;
                         JobTask: Record "Contrato Task";
                     begin
                         Rec.TestField("Job No.");
-                        Job.Get(Rec."Job No.");
+                        Contrato.Get(Rec."Job No.");
                         // if Job.Blocked = Job.Blocked::All then
                         //     Job.TestBlocked();
 
                         Rec.TestField("Job Task No.");
-                        JobTask.SetRange("Job No.", Job."No.");
+                        JobTask.SetRange("Job No.", Contrato."No.");
                         JobTask.SetRange("Job Task No.", Rec."Job Task No.");
 
                         REPORT.RunModal(REPORT::"Job Split Planning Line", true, false, JobTask);
@@ -553,15 +553,15 @@ page 50204 "Contrato Task Lines"
 
                     trigger OnAction()
                     var
-                        Job: Record Contrato;
+                        Contrato: Record Contrato;
                         JobTask: Record "Contrato Task";
                     begin
                         Rec.TestField("Job No.");
-                        Job.Get(Rec."Job No.");
+                        Contrato.Get(Rec."Job No.");
                         // if Job.Blocked = Job.Blocked::All then
                         //     Job.TestBlocked();
 
-                        JobTask.SetRange("Job No.", Job."No.");
+                        JobTask.SetRange("Job No.", Contrato."No.");
                         if Rec."Job Task No." <> '' then
                             JobTask.SetRange("Job Task No.", Rec."Job Task No.");
 
@@ -571,19 +571,19 @@ page 50204 "Contrato Task Lines"
                 action("<Action7>")
                 {
                     ApplicationArea = Jobs;
-                    Caption = 'I&ndent Job Tasks';
+                    Caption = 'I&ndent Contrato Tasks';
                     Image = Indent;
                     RunObject = Codeunit "Job Task-Indent";
-                    ToolTip = 'Move the selected lines in one position to show that the tasks are subcategories of other tasks. Job tasks that are totaled are the ones that lie between one pair of corresponding Begin-Total and End-Total project tasks.';
+                    ToolTip = 'Move the selected lines in one position to show that the tasks are subcategories of other tasks. Contrato tasks that are totaled are the ones that lie between one pair of corresponding Begin-Total and End-Total project tasks.';
                 }
                 group("&Copy")
                 {
                     Caption = '&Copy';
                     Image = Copy;
-                    action("Copy Job Planning Lines &from...")
+                    action("Copy Contrato Planning Lines &from...")
                     {
                         ApplicationArea = Jobs;
-                        Caption = 'Copy Job Planning Lines &from...';
+                        Caption = 'Copy Contrato Planning Lines &from...';
                         Ellipsis = true;
                         Image = CopyToTask;
                         ToolTip = 'Use a batch job to help you copy planning lines from one project task to another. You can copy from a project task within the project you are working with or from a project task linked to a different project.';
@@ -597,7 +597,7 @@ page 50204 "Contrato Task Lines"
                             CopyJobPlanningLines.RunModal();
                         end;
                     }
-                    action("Copy Job Planning Lines &to...")
+                    action("Copy Contrato Planning Lines &to...")
                     {
                         ApplicationArea = Jobs;
                         Caption = 'Copy Contrato Planning Lines &to...';
@@ -629,14 +629,14 @@ page 50204 "Contrato Task Lines"
 
                         trigger OnAction()
                         var
-                            Job: Record Contrato;
+                            Contrato: Record Contrato;
                             JobCalculateWIP: Report "Job Calculate WIP";
                         begin
                             Rec.TestField("Job No.");
-                            Job.Get(Rec."Job No.");
-                            Job.SetRange("No.", Job."No.");
+                            Contrato.Get(Rec."Job No.");
+                            Contrato.SetRange("No.", Contrato."No.");
                             Clear(JobCalculateWIP);
-                            JobCalculateWIP.SetTableView(Job);
+                            JobCalculateWIP.SetTableView(Contrato);
                             JobCalculateWIP.Run();
                         end;
                     }
@@ -647,16 +647,16 @@ page 50204 "Contrato Task Lines"
                         Ellipsis = true;
                         Image = PostOrder;
                         ShortCutKey = 'F9';
-                        ToolTip = 'Run the Job Post WIP to G/L batch job.';
+                        ToolTip = 'Run the Contrato Post WIP to G/L batch job.';
 
                         trigger OnAction()
                         var
-                            Job: Record Contrato;
+                            Contrato: Record Contrato;
                         begin
                             Rec.TestField("Job No.");
-                            Job.Get(Rec."Job No.");
-                            Job.SetRange("No.", Job."No.");
-                            REPORT.RunModal(REPORT::"Job Post WIP to G/L", true, false, Job);
+                            Contrato.Get(Rec."Job No.");
+                            Contrato.SetRange("No.", Contrato."No.");
+                            REPORT.RunModal(REPORT::"Job Post WIP to G/L", true, false, Contrato);
                         end;
                     }
                 }
@@ -664,42 +664,42 @@ page 50204 "Contrato Task Lines"
         }
         area(reporting)
         {
-            action("Job Actual to Budget (Cost)")
+            action("Contrato Actual to Budget (Cost)")
             {
                 ApplicationArea = Jobs;
-                Caption = 'Job Actual to Budget (Cost)';
+                Caption = 'Contrato Actual to Budget (Cost)';
                 Image = "Report";
                 RunObject = Report "Job Actual to Budget (Cost)";
                 ToolTip = 'Compare budgeted and usage amounts for selected projects. All lines of the selected project show quantity, total cost, and line amount.';
             }
-            action("Job Actual to Budget (Price)")
+            action("Contrato Actual to Budget (Price)")
             {
                 ApplicationArea = Jobs;
-                Caption = 'Job Actual to Budget (Price)';
+                Caption = 'Contrato Actual to Budget (Price)';
                 Image = "Report";
                 RunObject = Report "Job Actual to Budget (Price)";
                 ToolTip = 'Compare the actual price of your projects to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
             }
-            action("Job Analysis")
+            action("Contrato Analysis")
             {
                 ApplicationArea = Jobs;
-                Caption = 'Job Analysis';
+                Caption = 'Contrato Analysis';
                 Image = "Report";
                 RunObject = Report "Job Analysis";
                 ToolTip = 'Analyze the project, such as the budgeted prices, usage prices, and billable prices, and then compares the three sets of prices.';
             }
-            action("Job - Planning Lines")
+            action("Contrato - Planning Lines")
             {
                 ApplicationArea = Jobs;
-                Caption = 'Job - Planning Lines';
+                Caption = 'Contrato - Planning Lines';
                 Image = "Report";
                 RunObject = Report "Job - Planning Lines";
                 ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (budget) or you can specify what you actually agreed with your customer that he should pay for the project (billable).';
             }
-            action("Job - Suggested Billing")
+            action("Contrato - Suggested Billing")
             {
                 ApplicationArea = Jobs;
-                Caption = 'Job - Suggested Billing';
+                Caption = 'Contrato - Suggested Billing';
                 Image = "Report";
                 RunObject = Report "Job Cost Suggested Billing";
                 ToolTip = 'View a list of all projects, grouped by customer, how much the customer has already been invoiced, and how much remains to be invoiced, that is, the suggested billing.';
@@ -725,10 +725,10 @@ page 50204 "Contrato Task Lines"
                 {
                     Caption = 'Copy Lines';
 
-                    actionref("Copy Job Planning Lines &from..._Promoted"; "Copy Job Planning Lines &from...")
+                    actionref("Copy Contrato Planning Lines &from..._Promoted"; "Copy Contrato Planning Lines &from...")
                     {
                     }
-                    actionref("Copy Job Planning Lines &to..._Promoted"; "Copy Job Planning Lines &to...")
+                    actionref("Copy Contrato Planning Lines &to..._Promoted"; "Copy Contrato Planning Lines &to...")
                     {
                     }
                 }
@@ -741,7 +741,7 @@ page 50204 "Contrato Task Lines"
             }
             group("Category_Job Task")
             {
-                Caption = 'Job Task';
+                Caption = 'Contrato Task';
 
                 actionref(JobPlanningLines_Promoted; JobPlanningLines)
                 {
@@ -764,7 +764,7 @@ page 50204 "Contrato Task Lines"
                 actionref(JobTaskStatistics_Promoted; JobTaskStatistics)
                 {
                 }
-                actionref("Job &Task Card_Promoted"; "Job &Task Card")
+                actionref("Contrato &Task Card_Promoted"; "Contrato &Task Card")
                 {
                 }
             }
@@ -789,19 +789,19 @@ page 50204 "Contrato Task Lines"
             {
                 Caption = 'Reports';
 
-                actionref("Job - Planning Lines_Promoted"; "Job - Planning Lines")
+                actionref("Contrato - Planning Lines_Promoted"; "Contrato - Planning Lines")
                 {
                 }
-                actionref("Job Actual to Budget (Cost)_Promoted"; "Job Actual to Budget (Cost)")
+                actionref("Contrato Actual to Budget (Cost)_Promoted"; "Contrato Actual to Budget (Cost)")
                 {
                 }
-                actionref("Job Actual to Budget (Price)_Promoted"; "Job Actual to Budget (Price)")
+                actionref("Contrato Actual to Budget (Price)_Promoted"; "Contrato Actual to Budget (Price)")
                 {
                 }
-                actionref("Job Analysis_Promoted"; "Job Analysis")
+                actionref("Contrato Analysis_Promoted"; "Contrato Analysis")
                 {
                 }
-                actionref("Job - Suggested Billing_Promoted"; "Job - Suggested Billing")
+                actionref("Contrato - Suggested Billing_Promoted"; "Contrato - Suggested Billing")
                 {
                 }
             }

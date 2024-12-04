@@ -1,6 +1,6 @@
 page 50207 "Contr WIP/Recognition FactBox"
 {
-    Caption = 'Job Details - WIP/Recognition';
+    Caption = 'Contrato Details - WIP/Recognition';
     PageType = CardPart;
     SourceTable = Contrato;
 
@@ -11,7 +11,7 @@ page 50207 "Contr WIP/Recognition FactBox"
             field("No."; Rec."No.")
             {
                 ApplicationArea = All;
-                Caption = 'Job No.';
+                Caption = 'Contrato No.';
                 ToolTip = 'Specifies the project number.';
 
                 trigger OnDrillDown()
@@ -22,12 +22,12 @@ page 50207 "Contr WIP/Recognition FactBox"
             field("WIP Posting Date"; Rec."WIP Posting Date")
             {
                 ApplicationArea = All;
-                ToolTip = 'Specifies the posting date that was entered when the Job Calculate WIP batch job was last run.';
+                ToolTip = 'Specifies the posting date that was entered when the Contrato Calculate WIP batch job was last run.';
             }
             // field("Total WIP Cost Amount"; Rec."Total WIP Cost Amount")
             // {
             //     ApplicationArea = Jobs;
-            //     ToolTip = 'Specifies the total WIP cost amount that was last calculated for the project. The WIP Cost Amount for the project is the value WIP Cost Job WIP Entries less the value of the Recognized Cost Job WIP Entries. For projects with WIP Methods of Sales Value or Percentage of Completion, the WIP Cost Amount is normally 0.';
+            //     ToolTip = 'Specifies the total WIP cost amount that was last calculated for the project. The WIP Cost Amount for the project is the value WIP Cost Contrato WIP Entries less the value of the Recognized Cost Contrato WIP Entries. For projects with WIP Methods of Sales Value or Percentage of Completion, the WIP Cost Amount is normally 0.';
             // }
             // field("Applied Costs G/L Amount"; Rec."Applied Costs G/L Amount")
             // {
@@ -38,7 +38,7 @@ page 50207 "Contr WIP/Recognition FactBox"
             // field("Total WIP Sales Amount"; Rec."Total WIP Sales Amount")
             // {
             //     ApplicationArea = Jobs;
-            //     ToolTip = 'Specifies the total WIP Sales amount that was last calculated for the project. The WIP Sales Amount for the project is the value WIP Sales Job WIP Entries less the value of the Recognized Sales Job WIP Entries. For projects with WIP Methods of Cost Value or Cost of Sales, the WIP Sales Amount is normally 0.';
+            //     ToolTip = 'Specifies the total WIP Sales amount that was last calculated for the project. The WIP Sales Amount for the project is the value WIP Sales Contrato WIP Entries less the value of the Recognized Sales Contrato WIP Entries. For projects with WIP Methods of Cost Value or Cost of Sales, the WIP Sales Amount is normally 0.';
             // }
             // field("Applied Sales G/L Amount"; Rec."Applied Sales G/L Amount")
             // {
@@ -49,12 +49,12 @@ page 50207 "Contr WIP/Recognition FactBox"
             // field("Recog. Costs Amount"; Rec."Recog. Costs Amount")
             // {
             //     ApplicationArea = Jobs;
-            //     ToolTip = 'Specifies the Recognized Cost amount that was last calculated for the project. The Recognized Cost Amount for the project is the sum of the Recognized Cost Job WIP Entries.';
+            //     ToolTip = 'Specifies the Recognized Cost amount that was last calculated for the project. The Recognized Cost Amount for the project is the sum of the Recognized Cost Contrato WIP Entries.';
             // }
             // field("Recog. Sales Amount"; Rec."Recog. Sales Amount")
             // {
             //     ApplicationArea = Jobs;
-            //     ToolTip = 'Specifies the recognized sales amount that was last calculated for the project, which is the sum of the Recognized Sales Job WIP Entries.';
+            //     ToolTip = 'Specifies the recognized sales amount that was last calculated for the project, which is the sum of the Recognized Sales Contrato WIP Entries.';
             // }
             field("Recog. Profit Amount"; Rec.CalcRecognizedProfitAmount())
             {

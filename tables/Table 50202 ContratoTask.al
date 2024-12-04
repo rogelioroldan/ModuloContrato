@@ -1,6 +1,6 @@
 table 50202 "Contrato Task"
 {
-    Caption = 'Job Task';
+    Caption = 'Contrato Task';
     DrillDownPageID = "Contrato Task Lines";
     LookupPageID = "Contrato Task Lines";
     DataClassification = CustomerContent;
@@ -16,7 +16,7 @@ table 50202 "Contrato Task"
         }
         field(2; "Job Task No."; Code[20])
         {
-            Caption = 'Job Task No.';
+            Caption = 'Contrato Task No.';
             NotBlank = true;
 
             trigger OnValidate()
@@ -948,7 +948,7 @@ table 50202 "Contrato Task"
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        //OnBeforeOnInsert(Rec, IsHandled);
+        OnBeforeOnInsert(Rec, IsHandled);
         if IsHandled then
             exit;
 
@@ -968,7 +968,7 @@ table 50202 "Contrato Task"
         Job.UpdateOverBudgetValue("Job No.", true, "Usage (Total Cost)");
         Job.UpdateOverBudgetValue("Job No.", false, "Schedule (Total Cost)");
 
-        //OnAfterOnInsert(Rec, xRec);
+        OnAfterOnInsert(Rec, xRec);
     end;
 
     trigger OnModify()
@@ -976,7 +976,7 @@ table 50202 "Contrato Task"
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        //OnBeforeOnModify(Rec, xRec, IsHandled);
+        OnBeforeOnModify(Rec, xRec, IsHandled);
         if IsHandled then
             exit;
 

@@ -14,14 +14,14 @@ page 50220 "Contrato Task List"
             repeater(Control1)
             {
                 ShowCaption = false;
-                field("Job No."; Rec."Job No.")
+                field("Contrato No."; Rec."Job No.")
                 {
                     ApplicationArea = Jobs;
                     Style = Strong;
                     StyleExpr = StyleIsStrong;
                     ToolTip = 'Specifies the number of the related project.';
                 }
-                field("Job Task No."; Rec."Job Task No.")
+                field("Contrato Task No."; Rec."Job Task No.")
                 {
                     ApplicationArea = Jobs;
                     Style = Strong;
@@ -33,7 +33,7 @@ page 50220 "Contrato Task List"
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies a description of the project task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the project planning line.';
                 }
-                field("Job Task Type"; Rec."Job Task Type")
+                field("Contrato Task Type"; Rec."Job Task Type")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the purpose of the account. Newly created accounts are automatically assigned the Posting account type, but you can change this. Choose the field to select one of the following five options:';
@@ -48,7 +48,7 @@ page 50220 "Contrato Task List"
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies an interval or a list of project task numbers.';
                 }
-                field("Job Posting Group"; Rec."Contrato Posting Group")
+                field("Contrato Posting Group"; Rec."Contrato Posting Group")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the project posting group of the task.';
@@ -85,7 +85,7 @@ page 50220 "Contrato Task List"
     {
         area(navigation)
         {
-            group("&Job Task")
+            group("&Contrato Task")
             {
                 Caption = '&Project Task';
                 Image = Task;
@@ -265,7 +265,7 @@ page 50220 "Contrato Task List"
                 RunObject = Report "Change Job Dates";
                 ToolTip = 'Use a batch job to help you move planning lines on a project from one date interval to another.';
             }
-            action("Copy Job Task From")
+            action("Copy Contrato Task From")
             {
                 ApplicationArea = Jobs;
                 Caption = 'Copy Project Task From';
@@ -275,16 +275,16 @@ page 50220 "Contrato Task List"
 
                 trigger OnAction()
                 var
-                    Job: Record Contrato;
+                    Contrato: Record Contrato;
                     CopyJobTasks: Page "Copy Contrato Tasks";
                 begin
-                    if Job.Get(Rec."Job No.") then begin
-                        CopyJobTasks.SetToJob(Job);
+                    if Contrato.Get(Rec."Job No.") then begin
+                        CopyJobTasks.SetToJob(Contrato);
                         CopyJobTasks.RunModal();
                     end;
                 end;
             }
-            action("Copy Job Task To")
+            action("Copy Contrato Task To")
             {
                 ApplicationArea = Jobs;
                 Caption = 'Copy Project Task To';
@@ -294,11 +294,11 @@ page 50220 "Contrato Task List"
 
                 trigger OnAction()
                 var
-                    Job: Record Contrato;
+                    Contrato: Record Contrato;
                     CopyJobTasks: Page "Copy Contrato Tasks";
                 begin
-                    if Job.Get(Rec."Job No.") then begin
-                        CopyJobTasks.SetFromJob(Job);
+                    if Contrato.Get(Rec."Job No.") then begin
+                        CopyJobTasks.SetFromJob(Contrato);
                         CopyJobTasks.RunModal();
                     end;
                 end;
@@ -306,7 +306,7 @@ page 50220 "Contrato Task List"
         }
         area(reporting)
         {
-            action("Job Actual to Budget (Cost)")
+            action("Contrato Actual to Budget (Cost)")
             {
                 ApplicationArea = Jobs;
                 Caption = 'Project Actual to Budget (Cost)';
@@ -314,7 +314,7 @@ page 50220 "Contrato Task List"
                 RunObject = Report "Job Actual to Budget (Cost)";
                 ToolTip = 'Compare budgeted and usage amounts for selected projects. All lines of the selected project show quantity, total cost, and line amount.';
             }
-            action("<Report Job Actual to Budget (Price)>")
+            action("<Report Contrato Actual to Budget (Price)>")
             {
                 ApplicationArea = Jobs;
                 Caption = 'Project Actual to Budget (Price)';
@@ -322,7 +322,7 @@ page 50220 "Contrato Task List"
                 RunObject = Report "Job Actual to Budget (Price)";
                 ToolTip = 'Compare the actual price of your projects to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
             }
-            action("Job Analysis")
+            action("Contrato Analysis")
             {
                 ApplicationArea = Jobs;
                 Caption = 'Project Analysis';
@@ -330,7 +330,7 @@ page 50220 "Contrato Task List"
                 RunObject = Report "Job Analysis";
                 ToolTip = 'Analyze the project, such as the budgeted prices, usage prices, and billable prices, and then compares the three sets of prices.';
             }
-            action("Job - Planning Lines")
+            action("Contrato - Planning Lines")
             {
                 ApplicationArea = Jobs;
                 Caption = 'Project - Planning Lines';
@@ -338,7 +338,7 @@ page 50220 "Contrato Task List"
                 RunObject = Report "Job - Planning Lines";
                 ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (budget) or you can specify what you actually agreed with your customer that he should pay for the project (billable).';
             }
-            action("Job - Suggested Billing")
+            action("Contrato - Suggested Billing")
             {
                 ApplicationArea = Jobs;
                 Caption = 'Project - Suggested Billing';
@@ -363,10 +363,10 @@ page 50220 "Contrato Task List"
             {
                 Caption = 'Process';
 
-                actionref("Copy Job Task From_Promoted"; "Copy Job Task From")
+                actionref("Copy Contrato Task From_Promoted"; "Copy Contrato Task From")
                 {
                 }
-                actionref("Copy Job Task To_Promoted"; "Copy Job Task To")
+                actionref("Copy Contrato Task To_Promoted"; "Copy Contrato Task To")
                 {
                 }
                 group(Category_Dimensions)
@@ -387,19 +387,19 @@ page 50220 "Contrato Task List"
                 {
                     Caption = 'Reports';
 
-                    actionref("Job Actual to Budget (Cost)_Promoted"; "Job Actual to Budget (Cost)")
+                    actionref("Contrato Actual to Budget (Cost)_Promoted"; "Contrato Actual to Budget (Cost)")
                     {
                     }
-                    actionref("<Report Job Actual to Budget (Price)>_Promoted"; "<Report Job Actual to Budget (Price)>")
+                    actionref("<Report Contrato Actual to Budget (Price)>_Promoted"; "<Report Contrato Actual to Budget (Price)>")
                     {
                     }
-                    actionref("Job Analysis_Promoted"; "Job Analysis")
+                    actionref("Contrato Analysis_Promoted"; "Contrato Analysis")
                     {
                     }
-                    actionref("Job - Planning Lines_Promoted"; "Job - Planning Lines")
+                    actionref("Contrato - Planning Lines_Promoted"; "Contrato - Planning Lines")
                     {
                     }
-                    actionref("Job - Suggested Billing_Promoted"; "Job - Suggested Billing")
+                    actionref("Contrato - Suggested Billing_Promoted"; "Contrato - Suggested Billing")
                     {
                     }
                 }

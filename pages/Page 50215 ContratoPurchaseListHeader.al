@@ -4,7 +4,7 @@ page 50215 "Purchase Contrato Price Lists"
     CardPageID = "Purchase Price List";
     Editable = false;
     PageType = List;
-    QueryCategory = 'Purchase Job Price Lists';
+    QueryCategory = 'Purchase Contrato Price Lists';
     RefreshOnActivate = true;
     SourceTable = "Price List Header";
     SourceTableView = where("Source Group" = const(Job), "Price Type" = const(Purchase));

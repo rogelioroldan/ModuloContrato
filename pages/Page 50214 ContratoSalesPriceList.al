@@ -4,7 +4,7 @@ page 50214 "Sales Contrato Price Lists"
     CardPageID = "Sales Price List";
     Editable = false;
     PageType = List;
-    QueryCategory = 'Sales Job Price Lists';
+    QueryCategory = 'Sales Contrato Price Lists';
     RefreshOnActivate = true;
     SourceTable = "Price List Header";
     SourceTableView = where("Source Group" = const(Job), "Price Type" = const(Sale));

@@ -1,6 +1,6 @@
 page 50212 "Contrato Registers"
 {
-    AdditionalSearchTerms = 'Job Registers';
+    AdditionalSearchTerms = 'Contrato Registers';
     ApplicationArea = Jobs;
     Caption = 'Project Registers';
     Editable = false;
@@ -87,7 +87,7 @@ page 50212 "Contrato Registers"
             {
                 Caption = '&Register';
                 Image = Register;
-                action("Job Ledger")
+                action("Contrato Ledger")
                 {
                     ApplicationArea = Jobs;
                     Caption = 'Project Ledger';
@@ -103,7 +103,7 @@ page 50212 "Contrato Registers"
             {
                 Caption = 'Process';
 
-                actionref("Job Ledger_Promoted"; "Job Ledger")
+                actionref("Contrato Ledger_Promoted"; "Contrato Ledger")
                 {
                 }
             }

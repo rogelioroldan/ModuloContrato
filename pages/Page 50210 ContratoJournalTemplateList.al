@@ -1,6 +1,6 @@
 page 50210 "Contrato Journal Template List"
 {
-    Caption = 'Job Journal Template List';
+    Caption = 'Contrato Journal Template List';
     Editable = false;
     PageType = List;
     SourceTable = "Contrato Journal Template";
