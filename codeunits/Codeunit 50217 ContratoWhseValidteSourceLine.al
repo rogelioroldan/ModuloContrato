@@ -24,7 +24,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
         JobPostQtyPickRemainErr: Label 'You cannot post usage for project number %1 because a quantity of %2 remains to be picked.', Comment = '%1 = Project number, %2 = remaining quantity to pick';
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Sales Warehouse Mgt.', '23.0')]
     procedure SalesLineVerifyChange(var NewSalesLine: Record "Sales Line"; var OldSalesLine: Record "Sales Line")
     begin
         SalesWarehouseMgt.SalesLineVerifyChange(NewSalesLine, OldSalesLine);
@@ -32,7 +31,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
 #endif
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Sales Warehouse Mgt.', '23.0')]
     procedure SalesLineDelete(var SalesLine: Record "Sales Line")
     begin
         SalesWarehouseMgt.SalesLineDelete(SalesLine);
@@ -40,7 +38,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
 #endif
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Service Warehouse Mgt.', '23.0')]
     procedure ServiceLineVerifyChange(var NewServiceLine: Record "Service Line"; var OldServiceLine: Record "Service Line")
     begin
         ServiceWarehouseMgt.ServiceLineVerifyChange(NewServiceLine, OldServiceLine);
@@ -48,7 +45,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
 #endif
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Service Warehouse Mgt.', '23.0')]
     procedure ServiceLineDelete(var ServiceLine: Record "Service Line")
     begin
         ServiceWarehouseMgt.ServiceLineDelete(ServiceLine);
@@ -99,7 +95,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Purchases Warehouse Mgt.', '23.0')]
     procedure PurchaseLineVerifyChange(var NewPurchLine: Record "Purchase Line"; var OldPurchLine: Record "Purchase Line")
     begin
         PurchasesWarehouseMgt.PurchaseLineVerifyChange(NewPurchLine, OldPurchLine);
@@ -107,7 +102,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
 #endif
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Purchases Warehouse Mgt.', '23.0')]
     procedure PurchaseLineDelete(var PurchLine: Record "Purchase Line")
     begin
         PurchasesWarehouseMgt.PurchaseLineDelete(PurchLine);
@@ -255,7 +249,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Prod. Order Warehouse Mgt.', '23.0')]
     procedure ProdComponentVerifyChange(var NewProdOrderComp: Record "Prod. Order Component"; var OldProdOrderComp: Record "Prod. Order Component")
     begin
         ProdOrderWarehouseMgt.ProdComponentVerifyChange(NewProdOrderComp, OldProdOrderComp);
@@ -263,7 +256,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
 #endif
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Prod. Order Warehouse Mgt.', '23.0')]
     procedure ProdComponentDelete(var ProdOrderComp: Record "Prod. Order Component")
     begin
         ProdOrderWarehouseMgt.ProdComponentDelete(ProdOrderComp);
@@ -271,15 +263,13 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
 #endif
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Contrato Warehouse Mgt.', '23.0')]
     procedure JobPlanningLineVerifyChange(var NewJobPlanningLine: Record "Contrato Planning Line"; var OldJobPlanningLine: Record "Contrato Planning Line"; FieldNo: Integer)
     begin
-        //JobWarehouseMgt.JobPlanningLineVerifyChange(NewJobPlanningLine, OldJobPlanningLine, FieldNo);
+        JobWarehouseMgt.JobPlanningLineVerifyChange(NewJobPlanningLine, OldJobPlanningLine, FieldNo);
     end;
 #endif
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Contrato Warehouse Mgt.', '23.0')]
     procedure JobPlanningLineDelete(var JobPlanningLine: Record "Contrato Planning Line")
     begin
         JobWarehouseMgt.JobPlanningLineDelete(JobPlanningLine);
@@ -483,7 +473,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
 
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Prod. Order Warehouse Mgt.', '23.0')]
     procedure ProdOrderLineVerifyChange(var NewProdOrderLine: Record "Prod. Order Line"; var OldProdOrderLine: Record "Prod. Order Line")
     var
         NewRecRef: RecordRef;
@@ -494,7 +483,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
 #endif
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Prod. Order Warehouse Mgt.', '23.0')]
     procedure ProdOrderLineDelete(var ProdOrderLine: Record "Prod. Order Line")
     begin
         ProdOrderWarehouseMgt.ProdOrderLineDelete(ProdOrderLine);
@@ -502,7 +490,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
 #endif
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Assembly Warehouse Mgt.', '23.0')]
     procedure AssemblyLineVerifyChange(var NewAssemblyLine: Record "Assembly Line"; var OldAssemblyLine: Record "Assembly Line")
     begin
         AssemblyWarehouseMgt.AssemblyLineVerifyChange(NewAssemblyLine, OldAssemblyLine);
@@ -510,7 +497,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
 #endif
 
 #if not CLEAN23
-    [Obsolete('Replaced by same procedure in codeunit Assembly Warehouse Mgt.', '23.0')]
     procedure AssemblyLineDelete(var AssemblyLine: Record "Assembly Line")
     begin
         AssemblyWarehouseMgt.AssemblyLineDelete(AssemblyLine);
@@ -551,7 +537,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Sales Warehouse Mgt.', '23.0')]
     local procedure OnAfterSalesLineVerifyChange(var NewRecRef: RecordRef; var OldRecRef: RecordRef)
     begin
     end;
@@ -564,7 +549,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Service Warehouse Mgt.', '23.0')]
     local procedure OnAfterServiceLineVerifyChange(var NewRecRef: RecordRef; var OldRecRef: RecordRef)
     begin
     end;
@@ -577,7 +561,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Purchases Warehouse Mgt.', '23.0')]
     local procedure OnAfterPurchaseLineVerifyChange(var NewPurchLine: Record "Purchase Line"; var OldPurchLine: Record "Purchase Line"; var NewRecRef: RecordRef; var OldRecRef: RecordRef)
     begin
     end;
@@ -590,7 +573,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Prod. Order Warehouse Mgt.', '23.0')]
     local procedure OnAfterProdComponentVerifyChange(var NewRecRef: RecordRef; var OldRecRef: RecordRef)
     begin
     end;
@@ -603,7 +585,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Prod. Order Warehouse Mgt.', '23.0')]
     local procedure OnAfterProdOrderLineVerifyChange(var NewProdOrderLine: Record "Prod. Order Line"; var OldProdOrderLine: Record "Prod. Order Line"; var NewRecRef: RecordRef; var OldRecRef: RecordRef)
     begin
     end;
@@ -626,7 +607,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Assembly Warehouse Mgt.', '23.0')]
     local procedure OnAfterAssemblyLineVerifyChange(var NewRecRef: RecordRef; var OldRecRef: RecordRef)
     begin
     end;
@@ -639,7 +619,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Sales Warehouse Mgt.', '23.0')]
     local procedure OnAfterSalesLineDelete(var SalesLine: Record "Sales Line")
     begin
     end;
@@ -652,7 +631,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Service Warehouse Mgt.', '23.0')]
     local procedure OnAfterServiceLineDelete(var ServiceLine: Record "Service Line")
     begin
     end;
@@ -665,7 +643,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Purchase Warehouse Mgt.', '23.0')]
     local procedure OnAfterPurchaseLineDelete(var PurchaseLine: Record "Purchase Line")
     begin
     end;
@@ -683,7 +660,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Prod. Order Warehouse Mgt.', '23.0')]
     local procedure OnAfterProdComponentDelete(var ProdOrderComp: Record "Prod. Order Component")
     begin
     end;
@@ -696,7 +672,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Prod. Order Warehouse Mgt.', '23.0')]
     local procedure OnAfterProdOrderLineDelete(var ProdOrderLine: Record "Prod. Order Line")
     begin
     end;
@@ -709,7 +684,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Assembly Warehouse Mgt.', '23.0')]
     local procedure OnAfterAssemblyLineDelete(var AssemblyLine: Record "Assembly Line")
     begin
     end;
@@ -737,7 +711,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Purchases Warehouse Mgt.', '23.0')]
     local procedure OnBeforePurchaseLineVerifyChange(var NewPurchLine: Record "Purchase Line"; var OldPurchLine: Record "Purchase Line"; var IsHandled: Boolean)
     begin
     end;
@@ -750,7 +723,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Sales Warehouse Mgt.', '23.0')]
     local procedure OnBeforeSalesLineVerifyChange(var NewSalesLine: Record "Sales Line"; var OldSalesLine: Record "Sales Line"; var IsHandled: Boolean)
     begin
     end;
@@ -763,7 +735,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Service Warehouse Mgt.', '23.0')]
     local procedure OnBeforeServiceLineVerifyChange(var NewServiceLine: Record "Service Line"; var OldServiceLine: Record "Service Line"; var IsHandled: Boolean)
     begin
     end;
@@ -811,7 +782,6 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    [Obsolete('Replaced by same event in codeunit Prod. Order Warehouse Mgt.', '23.0')]
     local procedure OnBeforeProdComponentVerifyChange(var NewProdOrderComp: Record "Prod. Order Component"; var OldProdOrderComp: Record "Prod. Order Component"; var IsHandled: Boolean)
     begin
     end;

@@ -17,7 +17,7 @@ page 50216 "Contratos Setup"
             group(General)
             {
                 Caption = 'General';
-                field("Automatic Update Contrato Item Cost"; Rec."Automatic Update Contrato Item Cost")
+                field("AutomaticUpdateContraItemCost"; Rec."AutomaticUpdateContraItemCost")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies in the Projects Setup window that cost changes are automatically adjusted each time the Adjust Cost - Item Entries batch job is run. The adjustment process and its results are the same as when you run the Update Project Item Cost batch job.';

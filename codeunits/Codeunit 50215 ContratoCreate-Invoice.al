@@ -111,7 +111,7 @@ codeunit 50215 "Contrato Create-Invoice"
             Message(Text000);
     end;
 #if not CLEAN23
-    [Obsolete('Replaced by CreateSalesInvoiceLines(JobNo: Code[20]; var JobPlanningLineSource: Record "Contrato Planning Line"; InvoiceNo: Code[20]; NewInvoice: Boolean; PostingDate: Date; DocumentDate: Date; CreditMemo: Boolean)', '23.0')]
+
     procedure CreateSalesInvoiceLines(JobNo: Code[20]; var JobPlanningLineSource: Record "Contrato Planning Line"; InvoiceNo: Code[20]; NewInvoice: Boolean; PostingDate: Date; CreditMemo: Boolean)
     begin
         CreateSalesInvoiceLines(JobNo, JobPlanningLineSource, InvoiceNo, NewInvoice, PostingDate, 0D, CreditMemo);
@@ -252,7 +252,7 @@ codeunit 50215 "Contrato Create-Invoice"
         TempJobPlanningLine.DeleteAll();
     end;
 #if not CLEAN23
-    [Obsolete('Replaced by CreateSalesInvoiceJobTask(var JobTask2: Record "Contrato Task"; PostingDate: Date; DocumentDate: Date; InvoicePerTask: Boolean; var NoOfInvoices: Integer; var OldJobNo: Code[20]; var OldJobTaskNo: Code[20]; LastJobTask: Boolean)', '23.0')]
+
     procedure CreateSalesInvoiceJobTask(var JobTask2: Record "Contrato Task"; PostingDate: Date; InvoicePerTask: Boolean; var NoOfInvoices: Integer; var OldJobNo: Code[20]; var OldJobTaskNo: Code[20]; LastJobTask: Boolean)
     begin
         CreateSalesInvoiceJobTask(JobTask2, PostingDate, 0D, InvoicePerTask, NoOfInvoices, OldJobNo, OldJobTaskNo, LastJobTask);
@@ -1380,7 +1380,6 @@ codeunit 50215 "Contrato Create-Invoice"
     begin
     end;
 #if not CLEAN23
-    [Obsolete('Replaced with OnBeforeCheckJobBillToCustomer', '21.0')]
     [IntegrationEvent(false, false)]
     local procedure OnCreateSalesInvoiceLinesOnBeforeGetCustomer(JobPlanningLine: Record "Contrato Planning Line"; var Customer: Record Customer; var IsHandled: Boolean)
     begin
@@ -1452,7 +1451,6 @@ codeunit 50215 "Contrato Create-Invoice"
     end;
 
 #if not CLEAN24
-    [Obsolete('Has no purpose in procedure CheckJobPlanningLineIsNegative anymore', '24.0')]
     [IntegrationEvent(false, false)]
     local procedure OnBeforeCheckJobPlanningLineIsNegative(JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin

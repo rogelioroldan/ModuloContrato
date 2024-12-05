@@ -2007,8 +2007,7 @@ table 50201 "Contrato Planning Line"
     end;
 
 #if not CLEAN23
-    [Obsolete('Replaced by the new implementation (V16) of price calculation.', '17.0')]
-    procedure AfterResourceFindCost(var ResourceCost: Record "Resource Cost");
+    procedure AfterResourceFindCost(var ResourceCost: Record "Price List Line");
     begin
         OnAfterResourceFindCost(Rec, ResourceCost);
     end;
@@ -3345,9 +3344,8 @@ table 50201 "Contrato Planning Line"
     end;
 
 #if not CLEAN23
-    [Obsolete('Replaced by the new implementation (V16) of price calculation.', '17.0')]
     [IntegrationEvent(false, false)]
-    local procedure OnAfterResourceFindCost(var JobPlanningLine: Record "Contrato Planning Line"; var ResourceCost: Record "Resource Cost")
+    local procedure OnAfterResourceFindCost(var JobPlanningLine: Record "Contrato Planning Line"; var ResourceCost: Record "Price List Line")
     begin
     end;
 #endif

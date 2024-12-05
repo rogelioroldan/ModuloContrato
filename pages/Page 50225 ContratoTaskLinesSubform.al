@@ -572,7 +572,6 @@ page 50206 "Contrato Task Lines Subform"
     end;
 
 #if not CLEAN24
-    [Obsolete('Procedure is not used.', '24.0')]
     procedure SetRefreshCustomerControl(Refresh: Boolean)
     begin
         RefreshCustomerControl := Refresh;

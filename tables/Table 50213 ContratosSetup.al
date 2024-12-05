@@ -68,7 +68,7 @@ table 50213 "Contratos Setup"
             OptionMembers = Never,Question,Always;
             DataClassification = CustomerContent;
         }
-        field(1001; "Automatic Update Contrato Item Cost"; Boolean)
+        field(1001; "AutomaticUpdateContraItemCost"; Boolean)
         {
             AccessByPermission = TableData Item = R;
             Caption = 'Automatic Update Project Item Cost';

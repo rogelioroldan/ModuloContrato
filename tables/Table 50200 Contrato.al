@@ -1346,8 +1346,8 @@ table 50200 Contrato
 
     protected var
 #if not CLEAN24
-        [Obsolete('Variable NoSeriesMgt is obsolete and will be removed. Please refer to No. Series codeunit instead.', '24.0')]
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+
+        NoSeriesMgt: Codeunit "No. Series";
 #endif
         NoSeries: Codeunit "No. Series";
         DimMgt: Codeunit DimensionManagement;
@@ -1438,7 +1438,7 @@ table 50200 Contrato
         if "No." = '' then begin
             ContratosSetup.TestField("Contrato Nos.");
 #if not CLEAN24
-            NoSeriesMgt.RaiseObsoleteOnBeforeInitSeries(ContratosSetup."Contrato Nos.", xRec."No. Series", 0D, "No.", "No. Series", IsHandled);
+            //NoSeriesMgt.RaiseObsoleteOnBeforeInitSeries(ContratosSetup."Contrato Nos.", xRec."No. Series", 0D, "No.", "No. Series", IsHandled);
             if not IsHandled then begin
 #endif
                 "No. Series" := ContratosSetup."Contrato Nos.";
@@ -1450,7 +1450,7 @@ table 50200 Contrato
                 while Contrato2.Get("No.") do
                     "No." := NoSeries.GetNextNo("No. Series");
 #if not CLEAN24
-                NoSeriesMgt.RaiseObsoleteOnAfterInitSeries("No. Series", ContratosSetup."Contrato Nos.", 0D, "No.");
+                //NoSeriesMgt.RaiseObsoleteOnAfterInitSeries("No. Series", ContratosSetup."Contrato Nos.", 0D, "No.");
             end;
 #endif
         end;
@@ -2106,7 +2106,6 @@ table 50200 Contrato
     end;
 
 #if not CLEAN23
-    [Obsolete('This method always returns true. Remove this method.', '23.0')]
     procedure IsContratoSimplificationAvailable(): Boolean
     begin
         exit(true);
@@ -3026,8 +3025,7 @@ table 50200 Contrato
 
 #if not CLEAN24
     [IntegrationEvent(false, false)]
-    [Obsolete('Parameter NoSeriesMgt is obsolete and will be removed, update your subscriber accordingly.', '24.0')]
-    local procedure OnBeforeAssistEdit(var Job: Record Contrato; var OldContrato: Record Contrato; var Result: Boolean; var IsHandled: Boolean; var NoSeriesManagement: Codeunit NoSeriesManagement)
+    local procedure OnBeforeAssistEdit(var Job: Record Contrato; var OldContrato: Record Contrato; var Result: Boolean; var IsHandled: Boolean; var NoSeriesManagement: Codeunit "No. Series")
     begin
     end;
 #else

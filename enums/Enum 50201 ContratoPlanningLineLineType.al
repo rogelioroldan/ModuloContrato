@@ -1,4 +1,4 @@
-enum 50201 "Contrato Planning Line Line Type"
+enum 50201 "ContratoPlanningLineLineType"
 {
     Extensible = true;
     AssignmentCompatibility = true;

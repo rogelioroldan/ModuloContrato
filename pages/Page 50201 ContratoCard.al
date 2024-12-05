@@ -1754,7 +1754,9 @@ page 50201 "Contrato Card"
                 {
                 }
 #if not CLEAN23
+#pragma warning disable AL0432
                 actionref(SalesPriceListsDiscounts_Promoted; SalesPriceListsDiscounts)
+#pragma warning restore AL0432
                 {
                     ObsoleteState = Pending;
                     ObsoleteReason = 'Action SalesPriceLists shows all sales price lists with prices and discounts';
@@ -1762,7 +1764,9 @@ page 50201 "Contrato Card"
                 }
 #endif
 #if not CLEAN23
+#pragma warning disable AL0432
                 actionref(PurchasePriceListsDiscounts_Promoted; PurchasePriceListsDiscounts)
+#pragma warning restore AL0432
                 {
                     ObsoleteState = Pending;
                     ObsoleteReason = 'Action PurchasePriceLists shows all purchase price lists with prices and discounts';
@@ -1770,7 +1774,9 @@ page 50201 "Contrato Card"
                 }
 #endif
 #if not CLEAN23
+#pragma warning disable AL0432
                 actionref("&Resource_Promoted"; "&Resource")
+#pragma warning restore AL0432
                 {
                     ObsoleteState = Pending;
                     ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation.';
@@ -1778,7 +1784,9 @@ page 50201 "Contrato Card"
                 }
 #endif
 #if not CLEAN23
+#pragma warning disable AL0432
                 actionref("&Item_Promoted"; "&Item")
+#pragma warning restore AL0432
                 {
                     ObsoleteState = Pending;
                     ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation.';
@@ -1786,7 +1794,9 @@ page 50201 "Contrato Card"
                 }
 #endif
 #if not CLEAN23
+#pragma warning disable AL0432
                 actionref("&G/L Account_Promoted"; "&G/L Account")
+#pragma warning restore AL0432
                 {
                     ObsoleteState = Pending;
                     ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation.';

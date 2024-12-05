@@ -119,7 +119,9 @@ page 50215 "Purchase Contrato Price Lists"
 #if not CLEAN23
     trigger OnInit()
     var
+#pragma warning disable AL0432
         FeaturePriceCalculation: Codeunit "Feature - Price Calculation";
+#pragma warning restore AL0432
     begin
         FeaturePriceCalculation.FailIfFeatureDisabled();
     end;

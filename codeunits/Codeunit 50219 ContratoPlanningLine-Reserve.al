@@ -99,8 +99,8 @@ codeunit 50219 "Contrato Planning Line-Reserve"
     begin
         // Throw error if "Type" != "Item" or "Line Type" != "Budget" or "Budget and Billable"
         JobPlanningLine.TestField(Type, JobPlanningLine.Type::Item);
-        if not (JobPlanningLine."Line Type" in [Enum::"Contrato Planning Line Line Type"::"Both Budget and Billable", Enum::"Contrato Planning Line Line Type"::Budget]) then
-            JobPlanningLine.FieldError("Line Type", StrSubstNo(InvalidLineTypeErr, Enum::"Contrato Planning Line Line Type"::Budget, Enum::"Contrato Planning Line Line Type"::"Both Budget and Billable"));
+        if not (JobPlanningLine."Line Type" in [Enum::"ContratoPlanningLineLineType"::"Both Budget and Billable", Enum::"ContratoPlanningLineLineType"::Budget]) then
+            JobPlanningLine.FieldError("Line Type", StrSubstNo(InvalidLineTypeErr, Enum::"ContratoPlanningLineLineType"::Budget, Enum::"ContratoPlanningLineLineType"::"Both Budget and Billable"));
 
         if JobPlanningLine.Status = JobPlanningLine.Status::Completed then
             ItemTrackingDocManagement.ShowItemTrackingForContratoPlanningLine(DATABASE::"Contrato Planning Line", JobPlanningLine."Job No.", JobPlanningLine."Job Contract Entry No.")
