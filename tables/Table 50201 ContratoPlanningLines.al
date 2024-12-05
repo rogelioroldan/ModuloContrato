@@ -59,7 +59,7 @@ table 50201 "Contrato Planning Line"
                 ValidateModification(xRec."Document No." <> "Document No.", Rec.FieldNo("Document No."));
             end;
         }
-        field(5; Type; Enum "Job Planning Line Type")
+        field(5; Type; Enum "Contrato Planning Line Type")
         {
             Caption = 'Type';
 
@@ -112,7 +112,7 @@ table 50201 "Contrato Planning Line"
                             InitLocation();
                         if "Bin Code" = '' then
                             SetDefaultBin();
-                        //JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("No."));
+                        JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("No."));
                     end;
                     if "No." = '' then
                         exit;
@@ -198,8 +198,8 @@ table 50201 "Contrato Planning Line"
                 if "Line Type" in ["Line Type"::"Both Budget and Billable", "Line Type"::Budget] then
                     Validate("Qty. to Assemble");
 
-                // if not BypassQtyValidation then
-                //     JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo(Quantity));
+                if not BypassQtyValidation then
+                    JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo(Quantity));
 
                 BypassQtyValidation := false;
             end;
@@ -299,7 +299,7 @@ table 50201 "Contrato Planning Line"
                               UOMMgt.GetQtyPerUnitOfMeasure(Item, "Unit of Measure Code");
                             "Qty. Rounding Precision" := UOMMgt.GetQtyRoundingPrecision(Item, "Unit of Measure Code");
                             "Qty. Rounding Precision (Base)" := UOMMgt.GetQtyRoundingPrecision(Item, Item."Base Unit of Measure");
-                            //JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Unit of Measure Code"));
+                            JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Unit of Measure Code"));
                         end;
                     Type::Resource:
                         begin
@@ -361,7 +361,7 @@ table 50201 "Contrato Planning Line"
                     UpdateReservation(FieldNo("Location Code"));
                     Validate(Quantity);
                     SetDefaultBin();
-                    //JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Location Code"));
+                    JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Location Code"));
                     InitQtyToAsm();
                     //ATOLink.UpdateAsmFromJobPlanningLine(Rec);
 
@@ -455,10 +455,10 @@ table 50201 "Contrato Planning Line"
         {
             Caption = 'Planning Due Date';
 
-            // trigger OnValidate()
-            // begin
-            //     JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Planning Due Date"));
-            // end;
+            trigger OnValidate()
+            begin
+                JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Planning Due Date"));
+            end;
         }
         field(900; "Qty. to Assemble"; Decimal)
         {
@@ -795,10 +795,10 @@ table 50201 "Contrato Planning Line"
             Editable = false;
             InitValue = "Order";
 
-            // trigger OnValidate()
-            // begin
-            //     JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo(Status));
-            // end;
+            trigger OnValidate()
+            begin
+                JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo(Status));
+            end;
         }
         field(1050; "Ledger Entry Type"; Enum "Job Ledger Entry Type")
         {
@@ -1083,8 +1083,8 @@ table 50201 "Contrato Planning Line"
                 CheckItemAvailable(FieldNo("Variant Code"));
                 UpdateReservation(FieldNo("Variant Code"));
                 InitQtyToAsm();
-                // ATOLink.UpdateAsmFromJobPlanningLine(Rec);
-                // JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Variant Code"));
+                //ATOLink.UpdateAsmFromJobPlanningLine(Rec);
+                JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Variant Code"));
             end;
         }
         field(5403; "Bin Code"; Code[20])
@@ -1114,7 +1114,7 @@ table 50201 "Contrato Planning Line"
                 end;
 
                 UpdateReservation(FieldNo("Bin Code"));
-                // JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Bin Code"));
+                JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Bin Code"));
                 // ATOLink.UpdateAsmBinCodeFromJobPlanningLine(Rec);
             end;
 
@@ -1454,9 +1454,9 @@ table 50201 "Contrato Planning Line"
         StandardText: Record "Standard Text";
         ItemTranslation: Record "Item Translation";
         GLSetup: Record "General Ledger Setup";
-        ATOLink: Record "Assemble-to-Order Link";
+        ATOLink: Record "Assemble-to-OrderLinkContrato";
         JobPlanningLineReserve: Codeunit "Job Planning Line-Reserve";
-        JobWarehouseMgt: Codeunit "Job Warehouse Mgt.";
+        JobWarehouseMgt: Codeunit "ContratoWhseValidateSourceLine";
         UOMMgt: Codeunit "Unit of Measure Management";
         ItemCheckAvail: Codeunit "Item-Check Avail.";
         CurrencyFactorErr: Label 'cannot be specified without %1', Comment = '%1 = Currency Code field name';
@@ -2136,7 +2136,7 @@ table 50201 "Contrato Planning Line"
 
     procedure GetLineWithPrice(var LineWithPrice: Interface "Line With Price")
     var
-        JobPlanningLinePrice: Codeunit "Job Planning Line - Price";
+        JobPlanningLinePrice: Codeunit "Contrato Planning Line - Price";
     begin
         LineWithPrice := JobPlanningLinePrice;
         OnAfterGetLineWithPrice(LineWithPrice);

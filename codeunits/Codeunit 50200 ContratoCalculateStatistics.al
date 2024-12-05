@@ -204,7 +204,7 @@ codeunit 50200 "Contrato Calculate Statistics"
         CalcJobPlanAmounts(PlanLineType::Schedule, JobPlanningLine.Type::"G/L Account");
     end;
 
-    local procedure CalcJobLedgAmounts(EntryType: Enum "Job Journal Line Entry Type"; TypeParm: Enum "Job Planning Line Type")
+    local procedure CalcJobLedgAmounts(EntryType: Enum "Job Journal Line Entry Type"; TypeParm: Enum "Contrato Planning Line Type")
     begin
         JobLedgEntry2.Copy(JobLedgEntry);
         JobLedgEntry2.SetRange("Entry Type", EntryType);
@@ -216,7 +216,7 @@ codeunit 50200 "Contrato Calculate Statistics"
         JobLedgAmounts[1 + EntryType.AsInteger(), 1 + TypeParm.AsInteger(), 1 + AmountType::LineAmount] := JobLedgEntry2."Line Amount";
     end;
 
-    local procedure CalcJobPlanAmounts(PlanLineTypeParm: Option; TypeParm: Enum "Job Planning Line Type")
+    local procedure CalcJobPlanAmounts(PlanLineTypeParm: Option; TypeParm: Enum "Contrato Planning Line Type")
     begin
         JobPlanningLine2.Copy(JobPlanningLine);
         JobPlanningLine2.SetRange("Schedule Line");

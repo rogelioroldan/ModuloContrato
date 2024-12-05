@@ -773,7 +773,7 @@ page 50201 "Contrato Card"
                     // field("Total WIP Sales Amount"; Rec."Total WIP Sales Amount")
                     // {
                     //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the total WIP sales amount that was last calculated for the project. The WIP sales amount is the value in the WIP Sales Job WIP Entries window minus the value of the Recognized Sales Job WIP Entries window. For projects with the Cost Value or Cost of Sales WIP methods, the WIP sales amount is normally 0.';
+                    //     ToolTip = 'Specifies the total WIP sales amount that was last calculated for the project. The WIP sales amount is the value in the WIP Sales Contrato WIP Entries window minus the value of the Recognized Sales Contrato WIP Entries window. For projects with the Cost Value or Cost of Sales WIP methods, the WIP sales amount is normally 0.';
                     // }
                     // field("Applied Sales G/L Amount"; Rec."Applied Sales G/L Amount")
                     // {
@@ -784,7 +784,7 @@ page 50201 "Contrato Card"
                     // field("Total WIP Cost Amount"; Rec."Total WIP Cost Amount")
                     // {
                     //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the total WIP cost amount that was last calculated for the project. The WIP cost amount is the value in the WIP Cost Job WIP Entries window minus the value of the Recognized Cost Job WIP Entries window. For projects with Sales Value or Percentage of Completion WIP methods, the WIP cost amount is normally 0.';
+                    //     ToolTip = 'Specifies the total WIP cost amount that was last calculated for the project. The WIP cost amount is the value in the WIP Cost Contrato WIP Entries window minus the value of the Recognized Cost Contrato WIP Entries window. For projects with Sales Value or Percentage of Completion WIP methods, the WIP cost amount is normally 0.';
                     // }
                     // field("Applied Costs G/L Amount"; Rec."Applied Costs G/L Amount")
                     // {
@@ -795,12 +795,12 @@ page 50201 "Contrato Card"
                     // field("Recog. Sales Amount"; Rec."Recog. Sales Amount")
                     // {
                     //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the recognized sales amount that was last calculated for the project, which is the sum of the Recognized Sales Job WIP Entries.';
+                    //     ToolTip = 'Specifies the recognized sales amount that was last calculated for the project, which is the sum of the Recognized Sales Contrato WIP Entries.';
                     // }
                     // field("Recog. Costs Amount"; Rec."Recog. Costs Amount")
                     // {
                     //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the recognized cost amount that was last calculated for the project. The value is the sum of the entries in the Recognized Cost Job WIP Entries window.';
+                    //     ToolTip = 'Specifies the recognized cost amount that was last calculated for the project. The value is the sum of the entries in the Recognized Cost Contrato WIP Entries window.';
                     // }
                     field("Recog. Profit Amount"; Rec.CalcRecognizedProfitAmount())
                     {
@@ -847,27 +847,27 @@ page 50201 "Contrato Card"
                     // field("WIP G/L Posting Date"; Rec."WIP G/L Posting Date")
                     // {
                     //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the posting date that was entered when the Job Post WIP to General Ledger batch job was last run.';
+                    //     ToolTip = 'Specifies the posting date that was entered when the Contrato Post WIP to General Ledger batch job was last run.';
                     // }
                     // field("Total WIP Sales G/L Amount"; Rec."Total WIP Sales G/L Amount")
                     // {
                     //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the total WIP sales amount that was last posted to the general ledger for the project. The WIP sales amount is the value in the WIP Sales Job WIP G/L Entries window minus the value in the Recognized Sales Job WIP G/L Entries window. For projects with the Cost Value or Cost of Sales WIP methods, the WIP sales amount is normally 0.';
+                    //     ToolTip = 'Specifies the total WIP sales amount that was last posted to the general ledger for the project. The WIP sales amount is the value in the WIP Sales Contrato WIP G/L Entries window minus the value in the Recognized Sales Contrato WIP G/L Entries window. For projects with the Cost Value or Cost of Sales WIP methods, the WIP sales amount is normally 0.';
                     // }
                     // field("Total WIP Cost G/L Amount"; Rec."Total WIP Cost G/L Amount")
                     // {
                     //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the total WIP Cost amount that was last posted to the G/L for the project. The WIP Cost Amount for the project is the value WIP Cost Job WIP G/L Entries less the value of the Recognized Cost Job WIP G/L Entries. For projects with WIP Methods of Sales Value or Percentage of Completion, the WIP Cost Amount is normally 0.';
+                    //     ToolTip = 'Specifies the total WIP Cost amount that was last posted to the G/L for the project. The WIP Cost Amount for the project is the value WIP Cost Contrato WIP G/L Entries less the value of the Recognized Cost Contrato WIP G/L Entries. For projects with WIP Methods of Sales Value or Percentage of Completion, the WIP Cost Amount is normally 0.';
                     // }
                     // field("Recog. Sales G/L Amount"; Rec."Recog. Sales G/L Amount")
                     // {
                     //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the total recognized sales amount that was last posted to the general ledger for the project. The recognized sales G/L amount for the project is the sum of the entries in the Recognized Sales Job WIP G/L Entries window.';
+                    //     ToolTip = 'Specifies the total recognized sales amount that was last posted to the general ledger for the project. The recognized sales G/L amount for the project is the sum of the entries in the Recognized Sales Contrato WIP G/L Entries window.';
                     // }
                     // field("Recog. Costs G/L Amount"; Rec."Recog. Costs G/L Amount")
                     // {
                     //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the total Recognized Cost amount that was last posted to the general ledger for the project. The Recognized Cost G/L amount for the project is the sum of the Recognized Cost Job WIP G/L Entries.';
+                    //     ToolTip = 'Specifies the total Recognized Cost amount that was last posted to the general ledger for the project. The Recognized Cost G/L amount for the project is the sum of the Recognized Cost Contrato WIP G/L Entries.';
                     // }
                     field("Recog. Profit G/L Amount"; Rec.CalcRecognizedProfitGLAmount())
                     {
@@ -1096,7 +1096,7 @@ page 50201 "Contrato Card"
 
                     trigger OnAction()
                     var
-                        AssembleToOrderLink: Record "Assemble-to-Order Link";
+                        AssembleToOrderLink: Record "Assemble-to-OrderLinkContrato";
                     begin
                         //AssembleToOrderLink.ShowAsmOrders(Rec, '');
                     end;
@@ -1451,7 +1451,7 @@ page 50201 "Contrato Card"
 
                     trigger OnAction()
                     var
-                        CopyJobTasks: Page "Copy Job Tasks";
+                        CopyJobTasks: Page "Copy Contrato Tasks";
                     begin
                         //CopyJobTasks.SetToJob(Rec);
                         CopyJobTasks.RunModal();
@@ -1467,7 +1467,7 @@ page 50201 "Contrato Card"
 
                     trigger OnAction()
                     var
-                        CopyJobTasks: Page "Copy Job Tasks";
+                        CopyJobTasks: Page "Copy Contrato Tasks";
                     begin
                         //CopyJobTasks.SetFromJob(Rec);
                         CopyJobTasks.RunModal();
@@ -1969,7 +1969,7 @@ page 50201 "Contrato Card"
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeJobPlanningLinesAction(var Job: Record Contrato; var IsHandled: Boolean)
+    local procedure OnBeforeJobPlanningLinesAction(var Contrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 }

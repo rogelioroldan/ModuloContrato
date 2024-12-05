@@ -543,32 +543,7 @@ page 50200 "Contrato List"
                     RunObject = Report "Job Create Sales Invoice";
                     ToolTip = 'Use a batch job to help you create project sales invoices for the involved project planning lines.';
                 }
-                action(UploadFile)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Anexos/Hoja de trabajo y tabla de amortización';
-                    ToolTip = 'Permite cargar un archivo PDF o Excel para procesarlo.';
-                    trigger OnAction()
-                    var
-                        InStream: InStream;
-                        OutStream: OutStream;
-                        FileName: Text;
-                        FileExtension: Text[10];
-                        TempBlobStorage: Codeunit "Temp Blob";
-                    begin
-                        if UploadIntoStream('Seleccione un archivo', '', '', FileName, InStream) then begin
-                            FileExtension := LowerCase(CopyStr(FileName, StrLen(FileName) - 2));
 
-                            if FileExtension in ['pdf', 'xls', 'xlsx'] then begin
-                                TempBlobStorage.CreateOutStream(OutStream);
-                                CopyStream(OutStream, InStream);
-                                Message('Archivo cargado exitosamente: %1', FileName);
-                            end else
-                                Error('Formato no compatible. Solo se permiten archivos PDF o Excel.');
-                        end else
-                            Message('No se seleccionó ningún archivo.');
-                    end;
-                }
                 group(Action7)
                 {
                     Caption = 'W&IP';

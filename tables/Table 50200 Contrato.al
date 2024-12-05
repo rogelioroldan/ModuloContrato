@@ -23,7 +23,7 @@ table 50200 Contrato
 
                 if "No." <> xRec."No." then begin
                     ContratosSetup.Get();
-                    NoSeries.TestManual(ContratosSetup."Job Nos.");
+                    NoSeries.TestManual(ContratosSetup."Contrato Nos.");
                     "No. Series" := '';
                 end;
             end;
@@ -90,57 +90,57 @@ table 50200 Contrato
             Caption = 'Status';
             InitValue = Open;
 
-            // trigger OnValidate()
-            // var
-            //     ContratoPlanningLine: Record "Contrato Planning Line";
-            //     ATOLink: Record "Assemble-to-Order Link";
-            //     ContratoPlanningLineReserve: Codeunit "Job Planning Line-Reserve";
-            //     ConfirmManagement: Codeunit "Confirm Management";
-            //     IsHandled: Boolean;
-            //     UndidCompleteStatus: Boolean;
-            //     ShouldDeleteReservationEntries: Boolean;
-            // begin
-            //     IsHandled := false;
-            //     OnBeforeValidateStatus(Rec, xRec, CurrFieldNo, IsHandled);
-            //     if IsHandled then
-            //         exit;
+            trigger OnValidate()
+            var
+                ContratoPlanningLine: Record "Contrato Planning Line";
+                ATOLink: Record "Assemble-to-OrderLinkContrato";
+                ContratoPlanningLineReserve: Codeunit "Contrato Planning Line-Reserve";
+                ConfirmManagement: Codeunit "Confirm Management";
+                IsHandled: Boolean;
+                UndidCompleteStatus: Boolean;
+                ShouldDeleteReservationEntries: Boolean;
+            begin
+                IsHandled := false;
+                OnBeforeValidateStatus(Rec, xRec, CurrFieldNo, IsHandled);
+                if IsHandled then
+                    exit;
 
-            //     if xRec.Status <> Status then begin
-            //         if Status = Status::Completed then
-            //             Validate(Complete, true);
-            //         if xRec.Status = xRec.Status::Completed then begin
-            //             IsHandled := false;
-            //             OnValidateStatusOnBeforeConfirm(Rec, xRec, UndidCompleteStatus, IsHandled);
-            //             if not IsHandled then
-            //                 if ConfirmManagement.GetResponseOrDefault(StatusChangeQst, true) then begin
-            //                     Validate(Complete, false);
-            //                     UndidCompleteStatus := true;
-            //                 end else
-            //                     Status := xRec.Status;
-            //         end;
-            //         Modify();
+                if xRec.Status <> Status then begin
+                    if Status = Status::Completed then
+                        Validate(Complete, true);
+                    if xRec.Status = xRec.Status::Completed then begin
+                        IsHandled := false;
+                        OnValidateStatusOnBeforeConfirm(Rec, xRec, UndidCompleteStatus, IsHandled);
+                        if not IsHandled then
+                            if ConfirmManagement.GetResponseOrDefault(StatusChangeQst, true) then begin
+                                Validate(Complete, false);
+                                UndidCompleteStatus := true;
+                            end else
+                                Status := xRec.Status;
+                    end;
+                    Modify();
 
-            //         ATOLink.CheckIfAssembleToOrderLinkExist(Rec);
-            //         CheckIfTimeSheetLineLinkExist();
+                    ATOLink.CheckIfAssembleToOrderLinkExist(Rec);
+                    CheckIfTimeSheetLineLinkExist();
 
-            //         ContratoPlanningLine.SetCurrentKey("Job No.");
-            //         ContratoPlanningLine.SetRange("Job No.", "No.");
-            //         if ContratoPlanningLine.FindSet() then begin
-            //             ShouldDeleteReservationEntries := CheckReservationEntries();
-            //             repeat
-            //                 if ShouldDeleteReservationEntries then
-            //                     ContratoPlanningLineReserve.DeleteLineInternal(ContratoPlanningLine, false);
-            //                 ATOLink.MakeAsmOrderLinkedToContratoPlanningOrderLine(ContratoPlanningLine);
-            //                 ContratoPlanningLine.Validate(Status, Status);
-            //                 ContratoPlanningLine.Modify();
-            //             until ContratoPlanningLine.Next() = 0;
-            //             PerformAutoReserve(ContratoPlanningLine);
-            //             if UndidCompleteStatus then
-            //                 ContratoPlanningLine.CreateWarehouseRequest();
-            //         end;
-            //         ContratoArchiveManagement.AutoArchiveContrato(Rec);
-            //     end;
-            // end;
+                    ContratoPlanningLine.SetCurrentKey("Job No.");
+                    ContratoPlanningLine.SetRange("Job No.", "No.");
+                    if ContratoPlanningLine.FindSet() then begin
+                        ShouldDeleteReservationEntries := CheckReservationEntries();
+                        repeat
+                            if ShouldDeleteReservationEntries then
+                                ContratoPlanningLineReserve.DeleteLineInternal(ContratoPlanningLine, false);
+                            ATOLink.MakeAsmOrderLinkedToJobPlanningOrderLine(ContratoPlanningLine);
+                            ContratoPlanningLine.Validate(Status, Status);
+                            ContratoPlanningLine.Modify();
+                        until ContratoPlanningLine.Next() = 0;
+                        PerformAutoReserve(ContratoPlanningLine);
+                        if UndidCompleteStatus then
+                            ContratoPlanningLine.CreateWarehouseRequest();
+                    end;
+                    //ContratoArchiveManagement.AutoArchiveJob(Rec);
+                end;
+            end;
         }
         field(20; "Person Responsible"; Code[20])
         {
@@ -176,23 +176,23 @@ table 50200 Contrato
             Caption = 'Project Posting Group';
             TableRelation = "Contrato Posting Group";
         }
-        // field(24; Blocked; Enum "Job Blocked")
-        // {
-        //     Caption = 'Blocked';
-        // }
+        field(24; Blocked; Enum "Contrato Blocked")
+        {
+            Caption = 'Blocked';
+        }
         field(29; "Last Date Modified"; Date)
         {
             Caption = 'Last Date Modified';
             Editable = false;
         }
-        // field(30; Comment; Boolean)
-        // {
-        //     CalcFormula = exist("Comment Line" where("Table Name" = const(Job),
-        //                                               "No." = field("No.")));
-        //     Caption = 'Comment';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
+        field(30; Comment; Boolean)
+        {
+            CalcFormula = exist("Comment Line" where("Table Name" = const(Contrato),
+                                                      "No." = field("No.")));
+            Caption = 'Comment';
+            Editable = false;
+            FieldClass = FlowField;
+        }
         field(31; "Customer Disc. Group"; Code[20])
         {
             Caption = 'Customer Disc. Group';
@@ -234,18 +234,18 @@ table 50200 Contrato
             Caption = 'Language Code';
             TableRelation = Language;
         }
-        // field(49; "Scheduled Res. Qty."; Decimal)
-        // {
-        //     CalcFormula = sum("Contrato Planning Line"."Quantity (Base)" where("Job No." = field("No."),
-        //                                                                    "Schedule Line" = const(true),
-        //                                                                    Type = const(Resource),
-        //                                                                    "No." = field("Resource Filter"),
-        //                                                                    "Planning Date" = field("Planning Date Filter")));
-        //     Caption = 'Scheduled Res. Qty.';
-        //     DecimalPlaces = 0 : 5;
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
+        field(49; "Scheduled Res. Qty."; Decimal)
+        {
+            CalcFormula = sum("Contrato Planning Line"."Quantity (Base)" where("Job No." = field("No."),
+                                                                           "Schedule Line" = const(true),
+                                                                           Type = const(Resource),
+                                                                           "No." = field("Resource Filter"),
+                                                                           "Planning Date" = field("Planning Date Filter")));
+            Caption = 'Scheduled Res. Qty.';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+            FieldClass = FlowField;
+        }
         field(50; "Resource Filter"; Code[20])
         {
             Caption = 'Resource Filter';
@@ -263,18 +263,18 @@ table 50200 Contrato
             FieldClass = FlowFilter;
             TableRelation = "Resource Group";
         }
-        // field(56; "Scheduled Res. Gr. Qty."; Decimal)
-        // {
-        //     CalcFormula = sum("Contrato Planning Line"."Quantity (Base)" where("Job No." = field("No."),
-        //                                                                    "Schedule Line" = const(true),
-        //                                                                    Type = const(Resource),
-        //                                                                    "Resource Group No." = field("Resource Gr. Filter"),
-        //                                                                    "Planning Date" = field("Planning Date Filter")));
-        //     Caption = 'Scheduled Res. Gr. Qty.';
-        //     DecimalPlaces = 0 : 5;
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
+        field(56; "Scheduled Res. Gr. Qty."; Decimal)
+        {
+            CalcFormula = sum("Contrato Planning Line"."Quantity (Base)" where("Job No." = field("No."),
+                                                                           "Schedule Line" = const(true),
+                                                                           Type = const(Resource),
+                                                                           "Resource Group No." = field("Resource Gr. Filter"),
+                                                                           "Planning Date" = field("Planning Date Filter")));
+            Caption = 'Scheduled Res. Gr. Qty.';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+            FieldClass = FlowField;
+        }
         field(57; Picture; BLOB)
         {
             Caption = 'Picture';
@@ -407,29 +407,29 @@ table 50200 Contrato
             Caption = 'Task Billing Method';
             DataClassification = CustomerContent;
 
-            // trigger OnValidate()
-            // var
-            //     ContratoTask: Record "Contrato Task";
-            //     RecRef: RecordRef;
-            //     FldRef: FieldRef;
-            // begin
-            //     ContratoTask.SetRange("Job No.", "No.");
-            //     if ContratoTask.IsEmpty() then
-            //         exit;
+            trigger OnValidate()
+            var
+                ContratoTask: Record "Contrato Task";
+                RecRef: RecordRef;
+                FldRef: FieldRef;
+            begin
+                ContratoTask.SetRange("Job No.", "No.");
+                if ContratoTask.IsEmpty() then
+                    exit;
 
-            //     if ("Task Billing Method" = "Task Billing Method"::"One customer") and
-            //         (xRec."Task Billing Method" = XRec."Task Billing Method"::"Multiple customers") then begin
-            //         RecRef.GetTable(Rec);
-            //         FldRef := RecRef.Field(Rec.FieldNo("Task Billing Method"));
-            //         Error(UpdateBillingMethodErr, FldRef.GetEnumValueCaption(Rec."Task Billing Method".AsInteger() + 1), FieldCaption("Task Billing Method"), TableCaption());
-            //     end;
+                if ("Task Billing Method" = "Task Billing Method"::"One customer") and
+                    (xRec."Task Billing Method" = XRec."Task Billing Method"::"Multiple customers") then begin
+                    RecRef.GetTable(Rec);
+                    FldRef := RecRef.Field(Rec.FieldNo("Task Billing Method"));
+                    Error(UpdateBillingMethodErr, FldRef.GetEnumValueCaption(Rec."Task Billing Method".AsInteger() + 1), FieldCaption("Task Billing Method"), TableCaption());
+                end;
 
-            //     if "Task Billing Method" = "Task Billing Method"::"Multiple customers" then
-            //         if not Confirm(UpdateBillingMethodQst, true) then
-            //             Error('');
+                if "Task Billing Method" = "Task Billing Method"::"Multiple customers" then
+                    if not Confirm(UpdateBillingMethodQst, true) then
+                        Error('');
 
-            //     InitCustomerOnContratoTasks();
-            // end;
+                InitCustomerOnContratoTasks();
+            end;
         }
         field(117; Reserve; Enum "Reserve Method")
         {
@@ -440,38 +440,38 @@ table 50200 Contrato
         {
             Caption = 'Image';
         }
-        // field(1000; "WIP Method"; Code[20])
-        // {
-        //     Caption = 'WIP Method';
-        //     TableRelation = "Job WIP Method".Code where(Valid = const(true));
+        field(1000; "WIP Method"; Code[20])
+        {
+            Caption = 'WIP Method';
+            TableRelation = "Contrato WIP Method".Code where(Valid = const(true));
 
-        //     trigger OnValidate()
-        //     var
-        //         ContratoTask: Record "Contrato Task";
-        //         ContratoWIPMethod: Record "Job WIP Method";
-        //         ConfirmManagement: Codeunit "Confirm Management";
-        //         NewWIPMethod: Code[20];
-        //     begin
-        //         if "WIP Posting Method" = "WIP Posting Method"::"Per Job Ledger Entry" then begin
-        //             ContratoWIPMethod.Get("WIP Method");
-        //             if not ContratoWIPMethod."WIP Cost" then
-        //                 Error(WIPPostMethodErr, FieldCaption("WIP Posting Method"), FieldCaption("WIP Method"), ContratoWIPMethod.FieldCaption("WIP Cost"));
-        //             if not ContratoWIPMethod."WIP Sales" then
-        //                 Error(WIPPostMethodErr, FieldCaption("WIP Posting Method"), FieldCaption("WIP Method"), ContratoWIPMethod.FieldCaption("WIP Sales"));
-        //         end;
+            trigger OnValidate()
+            var
+                ContratoTask: Record "Contrato Task";
+                ContratoWIPMethod: Record "Contrato WIP Method";
+                ConfirmManagement: Codeunit "Confirm Management";
+                NewWIPMethod: Code[20];
+            begin
+                if "WIP Posting Method" = "WIP Posting Method"::"Per Job Ledger Entry" then begin
+                    ContratoWIPMethod.Get("WIP Method");
+                    if not ContratoWIPMethod."WIP Cost" then
+                        Error(WIPPostMethodErr, FieldCaption("WIP Posting Method"), FieldCaption("WIP Method"), ContratoWIPMethod.FieldCaption("WIP Cost"));
+                    if not ContratoWIPMethod."WIP Sales" then
+                        Error(WIPPostMethodErr, FieldCaption("WIP Posting Method"), FieldCaption("WIP Method"), ContratoWIPMethod.FieldCaption("WIP Sales"));
+                end;
 
-        //         ContratoTask.SetRange("Job No.", "No.");
-        //         ContratoTask.SetRange("WIP-Total", ContratoTask."WIP-Total"::Total);
-        //         if ContratoTask.FindFirst() then
-        //             if ConfirmManagement.GetResponseOrDefault(StrSubstNo(WIPMethodQst, ContratoTask.FieldCaption("WIP Method"), ContratoTask.TableCaption(), ContratoTask."WIP-Total"), true) then begin
-        //                 ContratoTask.ModifyAll("WIP Method", "WIP Method", true);
-        //                 // An additional FIND call requires since ContratoTask.MODIFYALL changes the Job's information
-        //                 NewWIPMethod := "WIP Method";
-        //                 Find();
-        //                 "WIP Method" := NewWIPMethod;
-        //             end;
-        //     end;
-        // }
+                ContratoTask.SetRange("Job No.", "No.");
+                ContratoTask.SetRange("WIP-Total", ContratoTask."WIP-Total"::Total);
+                if ContratoTask.FindFirst() then
+                    if ConfirmManagement.GetResponseOrDefault(StrSubstNo(WIPMethodQst, ContratoTask.FieldCaption("WIP Method"), ContratoTask.TableCaption(), ContratoTask."WIP-Total"), true) then begin
+                        ContratoTask.ModifyAll("WIP Method", "WIP Method", true);
+                        // An additional FIND call requires since ContratoTask.MODIFYALL changes the Job's information
+                        NewWIPMethod := "WIP Method";
+                        Find();
+                        "WIP Method" := NewWIPMethod;
+                    end;
+            end;
+        }
         field(1001; "Currency Code"; Code[10])
         {
             Caption = 'Currency Code';
@@ -544,46 +544,46 @@ table 50200 Contrato
             Caption = 'Planning Date Filter';
             FieldClass = FlowFilter;
         }
-        // field(1005; "Total WIP Cost Amount"; Decimal)
-        // {
-        //     AutoFormatType = 1;
-        //     CalcFormula = - sum("Contrato WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
-        //                                                                  "Job Complete" = const(false),
-        //                                                                  Type = filter("Accrued Costs" | "Applied Costs" | "Recognized Costs")));
-        //     Caption = 'Total WIP Cost Amount';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-        // field(1006; "Total WIP Cost G/L Amount"; Decimal)
-        // {
-        //     AutoFormatType = 1;
-        //     CalcFormula = - sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
-        //                                                                      Reversed = const(false),
-        //                                                                      "Job Complete" = const(false),
-        //                                                                      Type = filter("Accrued Costs" | "Applied Costs" | "Recognized Costs")));
-        //     Caption = 'Total WIP Cost G/L Amount';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-        // field(1007; "WIP Entries Exist"; Boolean)
-        // {
-        //     CalcFormula = exist("Contrato WIP Entry" where("Job No." = field("No.")));
-        //     Caption = 'WIP Entries Exist';
-        //     FieldClass = FlowField;
-        // }
+        field(1005; "Total WIP Cost Amount"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = - sum("Contrato WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
+                                                                         "Job Complete" = const(false),
+                                                                         Type = filter("Accrued Costs" | "Applied Costs" | "Recognized Costs")));
+            Caption = 'Total WIP Cost Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(1006; "Total WIP Cost G/L Amount"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = - sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
+                                                                             Reversed = const(false),
+                                                                             "Job Complete" = const(false),
+                                                                             Type = filter("Accrued Costs" | "Applied Costs" | "Recognized Costs")));
+            Caption = 'Total WIP Cost G/L Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(1007; "WIP Entries Exist"; Boolean)
+        {
+            CalcFormula = exist("Contrato WIP Entry" where("Job No." = field("No.")));
+            Caption = 'WIP Entries Exist';
+            FieldClass = FlowField;
+        }
         field(1008; "WIP Posting Date"; Date)
         {
             Caption = 'WIP Posting Date';
             Editable = false;
         }
-        // field(1009; "WIP G/L Posting Date"; Date)
-        // {
-        //     CalcFormula = min("Job WIP G/L Entry"."WIP Posting Date" where(Reversed = const(false),
-        //                                                                     "Job No." = field("No.")));
-        //     Caption = 'WIP G/L Posting Date';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
+        field(1009; "WIP G/L Posting Date"; Date)
+        {
+            CalcFormula = min("Job WIP G/L Entry"."WIP Posting Date" where(Reversed = const(false),
+                                                                            "Job No." = field("No.")));
+            Caption = 'WIP G/L Posting Date';
+            Editable = false;
+            FieldClass = FlowField;
+        }
         field(1011; "Invoice Currency Code"; Code[10])
         {
             Caption = 'Invoice Currency Code';
@@ -625,126 +625,126 @@ table 50200 Contrato
                     ChangeContratoCompletionStatus();
             end;
         }
-        // field(1017; "Recog. Sales Amount"; Decimal)
-        // {
-        //     AutoFormatType = 1;
-        //     CalcFormula = - sum("Contrato WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
-        //                                                                  Type = filter("Recognized Sales")));
-        //     Caption = 'Recog. Sales Amount';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-        // field(1018; "Recog. Sales G/L Amount"; Decimal)
-        // {
-        //     AutoFormatType = 1;
-        //     CalcFormula = - sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
-        //                                                                      Reversed = const(false),
-        //                                                                      Type = filter("Recognized Sales")));
-        //     Caption = 'Recog. Sales G/L Amount';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-        // field(1019; "Recog. Costs Amount"; Decimal)
-        // {
-        //     AutoFormatType = 1;
-        //     CalcFormula = sum("Contrato WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
-        //                                                                 Type = filter("Recognized Costs")));
-        //     Caption = 'Recog. Costs Amount';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-        // field(1020; "Recog. Costs G/L Amount"; Decimal)
-        // {
-        //     AutoFormatType = 1;
-        //     CalcFormula = sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
-        //                                                                     Reversed = const(false),
-        //                                                                     Type = filter("Recognized Costs")));
-        //     Caption = 'Recog. Costs G/L Amount';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-        // field(1021; "Total WIP Sales Amount"; Decimal)
-        // {
-        //     AutoFormatType = 1;
-        //     CalcFormula = sum("Contrato WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
-        //                                                                 "Job Complete" = const(false),
-        //                                                                 Type = filter("Accrued Sales" | "Applied Sales" | "Recognized Sales")));
-        //     Caption = 'Total WIP Sales Amount';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-        // field(1022; "Total WIP Sales G/L Amount"; Decimal)
-        // {
-        //     AutoFormatType = 1;
-        //     CalcFormula = sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
-        //                                                                     Reversed = const(false),
-        //                                                                     "Job Complete" = const(false),
-        //                                                                     Type = filter("Accrued Sales" | "Applied Sales" | "Recognized Sales")));
-        //     Caption = 'Total WIP Sales G/L Amount';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-        // field(1023; "WIP Completion Calculated"; Boolean)
-        // {
-        //     CalcFormula = exist("Contrato WIP Entry" where("Job No." = field("No."),
-        //                                                "Job Complete" = const(true)));
-        //     Caption = 'WIP Completion Calculated';
-        //     FieldClass = FlowField;
-        // }
-        // field(1024; "Next Invoice Date"; Date)
-        // {
-        //     CalcFormula = min("Contrato Planning Line"."Planning Date" where("Job No." = field("No."),
-        //                                                                  "Contract Line" = const(true),
-        //                                                                  "Qty. to Invoice" = filter(<> 0)));
-        //     Caption = 'Next Invoice Date';
-        //     FieldClass = FlowField;
-        // }
+        field(1017; "Recog. Sales Amount"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = - sum("Contrato WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
+                                                                         Type = filter("Recognized Sales")));
+            Caption = 'Recog. Sales Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(1018; "Recog. Sales G/L Amount"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = - sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
+                                                                             Reversed = const(false),
+                                                                             Type = filter("Recognized Sales")));
+            Caption = 'Recog. Sales G/L Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(1019; "Recog. Costs Amount"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = sum("Contrato WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
+                                                                        Type = filter("Recognized Costs")));
+            Caption = 'Recog. Costs Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(1020; "Recog. Costs G/L Amount"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
+                                                                            Reversed = const(false),
+                                                                            Type = filter("Recognized Costs")));
+            Caption = 'Recog. Costs G/L Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(1021; "Total WIP Sales Amount"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = sum("Contrato WIP Entry"."WIP Entry Amount" where("Job No." = field("No."),
+                                                                        "Job Complete" = const(false),
+                                                                        Type = filter("Accrued Sales" | "Applied Sales" | "Recognized Sales")));
+            Caption = 'Total WIP Sales Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(1022; "Total WIP Sales G/L Amount"; Decimal)
+        {
+            AutoFormatType = 1;
+            CalcFormula = sum("Job WIP G/L Entry"."WIP Entry Amount" where("Job No." = field("No."),
+                                                                            Reversed = const(false),
+                                                                            "Job Complete" = const(false),
+                                                                            Type = filter("Accrued Sales" | "Applied Sales" | "Recognized Sales")));
+            Caption = 'Total WIP Sales G/L Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(1023; "WIP Completion Calculated"; Boolean)
+        {
+            CalcFormula = exist("Contrato WIP Entry" where("Job No." = field("No."),
+                                                       "Job Complete" = const(true)));
+            Caption = 'WIP Completion Calculated';
+            FieldClass = FlowField;
+        }
+        field(1024; "Next Invoice Date"; Date)
+        {
+            CalcFormula = min("Contrato Planning Line"."Planning Date" where("Job No." = field("No."),
+                                                                         "Contract Line" = const(true),
+                                                                         "Qty. to Invoice" = filter(<> 0)));
+            Caption = 'Next Invoice Date';
+            FieldClass = FlowField;
+        }
         field(1025; "Apply Usage Link"; Boolean)
         {
             Caption = 'Apply Usage Link';
 
-            // trigger OnValidate()
-            // var
-            //     ContratoPlanningLine: Record "Contrato Planning Line";
-            //     ContratoLedgerEntry: Record "Contrato Ledger Entry";
-            //     ContratoUsageLink: Record "Contrato Usage Link";
-            //     NewApplyUsageLink: Boolean;
-            // begin
-            //     if "Apply Usage Link" then begin
-            //         ContratoLedgerEntry.SetCurrentKey("Job No.");
-            //         ContratoLedgerEntry.SetRange("Job No.", "No.");
-            //         ContratoLedgerEntry.SetRange("Entry Type", ContratoLedgerEntry."Entry Type"::Usage);
-            //         if ContratoLedgerEntry.FindFirst() then begin
-            //             ContratoUsageLink.SetRange("Entry No.", ContratoLedgerEntry."Entry No.");
-            //             if ContratoUsageLink.IsEmpty() then
-            //                 Error(ApplyUsageLinkErr, TableCaption);
-            //         end;
+            trigger OnValidate()
+            var
+                ContratoPlanningLine: Record "Contrato Planning Line";
+                ContratoLedgerEntry: Record "Contrato Ledger Entry";
+                ContratoUsageLink: Record "Contrato Usage Link";
+                NewApplyUsageLink: Boolean;
+            begin
+                if "Apply Usage Link" then begin
+                    ContratoLedgerEntry.SetCurrentKey("Job No.");
+                    ContratoLedgerEntry.SetRange("Job No.", "No.");
+                    ContratoLedgerEntry.SetRange("Entry Type", ContratoLedgerEntry."Entry Type"::Usage);
+                    if ContratoLedgerEntry.FindFirst() then begin
+                        ContratoUsageLink.SetRange("Entry No.", ContratoLedgerEntry."Entry No.");
+                        if ContratoUsageLink.IsEmpty() then
+                            Error(ApplyUsageLinkErr, TableCaption);
+                    end;
 
-            //         ContratoPlanningLine.SetCurrentKey("Job No.");
-            //         ContratoPlanningLine.SetRange("Job No.", "No.");
-            //         ContratoPlanningLine.SetRange("Schedule Line", true);
-            //         if ContratoPlanningLine.FindSet() then begin
-            //             repeat
-            //                 ContratoPlanningLine.Validate("Usage Link", true);
-            //                 if ContratoPlanningLine."Planning Date" = 0D then
-            //                     ContratoPlanningLine.Validate("Planning Date", WorkDate());
-            //                 ContratoPlanningLine.Modify(true);
-            //             until ContratoPlanningLine.Next() = 0;
+                    ContratoPlanningLine.SetCurrentKey("Job No.");
+                    ContratoPlanningLine.SetRange("Job No.", "No.");
+                    ContratoPlanningLine.SetRange("Schedule Line", true);
+                    if ContratoPlanningLine.FindSet() then begin
+                        repeat
+                            ContratoPlanningLine.Validate("Usage Link", true);
+                            if ContratoPlanningLine."Planning Date" = 0D then
+                                ContratoPlanningLine.Validate("Planning Date", WorkDate());
+                            ContratoPlanningLine.Modify(true);
+                        until ContratoPlanningLine.Next() = 0;
 
-            //             NewApplyUsageLink := "Apply Usage Link";
-            //             RefreshModifiedRec();
-            //             "Apply Usage Link" := NewApplyUsageLink;
-            //         end;
-            //     end;
-            // end;
+                        NewApplyUsageLink := "Apply Usage Link";
+                        RefreshModifiedRec();
+                        "Apply Usage Link" := NewApplyUsageLink;
+                    end;
+                end;
+            end;
         }
-        // field(1026; "WIP Warnings"; Boolean)
-        // {
-        //     CalcFormula = exist("Job WIP Warning" where("Job No." = field("No.")));
-        //     Caption = 'WIP Warnings';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
+        field(1026; "WIP Warnings"; Boolean)
+        {
+            CalcFormula = exist("Job WIP Warning" where("Job No." = field("No.")));
+            Caption = 'WIP Warnings';
+            Editable = false;
+            FieldClass = FlowField;
+        }
         field(1027; "WIP Posting Method"; Option)
         {
             Caption = 'WIP Posting Method';
@@ -1368,8 +1368,8 @@ table 50200 Contrato
 
         Job := Rec;
         ContratosSetup.Get();
-        ContratosSetup.TestField("Job Nos.");
-        if NoSeries.LookupRelatedNoSeries(ContratosSetup."Job Nos.", OldContrato."No. Series", Job."No. Series") then begin
+        ContratosSetup.TestField("Contrato Nos.");
+        if NoSeries.LookupRelatedNoSeries(ContratosSetup."Contrato Nos.", OldContrato."No. Series", Job."No. Series") then begin
             Job."No." := NoSeries.GetNextNo(Job."No. Series");
             Rec := Job;
             exit(true);
@@ -1436,12 +1436,12 @@ table 50200 Contrato
             exit;
 
         if "No." = '' then begin
-            ContratosSetup.TestField("Job Nos.");
+            ContratosSetup.TestField("Contrato Nos.");
 #if not CLEAN24
-            NoSeriesMgt.RaiseObsoleteOnBeforeInitSeries(ContratosSetup."Job Nos.", xRec."No. Series", 0D, "No.", "No. Series", IsHandled);
+            NoSeriesMgt.RaiseObsoleteOnBeforeInitSeries(ContratosSetup."Contrato Nos.", xRec."No. Series", 0D, "No.", "No. Series", IsHandled);
             if not IsHandled then begin
 #endif
-                "No. Series" := ContratosSetup."Job Nos.";
+                "No. Series" := ContratosSetup."Contrato Nos.";
                 if NoSeries.AreRelated("No. Series", xRec."No. Series") then
                     "No. Series" := xRec."No. Series";
                 "No." := NoSeries.GetNextNo("No. Series");
@@ -1450,7 +1450,7 @@ table 50200 Contrato
                 while Contrato2.Get("No.") do
                     "No." := NoSeries.GetNextNo("No. Series");
 #if not CLEAN24
-                NoSeriesMgt.RaiseObsoleteOnAfterInitSeries("No. Series", ContratosSetup."Job Nos.", 0D, "No.");
+                NoSeriesMgt.RaiseObsoleteOnAfterInitSeries("No. Series", ContratosSetup."Contrato Nos.", 0D, "No.");
             end;
 #endif
         end;
@@ -1504,7 +1504,7 @@ table 50200 Contrato
 
         DimMgt.ValidateDimValueCode(FieldNumber, ShortcutDimCode);
         if not IsTemporary then begin
-            DimMgt.SaveDefaultDim(DATABASE::Job, "No.", FieldNumber, ShortcutDimCode);
+            DimMgt.SaveDefaultDim(DATABASE::Contrato, "No.", FieldNumber, ShortcutDimCode);
             UpdateContratoTaskDimension(FieldNumber, ShortcutDimCode);
             Modify();
         end;
@@ -1552,7 +1552,7 @@ table 50200 Contrato
         ContratoLedgEntry.SetCurrentKey("Job No.");
         ContratoLedgEntry.SetRange("Job No.", "No.");
         Result := not ContratoLedgEntry.IsEmpty();
-        //OnAfterContratoLedgEntryExist(ContratoLedgEntry, Result);
+        OnAfterContratoLedgEntryExist(ContratoLedgEntry, Result);
     end;
 
     procedure SalesContratoLedgEntryExist() Result: Boolean
@@ -1689,7 +1689,7 @@ table 50200 Contrato
             exit;
 
         DimMgt.UpdateDefaultDim(
-            DATABASE::Job, "No.",
+            DATABASE::Contrato, "No.",
             "Global Dimension 1 Code", "Global Dimension 2 Code");
     end;
 
@@ -2193,7 +2193,7 @@ table 50200 Contrato
         TempContratoDifferenceBuffer."Job No." := ContratoNo;
         TempContratoDifferenceBuffer."Job Task No." := ContratoTaskNo;
         if ContratoTaskType = ContratoTaskType::Posting then begin
-            TempContratoDifferenceBuffer.Type := "Job Planning Line Type".FromInteger(Type);
+            TempContratoDifferenceBuffer.Type := "Contrato Planning Line Type".FromInteger(Type);
             TempContratoDifferenceBuffer."No." := No;
             TempContratoDifferenceBuffer."Location Code" := LocationCode;
             TempContratoDifferenceBuffer."Variant Code" := VariantCode;
@@ -2739,16 +2739,16 @@ table 50200 Contrato
             exit;
 
         if "Contrato Posting Group" = '' then
-            Validate("Contrato Posting Group", ContratosSetup."Default Job Posting Group");
+            Validate("Contrato Posting Group", ContratosSetup."Default Contrato Posting Group");
     end;
 
     internal procedure GetQtyReservedFromStockState() Result: Enum "Reservation From Stock"
     var
         ContratoPlanningLineLocal: Record "Contrato Planning Line";
-        ContratoPlanningLineReserve: Codeunit "Job Planning Line-Reserve";
+        ContratoPlanningLineReserve: Codeunit "Contrato Planning Line-Reserve";
         QtyReservedFromStock: Decimal;
     begin
-        //QtyReservedFromStock := ContratoPlanningLineReserve.GetReservedQtyFromInventory(Rec);
+        QtyReservedFromStock := ContratoPlanningLineReserve.GetReservedQtyFromInventory(Rec);
 
         ContratoPlanningLineLocal.SetRange("Job No.", Rec."No.");
         ContratoPlanningLineLocal.SetRange(Type, ContratoPlanningLineLocal.Type::Item);

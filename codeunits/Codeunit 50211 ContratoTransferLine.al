@@ -266,7 +266,7 @@ codeunit 50211 "Contrato Transfer Line"
         if JobJournalBatch."No. Series" <> '' then
             JobJnlLine."Document No." := NoSeries.PeekNextNo(JobJournalBatch."No. Series", PostingDate)
         else
-            if JobSetup."Document No. Is Job No." then
+            if JobSetup."Document No. Is Contrato No." then
                 JobJnlLine."Document No." := JobPlanningLine."Job No."
             else
                 JobJnlLine."Document No." := JobPlanningLine."Document No.";

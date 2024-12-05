@@ -52,7 +52,7 @@ table 50205 "Contrato Journal Line"
                 "Price Calculation Method" := Job.GetPriceCalculationMethod();
                 "Cost Calculation Method" := Job.GetCostCalculationMethod();
                 JobSetup.Get();
-                if JobSetup."Document No. Is Job No." and ("Document No." = '') then
+                if JobSetup."Document No. Is Contrato No." and ("Document No." = '') then
                     Validate("Document No.", Rec."Job No.");
             end;
         }
@@ -1360,7 +1360,7 @@ table 50205 "Contrato Journal Line"
         if JobJnlLine.FindFirst() then begin
             "Posting Date" := LastJobJnlLine."Posting Date";
             "Document Date" := LastJobJnlLine."Posting Date";
-            if JobsSetup."Document No. Is Job No." and (LastJobJnlLine."Document No." = '') then
+            if JobsSetup."Document No. Is Contrato No." and (LastJobJnlLine."Document No." = '') then
                 "Document No." := Rec."Job No."
             else
                 "Document No." := LastJobJnlLine."Document No.";
@@ -1370,7 +1370,7 @@ table 50205 "Contrato Journal Line"
             OnSetUpNewLineOnNewLine(JobJnlLine, JobJnlTemplate, JobJnlBatch);
             "Posting Date" := WorkDate();
             "Document Date" := WorkDate();
-            if JobsSetup."Document No. Is Job No." then begin
+            if JobsSetup."Document No. Is Contrato No." then begin
                 if "Document No." = '' then
                     "Document No." := Rec."Job No.";
             end else

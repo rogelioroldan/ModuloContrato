@@ -672,7 +672,7 @@ codeunit 50210 "Contrato Jnl.-Post Line"
     local procedure PostATO(JobJournalLine: Record "Contrato Journal Line")
     var
         AsmHeader: Record "Assembly Header";
-        ATOLink: Record "Assemble-to-Order Link";
+        ATOLink: Record "Assemble-to-OrderLinkContrato";
         JobPlanningLine: Record "Contrato Planning Line";
         Window: Dialog;
     begin

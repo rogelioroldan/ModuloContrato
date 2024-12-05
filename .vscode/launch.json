@@ -6,7 +6,7 @@
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            "environmentName": "COPIA051124",
+            "environmentName": "FA_DEV",
             "startupObjectId": 22,
             "startupObjectType": "Page",
             "breakOnError": "All",

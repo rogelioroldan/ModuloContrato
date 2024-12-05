@@ -604,7 +604,7 @@ page 50224 "Contrato Task Card"
                     trigger OnAction()
                     var
                         Contrato: Record Contrato;
-                        AssembleToOrderLink: Record "Assemble-to-Order Link";
+                        AssembleToOrderLink: Record "Assemble-to-OrderLinkContrato";
                     begin
                         Contrato.Get(Rec."Job No.");
                         //AssembleToOrderLink.ShowAsmOrders(Contrato, Rec."Job Task No.");

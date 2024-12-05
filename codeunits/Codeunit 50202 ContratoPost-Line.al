@@ -457,7 +457,7 @@ codeunit 50202 "Contrato Post-Line"
 
 #if not CLEAN23
     [Obsolete('Replaced by PostJobPurchaseLines().', '19.0')]
-    procedure PostPurchaseGLAccounts(TempInvoicePostBuffer: Record "Invoice Post. Buffer" temporary; GLEntryNo: Integer)
+    procedure PostPurchaseGLAccounts(TempInvoicePostBuffer: Record temporary; GLEntryNo: Integer)
     var
         PurchasesPayablesSetup: Record "Purchases & Payables Setup";
         IsHandled: Boolean;

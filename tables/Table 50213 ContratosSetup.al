@@ -9,7 +9,7 @@ table 50213 "Contratos Setup"
         {
             Caption = 'Primary Key';
         }
-        field(2; "Job Nos."; Code[20])
+        field(2; "Contrato Nos."; Code[20])
         {
             Caption = 'Contrato Nos.';
             TableRelation = "No. Series";
@@ -22,9 +22,9 @@ table 50213 "Contratos Setup"
         field(4; "Default WIP Method"; Code[20])
         {
             Caption = 'Default WIP Method';
-            TableRelation = "Job WIP Method".Code;
+            TableRelation = "Contrato WIP Method".Code;
         }
-        field(5; "Default Job Posting Group"; Code[20])
+        field(5; "Default Contrato Posting Group"; Code[20])
         {
             Caption = 'Default Project Posting Group';
             TableRelation = "Contrato Posting Group".Code;
@@ -33,14 +33,14 @@ table 50213 "Contratos Setup"
         {
             Caption = 'Default WIP Posting Method';
             OptionCaption = 'Per Project,Per Project Ledger Entry';
-            OptionMembers = "Per Job","Per Job Ledger Entry";
+            OptionMembers = "Per Contrato","Per Contrato Ledger Entry";
         }
         field(7; "Allow Sched/Contract Lines Def"; Boolean)
         {
             Caption = 'Allow Sched/Contract Lines Def';
             InitValue = true;
         }
-        field(9; "Document No. Is Job No."; Boolean)
+        field(9; "Document No. Is Contrato No."; Boolean)
         {
             Caption = 'Document No. Is Project No.';
             InitValue = true;
@@ -56,7 +56,7 @@ table 50213 "Contratos Setup"
             OptionCaption = 'No Logo,Left,Center,Right';
             OptionMembers = "No Logo",Left,Center,Right;
         }
-        field(40; "Job WIP Nos."; Code[20])
+        field(40; "Contrato WIP Nos."; Code[20])
         {
             Caption = 'Project WIP Nos.';
             TableRelation = "No. Series";
@@ -68,7 +68,7 @@ table 50213 "Contratos Setup"
             OptionMembers = Never,Question,Always;
             DataClassification = CustomerContent;
         }
-        field(1001; "Automatic Update Job Item Cost"; Boolean)
+        field(1001; "Automatic Update Contrato Item Cost"; Boolean)
         {
             AccessByPermission = TableData Item = R;
             Caption = 'Automatic Update Project Item Cost';
@@ -82,7 +82,7 @@ table 50213 "Contratos Setup"
         field(7003; "Default Sales Price List Code"; Code[20])
         {
             Caption = 'Default Sales Price List Code';
-            TableRelation = "Price List Header" where("Price Type" = const(Sale), "Source Group" = const(Job), "Allow Updating Defaults" = const(true));
+            TableRelation = "Price List Header" where("Price Type" = const(Sale), "Source Group" = const(Contrato), "Allow Updating Defaults" = const(true));
             DataClassification = CustomerContent;
             trigger OnLookup()
             var
@@ -108,7 +108,7 @@ table 50213 "Contratos Setup"
         field(7004; "Default Purch Price List Code"; Code[20])
         {
             Caption = 'Default Purchase Price List Code';
-            TableRelation = "Price List Header" where("Price Type" = const(Purchase), "Source Group" = const(Job), "Allow Updating Defaults" = const(true));
+            TableRelation = "Price List Header" where("Price Type" = const(Purchase), "Source Group" = const(Contrato), "Allow Updating Defaults" = const(true));
             DataClassification = CustomerContent;
             trigger OnLookup()
             var

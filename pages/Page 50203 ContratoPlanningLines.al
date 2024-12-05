@@ -638,7 +638,7 @@ page 50203 "Contrato Planning Lines"
 
                     trigger OnAction()
                     begin
-                        //Rec.OpenItemTrackingLines();
+                        Rec.OpenItemTrackingLines();
                     end;
                 }
                 group("Assemble to Order")
