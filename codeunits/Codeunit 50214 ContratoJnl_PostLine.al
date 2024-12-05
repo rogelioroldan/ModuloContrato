@@ -48,11 +48,11 @@ codeunit 50214 "Contrato Jnl. Line-Reserve"
             else
                 NewJobJnlLine.FieldError("Posting Date", Text002);
 
-        if NewJobJnlLine."Job No." <> OldJobJnlLine."Job No." then
+        if NewJobJnlLine."Contrato No." <> OldJobJnlLine."Contrato No." then
             if not ShowError then
                 HasError := true
             else
-                NewJobJnlLine.FieldError("Job No.", Text004);
+                NewJobJnlLine.FieldError("Contrato No.", Text004);
 
         if NewJobJnlLine."Entry Type" <> OldJobJnlLine."Entry Type" then
             if not ShowError then
@@ -97,7 +97,7 @@ codeunit 50214 "Contrato Jnl. Line-Reserve"
             FindReservEntry(NewJobJnlLine, TempReservEntry);
             TempReservEntry.ClearTrackingFilter();
 
-            PointerChanged := (NewJobJnlLine."Job No." <> OldJobJnlLine."Job No.") or
+            PointerChanged := (NewJobJnlLine."Contrato No." <> OldJobJnlLine."Contrato No.") or
               (NewJobJnlLine."Entry Type" <> OldJobJnlLine."Entry Type") or
               (NewJobJnlLine."No." <> OldJobJnlLine."No.");
 

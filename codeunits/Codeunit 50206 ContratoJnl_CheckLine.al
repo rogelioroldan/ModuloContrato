@@ -78,7 +78,7 @@ codeunit 50206 "Contrato Jnl.-Check Line"
 
     local procedure TestJobStatusOpen(var JobJnlLine: Record "Contrato Journal Line")
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         IsHandled: Boolean;
     begin
         IsHandled := false;
@@ -86,8 +86,8 @@ codeunit 50206 "Contrato Jnl.-Check Line"
         if IsHandled then
             exit;
 
-        Job.Get(JobJnlLine."Job No.");
-        Job.TestField(Status, Job.Status::Open, ErrorInfo.Create());
+        Contrato.Get(JobJnlLine."Contrato No.");
+        Contrato.TestField(Status, Contrato.Status::Open, ErrorInfo.Create());
     end;
 
     local procedure TestJobJnlLineChargeable(JobJnlLine: Record "Contrato Journal Line")
@@ -158,8 +158,8 @@ codeunit 50206 "Contrato Jnl.-Check Line"
                 JobJnlLine.TableCaption(), JobJnlLine."Journal Template Name", JobJnlLine."Journal Batch Name", JobJnlLine."Line No.",
                 DimMgt.GetDimCombErr());
 
-        TableID[1] := DATABASE::Job;
-        No[1] := JobJnlLine."Job No.";
+        TableID[1] := DATABASE::Contrato;
+        No[1] := JobJnlLine."Contrato No.";
         TableID[2] := DimMgt.TypeToTableID2(JobJnlLine.Type.AsInteger());
         No[2] := JobJnlLine."No.";
         TableID[3] := DATABASE::"Resource Group";
@@ -184,7 +184,7 @@ codeunit 50206 "Contrato Jnl.-Check Line"
     local procedure CheckItemQuantityJobJnl(var JobJnlline: Record "Contrato Journal Line")
     var
         Item: Record Item;
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         IsHandled: Boolean;
     begin
         IsHandled := false;
@@ -195,15 +195,15 @@ codeunit 50206 "Contrato Jnl.-Check Line"
         if JobJnlline.IsNonInventoriableItem() then
             exit;
 
-        Job.Get(JobJnlline."Job No.");
-        if (Job.GetQuantityAvailable(JobJnlline."No.", JobJnlline."Location Code", JobJnlline."Variant Code", 0, 2) +
+        Contrato.Get(JobJnlline."Contrato No.");
+        if (Contrato.GetQuantityAvailable(JobJnlline."No.", JobJnlline."Location Code", JobJnlline."Variant Code", 0, 2) +
             JobJnlline."Quantity (Base)") < 0
         then
             Error(
                 ErrorInfo.Create(
                     StrSubstNo(
-                        Text004, Item.TableCaption(), JobJnlline."No.", Job.TableCaption(),
-                        JobJnlline."Job No.", JobJnlline."Journal Batch Name",
+                        Text004, Item.TableCaption(), JobJnlline."No.", Contrato.TableCaption(),
+                        JobJnlline."Contrato No.", JobJnlline."Journal Batch Name",
                         JobJnlline.FieldCaption("Line No."), JobJnlline."Line No."),
                     true));
     end;
@@ -221,8 +221,8 @@ codeunit 50206 "Contrato Jnl.-Check Line"
 
         // if WhseValidateSourceLine.IsWhsePickRequiredForJobJnlLine(JobJournalLine) or WhseValidateSourceLine.IsInventoryPickRequiredForJobJnlLine(JobJournalLine) then
         //     if not CalledFromInvtPutawayPick then
-        //         if JobPlanningLine.Get(JobJournalLine."Job No.", JobJournalLine."Job Task No.", JobJournalLine."Job Planning Line No.") and (JobPlanningLine."Qty. Picked" - JobPlanningLine."Qty. Posted" < JobJournalLine.Quantity - JobPlanningLine."Qty. to Assemble") then
-        //             JobPlanningLine.FieldError("Qty. Picked", ErrorInfo.Create(StrSubstNo(WhseRemainQtyPickedErr, JobPlanningLine."Job No.", JobPlanningLine."Line No.", JobJournalLine.Quantity + JobPlanningLine."Qty. Posted" - JobPlanningLine."Qty. Picked" - JobPlanningLine."Qty. to Assemble"), true));
+        //         if JobPlanningLine.Get(JobJournalLine."Contrato No.", JobJournalLine."Contrato Task No.", JobJournalLine."Contrato Planning Line No.") and (JobPlanningLine."Qty. Picked" - JobPlanningLine."Qty. Posted" < JobJournalLine.Quantity - JobPlanningLine."Qty. to Assemble") then
+        //             JobPlanningLine.FieldError("Qty. Picked", ErrorInfo.Create(StrSubstNo(WhseRemainQtyPickedErr, JobPlanningLine."Contrato No.", JobPlanningLine."Line No.", JobJournalLine.Quantity + JobPlanningLine."Qty. Posted" - JobPlanningLine."Qty. Picked" - JobPlanningLine."Qty. to Assemble"), true));
     end;
 
     local procedure TestJobJnlLine(JobJournalLine: Record "Contrato Journal Line")
@@ -234,8 +234,8 @@ codeunit 50206 "Contrato Jnl.-Check Line"
         if IsHandled then
             exit;
 
-        JobJournalLine.TestField("Job No.", ErrorInfo.Create());
-        JobJournalLine.TestField("Job Task No.", ErrorInfo.Create());
+        JobJournalLine.TestField("Contrato No.", ErrorInfo.Create());
+        JobJournalLine.TestField("Contrato Task No.", ErrorInfo.Create());
         JobJournalLine.TestField("No.", ErrorInfo.Create());
         JobJournalLine.TestField("Posting Date", ErrorInfo.Create());
         JobJournalLine.TestField(Quantity, ErrorInfo.Create());

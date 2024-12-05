@@ -60,7 +60,7 @@ page 50202 "Contrato Invoices"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the amount of the unit costs that has been posted from the invoice or credit memo. The amount is calculated based on Quantity, Unit Cost, and Line Discount %.';
                 }
-                field("Contrato Ledger Entry No."; Rec."Job Ledger Entry No.")
+                field("Contrato Ledger Entry No."; Rec."Contrato Ledger Entry No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies a link to the project ledger entry that was created when the document was posted.';
@@ -92,7 +92,7 @@ page 50202 "Contrato Invoices"
                     begin
                         JobCreateInvoice.OpenSalesInvoice(Rec);
                         JobCreateInvoice.FindInvoices(Rec, JobNo, JobTaskNo, JobPlanningLineNo, DetailLevel);
-                        if Rec.Get(Rec."Job No.", Rec."Job Task No.", Rec."Job Planning Line No.", Rec."Document Type", Rec."Document No.", Rec."Line No.") then;
+                        if Rec.Get(Rec."Contrato No.", Rec."Contrato Task No.", Rec."Contrato Planning Line No.", Rec."Document Type", Rec."Document No.", Rec."Line No.") then;
                     end;
                 }
             }
@@ -126,27 +126,27 @@ page 50202 "Contrato Invoices"
         JobNo: Code[20];
         JobTaskNo: Code[20];
         JobPlanningLineNo: Integer;
-        DetailLevel: Option All,"Per Job","Per Job Task","Per Job Planning Line";
+        DetailLevel: Option All,"Per Contrato","Per Contrato Task","Per Contrato Planning Line";
         ShowDetails: Boolean;
 
     procedure SetPrJob(Contrato: Record Contrato)
     begin
-        DetailLevel := DetailLevel::"Per Job";
+        DetailLevel := DetailLevel::"Per Contrato";
         JobNo := Contrato."No.";
     end;
 
     procedure SetPrJobTask(JobTask: Record "Contrato Task")
     begin
-        DetailLevel := DetailLevel::"Per Job Task";
-        JobNo := JobTask."Job No.";
-        JobTaskNo := JobTask."Job Task No.";
+        DetailLevel := DetailLevel::"Per Contrato Task";
+        JobNo := JobTask."Contrato No.";
+        JobTaskNo := JobTask."Contrato Task No.";
     end;
 
     procedure SetPrJobPlanningLine(JobPlanningLine: Record "Contrato Planning Line")
     begin
-        DetailLevel := DetailLevel::"Per Job Planning Line";
-        JobNo := JobPlanningLine."Job No.";
-        JobTaskNo := JobPlanningLine."Job Task No.";
+        DetailLevel := DetailLevel::"Per Contrato Planning Line";
+        JobNo := JobPlanningLine."Contrato No.";
+        JobTaskNo := JobPlanningLine."Contrato Task No.";
         JobPlanningLineNo := JobPlanningLine."Line No.";
     end;
 

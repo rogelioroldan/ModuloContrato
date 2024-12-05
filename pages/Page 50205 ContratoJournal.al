@@ -67,7 +67,7 @@ page 50205 "Contrato Journal"
                     ToolTip = 'Specifies a document number that refers to the customer''s or vendor''s numbering system.';
                     Visible = false;
                 }
-                field("Contrato No."; Rec."Job No.")
+                field("Contrato No."; Rec."Contrato No.")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the number of the project.';
@@ -78,7 +78,7 @@ page 50205 "Contrato Journal"
                         Rec.ShowShortcutDimCode(ShortcutDimCode);
                     end;
                 }
-                field("Contrato Task No."; Rec."Job Task No.")
+                field("Contrato Task No."; Rec."Contrato Task No.")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the number of the related project task.';
@@ -132,7 +132,7 @@ page 50205 "Contrato Journal"
                     ToolTip = 'Specifies information in addition to the description.';
                     Visible = false;
                 }
-                field("Contrato Planning Line No."; Rec."Job Planning Line No.")
+                field("Contrato Planning Line No."; Rec."Contrato Planning Line No.")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the project planning line number that the usage should be linked to when the project journal is posted. You can only link to project planning lines that have the Apply Usage Link option enabled.';
@@ -486,7 +486,7 @@ page 50205 "Contrato Journal"
         }
         area(factboxes)
         {
-            part(JournalErrorsFactBox; "Job Journal Errors FactBox")
+            part(JournalErrorsFactBox; ContratoJournalErrorsFactbox)
             {
                 ApplicationArea = Basic, Suite;
                 ShowFilter = false;
@@ -555,7 +555,7 @@ page 50205 "Contrato Journal"
                     Caption = 'Card';
                     Image = EditLines;
                     RunObject = Page "Contrato Card";
-                    RunPageLink = "No." = field("Job No.");
+                    RunPageLink = "No." = field("Contrato No.");
                     ShortCutKey = 'Shift+F7';
                     ToolTip = 'View or change detailed information about the record on the document or journal line.';
                 }
@@ -565,8 +565,8 @@ page 50205 "Contrato Journal"
                     Caption = 'Ledger E&ntries';
                     Image = CustomerLedger;
                     RunObject = Page "Contrato Ledger Entries";
-                    RunPageLink = "Job No." = field("Job No.");
-                    RunPageView = sorting("Job No.", "Posting Date");
+                    RunPageLink = "Contrato No." = field("Contrato No.");
+                    RunPageView = sorting("Contrato No.", "Posting Date");
                     ShortCutKey = 'Ctrl+F7';
                     ToolTip = 'View the history of transactions that have been posted for the selected record.';
                 }
@@ -656,7 +656,7 @@ page 50205 "Contrato Journal"
 
                     trigger OnAction()
                     begin
-                        CODEUNIT.Run(CODEUNIT::"Job Jnl.-Post", Rec);
+                        CODEUNIT.Run(CODEUNIT::"Contrato Jnl.-Post", Rec);
                         CurrentJnlBatchName := Rec.GetRangeMax("Journal Batch Name");
                         CurrPage.Update(false);
                     end;
@@ -868,7 +868,7 @@ page 50205 "Contrato Journal"
         JobJnlManagement: Codeunit ContratoJnlManagement;
         ReportPrint: Codeunit "Test Report-Print";
         ClientTypeManagement: Codeunit "Client Type Management";
-        JobJournalErrorsMgt: Codeunit "Job Journal Errors Mgt.";
+        JobJournalErrorsMgt: Codeunit "Contrato Journal Errors Mgt.";
         JobJnlReconcile: Page "Job Journal Reconcile";
         JobDescription: Text[100];
         AccName: Text[100];
@@ -956,9 +956,9 @@ page 50205 "Contrato Journal"
 
     local procedure ShowPreview()
     var
-        JobJnlPost: Codeunit "Job Jnl.-Post";
+        JobJnlPost: Codeunit "Contrato Jnl.-Post";
     begin
-        //JobJnlPost.Preview(Rec);
+        JobJnlPost.Preview(Rec);
     end;
 
     [IntegrationEvent(false, false)]

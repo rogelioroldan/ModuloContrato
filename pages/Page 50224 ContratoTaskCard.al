@@ -12,7 +12,7 @@ page 50224 "Contrato Task Card"
             group(General)
             {
                 Caption = 'General';
-                field("Contrato Task No."; Rec."Job Task No.")
+                field("Contrato Task No."; Rec."Contrato Task No.")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the number of the related project task.';
@@ -22,7 +22,7 @@ page 50224 "Contrato Task Card"
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies a description of the project task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the project planning line.';
                 }
-                field("Contrato Task Type"; Rec."Job Task Type")
+                field("Contrato Task Type"; Rec."Contrato Task Type")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the purpose of the account. Newly created accounts are automatically assigned the Posting account type, but you can change this. Choose the field to select one of the following five options:';
@@ -182,8 +182,8 @@ page 50224 "Contrato Task Card"
             part(ContratoPlanningLines; "Contrato Planning Lines Part")
             {
                 ApplicationArea = Jobs;
-                SubPageLink = "Job No." = field("Job No."),
-                              "Job Task No." = field("Job Task No.");
+                SubPageLink = "Contrato No." = field("Contrato No."),
+                              "Contrato Task No." = field("Contrato Task No.");
             }
             group(Posting)
             {
@@ -588,8 +588,8 @@ page 50224 "Contrato Task Card"
                     Caption = 'Dimensions';
                     Image = Dimensions;
                     RunObject = Page "Contrato Task Dimensions";
-                    RunPageLink = "Job No." = field("Job No."),
-                                  "Job Task No." = field("Job Task No.");
+                    RunPageLink = "Contrato No." = field("Contrato No."),
+                                  "Contrato Task No." = field("Contrato Task No.");
                     ShortCutKey = 'Alt+D';
                     ToolTip = 'View or edit dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.';
                 }
@@ -606,8 +606,8 @@ page 50224 "Contrato Task Card"
                         Contrato: Record Contrato;
                         AssembleToOrderLink: Record "Assemble-to-OrderLinkContrato";
                     begin
-                        Contrato.Get(Rec."Job No.");
-                        //AssembleToOrderLink.ShowAsmOrders(Contrato, Rec."Job Task No.");
+                        Contrato.Get(Rec."Contrato No.");
+                        //AssembleToOrderLink.ShowAsmOrders(Contrato, Rec."Contrato Task No.");
                     end;
                 }
             }
@@ -735,9 +735,9 @@ page 50224 "Contrato Task Card"
                     JobTask: Record "Contrato Task";
                     ReportSelection: Record "Report Selections";
                 begin
-                    JobTask.SetCurrentKey("Job No.", "Job Task No.");
-                    JobTask.SetFilter("Job No.", Rec."Job No.");
-                    JobTask.SetFilter("Job Task No.", Rec."Job Task No.");
+                    JobTask.SetCurrentKey("Contrato No.", "Contrato Task No.");
+                    JobTask.SetFilter("Contrato No.", Rec."Contrato No.");
+                    JobTask.SetFilter("Contrato Task No.", Rec."Contrato Task No.");
                     ReportSelection.PrintWithDialogForCust(
                         ReportSelection.Usage::"Job Task Quote", JobTask, true, Rec.FieldNo("Bill-to Customer No."));
                 end;
@@ -821,7 +821,7 @@ page 50224 "Contrato Task Card"
         IsSellToCountyVisible := FormatAddress.UseCounty(Rec."Sell-to Country/Region Code");
         IsShipToCountyVisible := FormatAddress.UseCounty(Rec."Ship-to Country/Region Code");
 
-        if Contrato.Get(Rec."Job No.") then
+        if Contrato.Get(Rec."Contrato No.") then
             PerTaskBillingFieldsVisible := Contrato."Task Billing Method" = Contrato."Task Billing Method"::"Multiple customers";
 
         ExtendedPriceEnabled := PriceCalculationMgt.IsExtendedPriceCalculationEnabled();
@@ -863,7 +863,7 @@ page 50224 "Contrato Task Card"
     var
         Contrato: Record Contrato;
     begin
-        if Contrato.Get(Rec."Job No.") then
+        if Contrato.Get(Rec."Contrato No.") then
             InvoiceCurrencyCodeEditable := Contrato."Currency Code" = '';
     end;
 

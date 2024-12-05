@@ -5,18 +5,18 @@ table 50214 "Contrato Task Dimension"
 
     fields
     {
-        field(1; "Job No."; Code[20])
+        field(1; "Contrato No."; Code[20])
         {
             Caption = 'Contrato No.';
             Editable = false;
             NotBlank = true;
-            TableRelation = "Contrato Task"."Job No.";
+            TableRelation = "Contrato Task"."Contrato No.";
         }
-        field(2; "Job Task No."; Code[20])
+        field(2; "Contrato Task No."; Code[20])
         {
             Caption = 'Contrato Task No.';
             NotBlank = true;
-            TableRelation = "Contrato Task"."Job Task No." where("Job No." = field("Job No."));
+            TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
         }
         field(3; "Dimension Code"; Code[20])
         {
@@ -51,7 +51,7 @@ table 50214 "Contrato Task Dimension"
 
     keys
     {
-        key(Key1; "Job No.", "Job Task No.", "Dimension Code")
+        key(Key1; "Contrato No.", "Contrato Task No.", "Dimension Code")
         {
             Clustered = true;
         }
@@ -105,12 +105,12 @@ table 50214 "Contrato Task Dimension"
     begin
         GLSEtup.Get();
         if "Dimension Code" = GLSEtup."Global Dimension 1 Code" then begin
-            JobTask.Get("Job No.", "Job Task No.");
+            JobTask.Get("Contrato No.", "Contrato Task No.");
             JobTask."Global Dimension 1 Code" := DimensionValue;
             JobTask.Modify(true);
         end else
             if "Dimension Code" = GLSEtup."Global Dimension 2 Code" then begin
-                JobTask.Get("Job No.", "Job Task No.");
+                JobTask.Get("Contrato No.", "Contrato Task No.");
                 JobTask."Global Dimension 2 Code" := DimensionValue;
                 JobTask.Modify(true);
             end;

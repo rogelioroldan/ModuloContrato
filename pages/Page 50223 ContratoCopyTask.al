@@ -37,10 +37,10 @@ page 50223 "Copy Contrato Tasks"
                         JobTask: Record "Contrato Task";
                     begin
                         if SourceJob."No." <> '' then begin
-                            JobTask.SetRange("Job No.", SourceJob."No.");
+                            JobTask.SetRange("Contrato No.", SourceJob."No.");
                             OnLookupFromJobTaskNoOnAfterSetJobTaskFilters(JobTask);
                             if PAGE.RunModal(PAGE::"Contrato Task List", JobTask) = ACTION::LookupOK then
-                                FromJobTaskNo := JobTask."Job Task No.";
+                                FromJobTaskNo := JobTask."Contrato Task No.";
                         end;
                     end;
 
@@ -63,10 +63,10 @@ page 50223 "Copy Contrato Tasks"
                         JobTask: Record "Contrato Task";
                     begin
                         if SourceJobNo <> '' then begin
-                            JobTask.SetRange("Job No.", SourceJobNo);
+                            JobTask.SetRange("Contrato No.", SourceJobNo);
                             OnLookupToJobTaskNoOnAfterSetJobTaskFilters(JobTask);
                             if PAGE.RunModal(PAGE::"Contrato Task List", JobTask) = ACTION::LookupOK then
-                                ToJobTaskNo := JobTask."Job Task No.";
+                                ToJobTaskNo := JobTask."Contrato Task No.";
                         end;
                     end;
 
@@ -200,7 +200,7 @@ page 50223 "Copy Contrato Tasks"
         CopyJob: Codeunit "Copy Contrato";
         SourceJobNo, FromJobTaskNo, ToJobTaskNo, TargetJobNo : Code[20];
         FromDate, ToDate : Date;
-        Source: Option "Job Planning Lines","Job Ledger Entries","None";
+        Source: Option "Contrato Planning Lines","Contrato Ledger Entries","None";
         PlanningLineType: Option "Budget+Billable",Budget,Billable;
         LedgerEntryType: Option "Usage+Sale",Usage,Sale;
         CopyQuantity, CopyDimensions : Boolean;
@@ -217,12 +217,12 @@ page 50223 "Copy Contrato Tasks"
     local procedure ValidateSource()
     begin
         case true of
-            Source = Source::"Job Planning Lines":
+            Source = Source::"Contrato Planning Lines":
                 begin
                     PlanningLineTypeEnable := true;
                     LedgerEntryLineTypeEnable := false;
                 end;
-            Source = Source::"Job Ledger Entries":
+            Source = Source::"Contrato Ledger Entries":
                 begin
                     PlanningLineTypeEnable := false;
                     LedgerEntryLineTypeEnable := true;
@@ -258,17 +258,17 @@ page 50223 "Copy Contrato Tasks"
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeOnQueryClosePage(var CloseAction: Action; var SourceJob: Record Contrato; var TargetJob: Record Contrato; var IsHandled: Boolean; var CopyQuantity: Boolean; var CopyDimensions: Boolean; var Source: Option "Job Planning Lines","Job Ledger Entries","None"; var PlanningLineType: Option "Budget+Billable",Budget,Billable; var LedgerEntryType: Option "Usage+Sale",Usage,Sale; var FromJobTaskNo: Code[20]; var ToJobTaskNo: Code[20]; var FromDate: Date; var ToDate: Date)
+    local procedure OnBeforeOnQueryClosePage(var CloseAction: Action; var SourceJob: Record Contrato; var TargetJob: Record Contrato; var IsHandled: Boolean; var CopyQuantity: Boolean; var CopyDimensions: Boolean; var Source: Option "Contrato Planning Lines","Contrato Ledger Entries","None"; var PlanningLineType: Option "Budget+Billable",Budget,Billable; var LedgerEntryType: Option "Usage+Sale",Usage,Sale; var FromJobTaskNo: Code[20]; var ToJobTaskNo: Code[20]; var FromDate: Date; var ToDate: Date)
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnOpenPageOnBeforeValidateSource(var CopyQuantity: Boolean; var CopyDimensions: Boolean; var Source: Option "Job Planning Lines","Job Ledger Entries","None"; var PlanningLineType: Option "Budget+Billable",Budget,Billable; var LedgerEntryType: Option "Usage+Sale",Usage,Sale);
+    local procedure OnOpenPageOnBeforeValidateSource(var CopyQuantity: Boolean; var CopyDimensions: Boolean; var Source: Option "Contrato Planning Lines","Contrato Ledger Entries","None"; var PlanningLineType: Option "Budget+Billable",Budget,Billable; var LedgerEntryType: Option "Usage+Sale",Usage,Sale);
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnQueryClosePageOnBeforeCopyJobTasks(var CopyJob: Codeunit "Copy Contrato"; var CopyQuantity: Boolean; var CopyDimensions: Boolean; var Source: Option "Job Planning Lines","Job Ledger Entries","None"; var PlanningLineType: Option "Budget+Billable",Budget,Billable; var LedgerEntryType: Option "Usage+Sale",Usage,Sale);
+    local procedure OnQueryClosePageOnBeforeCopyJobTasks(var CopyJob: Codeunit "Copy Contrato"; var CopyQuantity: Boolean; var CopyDimensions: Boolean; var Source: Option "Contrato Planning Lines","Contrato Ledger Entries","None"; var PlanningLineType: Option "Budget+Billable",Budget,Billable; var LedgerEntryType: Option "Usage+Sale",Usage,Sale);
     begin
     end;
 }

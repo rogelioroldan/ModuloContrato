@@ -1,6 +1,6 @@
 table 50221 "Contrato WIP Total"
 {
-    Caption = 'Project WIP Total';
+    Caption = 'Contrato WIP Total';
     DrillDownPageID = "Contrato WIP Totals";
     LookupPageID = "Contrato WIP Totals";
     DataClassification = CustomerContent;
@@ -14,16 +14,16 @@ table 50221 "Contrato WIP Total"
         }
         field(2; "Contrato No."; Code[20])
         {
-            Caption = 'Project No.';
+            Caption = 'Contrato No.';
             Editable = false;
             NotBlank = true;
             TableRelation = Contrato;
         }
         field(3; "Contrato Task No."; Code[20])
         {
-            Caption = 'Project Task No.';
+            Caption = 'Contrato Task No.';
             NotBlank = true;
-            TableRelation = "Contrato Task"."Job Task No." where("Job No." = field("Contrato No."));
+            TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
             ValidateTableRelation = false;
         }
         field(4; "WIP Method"; Code[20])
@@ -160,8 +160,8 @@ table 50221 "Contrato WIP Total"
     procedure DeleteEntriesForJobTask(JobTask: Record "Contrato Task")
     begin
         SetCurrentKey("Contrato No.", "Contrato Task No.");
-        SetRange("Contrato No.", JobTask."Job No.");
-        SetRange("Contrato Task No.", JobTask."Job Task No.");
+        SetRange("Contrato No.", JobTask."Contrato No.");
+        SetRange("Contrato Task No.", JobTask."Contrato Task No.");
         SetRange("Posted to G/L", false);
         if not IsEmpty() then
             DeleteAll(true);

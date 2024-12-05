@@ -33,7 +33,7 @@ codeunit 50215 "Contrato Create-Invoice"
     procedure CreateSalesInvoice(var JobPlanningLine: Record "Contrato Planning Line"; CrMemo: Boolean)
     var
         SalesHeader: Record "Sales Header";
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobPlanningLine2: Record "Contrato Planning Line";
         GetSalesInvoiceNo: Report "Job Transfer to Sales Invoice";
         GetSalesCrMemoNo: Report "Job Transfer to Credit Memo";
@@ -72,21 +72,21 @@ codeunit 50215 "Contrato Create-Invoice"
                 Error(Text004);
             end;
 
-            Job.Get(JobPlanningLine."Job No.");
-            if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then
+            Contrato.Get(JobPlanningLine."Contrato No.");
+            if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then
                 CreateSalesInvoiceLines(
-                    JobPlanningLine."Job No.", JobPlanningLine, InvoiceNo, NewInvoice, PostingDate, DocumentDate, CrMemo)
+                    JobPlanningLine."Contrato No.", JobPlanningLine, InvoiceNo, NewInvoice, PostingDate, DocumentDate, CrMemo)
             else begin
                 JobPlanningLine2.Copy(JobPlanningLine);
-                JobPlanningLine2.SetCurrentKey("Job No.", "Job Task No.", "Line No.");
+                JobPlanningLine2.SetCurrentKey("Contrato No.", "Contrato Task No.", "Line No.");
                 JobPlanningLine2.FindSet();
                 JobPlanningLine.Reset();
                 repeat
-                    JobPlanningLine.SetFilter("Job No.", JobPlanningLine2."Job No.");
-                    JobPlanningLine.SetFilter("Job Task No.", JobPlanningLine2."Job Task No.");
+                    JobPlanningLine.SetFilter("Contrato No.", JobPlanningLine2."Contrato No.");
+                    JobPlanningLine.SetFilter("Contrato Task No.", JobPlanningLine2."Contrato Task No.");
                     JobPlanningLine.SetFilter("Line No.", '%1', JobPlanningLine2."Line No.");
                     JobPlanningLine.FindFirst();
-                    CreateSalesInvoiceLines(JobPlanningLine."Job No.", JobPlanningLine, InvoiceNo, NewInvoice, PostingDate, DocumentDate, CrMemo);
+                    CreateSalesInvoiceLines(JobPlanningLine."Contrato No.", JobPlanningLine, InvoiceNo, NewInvoice, PostingDate, DocumentDate, CrMemo);
                 until JobPlanningLine2.Next() = 0;
             end;
 
@@ -119,7 +119,7 @@ codeunit 50215 "Contrato Create-Invoice"
 #endif
     procedure CreateSalesInvoiceLines(JobNo: Code[20]; var JobPlanningLineSource: Record "Contrato Planning Line"; InvoiceNo: Code[20]; NewInvoice: Boolean; PostingDate: Date; DocumentDate: Date; CreditMemo: Boolean)
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobPlanningLine: Record "Contrato Planning Line";
         JobPlanningLineInvoice: Record "Contrato Planning Line Invoice";
         LineCounter: Integer;
@@ -128,15 +128,15 @@ codeunit 50215 "Contrato Create-Invoice"
         OnBeforeCreateSalesInvoiceLines(JobPlanningLineSource, InvoiceNo, NewInvoice, PostingDate, CreditMemo, NoOfSalesLinesCreated);
 
         ClearAll();
-        Job.Get(JobNo);
-        OnCreateSalesInvoiceLinesOnBeforeTestJob(Job);
-        // if Job.Blocked = Job.Blocked::All then
-        //     Job.TestBlocked();
-        if Job."Currency Code" = '' then
-            JobInvCurrency := IsJobInvCurrencyDependingOnBillingMethod(Job, JobPlanningLineSource);
+        Contrato.Get(JobNo);
+        OnCreateSalesInvoiceLinesOnBeforeTestJob(Contrato);
+        // if Contrato.Blocked = Contrato.Blocked::All then
+        //     Contrato.TestBlocked();
+        if Contrato."Currency Code" = '' then
+            JobInvCurrency := IsJobInvCurrencyDependingOnBillingMethod(Contrato, JobPlanningLineSource);
 
-        OnCreateSalesInvoiceLinesOnAfterSetJobInvCurrency(Job, JobInvCurrency);
-        CheckJobBillToCustomer(JobPlanningLineSource, Job);
+        OnCreateSalesInvoiceLinesOnAfterSetJobInvCurrency(Contrato, JobInvCurrency);
+        CheckJobBillToCustomer(JobPlanningLineSource, Contrato);
 
         if CreditMemo then
             SalesHeader2."Document Type" := SalesHeader2."Document Type"::"Credit Memo"
@@ -148,17 +148,17 @@ codeunit 50215 "Contrato Create-Invoice"
         if not NewInvoice then
             SalesHeader.Get(SalesHeader2."Document Type", InvoiceNo);
 
-        OnCreateSalesInvoiceLinesOnBeforeJobPlanningLineCopy(Job, JobPlanningLineSource, PostingDate);
+        OnCreateSalesInvoiceLinesOnBeforeJobPlanningLineCopy(Contrato, JobPlanningLineSource, PostingDate);
         JobPlanningLine.Copy(JobPlanningLineSource);
-        JobPlanningLine.SetCurrentKey("Job No.", "Job Task No.", "Line No.");
+        JobPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.", "Line No.");
 
         OnCreateSalesInvoiceLinesOnBeforeJobPlanningLineFindSet(JobPlanningLine, InvoiceNo, NewInvoice, PostingDate, CreditMemo);
         if JobPlanningLine.FindSet() then
             repeat
                 if TransferLine(JobPlanningLine) then begin
                     LineCounter := LineCounter + 1;
-                    if (JobPlanningLine."Job No." <> JobNo) and (not JobPlanningLineSource.GetSkipCheckForMultipleJobsOnSalesLine()) then
-                        LastError := StrSubstNo(Text009, JobPlanningLine.FieldCaption("Job No."));
+                    if (JobPlanningLine."Contrato No." <> JobNo) and (not JobPlanningLineSource.GetSkipCheckForMultipleJobsOnSalesLine()) then
+                        LastError := StrSubstNo(Text009, JobPlanningLine.FieldCaption("Contrato No."));
                     OnCreateSalesInvoiceLinesOnAfterValidateJobPlanningLine(JobPlanningLine, LastError);
                     if LastError <> '' then
                         Error(LastError);
@@ -175,9 +175,9 @@ codeunit 50215 "Contrato Create-Invoice"
               JobPlanningLine.FieldCaption("Qty. to Transfer to Invoice"));
 
         if NewInvoice then
-            CreateSalesHeader(Job, PostingDate, DocumentDate, JobPlanningLine)
+            CreateSalesHeader(Contrato, PostingDate, DocumentDate, JobPlanningLine)
         else
-            TestSalesHeader(SalesHeader, Job, JobPlanningLine);
+            TestSalesHeader(SalesHeader, Contrato, JobPlanningLine);
         if JobPlanningLine.Find('-') then
             repeat
                 if TransferLine(JobPlanningLine) then begin
@@ -210,7 +210,7 @@ codeunit 50215 "Contrato Create-Invoice"
             until JobPlanningLine.Next() = 0;
 
         JobPlanningLineSource.Get(
-          JobPlanningLineSource."Job No.", JobPlanningLineSource."Job Task No.", JobPlanningLineSource."Line No.");
+          JobPlanningLineSource."Contrato No.", JobPlanningLineSource."Contrato Task No.", JobPlanningLineSource."Line No.");
         JobPlanningLineSource.CalcFields("Qty. Transferred to Invoice");
 
         if NoOfSalesLinesCreated = 0 then
@@ -219,7 +219,7 @@ codeunit 50215 "Contrato Create-Invoice"
         OnAfterCreateSalesInvoiceLines(SalesHeader, NewInvoice);
     end;
 
-    local procedure CheckJobBillToCustomer(var JobPlanningLineSource: Record "Contrato Planning Line"; Job: Record Contrato)
+    local procedure CheckJobBillToCustomer(var JobPlanningLineSource: Record "Contrato Planning Line"; Contrato: Record Contrato)
     var
         JobTask: Record "Contrato Task";
         Cust: Record Customer;
@@ -227,14 +227,14 @@ codeunit 50215 "Contrato Create-Invoice"
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckJobBillToCustomer(JobPlanningLineSource, Job, IsHandled);
+        OnBeforeCheckJobBillToCustomer(JobPlanningLineSource, Contrato, IsHandled);
         if IsHandled then
             exit;
-        if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then begin
-            Job.TestField("Bill-to Customer No.");
-            BillToCustomerNo := Job."Bill-to Customer No.";
+        if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then begin
+            Contrato.TestField("Bill-to Customer No.");
+            BillToCustomerNo := Contrato."Bill-to Customer No.";
         end else begin
-            JobTask.Get(JobPlanningLineSource."Job No.", JobPlanningLineSource."Job Task No.");
+            JobTask.Get(JobPlanningLineSource."Contrato No.", JobPlanningLineSource."Contrato Task No.");
             JobTask.TestField("Bill-to Customer No.");
             BillToCustomerNo := JobTask."Bill-to Customer No.";
         end;
@@ -261,7 +261,7 @@ codeunit 50215 "Contrato Create-Invoice"
     procedure CreateSalesInvoiceJobTask(var JobTask2: Record "Contrato Task"; PostingDate: Date; DocumentDate: Date; InvoicePerTask: Boolean; var NoOfInvoices: Integer; var OldJobNo: Code[20]; var OldJobTaskNo: Code[20]; LastJobTask: Boolean)
     var
         Cust: Record Customer;
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobTask: Record "Contrato Task";
         JobPlanningLine: Record "Contrato Planning Line";
         JobPlanningLineInvoice: Record "Contrato Planning Line Invoice";
@@ -276,43 +276,43 @@ codeunit 50215 "Contrato Create-Invoice"
         ClearAll();
         if not LastJobTask then begin
             JobTask := JobTask2;
-            if JobTask."Job No." = '' then
+            if JobTask."Contrato No." = '' then
                 exit;
-            if JobTask."Job Task No." = '' then
+            if JobTask."Contrato Task No." = '' then
                 exit;
             JobTask.Find();
-            if JobTask."Job Task Type" <> JobTask."Job Task Type"::Posting then
+            if JobTask."Contrato Task Type" <> JobTask."Contrato Task Type"::Posting then
                 exit;
-            Job.Get(JobTask."Job No.");
+            Contrato.Get(JobTask."Contrato No.");
         end;
         if LastJobTask then begin
             if not TempJobPlanningLine.Find('-') then
                 exit;
-            Job.Get(TempJobPlanningLine."Job No.");
-            JobTask.Get(TempJobPlanningLine."Job No.", TempJobPlanningLine."Job Task No.");
+            Contrato.Get(TempJobPlanningLine."Contrato No.");
+            JobTask.Get(TempJobPlanningLine."Contrato No.", TempJobPlanningLine."Contrato Task No.");
         end;
 
-        OnCreateSalesInvoiceJobTaskTestJob(Job, JobPlanningLine, PostingDate);
-        TestIfBillToCustomerExistOnJobOrJobTask(Job, JobTask2);
-        // if Job.Blocked = Job.Blocked::All then
-        //     Job.TestBlocked();
-        if Job."Currency Code" = '' then
-            JobInvCurrency := IsJobInvCurrencyDependingOnBillingMethod(Job, JobTask2);
-        Cust.Get(ReturnBillToCustomerNoDependingOnTaskBillingMethod(Job, JobTask2));
+        OnCreateSalesInvoiceJobTaskTestJob(Contrato, JobPlanningLine, PostingDate);
+        TestIfBillToCustomerExistOnJobOrJobTask(Contrato, JobTask2);
+        // if Contrato.Blocked = Contrato.Blocked::All then
+        //     Contrato.TestBlocked();
+        if Contrato."Currency Code" = '' then
+            JobInvCurrency := IsJobInvCurrencyDependingOnBillingMethod(Contrato, JobTask2);
+        Cust.Get(ReturnBillToCustomerNoDependingOnTaskBillingMethod(Contrato, JobTask2));
 
         if CreateNewInvoice(JobTask, InvoicePerTask, OldJobNo, OldJobTaskNo, LastJobTask) then begin
-            Job.Get(TempJobPlanningLine."Job No.");
-            Cust.Get(ReturnBillToCustomerNoDependingOnTaskBillingMethod(Job, JobTask2));
+            Contrato.Get(TempJobPlanningLine."Contrato No.");
+            Cust.Get(ReturnBillToCustomerNoDependingOnTaskBillingMethod(Contrato, JobTask2));
             SalesHeader2."Document Type" := SalesHeader2."Document Type"::Invoice;
-            if not SalesInvoiceExistForMultipleCustomerBillingMethod(Job) then begin
-                CreateSalesHeader(Job, PostingDate, DocumentDate, TempJobPlanningLine);
+            if not SalesInvoiceExistForMultipleCustomerBillingMethod(Contrato) then begin
+                CreateSalesHeader(Contrato, PostingDate, DocumentDate, TempJobPlanningLine);
                 NoOfInvoices := NoOfInvoices + 1;
             end;
             OnCreateSalesInvoiceJobTaskOnBeforeTempJobPlanningLineFind(JobTask, SalesHeader, InvoicePerTask, TempJobPlanningLine);
             if TempJobPlanningLine.Find('-') then
                 repeat
-                    Job.Get(TempJobPlanningLine."Job No.");
-                    JobInvCurrency := (Job."Currency Code" = '') and IsJobInvCurrencyDependingOnBillingMethod(Job, TempJobPlanningLine);
+                    Contrato.Get(TempJobPlanningLine."Contrato No.");
+                    JobInvCurrency := (Contrato."Currency Code" = '') and IsJobInvCurrencyDependingOnBillingMethod(Contrato, TempJobPlanningLine);
                     JobPlanningLine := TempJobPlanningLine;
                     JobPlanningLine.Find();
                     if JobPlanningLine.Type in [JobPlanningLine.Type::Resource,
@@ -325,9 +325,9 @@ codeunit 50215 "Contrato Create-Invoice"
                     OnCreateSalesInvoiceJobTaskOnBeforeCreateSalesLine(JobPlanningLine, SalesHeader, SalesHeader2, NoOfSalesLinesCreated);
                     CreateSalesLine(JobPlanningLine);
 
-                    JobPlanningLineInvoice."Job No." := JobPlanningLine."Job No.";
-                    JobPlanningLineInvoice."Job Task No." := JobPlanningLine."Job Task No.";
-                    JobPlanningLineInvoice."Job Planning Line No." := JobPlanningLine."Line No.";
+                    JobPlanningLineInvoice."Contrato No." := JobPlanningLine."Contrato No.";
+                    JobPlanningLineInvoice."Contrato Task No." := JobPlanningLine."Contrato Task No.";
+                    JobPlanningLineInvoice."Contrato Planning Line No." := JobPlanningLine."Line No.";
                     if SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice then
                         JobPlanningLineInvoice."Document Type" := JobPlanningLineInvoice."Document Type"::Invoice;
                     if SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo" then
@@ -345,7 +345,7 @@ codeunit 50215 "Contrato Create-Invoice"
             TempJobPlanningLine.DeleteAll();
         end;
 
-        OnCreateSalesInvoiceJobTaskOnAfterLinesCreated(SalesHeader, Job, InvoicePerTask, LastJobTask);
+        OnCreateSalesInvoiceJobTaskOnAfterLinesCreated(SalesHeader, Contrato, InvoicePerTask, LastJobTask);
 
         if LastJobTask then begin
             if NoOfSalesLinesCreated = 0 then
@@ -354,9 +354,9 @@ codeunit 50215 "Contrato Create-Invoice"
         end;
 
         JobPlanningLine.Reset();
-        JobPlanningLine.SetCurrentKey("Job No.", "Job Task No.");
-        JobPlanningLine.SetRange("Job No.", JobTask2."Job No.");
-        JobPlanningLine.SetRange("Job Task No.", JobTask2."Job Task No.");
+        JobPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
+        JobPlanningLine.SetRange("Contrato No.", JobTask2."Contrato No.");
+        JobPlanningLine.SetRange("Contrato Task No.", JobTask2."Contrato Task No.");
         JobPlanningLine.SetFilter("Planning Date", JobTask2.GetFilter("Planning Date Filter"));
         OnCreateSalesInvoiceJobTaskOnAfterJobPlanningLineSetFilters(JobPlanningLine, JobTask2);
         if JobPlanningLine.Find('-') then
@@ -365,7 +365,7 @@ codeunit 50215 "Contrato Create-Invoice"
                     TempJobPlanningLine := JobPlanningLine;
                     TempJobPlanningLine.Insert();
 
-                    if Job."Task Billing Method" = Job."Task Billing Method"::"Multiple customers" then begin
+                    if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"Multiple customers" then begin
                         TempJobPlanningLine2 := JobPlanningLine;
                         TempJobPlanningLine2.Insert();
                     end;
@@ -388,27 +388,27 @@ codeunit 50215 "Contrato Create-Invoice"
         else begin
             if OldJobNo <> '' then begin
                 if InvoicePerTask then
-                    if (OldJobNo <> JobTask."Job No.") or (OldJobTaskNo <> JobTask."Job Task No.") then
+                    if (OldJobNo <> JobTask."Contrato No.") or (OldJobTaskNo <> JobTask."Contrato Task No.") then
                         NewInvoice := true;
                 if not InvoicePerTask then
-                    if OldJobNo <> JobTask."Job No." then
+                    if OldJobNo <> JobTask."Contrato No." then
                         NewInvoice := true;
             end;
-            OldJobNo := JobTask."Job No.";
-            OldJobTaskNo := JobTask."Job Task No.";
+            OldJobNo := JobTask."Contrato No.";
+            OldJobTaskNo := JobTask."Contrato Task No.";
         end;
         if not TempJobPlanningLine.Find('-') then
             NewInvoice := false;
         exit(NewInvoice);
     end;
 
-    local procedure CreateSalesHeader(Job: Record Contrato; PostingDate: Date; DocumentDate: Date; JobPlanningLine: Record "Contrato Planning Line")
+    local procedure CreateSalesHeader(Contrato: Record Contrato; PostingDate: Date; DocumentDate: Date; JobPlanningLine: Record "Contrato Planning Line")
     var
         JobTask: Record "Contrato Task";
         SalesSetup: Record "Sales & Receivables Setup";
         IsHandled: Boolean;
     begin
-        OnBeforeCreateSalesHeader(Job, PostingDate, SalesHeader2, JobPlanningLine);
+        OnBeforeCreateSalesHeader(Contrato, PostingDate, SalesHeader2, JobPlanningLine);
 
         SalesSetup.Get();
         SalesHeader.Init();
@@ -419,27 +419,27 @@ codeunit 50215 "Contrato Create-Invoice"
             SalesSetup.TestField("Credit Memo Nos.");
         SalesHeader."Posting Date" := PostingDate;
         SalesHeader."Document Date" := DocumentDate;
-        OnBeforeInsertSalesHeader(SalesHeader, Job, JobPlanningLine);
+        OnBeforeInsertSalesHeader(SalesHeader, Contrato, JobPlanningLine);
         SalesHeader.Insert(true);
 
         IsHandled := false;
-        OnCreateSalesHeaderOnBeforeCheckBillToCustomerNo(SalesHeader, Job, JobPlanningLine, IsHandled);
+        OnCreateSalesHeaderOnBeforeCheckBillToCustomerNo(SalesHeader, Contrato, JobPlanningLine, IsHandled);
 
         if not IsHandled then begin
             SalesHeader.SetHideValidationDialog(true);
-            SalesHeader.Validate("Sell-to Customer No.", GetCustomerNo(Job, JobPlanningLine, true));
-            SalesHeader.Validate("Bill-to Customer No.", GetCustomerNo(Job, JobPlanningLine, false));
+            SalesHeader.Validate("Sell-to Customer No.", GetCustomerNo(Contrato, JobPlanningLine, true));
+            SalesHeader.Validate("Bill-to Customer No.", GetCustomerNo(Contrato, JobPlanningLine, false));
         end;
 
-        if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then begin
-            if Job."Payment Method Code" <> '' then
-                SalesHeader.Validate("Payment Method Code", Job."Payment Method Code");
-            if Job."Payment Terms Code" <> '' then
-                SalesHeader.Validate("Payment Terms Code", Job."Payment Terms Code");
-            if Job."External Document No." <> '' then
-                SalesHeader.Validate("External Document No.", Job."External Document No.");
+        if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then begin
+            if Contrato."Payment Method Code" <> '' then
+                SalesHeader.Validate("Payment Method Code", Contrato."Payment Method Code");
+            if Contrato."Payment Terms Code" <> '' then
+                SalesHeader.Validate("Payment Terms Code", Contrato."Payment Terms Code");
+            if Contrato."External Document No." <> '' then
+                SalesHeader.Validate("External Document No.", Contrato."External Document No.");
         end else begin
-            JobTask.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+            JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
             if JobTask."Payment Method Code" <> '' then
                 SalesHeader.Validate("Payment Method Code", JobTask."Payment Method Code");
             if JobTask."Payment Terms Code" <> '' then
@@ -448,33 +448,33 @@ codeunit 50215 "Contrato Create-Invoice"
                 SalesHeader.Validate("External Document No.", JobTask."External Document No.");
         end;
 
-        if Job."Currency Code" <> '' then
-            SalesHeader.Validate("Currency Code", Job."Currency Code")
+        if Contrato."Currency Code" <> '' then
+            SalesHeader.Validate("Currency Code", Contrato."Currency Code")
         else
-            SalesHeader.Validate("Currency Code", ReturnJobDataDependingOnTaskBillingMethod(Job, JobPlanningLine, 'Invoice Currency Code'));
+            SalesHeader.Validate("Currency Code", ReturnJobDataDependingOnTaskBillingMethod(Contrato, JobPlanningLine, 'Invoice Currency Code'));
 
         if PostingDate <> 0D then
             SalesHeader.Validate("Posting Date", PostingDate);
         if DocumentDate <> 0D then
             SalesHeader.Validate("Document Date", DocumentDate);
 
-        SalesHeader."Your Reference" := ReturnJobDataDependingOnTaskBillingMethod(Job, JobPlanningLine, 'Your Reference');
+        SalesHeader."Your Reference" := ReturnJobDataDependingOnTaskBillingMethod(Contrato, JobPlanningLine, 'Your Reference');
 
         if SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice then
             SalesHeader.SetDefaultPaymentServices();
 
         IsHandled := false;
-        OnCreateSalesHeaderOnBeforeUpdateSalesHeader(SalesHeader, Job, IsHandled, JobPlanningLine);
+        OnCreateSalesHeaderOnBeforeUpdateSalesHeader(SalesHeader, Contrato, IsHandled, JobPlanningLine);
         if not IsHandled then
-            if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then
-                UpdateSalesHeader(SalesHeader, Job)
+            if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then
+                UpdateSalesHeader(SalesHeader, Contrato)
             else
                 UpdateSalesHeader(SalesHeader, JobPlanningLine);
-        OnBeforeModifySalesHeader(SalesHeader, Job, JobPlanningLine);
+        OnBeforeModifySalesHeader(SalesHeader, Contrato, JobPlanningLine);
         SalesHeader.Modify(true);
     end;
 
-    local procedure SalesInvoiceExistForMultipleCustomerBillingMethod(Job: Record Contrato): Boolean
+    local procedure SalesInvoiceExistForMultipleCustomerBillingMethod(Contrato: Record Contrato): Boolean
     var
         JobTask: Record "Contrato Task";
         JobTask2: Record "Contrato Task";
@@ -484,26 +484,26 @@ codeunit 50215 "Contrato Create-Invoice"
         RecRef: RecordRef;
         JobTaskFilter: Text;
     begin
-        if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then
+        if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then
             exit;
 
         TempJobPlanningLine3.Copy(TempJobPlanningLine2, true);
         TempJobPlanningLine3.Reset();
-        TempJobPlanningLine3.SetFilter("Job Contract Entry No.", '<>%1', TempJobPlanningLine."Job Contract Entry No.");
+        TempJobPlanningLine3.SetFilter("Contrato Contract Entry No.", '<>%1', TempJobPlanningLine."Contrato Contract Entry No.");
         RecRef.GetTable(TempJobPlanningLine3);
-        JobTaskFilter := SelectionFilterMgt.GetSelectionFilter(RecRef, TempJobPlanningLine3.FieldNo("Job Task No."));
+        JobTaskFilter := SelectionFilterMgt.GetSelectionFilter(RecRef, TempJobPlanningLine3.FieldNo("Contrato Task No."));
         if JobTaskFilter = '' then
             exit;
 
-        if JobTask.Get(TempJobPlanningLine."Job No.", TempJobPlanningLine."Job Task No.") then begin
-            JobTask2.SetRange("Job No.", Job."No.");
-            JobTask2.SetFilter("Job Task No.", JobTaskFilter);
+        if JobTask.Get(TempJobPlanningLine."Contrato No.", TempJobPlanningLine."Contrato Task No.") then begin
+            JobTask2.SetRange("Contrato No.", Contrato."No.");
+            JobTask2.SetFilter("Contrato Task No.", JobTaskFilter);
             JobTask2.SetRange("Sell-to Customer No.", JobTask."Sell-to Customer No.");
             JobTask2.SetRange("Bill-to Customer No.", JobTask."Bill-to Customer No.");
             JobTask2.SetRange("Invoice Currency Code", JobTask."Invoice Currency Code");
             if JobTask2.FindFirst() then begin
-                JobPlanningLineInvoice.SetRange("Job No.", Job."No.");
-                JobPlanningLineInvoice.SetRange("Job Task No.", JobTask2."Job Task No.");
+                JobPlanningLineInvoice.SetRange("Contrato No.", Contrato."No.");
+                JobPlanningLineInvoice.SetRange("Contrato Task No.", JobTask2."Contrato Task No.");
                 JobPlanningLineInvoice.SetRange("Document Type", JobPlanningLineInvoice."Document Type"::Invoice);
                 if JobPlanningLineInvoice.FindFirst() then begin
                     SalesHeader.Get(SalesHeader."Document Type"::Invoice, JobPlanningLineInvoice."Document No.");
@@ -513,21 +513,21 @@ codeunit 50215 "Contrato Create-Invoice"
         end;
     end;
 
-    local procedure GetCustomerNo(Job: Record Contrato; JobPlanningLine: Record "Contrato Planning Line"; SellToCustomerNo: Boolean) CustomerNo: Code[20]
+    local procedure GetCustomerNo(Contrato: Record Contrato; JobPlanningLine: Record "Contrato Planning Line"; SellToCustomerNo: Boolean) CustomerNo: Code[20]
     var
         JobTask: Record "Contrato Task";
     begin
-        OnBeforeGetCustomerNo(Job, JobPlanningLine, SellToCustomerNo, CustomerNo);
+        OnBeforeGetCustomerNo(Contrato, JobPlanningLine, SellToCustomerNo, CustomerNo);
         if CustomerNo <> '' then
             exit(CustomerNo);
 
-        if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then
+        if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then
             if SellToCustomerNo then
-                exit(Job."Sell-to Customer No.")
+                exit(Contrato."Sell-to Customer No.")
             else
-                exit(Job."Bill-to Customer No.");
+                exit(Contrato."Bill-to Customer No.");
 
-        JobTask.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+        JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
         if SellToCustomerNo then
             exit(JobTask."Sell-to Customer No.")
         else
@@ -536,7 +536,7 @@ codeunit 50215 "Contrato Create-Invoice"
 
     local procedure CreateSalesLine(var JobPlanningLine: Record "Contrato Planning Line")
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         Factor: Integer;
         IsHandled: Boolean;
         ShouldUpdateCurrencyFactor: Boolean;
@@ -548,22 +548,22 @@ codeunit 50215 "Contrato Create-Invoice"
             Factor := -1;
         TestTransferred(JobPlanningLine);
         JobPlanningLine.TestField("Planning Date");
-        Job.Get(JobPlanningLine."Job No.");
+        Contrato.Get(JobPlanningLine."Contrato No.");
         Clear(SalesLine);
         SalesLine."Document Type" := SalesHeader2."Document Type";
         SalesLine."Document No." := SalesHeader."No.";
 
         ShouldUpdateCurrencyFactor := (not JobInvCurrency) and (JobPlanningLine.Type <> JobPlanningLine.Type::Text);
-        OnCreateSalesLineOnAfterCalcShouldUpdateCurrencyFactor(JobPlanningLine, Job, SalesHeader, SalesHeader2, JobInvCurrency, ShouldUpdateCurrencyFactor);
+        OnCreateSalesLineOnAfterCalcShouldUpdateCurrencyFactor(JobPlanningLine, Contrato, SalesHeader, SalesHeader2, JobInvCurrency, ShouldUpdateCurrencyFactor);
         if ShouldUpdateCurrencyFactor then begin
             SalesHeader.TestField("Currency Code", JobPlanningLine."Currency Code");
-            if (Job."Currency Code" <> '') and (JobPlanningLine."Currency Factor" <> SalesHeader."Currency Factor") then
+            if (Contrato."Currency Code" <> '') and (JobPlanningLine."Currency Factor" <> SalesHeader."Currency Factor") then
                 if Confirm(Text011) then begin
                     JobPlanningLine.Validate("Currency Factor", SalesHeader."Currency Factor");
                     JobPlanningLine.Modify();
                 end else
                     Error(Text001);
-            SalesHeader.TestField("Currency Code", Job."Currency Code");
+            SalesHeader.TestField("Currency Code", Contrato."Currency Code");
         end;
         if JobPlanningLine.Type = JobPlanningLine.Type::Text then
             SalesLine.Validate(Type, SalesLine.Type::" ");
@@ -610,14 +610,14 @@ codeunit 50215 "Contrato Create-Invoice"
         OnCreateSalesLineOnBeforeCheckPricesIncludingVATAndSetJobInformation(SalesLine, JobPlanningLine, IsHandled);
         if not IsHandled then begin
             if not SalesHeader."Prices Including VAT" then
-                SalesLine.Validate("Job Contract Entry No.", JobPlanningLine."Job Contract Entry No.");
-            SalesLine."Job No." := JobPlanningLine."Job No.";
-            SalesLine."Job Task No." := JobPlanningLine."Job Task No.";
+                SalesLine.Validate("Job Contract Entry No.", JobPlanningLine."Contrato Contract Entry No.");
+            SalesLine."Job No." := JobPlanningLine."Contrato No.";
+            SalesLine."Job Task No." := JobPlanningLine."Contrato Task No.";
         end;
         SalesLine.Description := JobPlanningLine.Description;
         SalesLine."Description 2" := JobPlanningLine."Description 2";
         SalesLine."Line No." := GetNextLineNo(SalesLine);
-        OnBeforeInsertSalesLine(SalesLine, SalesHeader, Job, JobPlanningLine, JobInvCurrency);
+        OnBeforeInsertSalesLine(SalesLine, SalesHeader, Contrato, JobPlanningLine, JobInvCurrency);
         SalesLine.Insert(true);
 
         if SalesLine.Type <> SalesLine.Type::" " then begin
@@ -641,10 +641,10 @@ codeunit 50215 "Contrato Create-Invoice"
                     SalesLine."Inv. Discount Amount" * (1 + (SalesLine."VAT %" / 100)),
                     Currency."Amount Rounding Precision"));
             end;
-            SalesLine.Validate("Job Contract Entry No.", JobPlanningLine."Job Contract Entry No.");
-            OnBeforeModifySalesLine(SalesLine, SalesHeader, Job, JobPlanningLine);
+            SalesLine.Validate("Job Contract Entry No.", JobPlanningLine."Contrato Contract Entry No.");
+            OnBeforeModifySalesLine(SalesLine, SalesHeader, Contrato, JobPlanningLine);
             SalesLine.Modify();
-            OnCreateSalesLineOnAfterSalesLineModify(SalesLine, SalesHeader, Job, JobPlanningLine);
+            OnCreateSalesLineOnAfterSalesLineModify(SalesLine, SalesHeader, Contrato, JobPlanningLine);
             JobPlanningLine."VAT Unit Price" := SalesLine."Unit Price";
             JobPlanningLine."VAT Line Discount Amount" := SalesLine."Line Discount Amount";
             JobPlanningLine."VAT Line Amount" := SalesLine."Line Amount";
@@ -659,7 +659,7 @@ codeunit 50215 "Contrato Create-Invoice"
             if TransferExtendedText.SalesCheckIfAnyExtText(SalesLine, false) then
                 TransferExtendedText.InsertSalesExtText(SalesLine);
 
-        OnAfterCreateSalesLine(SalesLine, SalesHeader, Job, JobPlanningLine);
+        OnAfterCreateSalesLine(SalesLine, SalesHeader, Contrato, JobPlanningLine);
     end;
 
     local procedure CalculateInvoiceDiscount(var SalesLine: Record "Sales Line"; SalesHeader: Record "Sales Header")
@@ -751,7 +751,7 @@ codeunit 50215 "Contrato Create-Invoice"
         if JobPlanningLineInvoice.FindSet() then
             repeat
                 OnDeleteSalesLineOnBeforeGetJobPlanningLine(JobPlanningLineInvoice);
-                JobPlanningLine.Get(JobPlanningLineInvoice."Job No.", JobPlanningLineInvoice."Job Task No.", JobPlanningLineInvoice."Job Planning Line No.");
+                JobPlanningLine.Get(JobPlanningLineInvoice."Contrato No.", JobPlanningLineInvoice."Contrato Task No.", JobPlanningLineInvoice."Contrato Planning Line No.");
                 JobPlanningLineInvoice.Delete();
                 JobPlanningLine.UpdateQtyToTransfer();
                 OnDeleteSalesLineOnBeforeJobPlanningLineModify(JobPlanningLine);
@@ -759,7 +759,7 @@ codeunit 50215 "Contrato Create-Invoice"
             until JobPlanningLineInvoice.Next() = 0;
     end;
 
-    procedure FindInvoices(var TempJobPlanningLineInvoice: Record "Contrato Planning Line Invoice" temporary; JobNo: Code[20]; JobTaskNo: Code[20]; JobPlanningLineNo: Integer; DetailLevel: Option All,"Per Job","Per Job Task","Per Job Planning Line")
+    procedure FindInvoices(var TempJobPlanningLineInvoice: Record "Contrato Planning Line Invoice" temporary; JobNo: Code[20]; JobTaskNo: Code[20]; JobPlanningLineNo: Integer; DetailLevel: Option All,"Per Contrato","Per Contrato Task","Per Contrato Planning Line")
     var
         JobPlanningLineInvoice: Record "Contrato Planning Line Invoice";
         RecordFound: Boolean;
@@ -776,18 +776,18 @@ codeunit 50215 "Contrato Create-Invoice"
                         TempJobPlanningLineInvoice := JobPlanningLineInvoice;
                     exit;
                 end;
-            DetailLevel::"Per Job":
-                JobPlanningLineInvoice.SetRange("Job No.", JobNo);
-            DetailLevel::"Per Job Task":
+            DetailLevel::"Per Contrato":
+                JobPlanningLineInvoice.SetRange("Contrato No.", JobNo);
+            DetailLevel::"Per Contrato Task":
                 begin
-                    JobPlanningLineInvoice.SetRange("Job No.", JobNo);
-                    JobPlanningLineInvoice.SetRange("Job Task No.", JobTaskNo);
+                    JobPlanningLineInvoice.SetRange("Contrato No.", JobNo);
+                    JobPlanningLineInvoice.SetRange("Contrato Task No.", JobTaskNo);
                 end;
-            DetailLevel::"Per Job Planning Line":
+            DetailLevel::"Per Contrato Planning Line":
                 begin
-                    JobPlanningLineInvoice.SetRange("Job No.", JobNo);
-                    JobPlanningLineInvoice.SetRange("Job Task No.", JobTaskNo);
-                    JobPlanningLineInvoice.SetRange("Job Planning Line No.", JobPlanningLineNo);
+                    JobPlanningLineInvoice.SetRange("Contrato No.", JobNo);
+                    JobPlanningLineInvoice.SetRange("Contrato Task No.", JobTaskNo);
+                    JobPlanningLineInvoice.SetRange("Contrato Planning Line No.", JobPlanningLineNo);
                 end;
         end;
 
@@ -796,17 +796,17 @@ codeunit 50215 "Contrato Create-Invoice"
             repeat
                 RecordFound := false;
                 case DetailLevel of
-                    DetailLevel::"Per Job":
+                    DetailLevel::"Per Contrato":
                         if TempJobPlanningLineInvoice.Get(
                              JobNo, '', 0, JobPlanningLineInvoice."Document Type", JobPlanningLineInvoice."Document No.", 0)
                         then
                             RecordFound := true;
-                    DetailLevel::"Per Job Task":
+                    DetailLevel::"Per Contrato Task":
                         if TempJobPlanningLineInvoice.Get(
                              JobNo, JobTaskNo, 0, JobPlanningLineInvoice."Document Type", JobPlanningLineInvoice."Document No.", 0)
                         then
                             RecordFound := true;
-                    DetailLevel::"Per Job Planning Line":
+                    DetailLevel::"Per Contrato Planning Line":
                         if TempJobPlanningLineInvoice.Get(
                              JobNo, JobTaskNo, JobPlanningLineNo, JobPlanningLineInvoice."Document Type", JobPlanningLineInvoice."Document No.", 0)
                         then
@@ -821,18 +821,18 @@ codeunit 50215 "Contrato Create-Invoice"
                     TempJobPlanningLineInvoice.Modify();
                 end else begin
                     case DetailLevel of
-                        DetailLevel::"Per Job":
-                            TempJobPlanningLineInvoice."Job No." := JobNo;
-                        DetailLevel::"Per Job Task":
+                        DetailLevel::"Per Contrato":
+                            TempJobPlanningLineInvoice."Contrato No." := JobNo;
+                        DetailLevel::"Per Contrato Task":
                             begin
-                                TempJobPlanningLineInvoice."Job No." := JobNo;
-                                TempJobPlanningLineInvoice."Job Task No." := JobTaskNo;
+                                TempJobPlanningLineInvoice."Contrato No." := JobNo;
+                                TempJobPlanningLineInvoice."Contrato Task No." := JobTaskNo;
                             end;
-                        DetailLevel::"Per Job Planning Line":
+                        DetailLevel::"Per Contrato Planning Line":
                             begin
-                                TempJobPlanningLineInvoice."Job No." := JobNo;
-                                TempJobPlanningLineInvoice."Job Task No." := JobTaskNo;
-                                TempJobPlanningLineInvoice."Job Planning Line No." := JobPlanningLineNo;
+                                TempJobPlanningLineInvoice."Contrato No." := JobNo;
+                                TempJobPlanningLineInvoice."Contrato Task No." := JobTaskNo;
+                                TempJobPlanningLineInvoice."Contrato Planning Line No." := JobPlanningLineNo;
                             end;
                     end;
                     TempJobPlanningLineInvoice."Document Type" := JobPlanningLineInvoice."Document Type";
@@ -858,12 +858,12 @@ codeunit 50215 "Contrato Create-Invoice"
         if JobPlanningLine."Line No." = 0 then
             exit;
 
-        JobPlanningLine.TestField("Job No.");
-        JobPlanningLine.TestField("Job Task No.");
+        JobPlanningLine.TestField("Contrato No.");
+        JobPlanningLine.TestField("Contrato Task No.");
 
-        JobPlanningLineInvoice.SetRange("Job No.", JobPlanningLine."Job No.");
-        JobPlanningLineInvoice.SetRange("Job Task No.", JobPlanningLine."Job Task No.");
-        JobPlanningLineInvoice.SetRange("Job Planning Line No.", JobPlanningLine."Line No.");
+        JobPlanningLineInvoice.SetRange("Contrato No.", JobPlanningLine."Contrato No.");
+        JobPlanningLineInvoice.SetRange("Contrato Task No.", JobPlanningLine."Contrato Task No.");
+        JobPlanningLineInvoice.SetRange("Contrato Planning Line No.", JobPlanningLine."Line No.");
         if JobPlanningLineInvoice.Count = 1 then begin
             JobPlanningLineInvoice.FindFirst();
             OpenSalesInvoice(JobPlanningLineInvoice);
@@ -911,55 +911,55 @@ codeunit 50215 "Contrato Create-Invoice"
         OnAfterOpenSalesInvoice(JobPlanningLineInvoice);
     end;
 
-    local procedure UpdateSalesHeader(var SalesHeader: Record "Sales Header"; Job: Record Contrato)
+    local procedure UpdateSalesHeader(var SalesHeader: Record "Sales Header"; Contrato: Record Contrato)
     var
         FormatAddress: Codeunit "Format Address";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeUpdateSalesHeader(SalesHeader, Job, IsHandled);
+        OnBeforeUpdateSalesHeader(SalesHeader, Contrato, IsHandled);
         if not IsHandled then begin
-            SalesHeader."Bill-to Contact No." := Job."Bill-to Contact No.";
-            SalesHeader."Bill-to Contact" := Job."Bill-to Contact";
-            SalesHeader."Bill-to Name" := Job."Bill-to Name";
-            SalesHeader."Bill-to Name 2" := Job."Bill-to Name 2";
-            SalesHeader."Bill-to Address" := Job."Bill-to Address";
-            SalesHeader."Bill-to Address 2" := Job."Bill-to Address 2";
-            SalesHeader."Bill-to City" := Job."Bill-to City";
-            SalesHeader."Bill-to Post Code" := Job."Bill-to Post Code";
-            SalesHeader."Bill-to Country/Region Code" := Job."Bill-to Country/Region Code";
+            SalesHeader."Bill-to Contact No." := Contrato."Bill-to Contact No.";
+            SalesHeader."Bill-to Contact" := Contrato."Bill-to Contact";
+            SalesHeader."Bill-to Name" := Contrato."Bill-to Name";
+            SalesHeader."Bill-to Name 2" := Contrato."Bill-to Name 2";
+            SalesHeader."Bill-to Address" := Contrato."Bill-to Address";
+            SalesHeader."Bill-to Address 2" := Contrato."Bill-to Address 2";
+            SalesHeader."Bill-to City" := Contrato."Bill-to City";
+            SalesHeader."Bill-to Post Code" := Contrato."Bill-to Post Code";
+            SalesHeader."Bill-to Country/Region Code" := Contrato."Bill-to Country/Region Code";
 
-            SalesHeader."Sell-to Contact No." := Job."Sell-to Contact No.";
-            SalesHeader."Sell-to Contact" := Job."Sell-to Contact";
-            SalesHeader."Sell-to Customer Name" := Job."Sell-to Customer Name";
-            SalesHeader."Sell-to Customer Name 2" := Job."Sell-to Customer Name 2";
-            SalesHeader."Sell-to Address" := Job."Sell-to Address";
-            SalesHeader."Sell-to Address 2" := Job."Sell-to Address 2";
-            SalesHeader."Sell-to City" := Job."Sell-to City";
-            SalesHeader."Sell-to Post Code" := Job."Sell-to Post Code";
-            SalesHeader."Sell-to Country/Region Code" := Job."Sell-to Country/Region Code";
+            SalesHeader."Sell-to Contact No." := Contrato."Sell-to Contact No.";
+            SalesHeader."Sell-to Contact" := Contrato."Sell-to Contact";
+            SalesHeader."Sell-to Customer Name" := Contrato."Sell-to Customer Name";
+            SalesHeader."Sell-to Customer Name 2" := Contrato."Sell-to Customer Name 2";
+            SalesHeader."Sell-to Address" := Contrato."Sell-to Address";
+            SalesHeader."Sell-to Address 2" := Contrato."Sell-to Address 2";
+            SalesHeader."Sell-to City" := Contrato."Sell-to City";
+            SalesHeader."Sell-to Post Code" := Contrato."Sell-to Post Code";
+            SalesHeader."Sell-to Country/Region Code" := Contrato."Sell-to Country/Region Code";
 
-            if Job."Ship-to Code" <> '' then
-                SalesHeader.Validate("Ship-to Code", Job."Ship-to Code")
+            if Contrato."Ship-to Code" <> '' then
+                SalesHeader.Validate("Ship-to Code", Contrato."Ship-to Code")
             else
                 if SalesHeader."Ship-to Code" = '' then begin
-                    SalesHeader."Ship-to Contact" := Job."Ship-to Contact";
-                    SalesHeader."Ship-to Name" := Job."Ship-to Name";
-                    SalesHeader."Ship-to Address" := Job."Ship-to Address";
-                    SalesHeader."Ship-to Address 2" := Job."Ship-to Address 2";
-                    SalesHeader."Ship-to City" := Job."Ship-to City";
-                    SalesHeader."Ship-to Post Code" := Job."Ship-to Post Code";
-                    SalesHeader."Ship-to Country/Region Code" := Job."Ship-to Country/Region Code";
+                    SalesHeader."Ship-to Contact" := Contrato."Ship-to Contact";
+                    SalesHeader."Ship-to Name" := Contrato."Ship-to Name";
+                    SalesHeader."Ship-to Address" := Contrato."Ship-to Address";
+                    SalesHeader."Ship-to Address 2" := Contrato."Ship-to Address 2";
+                    SalesHeader."Ship-to City" := Contrato."Ship-to City";
+                    SalesHeader."Ship-to Post Code" := Contrato."Ship-to Post Code";
+                    SalesHeader."Ship-to Country/Region Code" := Contrato."Ship-to Country/Region Code";
                     if FormatAddress.UseCounty(SalesHeader."Ship-to Country/Region Code") then
-                        SalesHeader."Ship-to County" := Job."Ship-to County";
+                        SalesHeader."Ship-to County" := Contrato."Ship-to County";
                 end;
 
             if FormatAddress.UseCounty(SalesHeader."Bill-to Country/Region Code") then
-                SalesHeader."Bill-to County" := Job."Bill-to County";
+                SalesHeader."Bill-to County" := Contrato."Bill-to County";
             if FormatAddress.UseCounty(SalesHeader."Sell-to Country/Region Code") then
-                SalesHeader."Sell-to County" := Job."Sell-to County";
+                SalesHeader."Sell-to County" := Contrato."Sell-to County";
         end;
-        OnAfterUpdateSalesHeader(SalesHeader, Job);
+        OnAfterUpdateSalesHeader(SalesHeader, Contrato);
     end;
 
     local procedure UpdateSalesHeader(var SalesHeader: Record "Sales Header"; JobPlanningLine: Record "Contrato Planning Line")
@@ -967,7 +967,7 @@ codeunit 50215 "Contrato Create-Invoice"
         JobTask: Record "Contrato Task";
         FormatAddress: Codeunit "Format Address";
     begin
-        JobTask.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+        JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
         SalesHeader."Bill-to Contact No." := JobTask."Bill-to Contact No.";
         SalesHeader."Bill-to Contact" := JobTask."Bill-to Contact";
         SalesHeader."Bill-to Name" := JobTask."Bill-to Name";
@@ -1009,34 +1009,34 @@ codeunit 50215 "Contrato Create-Invoice"
             SalesHeader."Sell-to County" := JobTask."Sell-to County";
     end;
 
-    local procedure TestSalesHeader(var SalesHeader: Record "Sales Header"; var Job: Record Contrato; JobPlanningLine: Record "Contrato Planning Line")
+    local procedure TestSalesHeader(var SalesHeader: Record "Sales Header"; var Contrato: Record Contrato; JobPlanningLine: Record "Contrato Planning Line")
     var
         JobTask: Record "Contrato Task";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeTestSalesHeader(SalesHeader, Job, IsHandled, JobPlanningLine);
+        OnBeforeTestSalesHeader(SalesHeader, Contrato, IsHandled, JobPlanningLine);
         if IsHandled then
             exit;
 
-        Job.Get(JobPlanningLine."Job No.");
-        if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then begin
-            SalesHeader.TestField("Bill-to Customer No.", Job."Bill-to Customer No.");
-            SalesHeader.TestField("Sell-to Customer No.", Job."Sell-to Customer No.");
+        Contrato.Get(JobPlanningLine."Contrato No.");
+        if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then begin
+            SalesHeader.TestField("Bill-to Customer No.", Contrato."Bill-to Customer No.");
+            SalesHeader.TestField("Sell-to Customer No.", Contrato."Sell-to Customer No.");
         end else begin
-            JobTask.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+            JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
             SalesHeader.TestField("Bill-to Customer No.", JobTask."Bill-to Customer No.");
             SalesHeader.TestField("Sell-to Customer No.", JobTask."Sell-to Customer No.");
         end;
 
-        if Job."Currency Code" <> '' then
-            SalesHeader.TestField("Currency Code", Job."Currency Code")
+        if Contrato."Currency Code" <> '' then
+            SalesHeader.TestField("Currency Code", Contrato."Currency Code")
         else
-            if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then
-                SalesHeader.TestField("Currency Code", Job."Invoice Currency Code")
+            if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then
+                SalesHeader.TestField("Currency Code", Contrato."Invoice Currency Code")
             else
                 SalesHeader.TestField("Currency Code", JobTask."Invoice Currency Code");
-        OnAfterTestSalesHeader(SalesHeader, Job, JobPlanningLine);
+        OnAfterTestSalesHeader(SalesHeader, Contrato, JobPlanningLine);
     end;
 
     local procedure TestExchangeRate(var JobPlanningLine: Record "Contrato Planning Line"; PostingDate: Date)
@@ -1097,10 +1097,10 @@ codeunit 50215 "Contrato Create-Invoice"
     var
         JobLedgerEntry: Record "Contrato Ledger Entry";
     begin
-        if JobPlanningLine."Job Ledger Entry No." = 0 then
+        if JobPlanningLine."Contrato Ledger Entry No." = 0 then
             exit(0);
 
-        if JobLedgerEntry.Get(JobPlanningLine."Job Ledger Entry No.") then
+        if JobLedgerEntry.Get(JobPlanningLine."Contrato Ledger Entry No.") then
             exit(JobLedgerEntry."Dimension Set ID");
 
         exit(0);
@@ -1126,7 +1126,7 @@ codeunit 50215 "Contrato Create-Invoice"
             DimMgt.CreateDimForSalesLineWithHigherPriorities(
                 SalesLine, 0, DimSetIDArr[5],
                 SalesLine."Shortcut Dimension 1 Code", SalesLine."Shortcut Dimension 2 Code",
-                SourceCodeSetup.Sales, DATABASE::Job);
+                SourceCodeSetup.Sales, DATABASE::Contrato);
             SalesLine."Dimension Set ID" :=
                 DimMgt.GetCombinedDimensionSetID(
                 DimSetIDArr, SalesLine."Shortcut Dimension 1 Code", SalesLine."Shortcut Dimension 2 Code");
@@ -1134,60 +1134,60 @@ codeunit 50215 "Contrato Create-Invoice"
         end;
     end;
 
-    local procedure IsJobInvCurrencyDependingOnBillingMethod(Job: Record Contrato; var JobPlanningLineSource: Record "Contrato Planning Line"): Boolean
+    local procedure IsJobInvCurrencyDependingOnBillingMethod(Contrato: Record Contrato; var JobPlanningLineSource: Record "Contrato Planning Line"): Boolean
     var
         JobTask: Record "Contrato Task";
     begin
-        if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then
-            exit(Job."Invoice Currency Code" <> '')
+        if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then
+            exit(Contrato."Invoice Currency Code" <> '')
         else begin
-            JobTask.Get(JobPlanningLineSource."Job No.", JobPlanningLineSource."Job Task No.");
+            JobTask.Get(JobPlanningLineSource."Contrato No.", JobPlanningLineSource."Contrato Task No.");
             exit(JobTask."Invoice Currency Code" <> '');
         end;
     end;
 
-    local procedure IsJobInvCurrencyDependingOnBillingMethod(Job: Record Contrato; JobTask: Record "Contrato Task"): Boolean
+    local procedure IsJobInvCurrencyDependingOnBillingMethod(Contrato: Record Contrato; JobTask: Record "Contrato Task"): Boolean
     begin
-        if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then
-            exit(Job."Invoice Currency Code" <> '')
+        if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then
+            exit(Contrato."Invoice Currency Code" <> '')
         else
             exit(JobTask."Invoice Currency Code" <> '');
     end;
 
-    local procedure TestIfBillToCustomerExistOnJobOrJobTask(Job: Record Contrato; JobTask: Record "Contrato Task")
+    local procedure TestIfBillToCustomerExistOnJobOrJobTask(Contrato: Record Contrato; JobTask: Record "Contrato Task")
     begin
-        if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then
-            Job.TestField("Bill-to Customer No.")
+        if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then
+            Contrato.TestField("Bill-to Customer No.")
         else
             JobTask.TestField("Bill-to Customer No.");
     end;
 
-    local procedure ReturnBillToCustomerNoDependingOnTaskBillingMethod(Job: Record Contrato; JobTask2: Record "Contrato Task"): Code[20]
+    local procedure ReturnBillToCustomerNoDependingOnTaskBillingMethod(Contrato: Record Contrato; JobTask2: Record "Contrato Task"): Code[20]
     var
         JobTask: Record "Contrato Task";
     begin
-        if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then
-            exit(Job."Bill-to Customer No.")
+        if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then
+            exit(Contrato."Bill-to Customer No.")
         else
-            if JobTask.Get(TempJobPlanningLine."Job No.", TempJobPlanningLine."Job Task No.") then
+            if JobTask.Get(TempJobPlanningLine."Contrato No.", TempJobPlanningLine."Contrato Task No.") then
                 exit(JobTask."Bill-to Customer No.")
             else
                 exit(JobTask2."Bill-to Customer No.");
     end;
 
-    local procedure ReturnJobDataDependingOnTaskBillingMethod(Job: Record Contrato; JobPlanningLine: Record "Contrato Planning Line"; FieldName: Text): Text[35]
+    local procedure ReturnJobDataDependingOnTaskBillingMethod(Contrato: Record Contrato; JobPlanningLine: Record "Contrato Planning Line"; FieldName: Text): Text[35]
     var
         JobTask: Record "Contrato Task";
         DataTypeMgt: Codeunit "Data Type Management";
         RecRef: RecordRef;
         FldRef: FieldRef;
     begin
-        if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then begin
-            RecRef.GetTable(Job);
+        if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then begin
+            RecRef.GetTable(Contrato);
             if DataTypeMgt.FindFieldByName(RecRef, FldRef, FieldName) then
                 exit(FldRef.Value());
         end else begin
-            JobTask.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+            JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
             RecRef.GetTable(JobTask);
             if DataTypeMgt.FindFieldByName(RecRef, FldRef, FieldName) then
                 exit(FldRef.Value());
@@ -1211,7 +1211,7 @@ codeunit 50215 "Contrato Create-Invoice"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCreateSalesHeader(Job: Record Contrato; PostingDate: Date; var SalesHeader2: Record "Sales Header"; var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnBeforeCreateSalesHeader(Contrato: Record Contrato; PostingDate: Date; var SalesHeader2: Record "Sales Header"; var JobPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
@@ -1221,12 +1221,12 @@ codeunit 50215 "Contrato Create-Invoice"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCreateSalesLine(var SalesLine: Record "Sales Line"; SalesHeader: Record "Sales Header"; Job: Record Contrato; var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterCreateSalesLine(var SalesLine: Record "Sales Line"; SalesHeader: Record "Sales Header"; Contrato: Record Contrato; var JobPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterUpdateSalesHeader(var SalesHeader: Record "Sales Header"; Job: Record Contrato)
+    local procedure OnAfterUpdateSalesHeader(var SalesHeader: Record "Sales Header"; Contrato: Record Contrato)
     begin
     end;
 
@@ -1261,22 +1261,22 @@ codeunit 50215 "Contrato Create-Invoice"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInsertSalesHeader(var SalesHeader: Record "Sales Header"; Job: Record Contrato; JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnBeforeInsertSalesHeader(var SalesHeader: Record "Sales Header"; Contrato: Record Contrato; JobPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeModifySalesHeader(var SalesHeader: Record "Sales Header"; Job: Record Contrato; JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnBeforeModifySalesHeader(var SalesHeader: Record "Sales Header"; Contrato: Record Contrato; JobPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInsertSalesLine(var SalesLine: Record "Sales Line"; var SalesHeader: Record "Sales Header"; Job: Record Contrato; JobPlanningLine: Record "Contrato Planning Line"; JobInvCurrency: Boolean)
+    local procedure OnBeforeInsertSalesLine(var SalesLine: Record "Sales Line"; var SalesHeader: Record "Sales Header"; Contrato: Record Contrato; JobPlanningLine: Record "Contrato Planning Line"; JobInvCurrency: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeModifySalesLine(var SalesLine: Record "Sales Line"; SalesHeader: Record "Sales Header"; Job: Record Contrato; JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnBeforeModifySalesLine(var SalesLine: Record "Sales Line"; SalesHeader: Record "Sales Header"; Contrato: Record Contrato; JobPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
@@ -1286,7 +1286,7 @@ codeunit 50215 "Contrato Create-Invoice"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeTestSalesHeader(var SalesHeader: Record "Sales Header"; Job: Record Contrato; var IsHandled: Boolean; var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnBeforeTestSalesHeader(var SalesHeader: Record "Sales Header"; Contrato: Record Contrato; var IsHandled: Boolean; var JobPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
@@ -1296,7 +1296,7 @@ codeunit 50215 "Contrato Create-Invoice"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateSalesHeader(var SalesHeader: Record "Sales Header"; Job: Record Contrato; var IsHandled: Boolean)
+    local procedure OnBeforeUpdateSalesHeader(var SalesHeader: Record "Sales Header"; Contrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
@@ -1306,12 +1306,12 @@ codeunit 50215 "Contrato Create-Invoice"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterTestSalesHeader(var SalesHeader: Record "Sales Header"; Job: Record Contrato; JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterTestSalesHeader(var SalesHeader: Record "Sales Header"; Contrato: Record Contrato; JobPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckJobBillToCustomer(JobPlanningLineSource: Record "Contrato Planning Line"; Job: Record Contrato; var IsHandled: Boolean)
+    local procedure OnBeforeCheckJobBillToCustomer(JobPlanningLineSource: Record "Contrato Planning Line"; Contrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
@@ -1336,12 +1336,12 @@ codeunit 50215 "Contrato Create-Invoice"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCreateSalesLineOnAfterCalcShouldUpdateCurrencyFactor(var JobPlanningLine: Record "Contrato Planning Line"; var Job: Record Contrato; var SalesHeader: Record "Sales Header"; var SalesHeader2: Record "Sales Header"; var JobInvCurrency: Boolean; var ShouldUpdateCurrencyFactor: Boolean)
+    local procedure OnCreateSalesLineOnAfterCalcShouldUpdateCurrencyFactor(var JobPlanningLine: Record "Contrato Planning Line"; var Contrato: Record Contrato; var SalesHeader: Record "Sales Header"; var SalesHeader2: Record "Sales Header"; var JobInvCurrency: Boolean; var ShouldUpdateCurrencyFactor: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCreateSalesHeaderOnBeforeUpdateSalesHeader(var SalesHeader: Record "Sales Header"; var Job: Record Contrato; var IsHandled: Boolean; JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnCreateSalesHeaderOnBeforeUpdateSalesHeader(var SalesHeader: Record "Sales Header"; var Contrato: Record Contrato; var IsHandled: Boolean; JobPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
@@ -1356,7 +1356,7 @@ codeunit 50215 "Contrato Create-Invoice"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCreateSalesLineOnAfterSalesLineModify(var SalesLine: Record "Sales Line"; SalesHeader: Record "Sales Header"; Job: Record Contrato; JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnCreateSalesLineOnAfterSalesLineModify(var SalesLine: Record "Sales Line"; SalesHeader: Record "Sales Header"; Contrato: Record Contrato; JobPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
@@ -1386,12 +1386,12 @@ codeunit 50215 "Contrato Create-Invoice"
     end;
 #endif
     [IntegrationEvent(false, false)]
-    local procedure OnCreateSalesInvoiceLinesOnBeforeTestJob(var Job: Record Contrato)
+    local procedure OnCreateSalesInvoiceLinesOnBeforeTestJob(var Contrato: Record Contrato)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCreateSalesInvoiceJobTaskOnAfterLinesCreated(var SalesHeader: Record "Sales Header"; var Job: Record Contrato; InvoicePerTask: Boolean; LastJobTask: Boolean)
+    local procedure OnCreateSalesInvoiceJobTaskOnAfterLinesCreated(var SalesHeader: Record "Sales Header"; var Contrato: Record Contrato; InvoicePerTask: Boolean; LastJobTask: Boolean)
     begin
     end;
 
@@ -1406,7 +1406,7 @@ codeunit 50215 "Contrato Create-Invoice"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCreateSalesInvoiceJobTaskTestJob(var Job: Record Contrato; var JobPlanningLine: Record "Contrato Planning Line"; PostingDate: Date)
+    local procedure OnCreateSalesInvoiceJobTaskTestJob(var Contrato: Record Contrato; var JobPlanningLine: Record "Contrato Planning Line"; PostingDate: Date)
     begin
     end;
 
@@ -1436,12 +1436,12 @@ codeunit 50215 "Contrato Create-Invoice"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCreateSalesHeaderOnBeforeCheckBillToCustomerNo(var SalesHeader: Record "Sales Header"; Job: Record Contrato; JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnCreateSalesHeaderOnBeforeCheckBillToCustomerNo(var SalesHeader: Record "Sales Header"; Contrato: Record Contrato; JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCreateSalesInvoiceLinesOnBeforeJobPlanningLineCopy(Job: Record Contrato; var JobPlanningLineSource: Record "Contrato Planning Line"; PostingDate: Date)
+    local procedure OnCreateSalesInvoiceLinesOnBeforeJobPlanningLineCopy(Contrato: Record Contrato; var JobPlanningLineSource: Record "Contrato Planning Line"; PostingDate: Date)
     begin
     end;
 
@@ -1458,7 +1458,7 @@ codeunit 50215 "Contrato Create-Invoice"
 #endif
 
     [IntegrationEvent(false, false)]
-    local procedure OnCreateSalesInvoiceLinesOnAfterSetJobInvCurrency(Job: Record Contrato; var JobInvCurrency: Boolean)
+    local procedure OnCreateSalesInvoiceLinesOnAfterSetJobInvCurrency(Contrato: Record Contrato; var JobInvCurrency: Boolean)
     begin
     end;
 
@@ -1493,7 +1493,7 @@ codeunit 50215 "Contrato Create-Invoice"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeGetCustomerNo(var Job: Record Contrato; var JobPlanningLine: Record "Contrato Planning Line"; SellToCustomerNo: Boolean; var CustomerNo: Code[20])
+    local procedure OnBeforeGetCustomerNo(var Contrato: Record Contrato; var JobPlanningLine: Record "Contrato Planning Line"; SellToCustomerNo: Boolean; var CustomerNo: Code[20])
     begin
     end;
 }

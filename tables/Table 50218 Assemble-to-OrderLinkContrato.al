@@ -35,8 +35,8 @@ table 50218 "Assemble-to-OrderLinkContrato"
                                                                                      "Document No." = field("Document No."),
                                                                                      "Line No." = field("Document Line No."))
             else
-            if (Type = const(Job)) "Contrato Planning Line"."Document No." where("Job No." = field("Job No."),
-                                                                                     "Job Task No." = field("Job Task No."),
+            if (Type = const(Contrato)) "Contrato Planning Line"."Document No." where("Contrato No." = field("Contrato No."),
+                                                                                     "Contrato Task No." = field("Contrato Task No."),
                                                                                      "Line No." = field("Document Line No."));
         }
         field(14; "Document Line No."; Integer)
@@ -48,15 +48,15 @@ table 50218 "Assemble-to-OrderLinkContrato"
             Caption = 'Assembled Quantity';
             DecimalPlaces = 0 : 5;
         }
-        field(40; "Job No."; Code[20])
+        field(40; "Contrato No."; Code[20])
         {
             Caption = 'Project No.';
             TableRelation = Contrato;
         }
-        field(41; "Job Task No."; Code[20])
+        field(41; "Contrato Task No."; Code[20])
         {
             Caption = 'Project Task No.';
-            TableRelation = "Contrato Task"."Job Task No." where("Job No." = field("Job No."));
+            TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
         }
     }
 
@@ -69,7 +69,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
         key(Key2; Type, "Document Type", "Document No.", "Document Line No.")
         {
         }
-        key(Key3; Type, "Job No.", "Job Task No.", "Document Line No.")
+        key(Key3; Type, "Contrato No.", "Contrato Task No.", "Document Line No.")
         {
         }
     }
@@ -207,7 +207,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
                 exit;
             end;
 
-            Contrato.Get(NewJobPlanningLine."Job No.");
+            Contrato.Get(NewJobPlanningLine."Contrato No.");
             CheckJobStatus(Contrato);
             AssignAssembleToOrderData(NewJobPlanningLine, Contrato);
             NewJobPlanningLine."Assemble to Order" := true;
@@ -481,8 +481,8 @@ table 50218 "Assemble-to-OrderLinkContrato"
               AsmHeader."Document Type",
               AsmHeader."No.",
               NewJobPlanningLine.FieldCaption("Qty. to Assemble"),
-              NewJobPlanningLine."Job No.",
-              NewJobPlanningLine."Job Task No.",
+              NewJobPlanningLine."Contrato No.",
+              NewJobPlanningLine."Contrato Task No.",
               NewJobPlanningLine."Line No.");
 
         UnreserveAsm();
@@ -549,8 +549,8 @@ table 50218 "Assemble-to-OrderLinkContrato"
     begin
         if Contrato.Status in [Contrato.Status::Completed, Contrato.Status::Open] then
             exit;
-        SetRange(Type, Type::Job);
-        SetRange("Job No.", Contrato."No.");
+        SetRange(Type, Type::Contrato);
+        SetRange("Contrato No.", Contrato."No.");
         SetRange("Document Type", "Document Type"::Order);
         if not IsEmpty() then
             Error(AssebmlyOrderExistsForJobErr, Contrato."No.");
@@ -580,12 +580,12 @@ table 50218 "Assemble-to-OrderLinkContrato"
             Init();
             "Assembly Document Type" := ToAsmOrderHeader."Document Type";
             "Assembly Document No." := ToAsmOrderHeader."No.";
-            Type := Type::Job;
+            Type := Type::Contrato;
             "Document No." := JobPlanningLine."Document No.";
             "Document Type" := "Document Type"::Order;
             "Document Line No." := JobPlanningLine."Line No.";
-            "Job No." := JobPlanningLine."Job No.";
-            "Job Task No." := JobPlanningLine."Job Task No.";
+            "Contrato No." := JobPlanningLine."Contrato No.";
+            "Contrato Task No." := JobPlanningLine."Contrato Task No.";
 
             SynchronizeAsmFromJobPlanningLine(JobPlanningLine, true);
             RecalcAutoReserve(ToAsmOrderHeader);
@@ -785,14 +785,14 @@ table 50218 "Assemble-to-OrderLinkContrato"
         TrackingSpecification: Record "Tracking Specification";
         AsmHeaderReserve: Codeunit "Assembly Header-Reserve";
     begin
-        if Type <> Type::Job then
+        if Type <> Type::Contrato then
             exit;
 
         GetAsmHeader();
         AsmHeaderReserve.SetBinding(ReservEntry.Binding::"Order-to-Order");
         AsmHeaderReserve.SetDisallowCancellation(true);
         TrackingSpecification.InitTrackingSpecification(
-            Database::"Contrato Planning Line", 2, JobPlanningLine."Job No.", '', 0, JobPlanningLine."Job Contract Entry No.",
+            Database::"Contrato Planning Line", 2, JobPlanningLine."Contrato No.", '', 0, JobPlanningLine."Contrato Contract Entry No.",
             AsmHeader."Variant Code", AsmHeader."Location Code", AsmHeader."Qty. per Unit of Measure");
         AsmHeaderReserve.CreateReservationSetFrom(TrackingSpecification);
         AsmHeaderReserve.CreateReservation(AsmHeader, AsmHeader.Description, AsmHeader."Due Date", QtyToReserve, QtyToReserveBase);
@@ -1145,9 +1145,9 @@ table 50218 "Assemble-to-OrderLinkContrato"
                     SalesLine.Get(Rec."Document Type", Rec."Document No.", Rec."Document Line No.");
                     ShowAsm(SalesLine);
                 end;
-            Rec.Type::Job:
+            Rec.Type::Contrato:
                 begin
-                    JobPlanningLine.Get(Rec."Job No.", Rec."Job Task No.", Rec."Document Line No.");
+                    JobPlanningLine.Get(Rec."Contrato No.", Rec."Contrato Task No.", Rec."Document Line No.");
                     ShowAsm(JobPlanningLine);
                 end;
         end;
@@ -1214,8 +1214,8 @@ table 50218 "Assemble-to-OrderLinkContrato"
     var
         JobPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.SetRange("Job No.", Rec."Job No.");
-        JobPlanningLine.SetRange("Job Task No.", Rec."Job Task No.");
+        JobPlanningLine.SetRange("Contrato No.", Rec."Contrato No.");
+        JobPlanningLine.SetRange("Contrato Task No.", Rec."Contrato Task No.");
         JobPlanningLine.SetRange("Line No.", Rec."Document Line No.");
         Page.RunModal(Page::"Contrato Planning Lines", JobPlanningLine);
     end;
@@ -1438,10 +1438,10 @@ table 50218 "Assemble-to-OrderLinkContrato"
     procedure AsmExistsForJobPlanningLine(JobPlanningLine: Record "Contrato Planning Line"): Boolean
     begin
         Reset();
-        SetCurrentKey(Type, "Job No.", "Job Task No.", "Document Line No.");
-        SetRange(Type, Type::Job);
-        SetRange("Job No.", JobPlanningLine."Job No.");
-        SetRange("Job Task No.", JobPlanningLine."Job Task No.");
+        SetCurrentKey(Type, "Contrato No.", "Contrato Task No.", "Document Line No.");
+        SetRange(Type, Type::Contrato);
+        SetRange("Contrato No.", JobPlanningLine."Contrato No.");
+        SetRange("Contrato Task No.", JobPlanningLine."Contrato Task No.");
         SetRange("Document Line No.", JobPlanningLine."Line No.");
         if JobPlanningLine.Status = JobPlanningLine.Status::Order then
             SetRange("Document Type", "Document Type"::Order)
@@ -1502,7 +1502,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
         OnBeforeGetATOLink(Rec, AssemblyHeader, LinkFound, IsHandled);
         if IsHandled then
             exit(LinkFound);
-        LinkFound := Get(AssemblyHeader."Document Type", AssemblyHeader."No.") and (Type <> Type::Job);
+        LinkFound := Get(AssemblyHeader."Document Type", AssemblyHeader."No.") and (Type <> Type::Contrato);
         if LinkFound then
             TestField(Type, Type::Sale);
     end;
@@ -1597,9 +1597,9 @@ table 50218 "Assemble-to-OrderLinkContrato"
             QtyToAsm := MaxQtyToAsm(SalesLine, AssemblyHeader);
             QtyToAsmBase := MaxQtyToAsmBase(SalesLine, AssemblyHeader);
         end else begin
-            if ("Job No." = '') or ("Job Task No." = '') then
+            if ("Contrato No." = '') or ("Contrato Task No." = '') then
                 exit;
-            JobPlanningLine.Get("Job No.", "Job Task No.", "Document Line No.");
+            JobPlanningLine.Get("Contrato No.", "Contrato Task No.", "Document Line No.");
             QtyToAsm := AssemblyHeader."Remaining Quantity";
             QtyToAsmBase := AssemblyHeader."Remaining Quantity (Base)";
         end;
@@ -1680,8 +1680,8 @@ table 50218 "Assemble-to-OrderLinkContrato"
     var
         JobTaskNoText, JobNoText, LineNoText : Text;
     begin
-        JobNoText := StrSubstNo(Text008, JobPlanningLine.FieldCaption("Job No."), JobPlanningLine."Job No.");
-        JobTaskNoText := StrSubstNo(Text008, JobPlanningLine.FieldCaption("Job Task No."), JobPlanningLine."Job Task No.");
+        JobNoText := StrSubstNo(Text008, JobPlanningLine.FieldCaption("Contrato No."), JobPlanningLine."Contrato No.");
+        JobTaskNoText := StrSubstNo(Text008, JobPlanningLine.FieldCaption("Contrato Task No."), JobPlanningLine."Contrato Task No.");
         LineNoText := StrSubstNo(Text008, JobPlanningLine.FieldCaption("Line No."), JobPlanningLine."Line No.");
         exit(StrSubstNo(Text008, StrSubstNo(Text008, JobNoText, JobTaskNoText), LineNoText));
     end;
@@ -1741,11 +1741,11 @@ table 50218 "Assemble-to-OrderLinkContrato"
     begin
         TempAssemblyHeader.DeleteAll();
 
-        AssembleToOrderLink.SetCurrentKey(Type, "Job No.", "Job Task No.", "Document Line No.");
-        AssembleToOrderLink.SetRange(Type, AssembleToOrderLink.Type::Job);
-        AssembleToOrderLink.SetRange("Job No.", Contrato."No.");
+        AssembleToOrderLink.SetCurrentKey(Type, "Contrato No.", "Contrato Task No.", "Document Line No.");
+        AssembleToOrderLink.SetRange(Type, AssembleToOrderLink.Type::Contrato);
+        AssembleToOrderLink.SetRange("Contrato No.", Contrato."No.");
         if JobTaskNo <> '' then
-            AssembleToOrderLink.SetRange("Job Task No.", JobTaskNo);
+            AssembleToOrderLink.SetRange("Contrato Task No.", JobTaskNo);
         if AssembleToOrderLink.FindSet() then
             repeat
                 if not TempAssemblyHeader.Get(AssembleToOrderLink."Assembly Document Type", AssembleToOrderLink."Assembly Document No.") then
@@ -1781,7 +1781,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
     begin
         if NewJobPlanningLine."Qty. to Assemble" = 0 then
             exit(true);
-        if not NewJobPlanningLine2.Get(NewJobPlanningLine."Job No.", NewJobPlanningLine."Job Task No.", NewJobPlanningLine."Line No.") then
+        if not NewJobPlanningLine2.Get(NewJobPlanningLine."Contrato No.", NewJobPlanningLine."Contrato Task No.", NewJobPlanningLine."Line No.") then
             exit(true);
     end;
 
@@ -1803,10 +1803,10 @@ table 50218 "Assemble-to-OrderLinkContrato"
             end;
         "Assembly Document Type" := AsmHeader."Document Type";
         "Assembly Document No." := AsmHeader."No.";
-        Type := Type::Job;
+        Type := Type::Contrato;
         "Document No." := NewJobPlanningLine."Document No.";
-        "Job No." := NewJobPlanningLine."Job No.";
-        "Job Task No." := NewJobPlanningLine."Job Task No.";
+        "Contrato No." := NewJobPlanningLine."Contrato No.";
+        "Contrato Task No." := NewJobPlanningLine."Contrato Task No.";
         "Document Line No." := NewJobPlanningLine."Line No.";
     end;
 
@@ -1814,7 +1814,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
     var
         JobTask: Record "Contrato Task";
     begin
-        if not JobTask.Get(NewJobPlanningLine."Job No.", NewJobPlanningLine."Job Task No.") then
+        if not JobTask.Get(NewJobPlanningLine."Contrato No.", NewJobPlanningLine."Contrato Task No.") then
             exit;
         AsmHeader."Shortcut Dimension 1 Code" := JobTask."Global Dimension 1 Code";
         AsmHeader."Shortcut Dimension 2 Code" := JobTask."Global Dimension 2 Code";

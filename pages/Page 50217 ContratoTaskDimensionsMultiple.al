@@ -99,7 +99,7 @@ page 50217 "ContratoTaskDimensionsMultiple"
             repeat
                 if TempJobTaskDim3.Find('-') then
                     repeat
-                        if JobTaskDim.Get(TempJobTaskDim3."Job No.", TempJobTaskDim3."Job Task No.", Rec."Dimension Code")
+                        if JobTaskDim.Get(TempJobTaskDim3."Contrato No.", TempJobTaskDim3."Contrato Task No.", Rec."Dimension Code")
                         then
                             JobTaskDim.Delete(true);
                     until TempJobTaskDim3.Next() = 0;
@@ -109,15 +109,15 @@ page 50217 "ContratoTaskDimensionsMultiple"
             repeat
                 if TempJobTaskDim3.Find('-') then
                     repeat
-                        if JobTaskDim.Get(TempJobTaskDim3."Job No.", TempJobTaskDim3."Job Task No.", Rec."Dimension Code")
+                        if JobTaskDim.Get(TempJobTaskDim3."Contrato No.", TempJobTaskDim3."Contrato Task No.", Rec."Dimension Code")
                         then begin
                             JobTaskDim."Dimension Code" := Rec."Dimension Code";
                             JobTaskDim."Dimension Value Code" := Rec."Dimension Value Code";
                             JobTaskDim.Modify(true);
                         end else begin
                             JobTaskDim.Init();
-                            JobTaskDim."Job No." := TempJobTaskDim3."Job No.";
-                            JobTaskDim."Job Task No." := TempJobTaskDim3."Job Task No.";
+                            JobTaskDim."Contrato No." := TempJobTaskDim3."Contrato No.";
+                            JobTaskDim."Contrato Task No." := TempJobTaskDim3."Contrato Task No.";
                             JobTaskDim."Dimension Code" := Rec."Dimension Code";
                             JobTaskDim."Dimension Value Code" := Rec."Dimension Value Code";
                             JobTaskDim.Insert(true);
@@ -132,7 +132,7 @@ page 50217 "ContratoTaskDimensionsMultiple"
         TempJobTask.DeleteAll();
         if JobTask.Find('-') then
             repeat
-                CopyJobTaskDimToJobTaskDim(JobTask."Job No.", JobTask."Job Task No.");
+                CopyJobTaskDimToJobTaskDim(JobTask."Contrato No.", JobTask."Contrato Task No.");
                 TempJobTask.TransferFields(JobTask);
                 TempJobTask.Insert();
             until JobTask.Next() = 0;
@@ -143,12 +143,12 @@ page 50217 "ContratoTaskDimensionsMultiple"
         JobTaskDim: Record "Contrato Task Dimension";
     begin
         TotalRecNo := TotalRecNo + 1;
-        TempJobTaskDim3."Job No." := JobNo;
-        TempJobTaskDim3."Job Task No." := JobTaskNo;
+        TempJobTaskDim3."Contrato No." := JobNo;
+        TempJobTaskDim3."Contrato Task No." := JobTaskNo;
         TempJobTaskDim3.Insert();
 
-        JobTaskDim.SetRange("Job No.", JobNo);
-        JobTaskDim.SetRange("Job Task No.", JobTaskNo);
+        JobTaskDim.SetRange("Contrato No.", JobNo);
+        JobTaskDim.SetRange("Contrato Task No.", JobTaskNo);
         if JobTaskDim.Find('-') then
             repeat
                 TempJobTaskDim2 := JobTaskDim;

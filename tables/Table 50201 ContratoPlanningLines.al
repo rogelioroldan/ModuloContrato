@@ -13,7 +13,7 @@ table 50201 "Contrato Planning Line"
             Caption = 'Line No.';
             Editable = false;
         }
-        field(2; "Job No."; Code[20])
+        field(2; "Contrato No."; Code[20])
         {
             Caption = 'Project No.';
             NotBlank = true;
@@ -133,7 +133,7 @@ table 50201 "Contrato Planning Line"
 
                 InitQtyToAsm();
 
-                OnValidateNoOnAfterCopyFromAccount(Rec, xRec, Job);
+                OnValidateNoOnAfterCopyFromAccount(Rec, xRec, Contrato);
 
                 if Type <> Type::Text then
                     Validate(Quantity);
@@ -482,7 +482,7 @@ table 50201 "Contrato Planning Line"
                     FieldError("Qty. to Assemble", NegativeQtyToAssembleErr);
 
                 CheckItemAvailable(FieldNo("Qty. to Assemble"));
-                //ATOLink.UpdateAsmFromJobPlanningLine(Rec);
+                ATOLink.UpdateAsmFromJobPlanningLine(Rec);
             end;
         }
         field(901; "Qty. to Assemble (Base)"; Decimal)
@@ -515,14 +515,14 @@ table 50201 "Contrato Planning Line"
             Caption = 'Attached to Line No.';
             Editable = false;
             DataClassification = CustomerContent;
-            TableRelation = "Contrato Planning Line"."Line No." where("Job No." = field("Job No."),
-                                                           "Job Task No." = field("Job Task No."));
+            TableRelation = "Contrato Planning Line"."Line No." where("Contrato No." = field("Contrato No."),
+                                                           "Contrato Task No." = field("Contrato Task No."));
         }
-        field(1000; "Job Task No."; Code[20])
+        field(1000; "Contrato Task No."; Code[20])
         {
             Caption = 'Project Task No.';
             NotBlank = true;
-            TableRelation = "Contrato Task"."Job Task No." where("Job No." = field("Job No."));
+            TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
         }
         field(1001; "Line Amount (LCY)"; Decimal)
         {
@@ -665,7 +665,7 @@ table 50201 "Contrato Planning Line"
                 UpdateAllAmounts();
             end;
         }
-        field(1022; "Line Type"; Enum "Job Planning Line Line Type")
+        field(1022; "Line Type"; Enum "ContratoPlanningLineLineType")
         {
             Caption = 'Line Type';
 
@@ -739,25 +739,25 @@ table 50201 "Contrato Planning Line"
             Caption = 'Billable Line';
             Editable = false;
         }
-        field(1030; "Job Contract Entry No."; Integer)
+        field(1030; "Contrato Contract Entry No."; Integer)
         {
             Caption = 'Project Contract Entry No.';
             Editable = false;
         }
         field(1035; "Invoiced Amount (LCY)"; Decimal)
         {
-            CalcFormula = sum("Contrato Planning Line Invoice"."Invoiced Amount (LCY)" where("Job No." = field("Job No."),
-                                                                                         "Job Task No." = field("Job Task No."),
-                                                                                         "Job Planning Line No." = field("Line No.")));
+            CalcFormula = sum("Contrato Planning Line Invoice"."Invoiced Amount (LCY)" where("Contrato No." = field("Contrato No."),
+                                                                                         "Contrato Task No." = field("Contrato Task No."),
+                                                                                         "Contrato Planning Line No." = field("Line No.")));
             Caption = 'Invoiced Amount (LCY)';
             Editable = false;
             FieldClass = FlowField;
         }
         field(1036; "Invoiced Cost Amount (LCY)"; Decimal)
         {
-            CalcFormula = sum("Contrato Planning Line Invoice"."Invoiced Cost Amount (LCY)" where("Job No." = field("Job No."),
-                                                                                              "Job Task No." = field("Job Task No."),
-                                                                                              "Job Planning Line No." = field("Line No.")));
+            CalcFormula = sum("Contrato Planning Line Invoice"."Invoiced Cost Amount (LCY)" where("Contrato No." = field("Contrato No."),
+                                                                                              "Contrato Task No." = field("Contrato Task No."),
+                                                                                              "Contrato Planning Line No." = field("Line No.")));
             Caption = 'Invoiced Cost Amount (LCY)';
             Editable = false;
             FieldClass = FlowField;
@@ -782,14 +782,14 @@ table 50201 "Contrato Planning Line"
         {
             Caption = 'Description 2';
         }
-        field(1043; "Job Ledger Entry No."; Integer)
+        field(1043; "Contrato Ledger Entry No."; Integer)
         {
             BlankZero = true;
             Caption = 'Project Ledger Entry No.';
             Editable = false;
             TableRelation = "Contrato Ledger Entry";
         }
-        field(1048; Status; Enum "Job Planning Line Status")
+        field(1048; Status; Enum "Contrato Planning Line Status")
         {
             Caption = 'Status';
             Editable = false;
@@ -800,7 +800,7 @@ table 50201 "Contrato Planning Line"
                 JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo(Status));
             end;
         }
-        field(1050; "Ledger Entry Type"; Enum "Job Ledger Entry Type")
+        field(1050; "Ledger Entry Type"; Enum "Contrato Ledger Entry Type")
         {
             Caption = 'Ledger Entry Type';
         }
@@ -926,9 +926,9 @@ table 50201 "Contrato Planning Line"
         }
         field(1080; "Qty. Transferred to Invoice"; Decimal)
         {
-            CalcFormula = sum("Contrato Planning Line Invoice"."Quantity Transferred" where("Job No." = field("Job No."),
-                                                                                        "Job Task No." = field("Job Task No."),
-                                                                                        "Job Planning Line No." = field("Line No.")));
+            CalcFormula = sum("Contrato Planning Line Invoice"."Quantity Transferred" where("Contrato No." = field("Contrato No."),
+                                                                                        "Contrato Task No." = field("Contrato Task No."),
+                                                                                        "Contrato Planning Line No." = field("Line No.")));
             Caption = 'Qty. Transferred to Invoice';
             DecimalPlaces = 0 : 5;
             Editable = false;
@@ -974,9 +974,9 @@ table 50201 "Contrato Planning Line"
         }
         field(1090; "Qty. Invoiced"; Decimal)
         {
-            CalcFormula = sum("Contrato Planning Line Invoice"."Quantity Transferred" where("Job No." = field("Job No."),
-                                                                                        "Job Task No." = field("Job Task No."),
-                                                                                        "Job Planning Line No." = field("Line No."),
+            CalcFormula = sum("Contrato Planning Line Invoice"."Quantity Transferred" where("Contrato No." = field("Contrato No."),
+                                                                                        "Contrato Task No." = field("Contrato Task No."),
+                                                                                        "Contrato Planning Line No." = field("Line No."),
                                                                                         "Document Type" = filter("Posted Invoice" | "Posted Credit Memo")));
             Caption = 'Qty. Invoiced';
             DecimalPlaces = 0 : 5;
@@ -996,8 +996,8 @@ table 50201 "Contrato Planning Line"
 #pragma warning disable AL0603
                                                                    "Source Subtype" = field(Status),
 #pragma warning restore
-                                                                   "Source ID" = field("Job No."),
-                                                                   "Source Ref. No." = field("Job Contract Entry No."),
+                                                                   "Source ID" = field("Contrato No."),
+                                                                   "Source Ref. No." = field("Contrato Contract Entry No."),
                                                                    "Reservation Status" = const(Reservation)));
             Caption = 'Reserved Quantity';
             DecimalPlaces = 0 : 5;
@@ -1011,8 +1011,8 @@ table 50201 "Contrato Planning Line"
 #pragma warning disable AL0603
                                                                             "Source Subtype" = field(Status),
 #pragma warning restore
-                                                                            "Source ID" = field("Job No."),
-                                                                            "Source Ref. No." = field("Job Contract Entry No."),
+                                                                            "Source ID" = field("Contrato No."),
+                                                                            "Source Ref. No." = field("Contrato Contract Entry No."),
                                                                             "Reservation Status" = const(Reservation)));
             Caption = 'Reserved Qty. (Base)';
             DecimalPlaces = 0 : 5;
@@ -1225,8 +1225,8 @@ table 50201 "Contrato Planning Line"
         {
             CalcFormula = sum("Warehouse Activity Line"."Qty. Outstanding" where("Activity Type" = filter(<> "Put-away"),
                                                                                   "Source Type" = const(167),
-                                                                                  "Source No." = field("Job No."),
-                                                                                  "Source Line No." = field("Job Contract Entry No."),
+                                                                                  "Source No." = field("Contrato No."),
+                                                                                  "Source Line No." = field("Contrato Contract Entry No."),
                                                                                   "Source Subline No." = field("Line No."),
                                                                                   "Unit of Measure Code" = field("Unit of Measure Code"),
                                                                                   "Action Type" = filter(" " | Place),
@@ -1266,8 +1266,8 @@ table 50201 "Contrato Planning Line"
         {
             CalcFormula = sum("Warehouse Activity Line"."Qty. Outstanding (Base)" where("Activity Type" = filter(<> "Put-away"),
                                                                                          "Source Type" = const(167),
-                                                                                         "Source No." = field("Job No."),
-                                                                                         "Source Line No." = field("Job Contract Entry No."),
+                                                                                         "Source No." = field("Contrato No."),
+                                                                                         "Source Line No." = field("Contrato Contract Entry No."),
                                                                                          "Source Subline No." = field("Line No."),
                                                                                          "Action Type" = filter(" " | Place),
                                                                                          "Original Breakbulk" = const(false),
@@ -1279,9 +1279,9 @@ table 50201 "Contrato Planning Line"
         }
         field(7305; "Qty. on Journal"; Decimal)
         {
-            CalcFormula = sum("Contrato Journal Line"."Quantity (Base)" where("Job No." = field("Job No."),
-                                                                  "Job Task No." = field("Job Task No."),
-                                                                  "Job Planning Line No." = field("Line No."),
+            CalcFormula = sum("Contrato Journal Line"."Quantity (Base)" where("Contrato No." = field("Contrato No."),
+                                                                  "Contrato Task No." = field("Contrato Task No."),
+                                                                  "Contrato Planning Line No." = field("Line No."),
                                                                   Type = field(Type),
                                                                   "No." = field("No.")));
             Caption = 'Qty. on Journal';
@@ -1293,29 +1293,29 @@ table 50201 "Contrato Planning Line"
 
     keys
     {
-        key(Key1; "Job No.", "Job Task No.", "Line No.")
+        key(Key1; "Contrato No.", "Contrato Task No.", "Line No.")
         {
             Clustered = true;
         }
-        key(Key2; "Job No.", "Job Task No.", "Schedule Line", "Planning Date")
+        key(Key2; "Contrato No.", "Contrato Task No.", "Schedule Line", "Planning Date")
         {
             SumIndexFields = "Total Price (LCY)", "Total Cost (LCY)", "Line Amount (LCY)", "Remaining Total Cost (LCY)", "Remaining Line Amount (LCY)", "Total Cost", "Line Amount";
         }
-        key(Key3; "Job No.", "Job Task No.", "Contract Line", "Planning Date")
+        key(Key3; "Contrato No.", "Contrato Task No.", "Contract Line", "Planning Date")
         {
             SumIndexFields = "Total Price (LCY)", "Total Cost (LCY)", "Line Amount (LCY)", "Remaining Total Cost (LCY)", "Remaining Line Amount (LCY)", "Total Cost", "Line Amount";
         }
-        key(Key4; "Job No.", "Job Task No.", "Schedule Line", "Currency Date")
+        key(Key4; "Contrato No.", "Contrato Task No.", "Schedule Line", "Currency Date")
         {
         }
-        key(Key5; "Job No.", "Job Task No.", "Contract Line", "Currency Date")
+        key(Key5; "Contrato No.", "Contrato Task No.", "Contract Line", "Currency Date")
         {
         }
-        key(Key6; "Job No.", "Schedule Line", Type, "No.", "Planning Date")
+        key(Key6; "Contrato No.", "Schedule Line", Type, "No.", "Planning Date")
         {
             SumIndexFields = "Quantity (Base)";
         }
-        key(Key7; "Job No.", "Schedule Line", Type, "Resource Group No.", "Planning Date")
+        key(Key7; "Contrato No.", "Schedule Line", Type, "Resource Group No.", "Planning Date")
         {
             SumIndexFields = "Quantity (Base)";
         }
@@ -1327,20 +1327,20 @@ table 50201 "Contrato Planning Line"
         {
             SumIndexFields = "Quantity (Base)";
         }
-        key(Key10; "Job No.", "Contract Line")
+        key(Key10; "Contrato No.", "Contract Line")
         {
         }
-        key(Key11; "Job Contract Entry No.")
+        key(Key11; "Contrato Contract Entry No.")
         {
         }
-        key(Key12; Type, "No.", "Job No.", "Job Task No.", "Usage Link", "System-Created Entry")
+        key(Key12; Type, "No.", "Contrato No.", "Contrato Task No.", "Usage Link", "System-Created Entry")
         {
         }
         key(Key13; Status, Type, "No.", "Variant Code", "Location Code", "Planning Date")
         {
             SumIndexFields = "Remaining Qty. (Base)";
         }
-        key(Key14; "Job No.", "Planning Date", "Document No.")
+        key(Key14; "Contrato No.", "Planning Date", "Document No.")
         {
         }
     }
@@ -1360,8 +1360,8 @@ table 50201 "Contrato Planning Line"
         CheckRelatedJobPlanningLineInvoice();
 
         if "Usage Link" then begin
-            JobUsageLink.SetRange("Job No.", "Job No.");
-            JobUsageLink.SetRange("Job Task No.", "Job Task No.");
+            JobUsageLink.SetRange("Contrato No.", "Contrato No.");
+            JobUsageLink.SetRange("Contrato Task No.", "Contrato Task No.");
             JobUsageLink.SetRange("Line No.", "Line No.");
             IsHandled := false;
             OnDeleteOnAfterSetFilterOnJobUsageLink(Rec, JobUsageLink, IsHandled);
@@ -1377,7 +1377,7 @@ table 50201 "Contrato Planning Line"
         end;
 
         if "Schedule Line" then
-            Job.UpdateOverBudgetValue("Job No.", false, "Total Cost (LCY)");
+            Contrato.UpdateOverBudgetValue("Contrato No.", false, "Total Cost (LCY)");
 
         //JobWarehouseMgt.JobPlanningLineDelete(Rec);
 
@@ -1398,16 +1398,16 @@ table 50201 "Contrato Planning Line"
 
         LockTable();
         GetJob();
-        // if Job.Blocked = Job.Blocked::All then
-        //     Job.TestBlocked();
-        JobTask.Get("Job No.", "Job Task No.");
-        JobTask.TestField("Job Task Type", JobTask."Job Task Type"::Posting);
+        // if Contrato.Blocked = Contrato.Blocked::All then
+        //     Contrato.TestBlocked();
+        JobTask.Get("Contrato No.", "Contrato Task No.");
+        JobTask.TestField("Contrato Task Type", JobTask."Contrato Task Type"::Posting);
         InitJobPlanningLine();
         if Quantity <> 0 then
             UpdateReservation(0);
 
         if "Schedule Line" then
-            Job.UpdateOverBudgetValue("Job No.", false, "Total Cost (LCY)");
+            Contrato.UpdateOverBudgetValue("Contrato No.", false, "Total Cost (LCY)");
 
         CreateWarehouseRequest();
     end;
@@ -1421,7 +1421,7 @@ table 50201 "Contrato Planning Line"
             UpdateReservation(0);
 
         if "Schedule Line" then
-            Job.UpdateOverBudgetValue("Job No.", false, "Total Cost (LCY)");
+            Contrato.UpdateOverBudgetValue("Contrato No.", false, "Total Cost (LCY)");
 
         if xRec."Location Code" <> Rec."Location Code" then begin
             DeleteWarehouseRequest(xRec);
@@ -1438,7 +1438,7 @@ table 50201 "Contrato Planning Line"
         if IsHandled then
             exit;
 
-        Error(RecordRenameErr, FieldCaption("Job No."), FieldCaption("Job Task No."), TableCaption);
+        Error(RecordRenameErr, FieldCaption("Contrato No."), FieldCaption("Contrato Task No."), TableCaption);
     end;
 
     var
@@ -1455,7 +1455,7 @@ table 50201 "Contrato Planning Line"
         ItemTranslation: Record "Item Translation";
         GLSetup: Record "General Ledger Setup";
         ATOLink: Record "Assemble-to-OrderLinkContrato";
-        JobPlanningLineReserve: Codeunit "Job Planning Line-Reserve";
+        JobPlanningLineReserve: Codeunit "Contrato Planning Line-Reserve";
         JobWarehouseMgt: Codeunit "ContratoWhseValidateSourceLine";
         UOMMgt: Codeunit "Unit of Measure Management";
         ItemCheckAvail: Codeunit "Item-Check Avail.";
@@ -1486,7 +1486,7 @@ table 50201 "Contrato Planning Line"
         ConfirmDeleteQst: Label '%1 = %2 is greater than %3 = %4. If you delete the %5, the items will remain in the operation area until you put them away.\Related Item Tracking information defined during pick will be deleted.\Do you still want to delete the %5?', Comment = '%1 = FieldCaption("Qty. Picked"), %2 = "Qty. Picked", %3 = FieldCaption("Qty. Posted"), %4 = "Qty. Posted", %5 = TableCaption';
 
     protected var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         UnitAmountRoundingPrecision: Decimal;
         AmountRoundingPrecision: Decimal;
         UnitAmountRoundingPrecisionFCY: Decimal;
@@ -1544,11 +1544,11 @@ table 50201 "Contrato Planning Line"
     local procedure CopyFieldsFromJob()
     begin
         GetJob();
-        Rec."Customer Price Group" := Job."Customer Price Group";
-        Rec."Price Calculation Method" := Job.GetPriceCalculationMethod();
-        Rec."Cost Calculation Method" := Job.GetCostCalculationMethod();
+        Rec."Customer Price Group" := Contrato."Customer Price Group";
+        Rec."Price Calculation Method" := Contrato.GetPriceCalculationMethod();
+        Rec."Cost Calculation Method" := Contrato.GetCostCalculationMethod();
 
-        OnAfterCopyFieldsFromJob(Rec, xRec, Job);
+        OnAfterCopyFieldsFromJob(Rec, xRec, Contrato);
     end;
 
     local procedure CheckQuantityPosted()
@@ -1588,7 +1588,7 @@ table 50201 "Contrato Planning Line"
             "Resource Group No." := Res."Resource Group No.";
             Validate("Unit of Measure Code", Res."Base Unit of Measure");
         end;
-        OnAfterCopyFromResource(Rec, Job, Res);
+        OnAfterCopyFromResource(Rec, Contrato, Res);
     end;
 
     local procedure CopyFromItem()
@@ -1598,16 +1598,16 @@ table 50201 "Contrato Planning Line"
         Item.TestField("Gen. Prod. Posting Group");
         Description := Item.Description;
         "Description 2" := Item."Description 2";
-        if Job."Language Code" <> '' then
+        if Contrato."Language Code" <> '' then
             GetItemTranslation();
         "Gen. Prod. Posting Group" := Item."Gen. Prod. Posting Group";
         Validate("Unit of Measure Code", Item."Base Unit of Measure");
         if "Usage Link" then
             if Item.Reserve = Item.Reserve::Optional then
-                Reserve := Job.Reserve
+                Reserve := Contrato.Reserve
             else
                 Reserve := Item.Reserve;
-        OnAfterCopyFromItem(Rec, Job, Item);
+        OnAfterCopyFromItem(Rec, Contrato, Item);
     end;
 
     local procedure CopyFromGLAccount()
@@ -1615,7 +1615,7 @@ table 50201 "Contrato Planning Line"
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCopyFromGLAccount(Rec, IsHandled, Job);
+        OnBeforeCopyFromGLAccount(Rec, IsHandled, Contrato);
         if not IsHandled then begin
             GLAcc.Get("No.");
             GLAcc.CheckGLAcc();
@@ -1630,7 +1630,7 @@ table 50201 "Contrato Planning Line"
             "Unit Price" := 0;
         end;
 
-        OnAfterCopyFromGLAccount(Rec, Job, GLAcc);
+        OnAfterCopyFromGLAccount(Rec, Contrato, GLAcc);
     end;
 
     local procedure CopyFromStandardText()
@@ -1674,9 +1674,9 @@ table 50201 "Contrato Planning Line"
 
     procedure GetJob()
     begin
-        if ("Job No." <> Job."No.") and ("Job No." <> '') then
-            Job.Get("Job No.");
-        OnAfterGetJob(Rec, Job);
+        if ("Contrato No." <> Contrato."No.") and ("Contrato No." <> '') then
+            Contrato.Get("Contrato No.");
+        OnAfterGetJob(Rec, Contrato);
     end;
 
     procedure UpdateCurrencyFactor()
@@ -1758,7 +1758,7 @@ table 50201 "Contrato Planning Line"
 
     procedure Caption(): Text
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobTask: Record "Contrato Task";
         Result: Text;
         IsHandled: Boolean;
@@ -1769,14 +1769,14 @@ table 50201 "Contrato Planning Line"
         if IsHandled then
             exit(Result);
 
-        if not Job.Get("Job No.") then
+        if not Contrato.Get("Contrato No.") then
             exit('');
-        if not JobTask.Get("Job No.", "Job Task No.") then
+        if not JobTask.Get("Contrato No.", "Contrato Task No.") then
             exit('');
         exit(StrSubstNo('%1 %2 %3 %4',
-            Job."No.",
-            Job.Description,
-            JobTask."Job Task No.",
+            Contrato."No.",
+            Contrato.Description,
+            JobTask."Contrato Task No.",
             JobTask.Description));
     end;
 
@@ -1787,12 +1787,12 @@ table 50201 "Contrato Planning Line"
         Type := LastJobPlanningLine.Type;
         Validate("Line Type", LastJobPlanningLine."Line Type");
         GetJob();
-        "Currency Code" := Job."Currency Code";
+        "Currency Code" := Contrato."Currency Code";
         UpdateCurrencyFactor();
         if LastJobPlanningLine."Planning Date" <> 0D then
             Validate("Planning Date", LastJobPlanningLine."Planning Date");
-        "Price Calculation Method" := Job.GetPriceCalculationMethod();
-        "Cost Calculation Method" := Job.GetCostCalculationMethod();
+        "Price Calculation Method" := Contrato.GetPriceCalculationMethod();
+        "Cost Calculation Method" := Contrato.GetCostCalculationMethod();
 
         OnAfterSetupNewLine(Rec, LastJobPlanningLine);
     end;
@@ -1803,23 +1803,23 @@ table 50201 "Contrato Planning Line"
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeInitJobPlanningLine(Rec, Job, IsHandled);
+        OnBeforeInitJobPlanningLine(Rec, Contrato, IsHandled);
         if not IsHandled then begin
             GetJob();
             if "Planning Date" = 0D then
                 Validate("Planning Date", WorkDate());
-            "Currency Code" := Job."Currency Code";
+            "Currency Code" := Contrato."Currency Code";
             UpdateCurrencyFactor();
             "VAT Unit Price" := 0;
             "VAT Line Discount Amount" := 0;
             "VAT Line Amount" := 0;
             "VAT %" := 0;
-            "Job Contract Entry No." := JobJnlManagement.GetNextEntryNo();
+            "Contrato Contract Entry No." := JobJnlManagement.GetNextEntryNo();
             "User ID" := CopyStr(UserId(), 1, MaxStrLen("User ID"));
             "Last Date Modified" := 0D;
-            Status := Job.Status;
+            Status := Contrato.Status;
             ControlUsageLink();
-            "Country/Region Code" := Job."Bill-to Country/Region Code";
+            "Country/Region Code" := Contrato."Bill-to Country/Region Code";
         end;
         OnAfterInitJobPlanningLine(Rec);
     end;
@@ -1878,7 +1878,7 @@ table 50201 "Contrato Planning Line"
     local procedure GetItemTranslation()
     begin
         GetJob();
-        if ItemTranslation.Get("No.", "Variant Code", Job."Language Code") then begin
+        if ItemTranslation.Get("No.", "Variant Code", Contrato."Language Code") then begin
             Description := ItemTranslation.Description;
             "Description 2" := ItemTranslation."Description 2";
         end;
@@ -1912,12 +1912,12 @@ table 50201 "Contrato Planning Line"
 
     procedure GetSourceCaption(): Text
     begin
-        exit(StrSubstNo('%1 %2 %3', Status, "Job No.", "No."));
+        exit(StrSubstNo('%1 %2 %3', Status, "Contrato No.", "No."));
     end;
 
     procedure SetReservationEntry(var ReservEntry: Record "Reservation Entry")
     begin
-        ReservEntry.SetSource(DATABASE::"Contrato Planning Line", Status.AsInteger(), "Job No.", "Job Contract Entry No.", '', 0);
+        ReservEntry.SetSource(DATABASE::"Contrato Planning Line", Status.AsInteger(), "Contrato No.", "Contrato Contract Entry No.", '', 0);
         ReservEntry.SetItemData("No.", Description, "Location Code", "Variant Code", "Qty. per Unit of Measure");
         if Type <> Type::Item then
             ReservEntry."Item No." := '';
@@ -1927,7 +1927,7 @@ table 50201 "Contrato Planning Line"
 
     procedure SetReservationFilters(var ReservEntry: Record "Reservation Entry")
     begin
-        ReservEntry.SetSourceFilter(DATABASE::"Contrato Planning Line", Status.AsInteger(), "Job No.", "Job Contract Entry No.", false);
+        ReservEntry.SetSourceFilter(DATABASE::"Contrato Planning Line", Status.AsInteger(), "Contrato No.", "Contrato Contract Entry No.", false);
         ReservEntry.SetSourceFilter('', 0);
 
         OnAfterSetReservationFilters(ReservEntry, Rec);
@@ -1985,16 +1985,16 @@ table 50201 "Contrato Planning Line"
                         "Unit Cost (LCY)" := Round(Item."Unit Cost" * "Qty. per Unit of Measure", UnitAmountRoundingPrecision);
                     "Unit Cost" := ConvertAmountToFCY("Unit Cost (LCY)", UnitAmountRoundingPrecisionFCY);
                 end else
-                    RecalculateAmounts(Job."Exch. Calculation (Cost)", xRec."Unit Cost", "Unit Cost", "Unit Cost (LCY)")
+                    RecalculateAmounts(Contrato."Exch. Calculation (Cost)", xRec."Unit Cost", "Unit Cost", "Unit Cost (LCY)")
             else
                 if RetrieveCostPrice(CurrFieldNo) then begin
                     CalculateRetrievedCost(RetrievedCost);
                     "Unit Cost" := ConvertAmountToFCY(RetrievedCost, UnitAmountRoundingPrecisionFCY);
                     "Unit Cost (LCY)" := Round(RetrievedCost, UnitAmountRoundingPrecision);
                 end else
-                    RecalculateAmounts(Job."Exch. Calculation (Cost)", xRec."Unit Cost", "Unit Cost", "Unit Cost (LCY)")
+                    RecalculateAmounts(Contrato."Exch. Calculation (Cost)", xRec."Unit Cost", "Unit Cost", "Unit Cost (LCY)")
         else
-            RecalculateAmounts(Job."Exch. Calculation (Cost)", xRec."Unit Cost", "Unit Cost", "Unit Cost (LCY)");
+            RecalculateAmounts(Contrato."Exch. Calculation (Cost)", xRec."Unit Cost", "Unit Cost", "Unit Cost (LCY)");
     end;
 
     local procedure CalculateRetrievedCost(var RetrievedCost: Decimal)
@@ -2173,7 +2173,7 @@ table 50201 "Contrato Planning Line"
         OnBeforeUpdateUnitPrice(Rec, xRec, IsHandled);
         if not IsHandled then begin
             GetJob();
-            RecalculateAmounts(Job."Exch. Calculation (Price)", xRec."Unit Price", "Unit Price", "Unit Price (LCY)");
+            RecalculateAmounts(Contrato."Exch. Calculation (Price)", xRec."Unit Price", "Unit Price", "Unit Price (LCY)");
         end;
         OnAfterUpdateUnitPrice(Rec, xRec, AmountRoundingPrecision, AmountRoundingPrecisionFCY);
     end;
@@ -2427,8 +2427,8 @@ table 50201 "Contrato Planning Line"
     var
         JobUsageLink: Record "Contrato Usage Link";
     begin
-        JobUsageLink.SetRange("Job No.", "Job No.");
-        JobUsageLink.SetRange("Job Task No.", "Job Task No.");
+        JobUsageLink.SetRange("Contrato No.", "Contrato No.");
+        JobUsageLink.SetRange("Contrato Task No.", "Contrato Task No.");
         JobUsageLink.SetRange("Line No.", "Line No.");
         if not JobUsageLink.IsEmpty() then
             Error(LinkedJobLedgerErr);
@@ -2442,11 +2442,11 @@ table 50201 "Contrato Planning Line"
         GetJob();
 
         IsHandled := false;
-        OnControlUsageLinkOnAfterGetJob(Rec, Job, CurrFieldNo, IsHandled);
+        OnControlUsageLinkOnAfterGetJob(Rec, Contrato, CurrFieldNo, IsHandled);
         if IsHandled then
             exit;
 
-        if Job."Apply Usage Link" then begin
+        if Contrato."Apply Usage Link" then begin
             if "Schedule Line" then
                 "Usage Link" := true
             else
@@ -2455,11 +2455,11 @@ table 50201 "Contrato Planning Line"
             if not "Schedule Line" then
                 "Usage Link" := false;
 
-        JobUsageLink.SetRange("Job No.", "Job No.");
-        JobUsageLink.SetRange("Job Task No.", "Job Task No.");
+        JobUsageLink.SetRange("Contrato No.", "Contrato No.");
+        JobUsageLink.SetRange("Contrato Task No.", "Contrato Task No.");
         JobUsageLink.SetRange("Line No.", "Line No.");
         IsHandled := false;
-        OnControlUsageLinkOnAfterSetFilterJobUsageLink(Rec, JobUsageLink, Job, CurrFieldNo, IsHandled);
+        OnControlUsageLinkOnAfterSetFilterJobUsageLink(Rec, JobUsageLink, Contrato, CurrFieldNo, IsHandled);
         if not IsHandled then
             if not JobUsageLink.IsEmpty() and not "Usage Link" then
                 Error(ControlUsageLinkErr, TableCaption(), FieldCaption("Schedule Line"), FieldCaption("Usage Link"));
@@ -2471,7 +2471,7 @@ table 50201 "Contrato Planning Line"
         UpdateQtyToTransfer();
         UpdateQtyToInvoice();
 
-        OnAfterControlUsageLink(Rec, Job, CurrFieldNo);
+        OnAfterControlUsageLink(Rec, Contrato, CurrFieldNo);
     end;
 
     local procedure CalcLineAmount(Qty: Decimal): Decimal
@@ -2514,17 +2514,17 @@ table 50201 "Contrato Planning Line"
                    (Quantity <> 0) and
                    (Reserve <> Reserve::Never)
                 then
-                    Reserve := Job.Reserve;
+                    Reserve := Contrato.Reserve;
             //ReservationCheckDateConfl.JobPlanningLineCheck(Rec, true);
             FieldNo(Quantity):
-                Reserve := Job.Reserve;
+                Reserve := Contrato.Reserve;
             //JobPlanningLineReserve.VerifyQuantity(Rec, xRec);
             FieldNo("Usage Link"):
                 if (Type = Type::Item) and "Usage Link" then begin
                     GetItem();
                     if Item.Reserve = Item.Reserve::Optional then begin
                         GetJob();
-                        Reserve := Job.Reserve
+                        Reserve := Contrato.Reserve
                     end else
                         Reserve := Item.Reserve;
                 end else
@@ -2621,8 +2621,8 @@ table 50201 "Contrato Planning Line"
     begin
         OrderPromisingLine.SetRange("Source Type", OrderPromisingLine."Source Type"::Job);
         OrderPromisingLine.SetRange("Source Type", OrderPromisingLine."Source Type"::Job);
-        OrderPromisingLine.SetRange("Source ID", "Job No.");
-        OrderPromisingLine.SetRange("Source Line No.", "Job Contract Entry No.");
+        OrderPromisingLine.SetRange("Source ID", "Contrato No.");
+        OrderPromisingLine.SetRange("Source Line No.", "Contrato Contract Entry No.");
 
         OrderPromisingLines.SetSource(OrderPromisingLine."Source Type"::Job);
         OrderPromisingLines.SetTableView(OrderPromisingLine);
@@ -2702,9 +2702,9 @@ table 50201 "Contrato Planning Line"
         if IsHandled then
             exit;
 
-        JobPlanningLineInvoice.SetRange("Job No.", "Job No.");
-        JobPlanningLineInvoice.SetRange("Job Task No.", "Job Task No.");
-        JobPlanningLineInvoice.SetRange("Job Planning Line No.", "Line No.");
+        JobPlanningLineInvoice.SetRange("Contrato No.", "Contrato No.");
+        JobPlanningLineInvoice.SetRange("Contrato Task No.", "Contrato Task No.");
+        JobPlanningLineInvoice.SetRange("Contrato Planning Line No.", "Line No.");
         if not JobPlanningLineInvoice.IsEmpty() then
             Error(NotPossibleJobPlanningLineErr);
     end;
@@ -2715,7 +2715,7 @@ table 50201 "Contrato Planning Line"
     begin
         exit(
           ItemTrackingMgt.ComposeRowID(Database::"Contrato Planning Line", Status.AsInteger(),
-            "Job No.", '', 0, "Job Contract Entry No."));
+            "Contrato No.", '', 0, "Contrato Contract Entry No."));
     end;
 
     internal procedure RowID2(): Text[250]
@@ -2723,7 +2723,7 @@ table 50201 "Contrato Planning Line"
         ItemTrackingMgt: Codeunit "Item Tracking Management";
     begin
         exit(
-          ItemTrackingMgt.ComposeRowID(Database::Contrato, 0, "Job No.", '', 0, "Job Contract Entry No."));
+          ItemTrackingMgt.ComposeRowID(Database::Contrato, 0, "Contrato No.", '', 0, "Contrato Contract Entry No."));
     end;
 
     procedure UpdatePlanned(): Boolean
@@ -2753,10 +2753,10 @@ table 50201 "Contrato Planning Line"
             exit(false);
         "Planning Due Date" := "Planning Date";
         GetJob();
-        if Job."No." = '' then
+        if Contrato."No." = '' then
             exit(false);
         Customer.SetLoadFields("Payment Terms Code");
-        if not Customer.Get(Job."Bill-to Customer No.") then
+        if not Customer.Get(Contrato."Bill-to Customer No.") then
             exit(false);
         PaymentTerms.SetLoadFields("Due Date Calculation");
         if PaymentTerms.Get(Customer."Payment Terms Code") then begin
@@ -2803,7 +2803,7 @@ table 50201 "Contrato Planning Line"
         ToJobPlanningLine."Line No." := GetNextJobLineNo(FromJobPlanningLine);
         ToJobPlanningLine.Validate("Line Type", "Line Type"::Billable);
         ToJobPlanningLine.ClearValues();
-        ToJobPlanningLine."Job Contract Entry No." := JobJnlManagement.GetNextEntryNo();
+        ToJobPlanningLine."Contrato Contract Entry No." := JobJnlManagement.GetNextEntryNo();
         if ToJobPlanningLine.Type <> ToJobPlanningLine.Type::Text then begin
             ToJobPlanningLine.Validate(Quantity, NewQuantity);
             ToJobPlanningLine.Validate("Currency Code", FromJobPlanningLine."Currency Code");
@@ -2823,8 +2823,8 @@ table 50201 "Contrato Planning Line"
     var
         JobPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.SetRange("Job No.", FromJobPlanningLine."Job No.");
-        JobPlanningLine.SetRange("Job Task No.", FromJobPlanningLine."Job Task No.");
+        JobPlanningLine.SetRange("Contrato No.", FromJobPlanningLine."Contrato No.");
+        JobPlanningLine.SetRange("Contrato Task No.", FromJobPlanningLine."Contrato Task No.");
         if JobPlanningLine.FindLast() then;
         exit(JobPlanningLine."Line No." + 10000);
     end;
@@ -2849,16 +2849,16 @@ table 50201 "Contrato Planning Line"
         exit(Item.IsNonInventoriableType());
     end;
 
-    procedure ConvertToJobLineType() JobLineType: Enum "Job Line Type"
+    procedure ConvertToJobLineType() JobLineType: Enum "Contrato Line Type"
     begin
-        JobLineType := Enum::"Job Line Type".FromInteger("Line Type".AsInteger() + 1);
+        JobLineType := Enum::"Contrato Line Type".FromInteger("Line Type".AsInteger() + 1);
 
         OnAfterConvertToJobLineType(Rec, JobLineType);
     end;
 
-    procedure ConvertFromJobLineType(JobLineType: Enum "Job Line Type") JobPlanningLineLineType: Enum "Job Planning Line Line Type"
+    procedure ConvertFromJobLineType(JobLineType: Enum "Contrato Line Type") JobPlanningLineLineType: Enum ContratoPlanningLineLineType
     begin
-        JobPlanningLineLineType := Enum::"Job Planning Line Line Type".FromInteger(JobLineType.AsInteger() - 1);
+        JobPlanningLineLineType := Enum::ContratoPlanningLineLineType.FromInteger(JobLineType.AsInteger() - 1);
 
         OnAfterConvertFromJobLineType(Rec, JobLineType, JobPlanningLineLineType);
     end;
@@ -2912,7 +2912,7 @@ table 50201 "Contrato Planning Line"
 
     local procedure FindBinFromJobTask(var NewBinCode: Code[20]): Boolean
     begin
-        if JobTask.Get(Rec."Job No.", Rec."Job Task No.") and (JobTask."Bin Code" <> '')
+        if JobTask.Get(Rec."Contrato No.", Rec."Contrato Task No.") and (JobTask."Bin Code" <> '')
             and ("Location Code" = JobTask."Location Code") then begin
             NewBinCode := JobTask."Bin Code";
             exit(true);
@@ -2931,15 +2931,15 @@ table 50201 "Contrato Planning Line"
         WarehouseRequest: Record "Warehouse Request";
         WhsePickRequest: Record "Whse. Pick Request";
     begin
-        JobPlanningLine2.SetFilter("Job Contract Entry No.", '<>%1', JobPlanningLine."Job Contract Entry No.");
-        JobPlanningLine2.SetRange("Job No.", JobPlanningLine."Job No.");
+        JobPlanningLine2.SetFilter("Contrato Contract Entry No.", '<>%1', JobPlanningLine."Contrato Contract Entry No.");
+        JobPlanningLine2.SetRange("Contrato No.", JobPlanningLine."Contrato No.");
         JobPlanningLine2.SetRange("Location Code", JobPlanningLine."Location Code");
 
         if JobPlanningLine2.IsEmpty() then
-            if WarehouseRequest.Get(Enum::"Warehouse Request Type"::Outbound, JobPlanningLine."Location Code", Database::Contrato, 0, JobPlanningLine."Job No.") then
+            if WarehouseRequest.Get(Enum::"Warehouse Request Type"::Outbound, JobPlanningLine."Location Code", Database::Contrato, 0, JobPlanningLine."Contrato No.") then
                 WarehouseRequest.Delete(true)
             else
-                if WhsePickRequest.Get(WhsePickRequest."Document Type"::Job, 0, JobPlanningLine."Job No.", JobPlanningLine."Location Code") then
+                if WhsePickRequest.Get(WhsePickRequest."Document Type"::Job, 0, JobPlanningLine."Contrato No.", JobPlanningLine."Location Code") then
                     WhsePickRequest.Delete(true);
     end;
 
@@ -2956,11 +2956,11 @@ table 50201 "Contrato Planning Line"
         case Location."Job Consump. Whse. Handling" of
             Enum::"Job Consump. Whse. Handling"::"Warehouse Pick (mandatory)",
             Enum::"Job Consump. Whse. Handling"::"Warehouse Pick (optional)":
-                if not WhsePickRequest.Get(WhsePickRequest."Document Type"::Job, 0, Rec."Job No.", Rec."Location Code") then begin
+                if not WhsePickRequest.Get(WhsePickRequest."Document Type"::Job, 0, Rec."Contrato No.", Rec."Location Code") then begin
                     WhsePickRequest.Init();
                     WhsePickRequest."Document Type" := WhsePickRequest."Document Type"::Job;
                     WhsePickRequest."Document Subtype" := 0;
-                    WhsePickRequest."Document No." := Rec."Job No.";
+                    WhsePickRequest."Document No." := Rec."Contrato No.";
                     WhsePickRequest.Status := WhsePickRequest.Status::Released;
                     WhsePickRequest."Location Code" := Location.Code;
                     if WhsePickRequest.Insert() then;
@@ -2971,7 +2971,7 @@ table 50201 "Contrato Planning Line"
                     WarehouseRequest.Type := WarehouseRequest.Type::Outbound;
                     WarehouseRequest."Location Code" := Rec."Location Code";
                     WarehouseRequest."Source Type" := Database::Contrato;
-                    WarehouseRequest."Source No." := Rec."Job No.";
+                    WarehouseRequest."Source No." := Rec."Contrato No.";
                     WarehouseRequest."Source Subtype" := 0;
                     WarehouseRequest."Source Document" := WarehouseRequest."Source Document"::"Job Usage";
                     WarehouseRequest."Document Status" := WarehouseRequest."Document Status"::Released;
@@ -2982,7 +2982,7 @@ table 50201 "Contrato Planning Line"
 
     local procedure GetWarehouseRequest(var WarehouseRequest: Record "Warehouse Request"): Boolean
     begin
-        if WarehouseRequest.Get(WarehouseRequest.Type::Outbound, Rec."Location Code", Database::Contrato, 0, Rec."Job No.") then
+        if WarehouseRequest.Get(WarehouseRequest.Type::Outbound, Rec."Location Code", Database::Contrato, 0, Rec."Contrato No.") then
             if (WarehouseRequest."Source Document" = WarehouseRequest."Source Document"::"Job Usage") and (WarehouseRequest."Document Status" = WarehouseRequest."Document Status"::Released) then
                 exit(true);
     end;
@@ -2991,7 +2991,7 @@ table 50201 "Contrato Planning Line"
     begin
         TestField(Status, Status::Order);
         GetJob();
-        Job.TestField(Status, Job.Status::Open);
+        Contrato.TestField(Status, Contrato.Status::Open);
     end;
 
     procedure CheckIfJobPlngLineMeetsReservedFromStockSetting(QtyToPost: Decimal; ReservedFromStock: Enum "Reservation From Stock") Result: Boolean
@@ -3059,7 +3059,7 @@ table 50201 "Contrato Planning Line"
         TestField("Unit of Measure Code", AsmHeader."Unit of Measure Code");
         TestField("Variant Code", AsmHeader."Variant Code");
         GetJob();
-        if Job.Status = Job.Status::Open then begin
+        if Contrato.Status = Contrato.Status::Open then begin
             AsmHeader.CalcFields("Reserved Qty. (Base)");
             AsmHeader.TestField("Reserved Qty. (Base)", AsmHeader."Remaining Quantity (Base)");
         end;
@@ -3102,8 +3102,8 @@ table 50201 "Contrato Planning Line"
         PostedATOLink: Record "Posted Assemble-to-Order Link";
     begin
         PostedATOLink.SetCurrentKey("Job No.", "Job Task No.", "Document Line No.");
-        PostedATOLink.SetRange("Job No.", Rec."Job No.");
-        PostedATOLink.SetRange("Job Task No.", Rec."Job Task No.");
+        PostedATOLink.SetRange("Job No.", Rec."Contrato No.");
+        PostedATOLink.SetRange("Job Task No.", Rec."Contrato Task No.");
         PostedATOLink.SetRange("Document Line No.", Rec."Line No.");
         if PostedATOLink.FindSet() then
             repeat
@@ -3185,8 +3185,8 @@ table 50201 "Contrato Planning Line"
         ExistingJobPlanningLine: Record "Contrato Planning Line";
     begin
         NewJobPlanningLine.Copy(Rec);
-        ExistingJobPlanningLine.SetRange("Job No.", NewJobPlanningLine."Job No.");
-        ExistingJobPlanningLine.SetRange("Job Task No.", NewJobPlanningLine."Job Task No.");
+        ExistingJobPlanningLine.SetRange("Contrato No.", NewJobPlanningLine."Contrato No.");
+        ExistingJobPlanningLine.SetRange("Contrato Task No.", NewJobPlanningLine."Contrato Task No.");
         if ExistingJobPlanningLine.FindLast() then
             NewJobPlanningLine."Line No." := ExistingJobPlanningLine."Line No."
         else
@@ -3210,7 +3210,7 @@ table 50201 "Contrato Planning Line"
 
     local procedure InitLocation()
     begin
-        if JobTask.Get(Rec."Job No.", Rec."Job Task No.") and (JobTask."Location Code" <> '') then
+        if JobTask.Get(Rec."Contrato No.", Rec."Contrato Task No.") and (JobTask."Location Code" <> '') then
             Validate("Location Code", JobTask."Location Code");
     end;
 
@@ -3254,17 +3254,17 @@ table 50201 "Contrato Planning Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCopyFromItem(var JobPlanningLine: Record "Contrato Planning Line"; Job: Record Contrato; Item: Record Item)
+    local procedure OnAfterCopyFromItem(var JobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; Item: Record Item)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCopyFromGLAccount(var JobPlanningLine: Record "Contrato Planning Line"; Job: Record Contrato; GLAccount: Record "G/L Account")
+    local procedure OnAfterCopyFromGLAccount(var JobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; GLAccount: Record "G/L Account")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCopyFieldsFromJob(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; Job: Record Contrato)
+    local procedure OnAfterCopyFieldsFromJob(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato)
     begin
     end;
 
@@ -3274,12 +3274,12 @@ table 50201 "Contrato Planning Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterConvertToJobLineType(var JobPlanningLine: Record "Contrato Planning Line"; var JobLineType: Enum "Job Line Type")
+    local procedure OnAfterConvertToJobLineType(var JobPlanningLine: Record "Contrato Planning Line"; var JobLineType: Enum "Contrato Line Type")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterConvertFromJobLineType(var JobPlanningLine: Record "Contrato Planning Line"; var JobLineType: Enum "Job Line Type"; var JobPlanningLineLineType: Enum "Job Planning Line Line Type")
+    local procedure OnAfterConvertFromJobLineType(var JobPlanningLine: Record "Contrato Planning Line"; var JobLineType: Enum "Contrato Line Type"; var JobPlanningLineLineType: Enum ContratoPlanningLineLineType)
     begin
     end;
 
@@ -3299,7 +3299,7 @@ table 50201 "Contrato Planning Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterGetJob(var JobPlanningLine: Record "Contrato Planning Line"; var Job: Record Contrato)
+    local procedure OnAfterGetJob(var JobPlanningLine: Record "Contrato Planning Line"; var Contrato: Record Contrato)
     begin
     end;
 
@@ -3426,7 +3426,7 @@ table 50201 "Contrato Planning Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInitJobPlanningLine(var JobPlanningLine: Record "Contrato Planning Line"; Job: Record Contrato; var IsHandled: Boolean)
+    local procedure OnBeforeInitJobPlanningLine(var JobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
@@ -3516,7 +3516,7 @@ table 50201 "Contrato Planning Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnControlUsageLinkOnAfterGetJob(var JobPlanningLine: Record "Contrato Planning Line"; Job: Record Contrato; CallingFieldNo: Integer; var IsHandling: Boolean)
+    local procedure OnControlUsageLinkOnAfterGetJob(var JobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; CallingFieldNo: Integer; var IsHandling: Boolean)
     begin
     end;
 
@@ -3531,7 +3531,7 @@ table 50201 "Contrato Planning Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnValidateNoOnAfterCopyFromAccount(var JobPlanningLine: Record "Contrato Planning Line"; var xJobPlanningLine: Record "Contrato Planning Line"; var Job: Record Contrato)
+    local procedure OnValidateNoOnAfterCopyFromAccount(var JobPlanningLine: Record "Contrato Planning Line"; var xJobPlanningLine: Record "Contrato Planning Line"; var Contrato: Record Contrato)
     begin
     end;
 
@@ -3556,7 +3556,7 @@ table 50201 "Contrato Planning Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnControlUsageLinkOnAfterSetFilterJobUsageLink(var JobPlanningLine: Record "Contrato Planning Line"; var JobUsageLink: Record "Contrato Usage Link"; Job: Record Contrato; CallingFieldNo: Integer; var IsHandling: Boolean)
+    local procedure OnControlUsageLinkOnAfterSetFilterJobUsageLink(var JobPlanningLine: Record "Contrato Planning Line"; var JobUsageLink: Record "Contrato Usage Link"; Contrato: Record Contrato; CallingFieldNo: Integer; var IsHandling: Boolean)
     begin
     end;
 
@@ -3603,12 +3603,12 @@ table 50201 "Contrato Planning Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterControlUsageLink(var JobPlanningLine: Record "Contrato Planning Line"; Job: Record Contrato; CurrFieldNo: Integer)
+    local procedure OnAfterControlUsageLink(var JobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; CurrFieldNo: Integer)
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeCopyFromGLAccount(var JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean; Job: Record Contrato)
+    local procedure OnBeforeCopyFromGLAccount(var JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean; Contrato: Record Contrato)
     begin
     end;
 
@@ -3628,7 +3628,7 @@ table 50201 "Contrato Planning Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCopyFromResource(var JobPlanningLine: Record "Contrato Planning Line"; Job: Record Contrato; Resource: Record Resource)
+    local procedure OnAfterCopyFromResource(var JobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; Resource: Record Resource)
     begin
     end;
 

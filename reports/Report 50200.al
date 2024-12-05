@@ -45,7 +45,7 @@ report 50200 "Contr Trans To Planning Lines"
     var
         JobLedgEntry: Record "Contrato Ledger Entry";
         JobCalcBatches: Codeunit "Contrato Calculate Batches";
-        LineType: Enum "Job Planning Line Line Type";
+        LineType: Enum ContratoPlanningLineLineType;
 
     procedure GetJobLedgEntry(var JobLedgEntry2: Record "Contrato Ledger Entry")
     begin

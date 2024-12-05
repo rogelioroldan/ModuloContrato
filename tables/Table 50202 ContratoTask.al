@@ -7,56 +7,56 @@ table 50202 "Contrato Task"
 
     fields
     {
-        field(1; "Job No."; Code[20])
+        field(1; "Contrato No."; Code[20])
         {
             Caption = 'Project No.';
             Editable = false;
             NotBlank = true;
             TableRelation = Contrato;
         }
-        field(2; "Job Task No."; Code[20])
+        field(2; "Contrato Task No."; Code[20])
         {
             Caption = 'Contrato Task No.';
             NotBlank = true;
 
             trigger OnValidate()
             var
-                Job: Record Contrato;
+                Contrato: Record Contrato;
                 Customer: Record Customer;
                 IsHandled: Boolean;
             begin
                 IsHandled := false;
-                //OnBeforeValidateJobTaskNo(Rec, xRec, CurrFieldNo, IsHandled);
+                OnBeforeValidateJobTaskNo(Rec, xRec, CurrFieldNo, IsHandled);
                 if IsHandled then
                     exit;
 
-                if "Job Task No." = '' then
+                if "Contrato Task No." = '' then
                     exit;
-                Job.Get("Job No.");
-                Job.TestField("Bill-to Customer No.");
-                Customer.Get(Job."Bill-to Customer No.");
-                "Contrato Posting Group" := Job."Contrato Posting Group";
+                Contrato.Get("Contrato No.");
+                Contrato.TestField("Bill-to Customer No.");
+                Customer.Get(Contrato."Bill-to Customer No.");
+                "Contrato Posting Group" := Contrato."Contrato Posting Group";
             end;
         }
         field(3; Description; Text[100])
         {
             Caption = 'Description';
         }
-        field(4; "Job Task Type"; Enum "Job Task Type")
+        field(4; "Contrato Task Type"; Enum "Contrato Task Type")
         {
-            Caption = 'Job Task Type';
+            Caption = 'Contrato Task Type';
 
             trigger OnValidate()
             begin
-                if (xRec."Job Task Type" = "Job Task Type"::Posting) and
-                   ("Job Task Type" <> "Job Task Type"::Posting)
+                if (xRec."Contrato Task Type" = "Contrato Task Type"::Posting) and
+                   ("Contrato Task Type" <> "Contrato Task Type"::Posting)
                 then begin
                     if JobLedgEntriesExist() or JobPlanningLinesExist() then
-                        Error(CannotChangeAssociatedEntriesErr, FieldCaption("Job Task Type"), TableCaption);
+                        Error(CannotChangeAssociatedEntriesErr, FieldCaption("Contrato Task Type"), TableCaption);
                     ClearCustomerData();
                 end;
 
-                if "Job Task Type" <> "Job Task Type"::Posting then begin
+                if "Contrato Task Type" <> "Contrato Task Type"::Posting then begin
                     "Contrato Posting Group" := '';
                     if "WIP-Total" = "WIP-Total"::Excluded then
                         "WIP-Total" := "WIP-Total"::" ";
@@ -64,7 +64,7 @@ table 50202 "Contrato Task"
 
                 Totaling := '';
 
-                if (xRec."Job Task Type" <> "Job Task Type"::Posting) and ("Job Task Type" = "Job Task Type"::Posting) then
+                if (xRec."Contrato Task Type" <> "Contrato Task Type"::Posting) and ("Contrato Task Type" = "Contrato Task Type"::Posting) then
                     InitCustomer();
             end;
         }
@@ -76,17 +76,17 @@ table 50202 "Contrato Task"
 
             trigger OnValidate()
             var
-                Job: Record Contrato;
+                Contrato: Record Contrato;
             begin
                 case "WIP-Total" of
                     "WIP-Total"::Total:
                         begin
-                            Job.Get("Job No.");
-                            //"WIP Method" := Job."WIP Method";
+                            Contrato.Get("Contrato No.");
+                            "WIP Method" := Contrato."WIP Method";
                         end;
                     "WIP-Total"::Excluded:
                         begin
-                            TestField("Job Task Type", "Job Task Type"::Posting);
+                            TestField("Contrato Task Type", "Contrato Task Type"::Posting);
                             "WIP Method" := ''
                         end;
                     else
@@ -96,7 +96,7 @@ table 50202 "Contrato Task"
         }
         field(7; "Contrato Posting Group"; Code[20])
         {
-            Caption = 'Job Posting Group';
+            Caption = 'Contrato Posting Group';
             TableRelation = "Contrato Posting Group";
 
             trigger OnValidate()
@@ -104,18 +104,18 @@ table 50202 "Contrato Task"
                 IsHandled: Boolean;
             begin
                 IsHandled := false;
-                //OnBeforeValidateJobPostingGroup(Rec, xRec, CurrFieldNo, IsHandled);
+                OnBeforeValidateJobPostingGroup(Rec, xRec, CurrFieldNo, IsHandled);
                 if IsHandled then
                     exit;
 
                 if "Contrato Posting Group" <> '' then
-                    TestField("Job Task Type", "Job Task Type"::Posting);
+                    TestField("Contrato Task Type", "Contrato Task Type"::Posting);
             end;
         }
         field(9; "WIP Method"; Code[20])
         {
             Caption = 'WIP Method';
-            TableRelation = "Job WIP Method".Code where(Valid = const(true));
+            TableRelation = "Contrato WIP Method".Code where(Valid = const(true));
 
             trigger OnValidate()
             begin
@@ -127,9 +127,9 @@ table 50202 "Contrato Task"
         {
             AutoFormatType = 1;
             BlankZero = true;
-            CalcFormula = sum("Contrato Planning Line"."Total Cost (LCY)" where("Job No." = field("Job No."),
-                                                                            "Job Task No." = field("Job Task No."),
-                                                                            "Job Task No." = field(filter(Totaling)),
+            CalcFormula = sum("Contrato Planning Line"."Total Cost (LCY)" where("Contrato No." = field("Contrato No."),
+                                                                            "Contrato Task No." = field("Contrato Task No."),
+                                                                            "Contrato Task No." = field(filter(Totaling)),
                                                                             "Schedule Line" = const(true),
                                                                             "Planning Date" = field("Planning Date Filter")));
             Caption = 'Budget (Total Cost)';
@@ -140,9 +140,9 @@ table 50202 "Contrato Task"
         {
             AutoFormatType = 1;
             BlankZero = true;
-            CalcFormula = sum("Contrato Planning Line"."Line Amount (LCY)" where("Job No." = field("Job No."),
-                                                                             "Job Task No." = field("Job Task No."),
-                                                                             "Job Task No." = field(filter(Totaling)),
+            CalcFormula = sum("Contrato Planning Line"."Line Amount (LCY)" where("Contrato No." = field("Contrato No."),
+                                                                             "Contrato Task No." = field("Contrato Task No."),
+                                                                             "Contrato Task No." = field(filter(Totaling)),
                                                                              "Schedule Line" = const(true),
                                                                              "Planning Date" = field("Planning Date Filter")));
             Caption = 'Budget (Total Price)';
@@ -153,9 +153,9 @@ table 50202 "Contrato Task"
         {
             AutoFormatType = 1;
             BlankZero = true;
-            CalcFormula = sum("Contrato Ledger Entry"."Total Cost (LCY)" where("Job No." = field("Job No."),
-                                                                           "Job Task No." = field("Job Task No."),
-                                                                           "Job Task No." = field(filter(Totaling)),
+            CalcFormula = sum("Contrato Ledger Entry"."Total Cost (LCY)" where("Contrato No." = field("Contrato No."),
+                                                                           "Contrato Task No." = field("Contrato Task No."),
+                                                                           "Contrato Task No." = field(filter(Totaling)),
                                                                            "Entry Type" = const(Usage),
                                                                            "Posting Date" = field("Posting Date Filter")));
             Caption = 'Actual (Total Cost)';
@@ -166,9 +166,9 @@ table 50202 "Contrato Task"
         {
             AutoFormatType = 1;
             BlankZero = true;
-            CalcFormula = sum("Contrato Ledger Entry"."Line Amount (LCY)" where("Job No." = field("Job No."),
-                                                                            "Job Task No." = field("Job Task No."),
-                                                                            "Job Task No." = field(filter(Totaling)),
+            CalcFormula = sum("Contrato Ledger Entry"."Line Amount (LCY)" where("Contrato No." = field("Contrato No."),
+                                                                            "Contrato Task No." = field("Contrato Task No."),
+                                                                            "Contrato Task No." = field(filter(Totaling)),
                                                                             "Entry Type" = const(Usage),
                                                                             "Posting Date" = field("Posting Date Filter")));
             Caption = 'Actual (Total Price)';
@@ -179,9 +179,9 @@ table 50202 "Contrato Task"
         {
             AutoFormatType = 1;
             BlankZero = true;
-            CalcFormula = sum("Contrato Planning Line"."Total Cost (LCY)" where("Job No." = field("Job No."),
-                                                                            "Job Task No." = field("Job Task No."),
-                                                                            "Job Task No." = field(filter(Totaling)),
+            CalcFormula = sum("Contrato Planning Line"."Total Cost (LCY)" where("Contrato No." = field("Contrato No."),
+                                                                            "Contrato Task No." = field("Contrato Task No."),
+                                                                            "Contrato Task No." = field(filter(Totaling)),
                                                                             "Contract Line" = const(true),
                                                                             "Planning Date" = field("Planning Date Filter")));
             Caption = 'Billable (Total Cost)';
@@ -192,9 +192,9 @@ table 50202 "Contrato Task"
         {
             AutoFormatType = 1;
             BlankZero = true;
-            CalcFormula = sum("Contrato Planning Line"."Line Amount (LCY)" where("Job No." = field("Job No."),
-                                                                             "Job Task No." = field("Job Task No."),
-                                                                             "Job Task No." = field(filter(Totaling)),
+            CalcFormula = sum("Contrato Planning Line"."Line Amount (LCY)" where("Contrato No." = field("Contrato No."),
+                                                                             "Contrato Task No." = field("Contrato Task No."),
+                                                                             "Contrato Task No." = field(filter(Totaling)),
                                                                              "Contract Line" = const(true),
                                                                              "Planning Date" = field("Planning Date Filter")));
             Caption = 'Billable (Total Price)';
@@ -205,9 +205,9 @@ table 50202 "Contrato Task"
         {
             AutoFormatType = 1;
             BlankZero = true;
-            CalcFormula = - sum("Contrato Ledger Entry"."Line Amount (LCY)" where("Job No." = field("Job No."),
-                                                                             "Job Task No." = field("Job Task No."),
-                                                                             "Job Task No." = field(filter(Totaling)),
+            CalcFormula = - sum("Contrato Ledger Entry"."Line Amount (LCY)" where("Contrato No." = field("Contrato No."),
+                                                                             "Contrato Task No." = field("Contrato Task No."),
+                                                                             "Contrato Task No." = field(filter(Totaling)),
                                                                              "Entry Type" = const(Sale),
                                                                              "Posting Date" = field("Posting Date Filter")));
             Caption = 'Invoiced (Total Price)';
@@ -218,9 +218,9 @@ table 50202 "Contrato Task"
         {
             AutoFormatType = 1;
             BlankZero = true;
-            CalcFormula = - sum("Contrato Ledger Entry"."Total Cost (LCY)" where("Job No." = field("Job No."),
-                                                                            "Job Task No." = field("Job Task No."),
-                                                                            "Job Task No." = field(filter(Totaling)),
+            CalcFormula = - sum("Contrato Ledger Entry"."Total Cost (LCY)" where("Contrato No." = field("Contrato No."),
+                                                                            "Contrato Task No." = field("Contrato Task No."),
+                                                                            "Contrato Task No." = field(filter(Totaling)),
                                                                             "Entry Type" = const(Sale),
                                                                             "Posting Date" = field("Posting Date Filter")));
             Caption = 'Invoiced (Total Cost)';
@@ -240,14 +240,14 @@ table 50202 "Contrato Task"
         field(21; Totaling; Text[250])
         {
             Caption = 'Totaling';
-            TableRelation = "Contrato Task"."Job Task No." where("Job No." = field("Job No."));
+            TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
             ValidateTableRelation = false;
 
             trigger OnValidate()
             begin
                 if Totaling <> '' then
-                    if not ("Job Task Type" in ["Job Task Type"::Total, "Job Task Type"::"End-Total"]) then
-                        FieldError("Job Task Type");
+                    if not ("Contrato Task Type" in ["Contrato Task Type"::Total, "Contrato Task Type"::"End-Total"]) then
+                        FieldError("Contrato Task Type");
                 Validate("WIP-Total");
                 CalcFields(
                   "Schedule (Total Cost)",
@@ -359,8 +359,8 @@ table 50202 "Contrato Task"
         {
             AccessByPermission = TableData "Purch. Rcpt. Header" = R;
             CalcFormula = sum("Purchase Line"."Outstanding Amt. Ex. VAT (LCY)" where("Document Type" = const(Order),
-                                                                                      "Job No." = field("Job No."),
-                                                                                      "Job Task No." = field("Job Task No."),
+                                                                                      "Job No." = field("Contrato No."),
+                                                                                      "Job Task No." = field("Contrato Task No."),
                                                                                       "Job Task No." = field(filter(Totaling))));
             Caption = 'Outstanding Orders';
             FieldClass = FlowField;
@@ -369,8 +369,8 @@ table 50202 "Contrato Task"
         {
             AccessByPermission = TableData "Purch. Rcpt. Header" = R;
             CalcFormula = sum("Purchase Line"."A. Rcd. Not Inv. Ex. VAT (LCY)" where("Document Type" = const(Order),
-                                                                                      "Job No." = field("Job No."),
-                                                                                      "Job Task No." = field("Job Task No."),
+                                                                                      "Job No." = field("Contrato No."),
+                                                                                      "Job Task No." = field("Contrato Task No."),
                                                                                       "Job Task No." = field(filter(Totaling))));
             Caption = 'Amt. Rcd. Not Invoiced';
             FieldClass = FlowField;
@@ -379,9 +379,9 @@ table 50202 "Contrato Task"
         {
             AutoFormatType = 1;
             BlankZero = true;
-            CalcFormula = sum("Contrato Planning Line"."Remaining Total Cost (LCY)" where("Job No." = field("Job No."),
-                                                                                      "Job Task No." = field("Job Task No."),
-                                                                                      "Job Task No." = field(filter(Totaling)),
+            CalcFormula = sum("Contrato Planning Line"."Remaining Total Cost (LCY)" where("Contrato No." = field("Contrato No."),
+                                                                                      "Contrato Task No." = field("Contrato Task No."),
+                                                                                      "Contrato Task No." = field(filter(Totaling)),
                                                                                       "Schedule Line" = const(true),
                                                                                       "Planning Date" = field("Planning Date Filter")));
             Caption = 'Remaining (Total Cost)';
@@ -392,9 +392,9 @@ table 50202 "Contrato Task"
         {
             AutoFormatType = 1;
             BlankZero = true;
-            CalcFormula = sum("Contrato Planning Line"."Remaining Line Amount (LCY)" where("Job No." = field("Job No."),
-                                                                                       "Job Task No." = field("Job Task No."),
-                                                                                       "Job Task No." = field(filter(Totaling)),
+            CalcFormula = sum("Contrato Planning Line"."Remaining Line Amount (LCY)" where("Contrato No." = field("Contrato No."),
+                                                                                       "Contrato Task No." = field("Contrato Task No."),
+                                                                                       "Contrato Task No." = field(filter(Totaling)),
                                                                                        "Schedule Line" = const(true),
                                                                                        "Planning Date" = field("Planning Date Filter")));
             Caption = 'Remaining (Total Price)';
@@ -403,16 +403,16 @@ table 50202 "Contrato Task"
         }
         field(66; "Start Date"; Date)
         {
-            CalcFormula = min("Contrato Planning Line"."Planning Date" where("Job No." = field("Job No."),
-                                                                         "Job Task No." = field("Job Task No.")));
+            CalcFormula = min("Contrato Planning Line"."Planning Date" where("Contrato No." = field("Contrato No."),
+                                                                         "Contrato Task No." = field("Contrato Task No.")));
             Caption = 'Start Date';
             Editable = false;
             FieldClass = FlowField;
         }
         field(67; "End Date"; Date)
         {
-            CalcFormula = max("Contrato Planning Line"."Planning Date" where("Job No." = field("Job No."),
-                                                                         "Job Task No." = field("Job Task No.")));
+            CalcFormula = max("Contrato Planning Line"."Planning Date" where("Contrato No." = field("Contrato No."),
+                                                                         "Contrato Task No." = field("Contrato Task No.")));
             Caption = 'End Date';
             Editable = false;
             FieldClass = FlowField;
@@ -426,7 +426,7 @@ table 50202 "Contrato Task"
             trigger OnValidate()
             begin
                 if "Bill-to Customer No." <> '' then
-                    TestField("Job Task Type", "Job Task Type"::Posting);
+                    TestField("Contrato Task Type", "Contrato Task Type"::Posting);
 
                 //BillToCustomerNoUpdated(Rec, xRec);
             end;
@@ -587,7 +587,7 @@ table 50202 "Contrato Task"
             trigger OnValidate()
             begin
                 if "Sell-to Customer No." <> '' then
-                    TestField("Job Task Type", "Job Task Type"::Posting);
+                    TestField("Contrato Task Type", "Contrato Task Type"::Posting);
 
                 //SellToCustomerNoUpdated(Rec, xRec);
             end;
@@ -826,7 +826,7 @@ table 50202 "Contrato Task"
             trigger OnValidate()
             begin
                 if "External Document No." <> '' then
-                    TestField("Job Task Type", "Job Task Type"::Posting);
+                    TestField("Contrato Task Type", "Contrato Task Type"::Posting);
             end;
         }
         field(131; "Payment Method Code"; Code[10])
@@ -849,7 +849,7 @@ table 50202 "Contrato Task"
             trigger OnValidate()
             begin
                 if "Your Reference" <> '' then
-                    TestField("Job Task Type", "Job Task Type"::Posting);
+                    TestField("Contrato Task Type", "Contrato Task Type"::Posting);
             end;
         }
         field(134; "Price Calculation Method"; Enum "Price Calculation Method")
@@ -891,11 +891,11 @@ table 50202 "Contrato Task"
 
     keys
     {
-        key(Key1; "Job No.", "Job Task No.")
+        key(Key1; "Contrato No.", "Contrato Task No.")
         {
             Clustered = true;
         }
-        key(Key2; "Job Task No.")
+        key(Key2; "Contrato Task No.")
         {
         }
         key(Key3; SystemCreatedAt)
@@ -905,10 +905,10 @@ table 50202 "Contrato Task"
 
     fieldgroups
     {
-        fieldgroup(DropDown; "Job No.", "Job Task No.", Description, "Job Task Type")
+        fieldgroup(DropDown; "Contrato No.", "Contrato Task No.", Description, "Contrato Task Type")
         {
         }
-        fieldgroup(Brick; "Job Task No.", Description)
+        fieldgroup(Brick; "Contrato Task No.", Description)
         {
         }
     }
@@ -916,34 +916,34 @@ table 50202 "Contrato Task"
     trigger OnDelete()
     var
         JobPlanningLine: Record "Contrato Planning Line";
-        JobWIPTotal: Record "Job WIP Total";
+        JobWIPTotal: Record "Contrato WIP Total";
         JobTaskDim: Record "Contrato Task Dimension";
     begin
         if JobLedgEntriesExist() then
             Error(CannotDeleteAssociatedEntriesErr, TableCaption);
 
-        JobPlanningLine.SetCurrentKey("Job No.", "Job Task No.");
-        JobPlanningLine.SetRange("Job No.", "Job No.");
-        JobPlanningLine.SetRange("Job Task No.", "Job Task No.");
+        JobPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
+        JobPlanningLine.SetRange("Contrato No.", "Contrato No.");
+        JobPlanningLine.SetRange("Contrato Task No.", "Contrato Task No.");
         if CalledFromHeader then
             JobPlanningLine.SuspendDeletionCheck(true);
         JobPlanningLine.DeleteAll(true);
 
         //JobWIPTotal.DeleteEntriesForJobTask(Rec);
 
-        JobTaskDim.SetRange("Job No.", "Job No.");
-        JobTaskDim.SetRange("Job Task No.", "Job Task No.");
+        JobTaskDim.SetRange("Contrato No.", "Contrato No.");
+        JobTaskDim.SetRange("Contrato Task No.", "Contrato Task No.");
         if not JobTaskDim.IsEmpty() then
             JobTaskDim.DeleteAll();
 
         CalcFields("Schedule (Total Cost)", "Usage (Total Cost)");
-        Job.UpdateOverBudgetValue("Job No.", true, "Usage (Total Cost)");
-        Job.UpdateOverBudgetValue("Job No.", false, "Schedule (Total Cost)");
+        Contrato.UpdateOverBudgetValue("Contrato No.", true, "Usage (Total Cost)");
+        Contrato.UpdateOverBudgetValue("Contrato No.", false, "Schedule (Total Cost)");
     end;
 
     trigger OnInsert()
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         Customer: Record Customer;
         IsHandled: Boolean;
     begin
@@ -953,20 +953,20 @@ table 50202 "Contrato Task"
             exit;
 
         LockTable();
-        Job.Get("Job No.");
-        // if Job.Blocked = Job.Blocked::All then
-        //     Job.TestBlocked();
-        Job.TestField("Bill-to Customer No.");
-        Customer.Get(Job."Bill-to Customer No.");
+        Contrato.Get("Contrato No.");
+        // if Contrato.Blocked = Contrato.Blocked::All then
+        //     Contrato.TestBlocked();
+        Contrato.TestField("Bill-to Customer No.");
+        Customer.Get(Contrato."Bill-to Customer No.");
 
-        DimMgt.InsertJobTaskDim("Job No.", "Job Task No.", "Global Dimension 1 Code", "Global Dimension 2 Code");
+        DimMgt.InsertJobTaskDim("Contrato No.", "Contrato Task No.", "Global Dimension 1 Code", "Global Dimension 2 Code");
 
         InitCustomer();
-        InitLocation(Job);
+        InitLocation(Contrato);
 
         CalcFields("Schedule (Total Cost)", "Usage (Total Cost)");
-        Job.UpdateOverBudgetValue("Job No.", true, "Usage (Total Cost)");
-        Job.UpdateOverBudgetValue("Job No.", false, "Schedule (Total Cost)");
+        Contrato.UpdateOverBudgetValue("Contrato No.", true, "Usage (Total Cost)");
+        Contrato.UpdateOverBudgetValue("Contrato No.", false, "Schedule (Total Cost)");
 
         OnAfterOnInsert(Rec, xRec);
     end;
@@ -981,12 +981,12 @@ table 50202 "Contrato Task"
             exit;
 
         CalcFields("Schedule (Total Cost)", "Usage (Total Cost)");
-        Job.UpdateOverBudgetValue("Job No.", true, "Usage (Total Cost)");
-        Job.UpdateOverBudgetValue("Job No.", false, "Schedule (Total Cost)");
+        Contrato.UpdateOverBudgetValue("Contrato No.", true, "Usage (Total Cost)");
+        Contrato.UpdateOverBudgetValue("Contrato No.", false, "Schedule (Total Cost)");
     end;
 
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         Location: Record Location;
         PostCode: Record "Post Code";
         Cust: Record Customer;
@@ -1012,11 +1012,11 @@ table 50202 "Contrato Task"
 
     procedure CalcEACTotalCost(): Decimal
     begin
-        if "Job No." <> Job."No." then
-            if not Job.Get("Job No.") then
+        if "Contrato No." <> Contrato."No." then
+            if not Contrato.Get("Contrato No.") then
                 exit(0);
 
-        if Job."Apply Usage Link" then
+        if Contrato."Apply Usage Link" then
             exit("Usage (Total Cost)" + "Remaining (Total Cost)");
 
         exit(0);
@@ -1024,11 +1024,11 @@ table 50202 "Contrato Task"
 
     procedure CalcEACTotalPrice(): Decimal
     begin
-        if "Job No." <> Job."No." then
-            if not Job.Get("Job No.") then
+        if "Contrato No." <> Contrato."No." then
+            if not Contrato.Get("Contrato No.") then
                 exit(0);
 
-        if Job."Apply Usage Link" then
+        if Contrato."Apply Usage Link" then
             exit("Usage (Total Price)" + "Remaining (Total Price)");
 
         exit(0);
@@ -1038,9 +1038,9 @@ table 50202 "Contrato Task"
     var
         JobLedgEntry: Record "Contrato Ledger Entry";
     begin
-        JobLedgEntry.SetCurrentKey("Job No.", "Job Task No.");
-        JobLedgEntry.SetRange("Job No.", "Job No.");
-        JobLedgEntry.SetRange("Job Task No.", "Job Task No.");
+        JobLedgEntry.SetCurrentKey("Contrato No.", "Contrato Task No.");
+        JobLedgEntry.SetRange("Contrato No.", "Contrato No.");
+        JobLedgEntry.SetRange("Contrato Task No.", "Contrato Task No.");
         //OnJobLedgEntriesExistOnAfterSetFilter(Rec, JobLedgEntry);
         exit(JobLedgEntry.FindFirst());
     end;
@@ -1049,15 +1049,15 @@ table 50202 "Contrato Task"
     var
         JobPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.SetCurrentKey("Job No.", "Job Task No.");
-        JobPlanningLine.SetRange("Job No.", "Job No.");
-        JobPlanningLine.SetRange("Job Task No.", "Job Task No.");
+        JobPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
+        JobPlanningLine.SetRange("Contrato No.", "Contrato No.");
+        JobPlanningLine.SetRange("Contrato Task No.", "Contrato Task No.");
         exit(JobPlanningLine.FindFirst());
     end;
 
     procedure Caption(): Text
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         Result: Text;
         IsHandled: Boolean;
     begin
@@ -1067,21 +1067,21 @@ table 50202 "Contrato Task"
         if IsHandled then
             exit(Result);
 
-        if not Job.Get("Job No.") then
+        if not Contrato.Get("Contrato No.") then
             exit('');
         exit(StrSubstNo('%1 %2 %3 %4',
-            Job."No.",
-            Job.Description,
-            "Job Task No.",
+            Contrato."No.",
+            Contrato.Description,
+            "Contrato Task No.",
             Description));
     end;
 
     procedure InitWIPFields()
     var
-        JobWIPTotal: Record "Job WIP Total";
+        JobWIPTotal: Record "Contrato WIP Total";
     begin
-        JobWIPTotal.SetRange("Job No.", "Job No.");
-        JobWIPTotal.SetRange("Job Task No.", "Job Task No.");
+        JobWIPTotal.SetRange("Contrato No.", "Contrato No.");
+        JobWIPTotal.SetRange("Contrato Task No.", "Contrato Task No.");
         JobWIPTotal.SetRange("Posted to G/L", false);
         JobWIPTotal.DeleteAll(true);
 
@@ -1096,9 +1096,9 @@ table 50202 "Contrato Task"
     begin
         PriceSource.Init();
         PriceSource."Price Type" := PriceType;
-        PriceSource.Validate("Source Type", PriceSource."Source Type"::"Job Task");
-        PriceSource.Validate("Parent Source No.", "Job No.");
-        PriceSource.Validate("Source No.", "Job Task No.");
+        PriceSource.Validate("Source Type", PriceSource."Source Type"::"Contrato Task");
+        PriceSource.Validate("Parent Source No.", "Contrato No.");
+        PriceSource.Validate("Source No.", "Contrato Task No.");
     end;
 
     procedure ValidateShortcutDimCode(FieldNumber: Integer; var ShortcutDimCode: Code[20])
@@ -1107,17 +1107,17 @@ table 50202 "Contrato Task"
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        //OnBeforeValidateShortcutDimCode(Rec, xRec, FieldNumber, ShortcutDimCode, JobTask2, IsHandled);
+        OnBeforeValidateShortcutDimCode(Rec, xRec, FieldNumber, ShortcutDimCode, JobTask2, IsHandled);
         if not IsHandled then begin
             DimMgt.ValidateDimValueCode(FieldNumber, ShortcutDimCode);
-            if JobTask2.Get("Job No.", "Job Task No.") then begin
-                DimMgt.SaveJobTaskDim("Job No.", "Job Task No.", FieldNumber, ShortcutDimCode);
+            if JobTask2.Get("Contrato No.", "Contrato Task No.") then begin
+                DimMgt.SaveJobTaskDim("Contrato No.", "Contrato Task No.", FieldNumber, ShortcutDimCode);
                 Modify();
             end else
                 DimMgt.SaveJobTaskTempDim(FieldNumber, ShortcutDimCode);
         end;
 
-        //OnAfterValidateShortcutDimCode(Rec, xRec, FieldNumber, ShortcutDimCode);
+        OnAfterValidateShortcutDimCode(Rec, xRec, FieldNumber, ShortcutDimCode);
     end;
 
     procedure ClearTempDim()
@@ -1130,11 +1130,11 @@ table 50202 "Contrato Task"
         PurchLine.SetCurrentKey("Document Type", "Job No.", "Job Task No.");
         PurchLine.SetRange("Document Type", PurchLine."Document Type"::Order);
         PurchLine.SetRange("Job No.", JobNo);
-        if "Job Task Type" in ["Job Task Type"::Total, "Job Task Type"::"End-Total"] then
+        if "Contrato Task Type" in ["Contrato Task Type"::Total, "Contrato Task Type"::"End-Total"] then
             PurchLine.SetFilter("Job Task No.", Totaling)
         else
             PurchLine.SetRange("Job Task No.", JobTaskNo);
-        //OnAfterApplyPurchaseLineFilters(Rec, PurchLine);
+        OnAfterApplyPurchaseLineFilters(Rec, PurchLine);
     end;
 
     local procedure SetDefaultBin()
@@ -1173,8 +1173,8 @@ table 50202 "Contrato Task"
     var
         JobPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.SetRange("Job No.", "Job No.");
-        JobPlanningLine.SetRange("Job Task No.", "Job Task No.");
+        JobPlanningLine.SetRange("Contrato No.", "Contrato No.");
+        JobPlanningLine.SetRange("Contrato Task No.", "Contrato Task No.");
         JobPlanningLine.SetRange(Type, JobPlanningLine.Type::Item);
         exit(not JobPlanningLine.IsEmpty());
     end;
@@ -1183,9 +1183,9 @@ table 50202 "Contrato Task"
     var
         JobLedgEntry: Record "Contrato Ledger Entry";
     begin
-        JobLedgEntry.SetCurrentKey("Job No.", "Job Task No.", "Entry Type", "Posting Date");
-        JobLedgEntry.SetRange("Job No.", "Job No.");
-        JobLedgEntry.SetRange("Job Task No.", "Job Task No.");
+        JobLedgEntry.SetCurrentKey("Contrato No.", "Contrato Task No.", "Entry Type", "Posting Date");
+        JobLedgEntry.SetRange("Contrato No.", "Contrato No.");
+        JobLedgEntry.SetRange("Contrato Task No.", "Contrato Task No.");
         JobLedgEntry.SetRange("Entry Type", JobLedgEntry."Entry Type"::Sale);
         Result := not JobLedgEntry.IsEmpty();
     end;
@@ -1194,44 +1194,44 @@ table 50202 "Contrato Task"
     var
         SalesLine: Record "Sales Line";
     begin
-        if "Job No." = '' then
+        if "Contrato No." = '' then
             exit(false);
 
         SalesLine.SetCurrentKey("Job No.");
-        SalesLine.SetRange("Job No.", "Job No.");
+        SalesLine.SetRange("Job No.", "Contrato No.");
         Result := not SalesLine.IsEmpty();
     end;
 
-    local procedure InitLocation(Job: Record Contrato)
+    local procedure InitLocation(Contrato: Record Contrato)
     begin
-        "Location Code" := Job."Location Code";
-        "Bin Code" := Job."Bin Code";
+        "Location Code" := Contrato."Location Code";
+        "Bin Code" := Contrato."Bin Code";
     end;
 
     local procedure InitCustomer()
     begin
-        if not Job.Get("Job No.") then
+        if not Contrato.Get("Contrato No.") then
             exit;
 
-        if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then
+        if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then
             exit;
 
-        if "Job Task Type" <> "Job Task Type"::Posting then
+        if "Contrato Task Type" <> "Contrato Task Type"::Posting then
             exit;
 
         SetHideValidationDialog(true);
-        if Job."Sell-to Customer No." <> '' then
-            Validate("Sell-to Customer No.", Job."Sell-to Customer No.");
+        if Contrato."Sell-to Customer No." <> '' then
+            Validate("Sell-to Customer No.", Contrato."Sell-to Customer No.");
 
-        if (Job."Sell-to Customer No." <> Job."Bill-to Customer No.") and (Job."Bill-to Customer No." <> '') then
-            Validate("Bill-to Customer No.", Job."Bill-to Customer No.");
+        if (Contrato."Sell-to Customer No." <> Contrato."Bill-to Customer No.") and (Contrato."Bill-to Customer No." <> '') then
+            Validate("Bill-to Customer No.", Contrato."Bill-to Customer No.");
     end;
 
     local procedure ClearCustomerData()
     begin
-        if not Job.Get("Job No.") then
+        if not Contrato.Get("Contrato No.") then
             exit;
-        if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then
+        if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then
             exit;
 
         SetHideValidationDialog(true);
@@ -1272,9 +1272,9 @@ table 50202 "Contrato Task"
             JobTask."Payment Method Code" := BillToCustomer."Payment Method Code";
             JobTask."Payment Terms Code" := BillToCustomer."Payment Terms Code";
 
-            Job.Get("Job No.");
-            if Job."Bill-to Customer No." = BillToCustomer."No." then
-                "Invoice Currency Code" := Job."Invoice Currency Code"
+            Contrato.Get("Contrato No.");
+            if Contrato."Bill-to Customer No." = BillToCustomer."No." then
+                "Invoice Currency Code" := Contrato."Invoice Currency Code"
             else
                 "Invoice Currency Code" := BillToCustomer."Currency Code";
 
@@ -1308,8 +1308,8 @@ table 50202 "Contrato Task"
         ConfirmResult: Boolean;
         IsHandled: Boolean;
     begin
-        JobPlanningLine.SetRange("Job No.", JobTask."Job No.");
-        JobPlanningLine.SetRange("Job Task No.", JobTask."Job Task No.");
+        JobPlanningLine.SetRange("Contrato No.", JobTask."Contrato No.");
+        JobPlanningLine.SetRange("Contrato Task No.", JobTask."Contrato Task No.");
         JobPlanningLine.SetFilter(Type, '<>%1', JobPlanningLine.Type::Text);
         JobPlanningLine.SetFilter("No.", '<>%1', '');
         if JobPlanningLine.IsEmpty() then
@@ -1337,8 +1337,8 @@ table 50202 "Contrato Task"
         CustDefaultDimension: Record "Default Dimension";
         TempJobDefaultDimension: Record "Default Dimension" temporary;
     begin
-        JobTaskDim.SetRange("Job No.", "Job No.");
-        JobTaskDim.SetRange("Job Task No.", "Job Task No.");
+        JobTaskDim.SetRange("Contrato No.", "Contrato No.");
+        JobTaskDim.SetRange("Contrato Task No.", "Contrato Task No.");
         if not JobTaskDim.IsEmpty() then
             JobTaskDim.DeleteAll();
 
@@ -1349,11 +1349,11 @@ table 50202 "Contrato Task"
                 TempJobDefaultDimension.Init();
                 TempJobDefaultDimension.TransferFields(CustDefaultDimension);
                 TempJobDefaultDimension."Table ID" := Database::"Contrato Task";
-                TempJobDefaultDimension."No." := "Job Task No.";
+                TempJobDefaultDimension."No." := "Contrato Task No.";
                 TempJobDefaultDimension.Insert();
             until CustDefaultDimension.Next() = 0;
 
-        DimMgt.InsertJobTaskDim(TempJobDefaultDimension, "Job No.", "Job Task No.", "Global Dimension 1 Code", "Global Dimension 2 Code");
+        DimMgt.InsertJobTaskDim(TempJobDefaultDimension, "Contrato No.", "Contrato Task No.", "Global Dimension 1 Code", "Global Dimension 2 Code");
     end;
 
     procedure ShouldSearchForCustomerByName(CustomerNo: Code[20]): Boolean
@@ -1693,9 +1693,9 @@ table 50202 "Contrato Task"
     var
         JobLedgEntry: Record "Contrato Ledger Entry";
     begin
-        JobLedgEntry.SetCurrentKey("Job No.");
-        JobLedgEntry.SetRange("Job No.", "Job No.");
-        JobLedgEntry.SetRange("Job Task No.", "Job Task No.");
+        JobLedgEntry.SetCurrentKey("Contrato No.");
+        JobLedgEntry.SetRange("Contrato No.", "Contrato No.");
+        JobLedgEntry.SetRange("Contrato Task No.", "Contrato Task No.");
         Result := not JobLedgEntry.IsEmpty();
     end;
 
@@ -1704,8 +1704,8 @@ table 50202 "Contrato Task"
         JobPlanningLine: Record "Contrato Planning Line";
     begin
         JobPlanningLine.Init();
-        JobPlanningLine.SetRange("Job No.", "Job No.");
-        JobPlanningLine.SetRange("Job Task No.", "Job Task No.");
+        JobPlanningLine.SetRange("Contrato No.", "Contrato No.");
+        JobPlanningLine.SetRange("Contrato Task No.", "Contrato Task No.");
         Result := not JobPlanningLine.IsEmpty();
     end;
 
@@ -1715,8 +1715,8 @@ table 50202 "Contrato Task"
         ReportDistributionMgt: Codeunit "Report Distribution Management";
     begin
         DocumentSendingProfile.Send(
-          ReportSelections.Usage::"Job Task Quote".AsInteger(), Rec, "Job Task No.", "Bill-to Customer No.",
-          ReportDistributionMgt.GetFullDocumentTypeText(Rec), FieldNo("Bill-to Customer No."), FieldNo("Job Task No."));
+          ReportSelections.Usage::"Job Task Quote".AsInteger(), Rec, "Contrato Task No.", "Bill-to Customer No.",
+          ReportDistributionMgt.GetFullDocumentTypeText(Rec), FieldNo("Bill-to Customer No."), FieldNo("Contrato Task No."));
     end;
 
     procedure SetHideValidationDialog(NewHideValidationDialog: Boolean)

@@ -375,7 +375,7 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
         QtyRemainingToBePicked: Decimal;
     begin
         if IsWhsePickRequiredForJobJnlLine(NewJobJnlLine) and (NewJobJnlLine.Quantity > 0) then
-            if JobPlanningLine.Get(NewJobJnlLine."Job No.", NewJobJnlLine."Job Task No.", NewJobJnlLine."Job Planning Line No.") and (NewJobJnlLine.Quantity >= 0) then begin
+            if JobPlanningLine.Get(NewJobJnlLine."Contrato No.", NewJobJnlLine."Contrato Task No.", NewJobJnlLine."Contrato Planning Line No.") and (NewJobJnlLine.Quantity >= 0) then begin
                 QtyRemainingToBePicked := NewJobJnlLine.Quantity + JobPlanningLine."Qty. Posted" - JobPlanningLine."Qty. Picked" - JobPlanningLine."Qty. to Assemble";
                 CheckQtyRemainingToBePickedForJob(NewJobJnlLine, QtyRemainingToBePicked);
             end;
@@ -398,10 +398,10 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     begin
         if (JobJournalLine."Line Type" in [JobJournalLine."Line Type"::Budget, JobJournalLine."Line Type"::"Both Budget and Billable"]) and (JobJournalLine.Type = JobJournalLine.Type::Item) then
             if RequireInventoryPicking(JobJournalLine) then begin
-                if JobJournalLine."Job Planning Line No." <> 0 then
-                    WarehouseActivityLine.SetRange("Source Subline No.", JobJournalLine."Job Planning Line No.");
+                if JobJournalLine."Contrato Planning Line No." <> 0 then
+                    WarehouseActivityLine.SetRange("Source Subline No.", JobJournalLine."Contrato Planning Line No.");
                 WarehouseActivityLine.SetRange("Source Type", Database::Contrato);
-                WarehouseActivityLine.SetRange("Source No.", JobJournalLine."Job No.");
+                WarehouseActivityLine.SetRange("Source No.", JobJournalLine."Contrato No.");
                 exit(not WarehouseActivityLine.IsEmpty());
             end;
     end;
@@ -462,7 +462,7 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
             exit;
 
         if QtyRemainingToBePicked > 0 then
-            Error(JobPostQtyPickRemainErr, NewJobJnlLine."Job No.", QtyRemainingToBePicked);
+            Error(JobPostQtyPickRemainErr, NewJobJnlLine."Contrato No.", QtyRemainingToBePicked);
     end;
 
     local procedure CheckQtyRemainingToBePicked(QtyRemainingToBePicked: Decimal; OrderNo: Code[20])

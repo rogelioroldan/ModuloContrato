@@ -1,6 +1,6 @@
 table 50203 "Contrato Ledger Entry"
 {
-    Caption = 'Job Ledger Entry';
+    Caption = 'Contrato Ledger Entry';
     DrillDownPageID = "Contrato Ledger Entries";
     LookupPageID = "Contrato Ledger Entries";
     DataClassification = CustomerContent;
@@ -11,7 +11,7 @@ table 50203 "Contrato Ledger Entry"
         {
             Caption = 'Entry No.';
         }
-        field(2; "Job No."; Code[20])
+        field(2; "Contrato No."; Code[20])
         {
             Caption = 'Project No.';
             TableRelation = Contrato;
@@ -24,7 +24,7 @@ table 50203 "Contrato Ledger Entry"
         {
             Caption = 'Document No.';
         }
-        field(5; Type; Enum "Job Journal Line Type")
+        field(5; Type; Enum "Contrato Journal Line Type")
         {
             Caption = 'Type';
         }
@@ -147,7 +147,7 @@ table 50203 "Contrato Ledger Entry"
             AutoFormatType = 1;
             Caption = 'Amt. Posted to G/L';
         }
-        field(64; "Entry Type"; Enum "Job Journal Line Entry Type")
+        field(64; "Entry Type"; Enum ContratoJournalLineEntryType)
         {
             Caption = 'Entry Type';
         }
@@ -293,10 +293,10 @@ table 50203 "Contrato Ledger Entry"
             CalcFormula = lookup("Dimension Set Entry"."Dimension Value Code" where("Dimension Set ID" = field("Dimension Set ID"),
                                                                                     "Global Dimension No." = const(8)));
         }
-        field(1000; "Job Task No."; Code[20])
+        field(1000; "Contrato Task No."; Code[20])
         {
             Caption = 'Project Task No.';
-            TableRelation = "Contrato Task"."Job Task No." where("Job No." = field("Job No."));
+            TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
         }
         field(1001; "Line Amount (LCY)"; Decimal)
         {
@@ -359,7 +359,7 @@ table 50203 "Contrato Ledger Entry"
         {
             Caption = 'Description 2';
         }
-        field(1017; "Ledger Entry Type"; Enum "Job Ledger Entry Type")
+        field(1017; "Ledger Entry Type"; Enum "Contrato Ledger Entry Type")
         {
             Caption = 'Ledger Entry Type';
         }
@@ -386,7 +386,7 @@ table 50203 "Contrato Ledger Entry"
             Caption = 'Line Discount %';
             DecimalPlaces = 0 : 5;
         }
-        field(1022; "Line Type"; Enum "Job Line Type")
+        field(1022; "Line Type"; Enum "Contrato Line Type")
         {
             Caption = 'Line Type';
         }
@@ -469,14 +469,14 @@ table 50203 "Contrato Ledger Entry"
         {
             Clustered = true;
         }
-        key(Key2; "Job No.", "Job Task No.", "Entry Type", "Posting Date")
+        key(Key2; "Contrato No.", "Contrato Task No.", "Entry Type", "Posting Date")
         {
             SumIndexFields = "Total Cost (LCY)", "Line Amount (LCY)", "Total Cost", "Line Amount";
         }
         key(Key3; "Document No.", "Posting Date")
         {
         }
-        key(Key4; "Job No.", "Posting Date")
+        key(Key4; "Contrato No.", "Posting Date")
         {
         }
         key(Key5; "Entry Type", Type, "No.", "Posting Date")
@@ -485,13 +485,13 @@ table 50203 "Contrato Ledger Entry"
         key(Key6; "Service Order No.", "Posting Date")
         {
         }
-        key(Key7; "Job No.", "Entry Type", Type, "No.")
+        key(Key7; "Contrato No.", "Entry Type", Type, "No.")
         {
         }
         key(Key8; Type, "Entry Type", "Country/Region Code", "Source Code", "Posting Date")
         {
         }
-        key(Key9; "Job No.", "Entry Type", Type, "Posting Date")
+        key(Key9; "Contrato No.", "Entry Type", Type, "Posting Date")
         {
             MaintainSQLIndex = false;
             SumIndexFields = "Total Cost (LCY)", "Line Amount (LCY)", "Total Cost", "Line Amount";
@@ -506,28 +506,28 @@ table 50203 "Contrato Ledger Entry"
 
     fieldgroups
     {
-        fieldgroup(DropDown; "Entry No.", "Job No.", "Posting Date", "Document No.")
+        fieldgroup(DropDown; "Entry No.", "Contrato No.", "Posting Date", "Document No.")
         {
         }
     }
 
     trigger OnDelete()
     begin
-        Job.UpdateOverBudgetValue("Job No.", true, "Total Cost (LCY)");
+        Contrato.UpdateOverBudgetValue("Contrato No.", true, "Total Cost (LCY)");
     end;
 
     trigger OnInsert()
     begin
-        Job.UpdateOverBudgetValue("Job No.", true, "Total Cost (LCY)");
+        Contrato.UpdateOverBudgetValue("Contrato No.", true, "Total Cost (LCY)");
     end;
 
     trigger OnModify()
     begin
-        Job.UpdateOverBudgetValue("Job No.", true, "Total Cost (LCY)");
+        Contrato.UpdateOverBudgetValue("Contrato No.", true, "Total Cost (LCY)");
     end;
 
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         DimMgt: Codeunit DimensionManagement;
 
     procedure GetLastEntryNo(): Integer;

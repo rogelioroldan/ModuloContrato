@@ -178,7 +178,7 @@ codeunit 50218 "Contrato Planning Line - Price" implements "Line With Price"
         JobTask: Record "Contrato Task";
         SourceType: Enum "Price Source Type";
     begin
-        Contrato.Get(JobPlanningLine."Job No.");
+        Contrato.Get(JobPlanningLine."Contrato No.");
         PriceSourceList.Init();
         case CurrPriceType of
             CurrPriceType::Sale:
@@ -188,7 +188,7 @@ codeunit 50218 "Contrato Planning Line - Price" implements "Line With Price"
                         PriceSourceList.Add(SourceType::Customer, Contrato."Bill-to Customer No.");
                         PriceSourceList.Add(SourceType::Contact, Contrato."Bill-to Contact No.");
                     end else begin
-                        JobTask.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+                        JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
                         PriceSourceList.Add(SourceType::Customer, JobTask."Bill-to Customer No.");
                         PriceSourceList.Add(SourceType::Contact, JobTask."Bill-to Contact No.");
                     end;
@@ -198,7 +198,7 @@ codeunit 50218 "Contrato Planning Line - Price" implements "Line With Price"
             CurrPriceType::Purchase:
                 PriceSourceList.Add(SourceType::"All Vendors");
         end;
-        PriceSourceList.AddJobAsSources(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+        PriceSourceList.AddJobAsSources(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
 
         OnAfterAddSources(JobPlanningLine, CurrPriceType, PriceSourceList, Contrato)
     end;

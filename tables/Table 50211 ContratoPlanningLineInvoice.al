@@ -7,26 +7,26 @@ table 50211 "Contrato Planning Line Invoice"
 
     fields
     {
-        field(1; "Job No."; Code[20])
+        field(1; "Contrato No."; Code[20])
         {
             Caption = 'Project No.';
             Editable = false;
             TableRelation = Contrato;
         }
-        field(2; "Job Task No."; Code[20])
+        field(2; "Contrato Task No."; Code[20])
         {
             Caption = 'Project Task No.';
             Editable = false;
-            TableRelation = "Contrato Task"."Job Task No." where("Job No." = field("Job No."));
+            TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
         }
-        field(3; "Job Planning Line No."; Integer)
+        field(3; "Contrato Planning Line No."; Integer)
         {
             Caption = 'Project Planning Line No.';
             Editable = false;
-            TableRelation = "Contrato Planning Line"."Line No." where("Job No." = field("Job No."),
-                                                                  "Job Task No." = field("Job Task No."));
+            TableRelation = "Contrato Planning Line"."Line No." where("Contrato No." = field("Contrato No."),
+                                                                  "Contrato Task No." = field("Contrato Task No."));
         }
-        field(4; "Document Type"; Enum "Job Planning Line Invoice Document Type")
+        field(4; "Document Type"; Enum ContratoPlanningLineInvoiceDT)
         {
             Caption = 'Document Type';
             Editable = false;
@@ -65,7 +65,7 @@ table 50211 "Contrato Planning Line Invoice"
             Caption = 'Invoiced Cost Amount (LCY)';
             Editable = false;
         }
-        field(12; "Job Ledger Entry No."; Integer)
+        field(12; "Contrato Ledger Entry No."; Integer)
         {
             BlankZero = true;
             Caption = 'Project Ledger Entry No.';
@@ -76,14 +76,14 @@ table 50211 "Contrato Planning Line Invoice"
 
     keys
     {
-        key(Key1; "Job No.", "Job Task No.", "Job Planning Line No.", "Document Type", "Document No.", "Line No.")
+        key(Key1; "Contrato No.", "Contrato Task No.", "Contrato Planning Line No.", "Document Type", "Document No.", "Line No.")
         {
             Clustered = true;
         }
-        key(Key2; "Document Type", "Document No.", "Job Ledger Entry No.")
+        key(Key2; "Document Type", "Document No.", "Contrato Ledger Entry No.")
         {
         }
-        key(Key3; "Job No.", "Job Planning Line No.", "Job Task No.", "Document Type")
+        key(Key3; "Contrato No.", "Contrato Planning Line No.", "Contrato Task No.", "Document Type")
         {
             MaintainSqlIndex = false;
             SumIndexFields = "Quantity Transferred", "Invoiced Amount (LCY)", "Invoiced Cost Amount (LCY)";
@@ -96,9 +96,9 @@ table 50211 "Contrato Planning Line Invoice"
 
     procedure InitFromJobPlanningLine(JobPlanningLine: Record "Contrato Planning Line")
     begin
-        "Job No." := JobPlanningLine."Job No.";
-        "Job Task No." := JobPlanningLine."Job Task No.";
-        "Job Planning Line No." := JobPlanningLine."Line No.";
+        "Contrato No." := JobPlanningLine."Contrato No.";
+        "Contrato Task No." := JobPlanningLine."Contrato Task No.";
+        "Contrato Planning Line No." := JobPlanningLine."Line No.";
         "Quantity Transferred" := JobPlanningLine."Qty. to Transfer to Invoice";
 
         OnAfterInitFromJobPlanningLine(Rec, JobPlanningLine);

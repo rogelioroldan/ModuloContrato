@@ -1,4 +1,4 @@
-enum 50202 "Contrato Blocked"
+enum 50210 "Contrato Blocked"
 {
     Extensible = true;
     AssignmentCompatibility = true;

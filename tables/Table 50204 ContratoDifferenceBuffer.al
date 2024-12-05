@@ -6,7 +6,7 @@ table 50204 "Contrato Difference Buffer"
 
     fields
     {
-        field(1; "Job No."; Code[20])
+        field(1; "Contrato No."; Code[20])
         {
             Caption = 'Contrato No.';
             DataClassification = SystemMetadata;
@@ -92,7 +92,7 @@ table 50204 "Contrato Difference Buffer"
 
     keys
     {
-        key(Key1; "Job No.", "Job Task No.", Type, "Entry type", "No.", "Location Code", "Variant Code", "Unit of Measure code", "Work Type Code")
+        key(Key1; "Contrato No.", "Job Task No.", Type, "Entry type", "No.", "Location Code", "Variant Code", "Unit of Measure code", "Work Type Code")
         {
             Clustered = true;
         }

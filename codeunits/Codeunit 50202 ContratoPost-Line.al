@@ -29,10 +29,10 @@ codeunit 50202 "Contrato Post-Line"
             if JobLedgEntry."Line Type" = JobLedgEntry."Line Type"::" " then
                 exit;
             ClearAll();
-            JobPlanningLine."Job No." := JobLedgEntry."Job No.";
-            JobPlanningLine."Job Task No." := JobLedgEntry."Job Task No.";
-            JobPlanningLine.SetRange("Job No.", JobPlanningLine."Job No.");
-            JobPlanningLine.SetRange("Job Task No.", JobPlanningLine."Job Task No.");
+            JobPlanningLine."Contrato No." := JobLedgEntry."Contrato No.";
+            JobPlanningLine."Contrato Task No." := JobLedgEntry."Contrato Task No.";
+            JobPlanningLine.SetRange("Contrato No.", JobPlanningLine."Contrato No.");
+            JobPlanningLine.SetRange("Contrato Task No.", JobPlanningLine."Contrato Task No.");
             if JobPlanningLine.FindLast() then;
             JobPlanningLine."Line No." := JobPlanningLine."Line No." + 10000;
             JobPlanningLine.Init();
@@ -47,13 +47,13 @@ codeunit 50202 "Contrato Post-Line"
 
     procedure PostPlanningLine(var JobPlanningLine: Record "Contrato Planning Line")
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
     begin
         OnBeforePostPlanningLine(JobPlanningLine);
 
         if JobPlanningLine."Line Type" = JobPlanningLine."Line Type"::"Both Budget and Billable" then begin
-            Job.Get(JobPlanningLine."Job No.");
-            if not Job."Allow Schedule/Contract Lines" or
+            Contrato.Get(JobPlanningLine."Contrato No.");
+            if not Contrato."Allow Schedule/Contract Lines" or
                (JobPlanningLine.Type = JobPlanningLine.Type::"G/L Account")
             then begin
                 JobPlanningLine.Validate("Line Type", JobPlanningLine."Line Type"::Budget);
@@ -61,7 +61,7 @@ codeunit 50202 "Contrato Post-Line"
                 InsertJobUsageLink(JobPlanningLine);
                 JobPlanningLine.Validate("Qty. to Transfer to Journal", 0);
                 JobPlanningLine.Modify(true);
-                JobPlanningLine."Job Contract Entry No." := 0;
+                JobPlanningLine."Contrato Contract Entry No." := 0;
                 JobPlanningLine."Line No." := JobPlanningLine."Line No." + 10000;
                 JobPlanningLine.Validate("Line Type", JobPlanningLine."Line Type"::Billable);
             end;
@@ -87,7 +87,7 @@ codeunit 50202 "Contrato Post-Line"
     begin
         if not JobPlanningLine."Usage Link" then
             exit;
-        JobLedgerEntry.Get(JobPlanningLine."Job Ledger Entry No.");
+        JobLedgerEntry.Get(JobPlanningLine."Contrato Ledger Entry No.");
         if UsageLinkExist(JobLedgerEntry) then
             exit;
         JobUsageLink.Create(JobPlanningLine, JobLedgerEntry);
@@ -103,8 +103,8 @@ codeunit 50202 "Contrato Post-Line"
     var
         JobUsageLink: Record "Contrato Usage Link";
     begin
-        JobUsageLink.SetRange("Job No.", JobLedgEntry."Job No.");
-        JobUsageLink.SetRange("Job Task No.", JobLedgEntry."Job Task No.");
+        JobUsageLink.SetRange("Contrato No.", JobLedgEntry."Contrato No.");
+        JobUsageLink.SetRange("Contrato Task No.", JobLedgEntry."Contrato Task No.");
         JobUsageLink.SetRange("Entry No.", JobLedgEntry."Entry No.");
         if not JobUsageLink.IsEmpty then
             exit(true);
@@ -112,7 +112,7 @@ codeunit 50202 "Contrato Post-Line"
 
     procedure PostInvoiceContractLine(SalesHeader: Record "Sales Header"; SalesLine: Record "Sales Line")
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobTask: Record "Contrato Task";
         JobPlanningLine: Record "Contrato Planning Line";
         JobPlanningLineInvoice: Record "Contrato Planning Line Invoice";
@@ -125,21 +125,21 @@ codeunit 50202 "Contrato Post-Line"
         if IsHandled then
             exit;
 
-        JobPlanningLine.SetCurrentKey("Job Contract Entry No.");
-        JobPlanningLine.SetRange("Job Contract Entry No.", SalesLine."Job Contract Entry No.");
+        JobPlanningLine.SetCurrentKey("Contrato Contract Entry No.");
+        JobPlanningLine.SetRange("Contrato Contract Entry No.", SalesLine."Job Contract Entry No.");
         OnPostInvoiceContractLineOnBeforeJobPlanningLineFindFirst(SalesHeader, SalesLine, JobPlanningLine);
         JobPlanningLine.FindFirst();
-        Job.Get(JobPlanningLine."Job No.");
+        Contrato.Get(JobPlanningLine."Contrato No.");
 
-        CheckCurrency(Job, SalesHeader, JobPlanningLine);
+        CheckCurrency(Contrato, SalesHeader, JobPlanningLine);
 
         IsHandled := false;
         OnPostInvoiceContractLineOnBeforeCheckBillToCustomer(SalesHeader, SalesLine, JobPlanningLine, IsHandled);
         if not IsHandled then
-            if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then
-                SalesHeader.TestField("Bill-to Customer No.", Job."Bill-to Customer No.")
+            if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then
+                SalesHeader.TestField("Bill-to Customer No.", Contrato."Bill-to Customer No.")
             else begin
-                JobTask.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+                JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
                 SalesHeader.TestField("Bill-to Customer No.", JobTask."Bill-to Customer No.");
             end;
 
@@ -154,7 +154,7 @@ codeunit 50202 "Contrato Post-Line"
 
         case SalesHeader."Document Type" of
             SalesHeader."Document Type"::Invoice:
-                if JobPlanningLineInvoice.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.", JobPlanningLine."Line No.",
+                if JobPlanningLineInvoice.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.", JobPlanningLine."Line No.",
                      JobPlanningLineInvoice."Document Type"::Invoice, SalesHeader."No.", SalesLine."Line No.")
                 then begin
                     JobPlanningLineInvoice.Delete(true);
@@ -170,7 +170,7 @@ codeunit 50202 "Contrato Post-Line"
                     JobPlanningLineInvoice.Modify();
                 end;
             SalesHeader."Document Type"::"Credit Memo":
-                if JobPlanningLineInvoice.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.", JobPlanningLine."Line No.",
+                if JobPlanningLineInvoice.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.", JobPlanningLine."Line No.",
                      JobPlanningLineInvoice."Document Type"::"Credit Memo", SalesHeader."No.", SalesLine."Line No.")
                 then begin
                     JobPlanningLineInvoice.Delete(true);
@@ -198,7 +198,7 @@ codeunit 50202 "Contrato Post-Line"
         OnPostInvoiceContractLineOnBeforePostJobOnSalesLine(JobPlanningLine, JobPlanningLineInvoice, SalesHeader, SalesLine, IsHandled);
         if not IsHandled then
             if JobPlanningLine.Type <> JobPlanningLine.Type::Text then
-                PostJobOnSalesLine(JobPlanningLine, SalesHeader, SalesLine, "Job Journal Line Entry Type"::Sale);
+                PostJobOnSalesLine(JobPlanningLine, SalesHeader, SalesLine, ContratoJournalLineEntryType::Sale);
 
         OnAfterPostInvoiceContractLine(SalesHeader, SalesLine);
     end;
@@ -214,10 +214,10 @@ codeunit 50202 "Contrato Post-Line"
         if IsHandled then
             exit;
 
-        JobTask.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+        JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
         Txt := StrSubstNo(Text000,
-            JobTask.TableCaption(), JobTask.FieldCaption("Job No."), JobTask."Job No.",
-            JobTask.FieldCaption("Job Task No."), JobTask."Job Task No.");
+            JobTask.TableCaption(), JobTask.FieldCaption("Contrato No."), JobTask."Contrato No.",
+            JobTask.FieldCaption("Contrato Task No."), JobTask."Contrato Task No.");
 
         if JobPlanningLine.Type = JobPlanningLine.Type::Text then
             if SalesLine.Type <> SalesLine.Type::" " then
@@ -260,7 +260,7 @@ codeunit 50202 "Contrato Post-Line"
                 SalesLine.FieldError("VAT %", Txt);
     end;
 
-    procedure PostJobOnSalesLine(JobPlanningLine: Record "Contrato Planning Line"; SalesHeader: Record "Sales Header"; SalesLine: Record "Sales Line"; EntryType: Enum "Job Journal Line Entry Type")
+    procedure PostJobOnSalesLine(JobPlanningLine: Record "Contrato Planning Line"; SalesHeader: Record "Sales Header"; SalesLine: Record "Sales Line"; EntryType: Enum ContratoJournalLineEntryType)
     var
         JobJnlLine: Record "Contrato Journal Line";
     begin
@@ -294,7 +294,7 @@ codeunit 50202 "Contrato Post-Line"
     procedure PostGenJnlLine(GenJnlLine: Record "Gen. Journal Line"; GLEntry: Record "G/L Entry")
     var
         JobJnlLine: Record "Contrato Journal Line";
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobTask: Record "Contrato Task";
         SourceCodeSetup: Record "Source Code Setup";
         JobTransferLine: Codeunit "Contrato Transfer Line";
@@ -316,12 +316,12 @@ codeunit 50202 "Contrato Post-Line"
                 exit;
             GenJnlLine.TestField("Job Task No.");
             GenJnlLine.TestField("Job Quantity");
-            Job.LockTable();
+            Contrato.LockTable();
             JobTask.LockTable();
-            Job.Get(GenJnlLine."Job No.");
-            GenJnlLine.TestField("Job Currency Code", Job."Currency Code");
+            Contrato.Get(GenJnlLine."Job No.");
+            GenJnlLine.TestField("Job Currency Code", Contrato."Currency Code");
             JobTask.Get(GenJnlLine."Job No.", GenJnlLine."Job Task No.");
-            JobTask.TestField("Job Task Type", JobTask."Job Task Type"::Posting);
+            JobTask.TestField("Contrato Task Type", JobTask."Contrato Task Type"::Posting);
         end;
         JobTransferLine.FromGenJnlLineToJnlLine(GenJnlLine, JobJnlLine);
         OnPostGenJnlLineOnAfterTransferToJnlLine(JobJnlLine, GenJnlLine, JobJnlPostLine);
@@ -334,7 +334,7 @@ codeunit 50202 "Contrato Post-Line"
     procedure PostJobOnPurchaseLine(var PurchHeader: Record "Purchase Header"; var PurchInvHeader: Record "Purch. Inv. Header"; var PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr."; PurchLine: Record "Purchase Line"; SourceCode: Code[10])
     var
         JobJnlLine: Record "Contrato Journal Line";
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobTask: Record "Contrato Task";
         IsHandled: Boolean;
         ShouldSkipLine: Boolean;
@@ -353,15 +353,15 @@ codeunit 50202 "Contrato Post-Line"
         Clear(JobJnlLine);
         PurchLine.TestField("Job No.");
         PurchLine.TestField("Job Task No.");
-        Job.LockTable();
+        Contrato.LockTable();
         JobTask.LockTable();
-        Job.Get(PurchLine."Job No.");
-        PurchLine.TestField("Job Currency Code", Job."Currency Code");
+        Contrato.Get(PurchLine."Job No.");
+        PurchLine.TestField("Job Currency Code", Contrato."Currency Code");
         JobTask.Get(PurchLine."Job No.", PurchLine."Job Task No.");
         JobTransferLine.FromPurchaseLineToJnlLine(
           PurchHeader, PurchInvHeader, PurchCrMemoHdr, PurchLine, Sourcecode, JobJnlLine);
         OnPostJobOnPurchaseLineOnAfterJobTransferLineFromPurchaseLineToJnlLine(PurchHeader, PurchInvHeader, PurchCrMemoHdr, PurchLine, JobJnlLine);
-        JobJnlLine."Job Posting Only" := true;
+        JobJnlLine."Contrato Posting Only" := true;
 
         if PurchLine.Type = PurchLine.Type::"G/L Account" then begin
             TempPurchaseLineJob := PurchLine;
@@ -385,13 +385,13 @@ codeunit 50202 "Contrato Post-Line"
 
         if SalesLine."Job Contract Entry No." = 0 then
             exit;
-        JobPlanningLine.SetCurrentKey("Job Contract Entry No.");
-        JobPlanningLine.SetRange("Job Contract Entry No.", SalesLine."Job Contract Entry No.");
+        JobPlanningLine.SetCurrentKey("Contrato Contract Entry No.");
+        JobPlanningLine.SetRange("Contrato Contract Entry No.", SalesLine."Job Contract Entry No.");
         if JobPlanningLine.FindFirst() then begin
-            JT.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+            JT.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
             Txt := Text003 + StrSubstNo(Text004,
-                JT.TableCaption(), JT.FieldCaption("Job No."), JT."Job No.",
-                JT.FieldCaption("Job Task No."), JT."Job Task No.");
+                JT.TableCaption(), JT.FieldCaption("Contrato No."), JT."Contrato No.",
+                JT.FieldCaption("Contrato Task No."), JT."Contrato Task No.");
             Error(Txt);
         end;
     end;
@@ -399,19 +399,19 @@ codeunit 50202 "Contrato Post-Line"
     procedure ChangeGLAccNo(var JobPlanningLine: Record "Contrato Planning Line")
     var
         GLAcc: Record "G/L Account";
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JT: Record "Contrato Task";
         JobPostingGr: Record "Contrato Posting Group";
         Cust: Record Customer;
     begin
-        JT.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
-        Job.Get(JobPlanningLine."Job No.");
-        GetBillToCustomer(Job, JobPlanningLine, Cust);
+        JT.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
+        Contrato.Get(JobPlanningLine."Contrato No.");
+        GetBillToCustomer(Contrato, JobPlanningLine, Cust);
         if JT."Contrato Posting Group" <> '' then
             JobPostingGr.Get(JT."Contrato Posting Group")
         else begin
-            Job.TestField("Contrato Posting Group");
-            JobPostingGr.Get(Job."Contrato Posting Group");
+            Contrato.TestField("Contrato Posting Group");
+            JobPostingGr.Get(Contrato."Contrato Posting Group");
         end;
         if JobPostingGr."G/L Expense Acc. (Contract)" = '' then
             exit;
@@ -422,7 +422,7 @@ codeunit 50202 "Contrato Post-Line"
         JobPlanningLine."Gen. Prod. Posting Group" := GLAcc."Gen. Prod. Posting Group";
     end;
 
-    local procedure GetBillToCustomer(Job: Record Contrato; var JobPlanningLine: Record "Contrato Planning Line"; var Cust: Record Customer)
+    local procedure GetBillToCustomer(Contrato: Record Contrato; var JobPlanningLine: Record "Contrato Planning Line"; var Cust: Record Customer)
     var
         IsHandled: Boolean;
     begin
@@ -431,13 +431,13 @@ codeunit 50202 "Contrato Post-Line"
         if IsHandled then
             exit;
 
-        Cust.Get(Job."Bill-to Customer No.");
+        Cust.Get(Contrato."Bill-to Customer No.");
     end;
 
     procedure CheckItemQuantityPurchCredit(var PurchaseHeader: Record "Purchase Header"; var PurchaseLine: Record "Purchase Line")
     var
         Item: Record Item;
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         IsHandled: Boolean;
     begin
         IsHandled := false;
@@ -445,12 +445,12 @@ codeunit 50202 "Contrato Post-Line"
         if IsHandled then
             exit;
 
-        Job.Get(PurchaseLine."Job No.");
-        if Job.GetQuantityAvailable(PurchaseLine."No.", PurchaseLine."Location Code", PurchaseLine."Variant Code", 0, 2) <
+        Contrato.Get(PurchaseLine."Job No.");
+        if Contrato.GetQuantityAvailable(PurchaseLine."No.", PurchaseLine."Location Code", PurchaseLine."Variant Code", 0, 2) <
            -PurchaseLine."Return Qty. to Ship (Base)"
         then
             Error(
-              Text005, Item.TableCaption(), PurchaseLine."No.", Job.TableCaption(),
+              Text005, Item.TableCaption(), PurchaseLine."No.", Contrato.TableCaption(),
               PurchaseLine."Job No.", PurchaseHeader."No.",
               PurchaseLine.FieldCaption("Line No."), PurchaseLine."Line No.");
     end;
@@ -583,31 +583,31 @@ codeunit 50202 "Contrato Post-Line"
         TempJobJournalLine.Insert();
     end;
 
-    local procedure CheckCurrency(Job: Record Contrato; SalesHeader: Record "Sales Header"; JobPlanningLine: Record "Contrato Planning Line")
+    local procedure CheckCurrency(Contrato: Record Contrato; SalesHeader: Record "Sales Header"; JobPlanningLine: Record "Contrato Planning Line")
     var
         JobTask: Record "Contrato Task";
         JobInvCurr: Code[10];
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckCurrency(Job, SalesHeader, JobPlanningLine, IsHandled);
+        OnBeforeCheckCurrency(Contrato, SalesHeader, JobPlanningLine, IsHandled);
         if IsHandled then
             exit;
 
-        if Job."Task Billing Method" = Job."Task Billing Method"::"One customer" then
-            JobInvCurr := Job."Invoice Currency Code"
+        if Contrato."Task Billing Method" = Contrato."Task Billing Method"::"One customer" then
+            JobInvCurr := Contrato."Invoice Currency Code"
         else begin
-            JobTask.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+            JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
             JobInvCurr := JobTask."Invoice Currency Code";
         end;
 
         if JobInvCurr = '' then begin
-            Job.TestField("Currency Code", SalesHeader."Currency Code");
-            Job.TestField("Currency Code", JobPlanningLine."Currency Code");
+            Contrato.TestField("Currency Code", SalesHeader."Currency Code");
+            Contrato.TestField("Currency Code", JobPlanningLine."Currency Code");
             SalesHeader.TestField("Currency Code", JobPlanningLine."Currency Code");
             SalesHeader.TestField("Currency Factor", JobPlanningLine."Currency Factor");
         end else begin
-            Job.TestField("Currency Code", '');
+            Contrato.TestField("Currency Code", '');
             JobPlanningLine.TestField("Currency Code", '');
         end;
     end;
@@ -624,12 +624,12 @@ codeunit 50202 "Contrato Post-Line"
     var
         JobPlanningLineInvoice: Record "Contrato Planning Line Invoice";
     begin
-        JobPlanningLineInvoice.SetRange("Job No.", JobJournalLine."Job No.");
-        JobPlanningLineInvoice.SetRange("Job Task No.", JobJournalLine."Job Task No.");
+        JobPlanningLineInvoice.SetRange("Contrato No.", JobJournalLine."Contrato No.");
+        JobPlanningLineInvoice.SetRange("Contrato Task No.", JobJournalLine."Contrato Task No.");
         JobPlanningLineInvoice.SetRange("Document No.", JobJournalLine."Document No.");
         JobPlanningLineInvoice.SetRange("Line No.", JobJournalLine."Line No.");
         if JobPlanningLineInvoice.FindFirst() then begin
-            JobPlanningLineInvoice."Job Ledger Entry No." := JobLedgerEntryNo;
+            JobPlanningLineInvoice."Contrato Ledger Entry No." := JobLedgerEntryNo;
             JobPlanningLineInvoice.Modify();
         end;
     end;
@@ -771,7 +771,7 @@ codeunit 50202 "Contrato Post-Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckCurrency(Job: Record Contrato; SalesHeader: Record "Sales Header"; JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean);
+    local procedure OnBeforeCheckCurrency(Contrato: Record Contrato; SalesHeader: Record "Sales Header"; JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean);
     begin
     end;
 

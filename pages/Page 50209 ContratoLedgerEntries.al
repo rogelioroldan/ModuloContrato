@@ -3,11 +3,11 @@ page 50209 "Contrato Ledger Entries"
     AdditionalSearchTerms = 'Contrato Ledger Entries';
     ApplicationArea = All;
     Caption = 'Project Ledger Entries';
-    DataCaptionFields = "Job No.";
+    DataCaptionFields = "Contrato No.";
     Editable = false;
     PageType = List;
     SourceTable = "Contrato Ledger Entry";
-    SourceTableView = sorting("Job No.", "Posting Date")
+    SourceTableView = sorting("Contrato No.", "Posting Date")
                       order(descending);
     UsageCategory = History;
 
@@ -36,13 +36,13 @@ page 50209 "Contrato Ledger Entries"
                     Editable = false;
                     ToolTip = 'Specifies the document number on the project ledger entry.';
                 }
-                field("Contrato No."; Rec."Job No.")
+                field("Contrato No."; Rec."Contrato No.")
                 {
                     ApplicationArea = Jobs;
                     Editable = false;
                     ToolTip = 'Specifies the number of the project.';
                 }
-                field("Contrato Task No."; Rec."Job Task No.")
+                field("Contrato Task No."; Rec."Contrato Task No.")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the number of the related project task.';
@@ -418,7 +418,7 @@ page 50209 "Contrato Ledger Entries"
 
                         if JobUsageLink.FindSet() then
                             repeat
-                                JobPlanningLine.Get(JobUsageLink."Job No.", JobUsageLink."Job Task No.", JobUsageLink."Line No.");
+                                JobPlanningLine.Get(JobUsageLink."Contrato No.", JobUsageLink."Contrato Task No.", JobUsageLink."Line No.");
                                 JobPlanningLine.Mark := true;
                             until JobUsageLink.Next() = 0;
 

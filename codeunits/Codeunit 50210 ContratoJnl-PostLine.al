@@ -2,7 +2,7 @@ codeunit 50210 "Contrato Jnl.-Post Line"
 {
     Permissions = TableData "Contrato Ledger Entry" = rimd,
                   TableData "Contrato Register" = rimd,
-                  TableData Job = rimd,
+                  TableData Contrato = rimd,
                   TableData "Value Entry" = rimd;
     TableNo = "Contrato Journal Line";
 
@@ -14,7 +14,7 @@ codeunit 50210 "Contrato Jnl.-Post Line"
 
     var
         Cust: Record Customer;
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobTask: Record "Contrato Task";
         JobJnlLine: Record "Contrato Journal Line";
         JobJnlLine2: Record "Contrato Journal Line";
@@ -38,7 +38,7 @@ codeunit 50210 "Contrato Jnl.-Post Line"
         NextEntryNo: Integer;
         GLEntryNo: Integer;
         AssemblyPostProgressMsg: Label '#1#################################\\Posting Assembly #2###########', Comment = '%1 = Text, %2 = Progress bar';
-        Format4Lbl: Label '%1 %2 %3 %4', Comment = '%1 = Job No., %2 = Job Task No., %3 = Job Planning Line No., %4 = Line No.';
+        Format4Lbl: Label '%1 %2 %3 %4', Comment = '%1 = Contrato No., %2 = Contrato Task No., %3 = Contrato Planning Line No., %4 = Line No.';
         Format2Lbl: Label '%1 %2', Comment = 'Assemble %1 = Document Type, %2 = No.';
 
     procedure RunWithCheck(var JobJnlLine2: Record "Contrato Journal Line"): Integer
@@ -159,8 +159,8 @@ codeunit 50210 "Contrato Jnl.-Post Line"
         if IsHandled then
             exit;
 
-        Job.Get(JobJnlLine."Job No.");
-        CheckJob(JobJnlLine, Job);
+        Contrato.Get(JobJnlLine."Contrato No.");
+        CheckJob(JobJnlLine, Contrato);
     end;
 
     internal procedure SetCalledFromInvtPutawayPick(NewCalledFromInvtPutawayPick: Boolean)
@@ -168,24 +168,24 @@ codeunit 50210 "Contrato Jnl.-Post Line"
         CalledFromInvtPutawayPick := NewCalledFromInvtPutawayPick;
     end;
 
-    local procedure CheckJob(var JobJnlLine: Record "Contrato Journal Line"; Job: Record Contrato)
+    local procedure CheckJob(var JobJnlLine: Record "Contrato Journal Line"; Contrato: Record Contrato)
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckJob(JobJnlLine, Job, IsHandled, JobReg, NextEntryNo);
+        OnBeforeCheckJob(JobJnlLine, Contrato, IsHandled, JobReg, NextEntryNo);
         if IsHandled then
             exit;
 
-        Job.TestBlocked();
-        Job.TestField("Bill-to Customer No.");
-        Cust.Get(Job."Bill-to Customer No.");
-        JobJnlLine.TestField("Currency Code", Job."Currency Code");
+        Contrato.TestBlocked();
+        Contrato.TestField("Bill-to Customer No.");
+        Cust.Get(Contrato."Bill-to Customer No.");
+        JobJnlLine.TestField("Currency Code", Contrato."Currency Code");
         IsHandled := false;
         OnCheckJobOnBeforeTestJobTaskType(JobJnlLine, IsHandled);
         if not IsHandled then begin
-            JobTask.Get(JobJnlLine."Job No.", JobJnlLine."Job Task No.");
-            JobTask.TestField("Job Task Type", JobTask."Job Task Type"::Posting);
+            JobTask.Get(JobJnlLine."Contrato No.", JobJnlLine."Contrato Task No.");
+            JobTask.TestField("Contrato Task Type", JobTask."Contrato Task Type"::Posting);
         end;
     end;
 
@@ -201,7 +201,7 @@ codeunit 50210 "Contrato Jnl.-Post Line"
         ResLedgEntry: Record "Res. Ledger Entry";
         JobLedgEntry: Record "Contrato Ledger Entry";
         JobPlanningLine: Record "Contrato Planning Line";
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobTransferLine: Codeunit "Contrato Transfer Line";
         JobLinkUsage: Codeunit "Contrato Link Usage";
         JobLedgEntryNo: Integer;
@@ -299,10 +299,10 @@ codeunit 50210 "Contrato Jnl.-Post Line"
         if not IsHandled then
             if JobLedgEntry."Entry Type" = JobLedgEntry."Entry Type"::Usage then begin
                 // Usage Link should be applied if it is enabled for the job,
-                // if a Job Planning Line number is defined or if it is enabled for a Job Planning Line.
-                Job.Get(JobLedgEntry."Job No.");
-                if Job."Apply Usage Link" or
-                   (JobJnlLine2."Job Planning Line No." <> 0) or
+                // if a Contrato Planning Line number is defined or if it is enabled for a Contrato Planning Line.
+                Contrato.Get(JobLedgEntry."Contrato No.");
+                if Contrato."Apply Usage Link" or
+                   (JobJnlLine2."Contrato Planning Line No." <> 0) or
                    JobLinkUsage.FindMatchingJobPlanningLine(JobPlanningLine, JobLedgEntry)
                 then
                     JobLinkUsage.ApplyUsage(JobLedgEntry, JobJnlLine2, CalledFromInvtPutawayPick)
@@ -357,7 +357,7 @@ codeunit 50210 "Contrato Jnl.-Post Line"
         RemainingQtyToTrack: Decimal;
         IsHandled: Boolean;
     begin
-        if not JobJnlLine."Job Posting Only" then begin
+        if not JobJnlLine."Contrato Posting Only" then begin
             IsHandled := false;
             OnBeforeItemPosting(JobJnlLine2, NextEntryNo, IsHandled);
             if not IsHandled then begin
@@ -367,15 +367,15 @@ codeunit 50210 "Contrato Jnl.-Post Line"
                 JobJnlLineReserve.TransJobJnlLineToItemJnlLine(JobJnlLine2, ItemJnlLine, ItemJnlLine."Quantity (Base)", CalledFromInvtPutawayPick);
 
                 ApplyToJobContractEntryNo := false;
-                if JobPlanningLine.Get(JobJnlLine."Job No.", JobJnlLine."Job Task No.", JobJnlLine."Job Planning Line No.") then
+                if JobPlanningLine.Get(JobJnlLine."Contrato No.", JobJnlLine."Contrato Task No.", JobJnlLine."Contrato Planning Line No.") then
                     ApplyToJobContractEntryNo := true
                 else
-                    if JobPlanningReservationExists(JobJnlLine2."No.", JobJnlLine2."Job No.") then
+                    if JobPlanningReservationExists(JobJnlLine2."No.", JobJnlLine2."Contrato No.") then
                         if ApplyToMatchingJobPlanningLine(JobJnlLine2, JobPlanningLine) then
                             ApplyToJobContractEntryNo := true;
 
                 if ApplyToJobContractEntryNo then
-                    ItemJnlLine."Job Contract Entry No." := JobPlanningLine."Job Contract Entry No.";
+                    ItemJnlLine."Job Contract Entry No." := JobPlanningLine."Contrato Contract Entry No.";
 
                 OnPostItemOnBeforeAssignItemJnlLine(JobJnlLine, JobJnlLine2, ItemJnlLine, JobPlanningLine);
 
@@ -531,7 +531,7 @@ codeunit 50210 "Contrato Jnl.-Post Line"
         ItemJnlLine.Init();
         //ItemJnlLine.CopyFromJobJnlLine(JobJnlLine2);
         ItemJnlLine."Source Type" := ItemJnlLine."Source Type"::Customer;
-        ItemJnlLine."Source No." := Job."Bill-to Customer No.";
+        ItemJnlLine."Source No." := Contrato."Bill-to Customer No.";
         Item.Get(JobJnlLine2."No.");
         ItemJnlLine."Inventory Posting Group" := Item."Inventory Posting Group";
         ItemJnlLine."Item Category Code" := Item."Item Category Code";
@@ -605,7 +605,7 @@ codeunit 50210 "Contrato Jnl.-Post Line"
 
         ReservationEntry.SetRange("Item No.", ItemNo);
         ReservationEntry.SetRange("Source Type", DATABASE::"Contrato Planning Line");
-        ReservationEntry.SetRange("Source Subtype", Job.Status::Open);
+        ReservationEntry.SetRange("Source Subtype", Contrato.Status::Open);
         ReservationEntry.SetRange("Source ID", JobNo);
         Result := not ReservationEntry.IsEmpty();
     end;
@@ -621,8 +621,8 @@ codeunit 50210 "Contrato Jnl.-Post Line"
 
         ValueEntry.SetCurrentKey("Job No.", "Job Task No.", "Document No.");
         ValueEntry.SetRange("Item No.", JobJournalLine."No.");
-        ValueEntry.SetRange("Job No.", JobJournalLine."Job No.");
-        ValueEntry.SetRange("Job Task No.", JobJournalLine."Job Task No.");
+        ValueEntry.SetRange("Job No.", JobJournalLine."Contrato No.");
+        ValueEntry.SetRange("Job Task No.", JobJournalLine."Contrato Task No.");
         ValueEntry.SetRange("Document No.", JobJournalLine."Document No.");
         ValueEntry.SetRange("Item Ledger Entry Type", ValueEntry."Item Ledger Entry Type"::"Negative Adjmt.");
         ValueEntry.SetRange("Job Ledger Entry No.", 0);
@@ -633,7 +633,7 @@ codeunit 50210 "Contrato Jnl.-Post Line"
 
     local procedure ApplyToMatchingJobPlanningLine(var JobJnlLine: Record "Contrato Journal Line"; var JobPlanningLine: Record "Contrato Planning Line"): Boolean
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobLedgEntry: Record "Contrato Ledger Entry";
         JobTransferLine: Codeunit "Contrato Transfer Line";
         JobLinkUsage: Codeunit "Contrato Link Usage";
@@ -641,14 +641,14 @@ codeunit 50210 "Contrato Jnl.-Post Line"
         if JobLedgEntry."Entry Type" <> JobLedgEntry."Entry Type"::Usage then
             exit(false);
 
-        Job.Get(JobJnlLine."Job No.");
+        Contrato.Get(JobJnlLine."Contrato No.");
         JobLedgEntry.Init();
         JobTransferLine.FromJnlLineToLedgEntry(JobJnlLine, JobLedgEntry);
         JobLedgEntry.Quantity := JobJnlLine.Quantity;
         JobLedgEntry."Quantity (Base)" := JobJnlLine."Quantity (Base)";
 
         if JobLinkUsage.FindMatchingJobPlanningLine(JobPlanningLine, JobLedgEntry) then begin
-            JobJnlLine.Validate("Job Planning Line No.", JobPlanningLine."Line No.");
+            JobJnlLine.Validate("Contrato Planning Line No.", JobPlanningLine."Line No.");
             JobJnlLine.Modify(true);
             exit(true);
         end;
@@ -679,14 +679,14 @@ codeunit 50210 "Contrato Jnl.-Post Line"
         if not JobJournalLine."Assemble to Order" then
             exit;
 
-        if not JobPlanningLine.Get(JobJournalLine."Job No.", JobJournalLine."Job Task No.", JobJournalLine."Job Planning Line No.") then
+        if not JobPlanningLine.Get(JobJournalLine."Contrato No.", JobJournalLine."Contrato Task No.", JobJournalLine."Contrato Planning Line No.") then
             exit;
 
         if JobPlanningLine.AsmToOrderExists(AsmHeader) then begin
             Window.Open(AssemblyPostProgressMsg);
             Window.Update(1,
                 StrSubstNo(Format4Lbl,
-                JobPlanningLine."Job No.", JobPlanningLine."Job Task No.", JobPlanningLine.FieldCaption("Line No."), JobPlanningLine."Line No."));
+                JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.", JobPlanningLine.FieldCaption("Line No."), JobPlanningLine."Line No."));
             Window.Update(2, StrSubstNo(Format2Lbl, AsmHeader."Document Type", AsmHeader."No."));
 
             JobPlanningLine.CheckAsmToOrder(AsmHeader);
@@ -724,8 +724,8 @@ codeunit 50210 "Contrato Jnl.-Post Line"
         PostedATOLink."Document Type" := PostedATOLink."Document Type"::" ";
         PostedATOLink."Document Line No." := JobPlanningLine."Line No.";
         PostedATOLink."Assembly Order No." := AsmHeader."No.";
-        PostedATOLink."Job No." := JobPlanningLine."Job No.";
-        PostedATOLink."Job Task No." := JobPlanningLine."JOb Task No.";
+        PostedATOLink."Job No." := JobPlanningLine."Contrato No.";
+        PostedATOLink."Job Task No." := JobPlanningLine."Contrato Task No.";
         PostedATOLink."Assembled Quantity" := AsmHeader."Quantity to Assemble";
         PostedATOLink."Assembled Quantity (Base)" := AsmHeader."Quantity to Assemble (Base)";
         PostedATOLink.Insert();
@@ -766,7 +766,7 @@ codeunit 50210 "Contrato Jnl.-Post Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckJob(var JobJournalLine: Record "Contrato Journal Line"; Job: Record Contrato; var IsHandled: Boolean; var JobRegister: Record "Contrato Register"; var NextEntryNo: Integer)
+    local procedure OnBeforeCheckJob(var JobJournalLine: Record "Contrato Journal Line"; Contrato: Record Contrato; var IsHandled: Boolean; var JobRegister: Record "Contrato Register"; var NextEntryNo: Integer)
     begin
     end;
 

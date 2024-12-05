@@ -21,7 +21,7 @@ codeunit 50207 "Contrato Link Usage"
 
     procedure ApplyUsage(JobLedgerEntry: Record "Contrato Ledger Entry"; JobJournalLine: Record "Contrato Journal Line")
     begin
-        if JobJournalLine."Job Planning Line No." = 0 then
+        if JobJournalLine."Contrato Planning Line No." = 0 then
             MatchUsageUnspecified(JobLedgerEntry, JobJournalLine."Line Type" = JobJournalLine."Line Type"::" ")
         else
             MatchUsageSpecified(JobLedgerEntry, JobJournalLine);
@@ -92,7 +92,7 @@ codeunit 50207 "Contrato Link Usage"
         if IsHandled then
             exit;
 
-        JobPlanningLine.Get(JobLedgerEntry."Job No.", JobLedgerEntry."Job Task No.", JobJournalLine."Job Planning Line No.");
+        JobPlanningLine.Get(JobLedgerEntry."Contrato No.", JobLedgerEntry."Contrato Task No.", JobJournalLine."Contrato Planning Line No.");
         if not JobPlanningLine."Usage Link" then
             Error(Text001, JobPlanningLine.TableCaption(), JobPlanningLine.FieldCaption("Usage Link"));
 
@@ -152,9 +152,9 @@ codeunit 50207 "Contrato Link Usage"
         JobPlanningLineFound: Boolean;
     begin
         JobPlanningLine.Reset();
-        JobPlanningLine.SetCurrentKey("Job No.", "Schedule Line", Type, "No.", "Planning Date");
-        JobPlanningLine.SetRange("Job No.", JobLedgerEntry."Job No.");
-        JobPlanningLine.SetRange("Job Task No.", JobLedgerEntry."Job Task No.");
+        JobPlanningLine.SetCurrentKey("Contrato No.", "Schedule Line", Type, "No.", "Planning Date");
+        JobPlanningLine.SetRange("Contrato No.", JobLedgerEntry."Contrato No.");
+        JobPlanningLine.SetRange("Contrato Task No.", JobLedgerEntry."Contrato Task No.");
         JobPlanningLine.SetRange(Type, JobLedgerEntry.Type);
         JobPlanningLine.SetRange("No.", JobLedgerEntry."No.");
         JobPlanningLine.SetRange("Location Code", JobLedgerEntry."Location Code");
@@ -183,7 +183,7 @@ codeunit 50207 "Contrato Link Usage"
                 JobPlanningLine.SetRange("Work Type Code", JobLedgerEntry."Work Type Code");
         end;
 
-        // Match most specific Job Planning Line.
+        // Match most specific Contrato Planning Line.
         OnFindMatchingJobPlanningLineOnBeforeMatchSpecificJobPlanningLine(JobPlanningLine, JobLedgerEntry);
         if JobPlanningLine.FindFirst() then
             exit(true);
@@ -212,7 +212,7 @@ codeunit 50207 "Contrato Link Usage"
         JobPlanningLine.SetRange("Variant Code", '');
         JobPlanningLine.SetRange("Work Type Code", '');
 
-        // Match unspecific Job Planning Line.
+        // Match unspecific Contrato Planning Line.
         if JobPlanningLine.FindFirst() then
             exit(true);
 
@@ -223,7 +223,7 @@ codeunit 50207 "Contrato Link Usage"
 
     local procedure CreateJobPlanningLine(var JobPlanningLine: Record "Contrato Planning Line"; JobLedgerEntry: Record "Contrato Ledger Entry"; RemainingQtyToMatch: Decimal)
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobPostLine: Codeunit "Contrato Post-Line";
     begin
         RemainingQtyToMatch :=
@@ -239,9 +239,9 @@ codeunit 50207 "Contrato Link Usage"
         end;
         JobPlanningLine.Reset();
         JobPostLine.InsertPlLineFromLedgEntry(JobLedgerEntry);
-        // Retrieve the newly created Job PlanningLine.
-        JobPlanningLine.SetRange("Job No.", JobLedgerEntry."Job No.");
-        JobPlanningLine.SetRange("Job Task No.", JobLedgerEntry."Job Task No.");
+        // Retrieve the newly created Contrato PlanningLine.
+        JobPlanningLine.SetRange("Contrato No.", JobLedgerEntry."Contrato No.");
+        JobPlanningLine.SetRange("Contrato Task No.", JobLedgerEntry."Contrato Task No.");
         JobPlanningLine.SetRange("Schedule Line", true);
         JobPlanningLine.FindLast();
         JobPlanningLine.Validate("Usage Link", true);
@@ -251,15 +251,15 @@ codeunit 50207 "Contrato Link Usage"
 
         // If type is Both Budget And Billable and that type isn't allowed,
         // retrieve the Billabe line and modify the quantity as well.
-        // Do the same if the type is G/L Account (Job Planning Lines will always be split in one Budget and one Billable line).
-        Job.Get(JobLedgerEntry."Job No.");
+        // Do the same if the type is G/L Account (Contrato Planning Lines will always be split in one Budget and one Billable line).
+        Contrato.Get(JobLedgerEntry."Contrato No.");
         if (JobLedgerEntry."Line Type" = JobLedgerEntry."Line Type"::"Both Budget and Billable") and
-           ((not Job."Allow Schedule/Contract Lines") or (JobLedgerEntry.Type = JobLedgerEntry.Type::"G/L Account"))
+           ((not Contrato."Allow Schedule/Contract Lines") or (JobLedgerEntry.Type = JobLedgerEntry.Type::"G/L Account"))
         then begin
-            JobPlanningLine.Get(JobLedgerEntry."Job No.", JobLedgerEntry."Job Task No.", JobPlanningLine."Line No." + 10000);
+            JobPlanningLine.Get(JobLedgerEntry."Contrato No.", JobLedgerEntry."Contrato Task No.", JobPlanningLine."Line No." + 10000);
             JobPlanningLine.Validate(Quantity, RemainingQtyToMatch);
             JobPlanningLine.Modify();
-            JobPlanningLine.Get(JobLedgerEntry."Job No.", JobLedgerEntry."Job Task No.", JobPlanningLine."Line No." - 10000);
+            JobPlanningLine.Get(JobLedgerEntry."Contrato No.", JobLedgerEntry."Contrato Task No.", JobPlanningLine."Line No." - 10000);
         end;
     end;
 
@@ -268,8 +268,8 @@ codeunit 50207 "Contrato Link Usage"
         PostedATOLink: Record "Posted Assemble-to-Order Link";
     begin
         PostedATOLink.SetCurrentKey("Job No.", "Job Task No.", "Document Line No.");
-        PostedATOLink.SetRange("Job No.", JobPlanningLine."Job No.");
-        PostedATOLink.SetRange("Job Task No.", JobPlanningLine."Job Task No.");
+        PostedATOLink.SetRange("Job No.", JobPlanningLine."Contrato No.");
+        PostedATOLink.SetRange("Job Task No.", JobPlanningLine."Contrato Task No.");
         PostedATOLink.SetRange("Document Line No.", JobPlanningLine."Line No.");
         if PostedATOLink.FindSet() then
             repeat

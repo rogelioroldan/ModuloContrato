@@ -1,8 +1,8 @@
 codeunit 50221 "Contrato Archive Management"
 {
-    Permissions = tabledata "Job Archive" = ri,
-                  tabledata "Job Task Archive" = rim,
-                  tabledata "Job Planning Line Archive" = rim,
+    Permissions = tabledata "Contrato Archive" = ri,
+                  tabledata "Contrato Task Archive" = rim,
+                  tabledata "Contrato Planning Line Archive" = rim,
                   tabledata "Comment Line" = r,
                   tabledata "Comment Line Archive" = ri;
 
@@ -13,65 +13,65 @@ codeunit 50221 "Contrato Archive Management"
     var
         RecordLinkManagement: Codeunit "Record Link Management";
 
-        RestoreQst: Label 'Do you want to Restore %1 %2 Version %3?', Comment = '%1 = Job Caption, %2 = Job No., %3 = Version No.';
-        RestoreMsg: Label '%1 %2 has been restored.', Comment = '%1 = Job Caption, %2 = Job No.';
-        ArchiveQst: Label 'Archive %1 no.: %2?', Comment = '%1 = Job Caption, %2 = Job No.';
+        RestoreQst: Label 'Do you want to Restore %1 %2 Version %3?', Comment = '%1 = Contrato Caption, %2 = Contrato No., %3 = Version No.';
+        RestoreMsg: Label '%1 %2 has been restored.', Comment = '%1 = Contrato Caption, %2 = Contrato No.';
+        ArchiveQst: Label 'Archive %1 no.: %2?', Comment = '%1 = Contrato Caption, %2 = Contrato No.';
         JobArchiveMsg: Label 'Project %1 has been archived.', Comment = '%1 = Project No.';
         MissingJobErr: Label 'Project %1 does not exist anymore.\It is not possible to restore the Project.', Comment = '%1 = Project No.';
         CompletedJobStatusErr: Label 'Status must not be Completed in order to restore the Project: No. = %1', Comment = '%1 = Project No.';
         JobLedgerEntryExistErr: Label 'Project Ledger Entries exist for Project No. %1.\It is not possible to restore the Project.', Comment = '%1 = Project No.';
         SalesInvoiceExistErr: Label 'Outstanding Sales Invoice exists for Project No. %1.\It is not possible to restore the Project.', Comment = '%1 = Project No.';
 
-    procedure AutoArchiveJob(var Job: Record Job)
+    procedure AutoArchiveJob(var Contrato: Record Contrato)
     var
         JobSetup: Record "Jobs Setup";
     begin
         JobSetup.Get();
         case JobSetup."Archive Jobs" of
             JobSetup."Archive Jobs"::Always:
-                StoreJob(Job, false);
+                StoreJob(Contrato, false);
             JobSetup."Archive Jobs"::Question:
-                ArchiveJob(Job);
+                ArchiveJob(Contrato);
         end;
     end;
 
-    procedure ArchiveJob(var Job: Record "Job")
+    procedure ArchiveJob(var Contrato: Record "Contrato")
     var
         ConfirmManagement: Codeunit "Confirm Management";
     begin
         if ConfirmManagement.GetResponseOrDefault(
-             StrSubstNo(ArchiveQst, Job.TableCaption(), Job."No."), true)
+             StrSubstNo(ArchiveQst, Contrato.TableCaption(), Contrato."No."), true)
         then begin
-            StoreJob(Job, false);
-            Message(JobArchiveMsg, Job."No.");
+            StoreJob(Contrato, false);
+            Message(JobArchiveMsg, Contrato."No.");
         end;
     end;
 
-    procedure StoreJob(var Job: Record Job; InteractionExist: Boolean)
+    procedure StoreJob(var Contrato: Record Contrato; InteractionExist: Boolean)
     var
-        JobArchive: Record "Job Archive";
-        JobTask: Record "Job Task";
-        JobTaskArchive: Record "Job Task Archive";
-        JobPlanningLine: Record "Job Planning Line";
-        JobPlanningLineArchive: Record "Job Planning Line Archive";
+        JobArchive: Record "Contrato Archive";
+        JobTask: Record "Contrato Task";
+        JobTaskArchive: Record "Contrato Task Archive";
+        JobPlanningLine: Record "Contrato Planning Line";
+        JobPlanningLineArchive: Record "Contrato Planning Line Archive";
         CommentLineTableName: Enum "Comment Line Table Name";
     begin
         JobArchive.Init();
-        JobArchive.TransferFields(Job);
+        JobArchive.TransferFields(Contrato);
         JobArchive."Archived By" := CopyStr(UserId(), 1, MaxStrLen(JobArchive."Archived By"));
         JobArchive."Date Archived" := Today();
         JobArchive."Time Archived" := Time();
-        JobArchive."Version No." := GetNextVersionNo(Database::Job, Job."No.");
+        JobArchive."Version No." := GetNextVersionNo(Database::Contrato, Contrato."No.");
         JobArchive."Interaction Exist" := InteractionExist;
-        RecordLinkManagement.CopyLinks(Job, JobArchive);
-        OnStoreJobOnBeforeInsertJobArchive(Job, JobArchive);
+        RecordLinkManagement.CopyLinks(Contrato, JobArchive);
+        OnStoreJobOnBeforeInsertJobArchive(Contrato, JobArchive);
         JobArchive.Insert();
 
-        StoreComments(CommentLineTableName::Job, JobArchive."No.", JobArchive."Version No.");
+        StoreComments(CommentLineTableName::Contrato, JobArchive."No.", JobArchive."Version No.");
 
-        OnStoreJobOnBeforeStoreJobTaskAndJobPlanningLine(JobTask, JobPlanningLine, Job);
+        OnStoreJobOnBeforeStoreJobTaskAndJobPlanningLine(JobTask, JobPlanningLine, Contrato);
 
-        JobTask.SetRange("Job No.", Job."No.");
+        JobTask.SetRange("Contrato No.", Contrato."No.");
         if JobTask.FindSet() then
             repeat
                 JobTaskArchive.Init();
@@ -83,7 +83,7 @@ codeunit 50221 "Contrato Archive Management"
                 AddCalculatedValuesToJobTaskArchive(JobTaskArchive, JobTask);
             until JobTask.Next() = 0;
 
-        JobPlanningLine.SetRange("Job No.", Job."No.");
+        JobPlanningLine.SetRange("Contrato No.", Contrato."No.");
         if JobPlanningLine.FindSet() then
             repeat
                 JobPlanningLineArchive.Init();
@@ -95,10 +95,10 @@ codeunit 50221 "Contrato Archive Management"
                 AddCalculatedValuesToJobPlanningLineArchive(JobPlanningLineArchive, JobPlanningLine);
             until JobPlanningLine.Next() = 0;
 
-        OnAfterStoreJob(Job, JobArchive);
+        OnAfterStoreJob(Contrato, JobArchive);
     end;
 
-    local procedure AddCalculatedValuesToJobPlanningLineArchive(var JobPlanningLineArchive: Record "Job Planning Line Archive"; var JobPlanningLine: Record "Job Planning Line")
+    local procedure AddCalculatedValuesToJobPlanningLineArchive(var JobPlanningLineArchive: Record "Contrato Planning Line Archive"; var JobPlanningLine: Record "Contrato Planning Line")
     begin
         JobPlanningLine.CalcFields("Invoiced Amount (LCY)", "Invoiced Cost Amount (LCY)", "Qty. Transferred to Invoice", "Qty. Invoiced",
                 "Reserved Quantity", "Reserved Qty. (Base)", "Pick Qty.", "Pick Qty. (Base)", "Qty. on Journal");
@@ -114,7 +114,7 @@ codeunit 50221 "Contrato Archive Management"
         JobPlanningLineArchive.Modify(true);
     end;
 
-    local procedure AddCalculatedValuesToJobTaskArchive(var JobTaskArchive: Record "Job Task Archive"; var JobTask: Record "Job Task")
+    local procedure AddCalculatedValuesToJobTaskArchive(var JobTaskArchive: Record "Contrato Task Archive"; var JobTask: Record "Contrato Task")
     begin
         JobTask.CalcFields("Usage (Total Cost)", "Usage (Total Price)", "Contract (Invoiced Price)", "Contract (Invoiced Cost)",
             "Outstanding Orders", "Amt. Rcd. Not Invoiced");
@@ -160,77 +160,77 @@ codeunit 50221 "Contrato Archive Management"
             until CommentLineArchive.Next() = 0;
     end;
 
-    procedure RestoreJob(var JobArchive: Record "Job Archive")
+    procedure RestoreJob(var JobArchive: Record "Contrato Archive")
     var
-        Job: Record Job;
+        Contrato: Record Contrato;
         CommentLine: Record "Comment Line";
         ConfirmManagement: Codeunit "Confirm Management";
         RestoreArchivedJob: Boolean;
     begin
-        CheckJobRestorePermissions(Job, JobArchive);
+        CheckJobRestorePermissions(Contrato, JobArchive);
 
         RestoreArchivedJob := false;
         if ConfirmManagement.GetResponseOrDefault(
-            StrSubstNo(RestoreQst, Job.TableCaption(), JobArchive."No.", JobArchive."Version No."), true)
+            StrSubstNo(RestoreQst, Contrato.TableCaption(), JobArchive."No.", JobArchive."Version No."), true)
         then
             RestoreArchivedJob := true;
 
         if RestoreArchivedJob then begin
-            CommentLine.SetRange("Table Name", CommentLine."Table Name"::Job);
-            CommentLine.SetRange("No.", Job."No.");
+            CommentLine.SetRange("Table Name", CommentLine."Table Name"::Contrato);
+            CommentLine.SetRange("No.", Contrato."No.");
             CommentLine.DeleteAll();
 
-            Job.Delete();
-            OnRestoreJobOnAfterDeleteJob(Job);
+            Contrato.Delete();
+            OnRestoreJobOnAfterDeleteJob(Contrato);
 
-            Job.Init();
-            Job."No." := JobArchive."No.";
-            Job.TransferFields(JobArchive);
-            OnRestoreJobOnBeforeInsertJob(JobArchive, Job);
-            Job.Insert(true);
-            RecordLinkManagement.CopyLinks(JobArchive, Job);
-            Job.Modify(true);
+            Contrato.Init();
+            Contrato."No." := JobArchive."No.";
+            Contrato.TransferFields(JobArchive);
+            OnRestoreJobOnBeforeInsertJob(JobArchive, Contrato);
+            Contrato.Insert(true);
+            RecordLinkManagement.CopyLinks(JobArchive, Contrato);
+            Contrato.Modify(true);
 
-            RestoreComments(CommentLine."Table Name"::Job, JobArchive."No.", JobArchive."Version No.");
-            RestoreJobTasks(JobArchive, Job);
-            OnAfterRestoreJob(JobArchive, Job);
-            Message(RestoreMsg, Job.TableCaption(), JobArchive."No.");
+            RestoreComments(CommentLine."Table Name"::Contrato, JobArchive."No.", JobArchive."Version No.");
+            RestoreJobTasks(JobArchive, Contrato);
+            OnAfterRestoreJob(JobArchive, Contrato);
+            Message(RestoreMsg, Contrato.TableCaption(), JobArchive."No.");
         end;
     end;
 
-    local procedure RestoreJobTasks(var JobArchive: Record "Job Archive"; Job: Record Job)
+    local procedure RestoreJobTasks(var JobArchive: Record "Contrato Archive"; Contrato: Record Contrato)
     var
-        JobTask: Record "Job Task";
-        JobTaskDim: Record "Job Task Dimension";
-        JobTaskArchive: Record "Job Task Archive";
-        JobPlanningLine: Record "Job Planning Line";
+        JobTask: Record "Contrato Task";
+        JobTaskDim: Record "Contrato Task Dimension";
+        JobTaskArchive: Record "Contrato Task Archive";
+        JobPlanningLine: Record "Contrato Planning Line";
     begin
-        JobTask.SetRange("Job No.", Job."No.");
+        JobTask.SetRange("Contrato No.", Contrato."No.");
         JobTask.DeleteAll();
 
-        JobTaskDim.SetRange("Job No.", Job."No.");
+        JobTaskDim.SetRange("Contrato No.", Contrato."No.");
         if not JobTaskDim.IsEmpty() then
             JobTaskDim.DeleteAll();
 
-        JobPlanningLine.SetRange("Job No.", Job."No.");
+        JobPlanningLine.SetRange("Contrato No.", Contrato."No.");
         JobPlanningLine.DeleteAll();
 
-        JobTaskArchive.SetRange("Job No.", JobArchive."No.");
+        JobTaskArchive.SetRange("Contrato No.", JobArchive."No.");
         JobTaskArchive.SetRange("Version No.", JobArchive."Version No.");
         if JobTaskArchive.FindSet() then
             repeat
-                RestoreSingleJobTask(JobTaskArchive, Job);
+                RestoreSingleJobTask(JobTaskArchive, Contrato);
                 RestoreJobPlanningLines(JobTaskArchive);
             until JobTaskArchive.Next() = 0;
     end;
 
-    local procedure RestoreSingleJobTask(JobTaskArchive: Record "Job Task Archive"; Job: Record Job)
+    local procedure RestoreSingleJobTask(JobTaskArchive: Record "Contrato Task Archive"; Contrato: Record Contrato)
     var
-        JobTask: Record "Job Task";
-        JobTaskDimension: Record "Job Task Dimension";
+        JobTask: Record "Contrato Task";
+        JobTaskDimension: Record "Contrato Task Dimension";
     begin
-        JobTaskDimension.SetRange("Job No.", Job."No.");
-        JobTaskDimension.SetRange("Job Task No.", JobTaskArchive."Job Task No.");
+        JobTaskDimension.SetRange("Contrato No.", Contrato."No.");
+        JobTaskDimension.SetRange("Contrato Task No.", JobTaskArchive."Contrato Task No.");
         JobTaskDimension.DeleteAll();
 
         JobTask.Init();
@@ -242,13 +242,13 @@ codeunit 50221 "Contrato Archive Management"
         OnAfterRestoreSingleJobTask(JobTaskArchive, JobTask);
     end;
 
-    local procedure RestoreJobPlanningLines(var JobTaskArchive: Record "Job Task Archive")
+    local procedure RestoreJobPlanningLines(var JobTaskArchive: Record "Contrato Task Archive")
     var
-        JobPlanningLine: Record "Job Planning Line";
-        JobPlanningLineArchive: Record "Job Planning Line Archive";
+        JobPlanningLine: Record "Contrato Planning Line";
+        JobPlanningLineArchive: Record "Contrato Planning Line Archive";
     begin
-        JobPlanningLineArchive.SetRange("Job No.", JobTaskArchive."Job No.");
-        JobPlanningLineArchive.SetRange("Job Task No.", JobTaskArchive."Job Task No.");
+        JobPlanningLineArchive.SetRange("Contrato No.", JobTaskArchive."Contrato No.");
+        JobPlanningLineArchive.SetRange("Contrato Task No.", JobTaskArchive."Contrato Task No.");
         JobPlanningLineArchive.SetRange("Version No.", JobTaskArchive."Version No.");
         if JobPlanningLineArchive.FindSet() then
             repeat
@@ -262,34 +262,34 @@ codeunit 50221 "Contrato Archive Management"
             until JobPlanningLineArchive.Next() = 0;
     end;
 
-    local procedure CheckJobRestorePermissions(var Job: Record Job; var JobArchive: Record "Job Archive")
+    local procedure CheckJobRestorePermissions(var Contrato: Record Contrato; var JobArchive: Record "Contrato Archive")
     var
-        JobLedgerEntry: Record "Job Ledger Entry";
+        JobLedgerEntry: Record "Contrato Ledger Entry";
         SalesLine: Record "Sales Line";
     begin
-        if not Job.Get(JobArchive."No.") then
+        if not Contrato.Get(JobArchive."No.") then
             Error(MissingJobErr, JobArchive."No.");
 
-        if Job.Status = Job.Status::Completed then
-            Error(CompletedJobStatusErr, Job."No.");
+        if Contrato.Status = Contrato.Status::Completed then
+            Error(CompletedJobStatusErr, Contrato."No.");
 
-        JobLedgerEntry.SetRange("Job No.", Job."No.");
+        JobLedgerEntry.SetRange("Contrato No.", Contrato."No.");
         if not JobLedgerEntry.IsEmpty() then
-            Error(JobLedgerEntryExistErr, Job."No.");
+            Error(JobLedgerEntryExistErr, Contrato."No.");
 
-        SalesLine.SetRange("Job No.", Job."No.");
+        SalesLine.SetRange("Job No.", Contrato."No.");
         if not SalesLine.IsEmpty() then
-            Error(SalesInvoiceExistErr, Job."No.");
+            Error(SalesInvoiceExistErr, Contrato."No.");
 
-        OnAfterCheckJobRestorePermissions(JobArchive, Job);
+        OnAfterCheckJobRestorePermissions(JobArchive, Contrato);
     end;
 
     procedure GetNextVersionNo(TableId: Integer; DocNo: Code[20]) VersionNo: Integer
     var
-        JobArchive: Record "Job Archive";
+        JobArchive: Record "Contrato Archive";
     begin
         case TableId of
-            DATABASE::Job:
+            DATABASE::Contrato:
                 begin
                     JobArchive.LockTable();
                     JobArchive.SetRange("No.", DocNo);
@@ -302,77 +302,77 @@ codeunit 50221 "Contrato Archive Management"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnStoreJobOnBeforeInsertJobArchive(Job: Record Job; var JobArchive: Record "Job Archive")
+    local procedure OnStoreJobOnBeforeInsertJobArchive(Contrato: Record Contrato; var JobArchive: Record "Contrato Archive")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnStoreJobOnBeforeInsertJobTaskArchive(JobTask: Record "Job Task"; var JobTaskArchive: Record "Job Task Archive")
+    local procedure OnStoreJobOnBeforeInsertJobTaskArchive(JobTask: Record "Contrato Task"; var JobTaskArchive: Record "Contrato Task Archive")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnStoreJobOnBeforeInsertJobPlanningLineArchive(JobPlanningLine: Record "Job Planning Line"; var JobPlanningLineArchive: Record "Job Planning Line Archive")
+    local procedure OnStoreJobOnBeforeInsertJobPlanningLineArchive(JobPlanningLine: Record "Contrato Planning Line"; var JobPlanningLineArchive: Record "Contrato Planning Line Archive")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterStoreJob(Job: Record Job; var JobArchive: Record "Job Archive")
+    local procedure OnAfterStoreJob(Contrato: Record Contrato; var JobArchive: Record "Contrato Archive")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterRestoreJob(JobArchive: Record "Job Archive"; var Job: Record Job)
+    local procedure OnAfterRestoreJob(JobArchive: Record "Contrato Archive"; var Contrato: Record Contrato)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnRestoreJobOnAfterDeleteJob(Job: Record Job)
+    local procedure OnRestoreJobOnAfterDeleteJob(Contrato: Record Contrato)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterRestoreSingleJobTask(JobTaskArchive: Record "Job Task Archive"; var JobTask: Record "Job Task")
+    local procedure OnAfterRestoreSingleJobTask(JobTaskArchive: Record "Contrato Task Archive"; var JobTask: Record "Contrato Task")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterRestoreSingleJobPlanningLine(JobPlanningLineArchive: Record "Job Planning Line Archive"; var JobPlanningLine: Record "Job Planning Line")
+    local procedure OnAfterRestoreSingleJobPlanningLine(JobPlanningLineArchive: Record "Contrato Planning Line Archive"; var JobPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAddCalculatedValuesToJobTaskArchiveOnBeforeModifyJobTaskArchive(var JobTask: Record "Job Task"; var JobTaskArchive: Record "Job Task Archive")
+    local procedure OnAddCalculatedValuesToJobTaskArchiveOnBeforeModifyJobTaskArchive(var JobTask: Record "Contrato Task"; var JobTaskArchive: Record "Contrato Task Archive")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAddCalculatedValuesToJobPlanningLineArchiveOnBeforeModifyJobPlanningLineArchive(var JobPlanningLine: Record "Job Planning Line"; var JobPlanningLineArchive: Record "Job Planning Line Archive")
+    local procedure OnAddCalculatedValuesToJobPlanningLineArchiveOnBeforeModifyJobPlanningLineArchive(var JobPlanningLine: Record "Contrato Planning Line"; var JobPlanningLineArchive: Record "Contrato Planning Line Archive")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCheckJobRestorePermissions(JobArchive: Record "Job Archive"; var Job: Record Job)
+    local procedure OnAfterCheckJobRestorePermissions(JobArchive: Record "Contrato Archive"; var Contrato: Record Contrato)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnRestoreSingleJobTaskOnBeforeInsertJobTask(var JobTaskArchive: Record "Job Task Archive"; var JobTask: Record "Job Task")
+    local procedure OnRestoreSingleJobTaskOnBeforeInsertJobTask(var JobTaskArchive: Record "Contrato Task Archive"; var JobTask: Record "Contrato Task")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnRestoreJobPlanningLinesOnBeforeInsertJobPlanningLine(var JobPlanningLineArchive: Record "Job Planning Line Archive"; var JobPlanningLine: Record "Job Planning Line")
+    local procedure OnRestoreJobPlanningLinesOnBeforeInsertJobPlanningLine(var JobPlanningLineArchive: Record "Contrato Planning Line Archive"; var JobPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnRestoreJobOnBeforeInsertJob(JobArchive: Record "Job Archive"; var Job: Record Job)
+    local procedure OnRestoreJobOnBeforeInsertJob(JobArchive: Record "Contrato Archive"; var Contrato: Record Contrato)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnStoreJobOnBeforeStoreJobTaskAndJobPlanningLine(var JobTask: Record "Job Task"; var JobPlanningLine: Record "Job Planning Line"; var Job: Record Job)
+    local procedure OnStoreJobOnBeforeStoreJobTaskAndJobPlanningLine(var JobTask: Record "Contrato Task"; var JobPlanningLine: Record "Contrato Planning Line"; var Contrato: Record Contrato)
     begin
     end;
 }

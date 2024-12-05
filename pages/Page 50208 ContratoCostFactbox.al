@@ -319,7 +319,7 @@ page 50208 "Contrato Cost Factbox"
     trigger OnAfterGetCurrRecord()
     begin
         Clear(JobCalcStatistics);
-        //JobCalcStatistics.JobCalculateCommonFilters(Rec);
+        JobCalcStatistics.ContratoCalculateCommonFilters(Rec);
         JobCalcStatistics.CalculateAmounts();
         JobCalcStatistics.GetLCYCostAmounts(CL);
         JobCalcStatistics.GetLCYPriceAmounts(PL);

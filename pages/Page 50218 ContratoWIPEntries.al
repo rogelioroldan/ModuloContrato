@@ -3,7 +3,7 @@ page 50218 "Contrato WIP Entries"
     AdditionalSearchTerms = 'Contrato WIP Entries';
     ApplicationArea = Jobs;
     Caption = 'Project WIP Entries';
-    DataCaptionFields = "Job No.";
+    DataCaptionFields = "Contrato No.";
     Editable = false;
     PageType = List;
     SourceTable = "Contrato WIP Entry";
@@ -26,17 +26,17 @@ page 50218 "Contrato WIP Entries"
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the document number you entered in the Document No. field on the Options FastTab in the Project Calculate WIP batch job.';
                 }
-                field("Contrato No."; Rec."Job No.")
+                field("Contrato No."; Rec."Contrato No.")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the number of the related project.';
                 }
-                field("Contrato Complete"; Rec."Job Complete")
+                field("Contrato Complete"; Rec."Contrato Complete")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies whether the Project WIP Entry was created for a project with a Completed status.';
                 }
-                field("Contrato WIP Total Entry No."; Rec."Job WIP Total Entry No.")
+                field("Contrato WIP Total Entry No."; Rec."Contrato WIP Total Entry No.")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the entry number of the WIP total.';
@@ -176,8 +176,8 @@ page 50218 "Contrato WIP Entries"
                     ApplicationArea = Jobs;
                     Caption = 'WIP Totals';
                     Image = EntriesList;
-                    RunObject = Page "Job WIP Totals";
-                    RunPageLink = "Entry No." = field("Job WIP Total Entry No.");
+                    RunObject = Page "Contrato WIP Totals";
+                    RunPageLink = "Entry No." = field("Contrato WIP Total Entry No.");
                     ToolTip = 'View the project''s WIP totals.';
                 }
                 action(Dimensions)

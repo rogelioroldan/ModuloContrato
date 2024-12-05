@@ -7,7 +7,7 @@ tableextension 50200 "Tracking Specification Ext" extends "Tracking Specificatio
             ContratoPlanningLine."No.", ContratoPlanningLine.Description, ContratoPlanningLine."Location Code", ContratoPlanningLine."Variant Code",
             ContratoPlanningLine."Bin Code", ContratoPlanningLine."Qty. per Unit of Measure");
         SetSource(
-            Database::"Contrato Planning Line", ContratoPlanningLine.Status.AsInteger(), ContratoPlanningLine."Job No.", ContratoPlanningLine."Job Contract Entry No.", '', 0);
+            Database::"Contrato Planning Line", ContratoPlanningLine.Status.AsInteger(), ContratoPlanningLine."Contrato No.", ContratoPlanningLine."Contrato Contract Entry No.", '', 0);
         SetQuantities(
             ContratoPlanningLine."Remaining Qty. (Base)", ContratoPlanningLine."Remaining Qty.", ContratoPlanningLine."Remaining Qty. (Base)",
             ContratoPlanningLine."Remaining Qty.", ContratoPlanningLine."Remaining Qty. (Base)",

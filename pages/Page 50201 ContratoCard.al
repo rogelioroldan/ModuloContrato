@@ -239,8 +239,8 @@ page 50201 "Contrato Card"
             {
                 ApplicationArea = All;
                 Caption = 'Planeación';
-                SubPageLink = "Job No." = field("No.");
-                SubPageView = sorting("Job Task No.")
+                SubPageLink = "Contrato No." = field("No.");
+                SubPageView = sorting("Contrato Task No.")
                               order(ascending);
                 UpdatePropagation = Both;
                 Editable = JobTaskLinesEditable;
@@ -978,7 +978,7 @@ page 50201 "Contrato Card"
 
                         Rec.TestField("No.");
                         JobPlanningLine.FilterGroup(2);
-                        JobPlanningLine.SetRange("Job No.", Rec."No.");
+                        JobPlanningLine.SetRange("Contrato No.", Rec."No.");
                         JobPlanningLine.FilterGroup(0);
                         JobPlanningLines.SetJobTaskNoVisible(true);
                         JobPlanningLines.SetTableView(JobPlanningLine);
@@ -1112,8 +1112,8 @@ page 50201 "Contrato Card"
                     Caption = '&WIP Entries';
                     Image = WIPEntries;
                     RunObject = Page "Contrato WIP Entries";
-                    RunPageLink = "Job No." = field("No.");
-                    RunPageView = sorting("Job No.", "Contrato Posting Group", "WIP Posting Date")
+                    RunPageLink = "Contrato No." = field("No.");
+                    RunPageView = sorting("Contrato No.", "Contrato Posting Group", "WIP Posting Date")
                                   order(descending);
                     ToolTip = 'View entries for the project that are posted as work in process.';
                 }
@@ -1408,8 +1408,8 @@ page 50201 "Contrato Card"
                     Caption = 'Ledger E&ntries';
                     Image = JobLedger;
                     RunObject = Page "Contrato Ledger Entries";
-                    RunPageLink = "Job No." = field("No.");
-                    RunPageView = sorting("Job No.", "Job Task No.", "Entry Type", "Posting Date")
+                    RunPageLink = "Contrato No." = field("No.");
+                    RunPageView = sorting("Contrato No.", "Contrato Task No.", "Entry Type", "Posting Date")
                                   order(descending);
                     ShortCutKey = 'Ctrl+F7';
                     ToolTip = 'View the history of transactions that have been posted for the selected record.';

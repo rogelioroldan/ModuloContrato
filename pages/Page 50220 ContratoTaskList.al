@@ -2,7 +2,7 @@ page 50220 "Contrato Task List"
 {
     Caption = 'Project Task List';
     CardPageID = "Contrato Task Card";
-    DataCaptionFields = "Job No.";
+    DataCaptionFields = "Contrato No.";
     Editable = false;
     PageType = List;
     SourceTable = "Contrato Task";
@@ -14,14 +14,14 @@ page 50220 "Contrato Task List"
             repeater(Control1)
             {
                 ShowCaption = false;
-                field("Contrato No."; Rec."Job No.")
+                field("Contrato No."; Rec."Contrato No.")
                 {
                     ApplicationArea = Jobs;
                     Style = Strong;
                     StyleExpr = StyleIsStrong;
                     ToolTip = 'Specifies the number of the related project.';
                 }
-                field("Contrato Task No."; Rec."Job Task No.")
+                field("Contrato Task No."; Rec."Contrato Task No.")
                 {
                     ApplicationArea = Jobs;
                     Style = Strong;
@@ -33,7 +33,7 @@ page 50220 "Contrato Task List"
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies a description of the project task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the project planning line.';
                 }
-                field("Contrato Task Type"; Rec."Job Task Type")
+                field("Contrato Task Type"; Rec."Contrato Task Type")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the purpose of the account. Newly created accounts are automatically assigned the Posting account type, but you can change this. Choose the field to select one of the following five options:';
@@ -99,8 +99,8 @@ page 50220 "Contrato Task List"
                         Caption = 'Dimensions-Single';
                         Image = Dimensions;
                         RunObject = Page "Contrato Task Dimensions";
-                        RunPageLink = "Job No." = field("Job No."),
-                                      "Job Task No." = field("Job Task No.");
+                        RunPageLink = "Contrato No." = field("Contrato No."),
+                                      "Contrato Task No." = field("Contrato Task No.");
                         ShortCutKey = 'Alt+D';
                         ToolTip = 'View or edit the single set of dimensions that are set up for the selected record.';
                     }
@@ -129,8 +129,8 @@ page 50220 "Contrato Task List"
                     Caption = 'Statistics';
                     Image = StatisticsDocument;
                     RunObject = Page "Contrato Task Statistics";
-                    RunPageLink = "Job No." = field("Job No."),
-                                  "Job Task No." = field("Job Task No.");
+                    RunPageLink = "Contrato No." = field("Contrato No."),
+                                  "Contrato Task No." = field("Contrato Task No.");
                     ToolTip = 'View statistics for the project task.';
                 }
             }
@@ -278,7 +278,7 @@ page 50220 "Contrato Task List"
                     Contrato: Record Contrato;
                     CopyJobTasks: Page "Copy Contrato Tasks";
                 begin
-                    if Contrato.Get(Rec."Job No.") then begin
+                    if Contrato.Get(Rec."Contrato No.") then begin
                         CopyJobTasks.SetToJob(Contrato);
                         CopyJobTasks.RunModal();
                     end;
@@ -297,7 +297,7 @@ page 50220 "Contrato Task List"
                     Contrato: Record Contrato;
                     CopyJobTasks: Page "Copy Contrato Tasks";
                 begin
-                    if Contrato.Get(Rec."Job No.") then begin
+                    if Contrato.Get(Rec."Contrato No.") then begin
                         CopyJobTasks.SetFromJob(Contrato);
                         CopyJobTasks.RunModal();
                     end;
@@ -409,7 +409,7 @@ page 50220 "Contrato Task List"
 
     trigger OnAfterGetRecord()
     begin
-        StyleIsStrong := Rec."Job Task Type" <> Rec."Job Task Type"::Posting;
+        StyleIsStrong := Rec."Contrato Task Type" <> Rec."Contrato Task Type"::Posting;
     end;
 
     var

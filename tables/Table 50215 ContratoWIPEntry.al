@@ -11,7 +11,7 @@ table 50215 "Contrato WIP Entry"
         {
             Caption = 'Entry No.';
         }
-        field(2; "Job No."; Code[20])
+        field(2; "Contrato No."; Code[20])
         {
             Caption = 'Project No.';
             TableRelation = Contrato;
@@ -39,7 +39,7 @@ table 50215 "Contrato WIP Entry"
             Caption = 'Project Posting Group';
             TableRelation = "Contrato Posting Group";
         }
-        field(8; Type; Enum "Job WIP Buffer Type")
+        field(8; Type; Enum "Contrato WIP Buffer Type")
         {
             Caption = 'Type';
         }
@@ -52,16 +52,16 @@ table 50215 "Contrato WIP Entry"
         {
             Caption = 'WIP Method Used';
             Editable = false;
-            TableRelation = "Job WIP Method";
+            TableRelation = "Contrato WIP Method";
         }
-        field(11; "Job Complete"; Boolean)
+        field(11; "Contrato Complete"; Boolean)
         {
             Caption = 'Project Complete';
         }
-        field(12; "Job WIP Total Entry No."; Integer)
+        field(12; "Contrato WIP Total Entry No."; Integer)
         {
             Caption = 'Project WIP Total Entry No.';
-            TableRelation = "Job WIP Total";
+            TableRelation = "Contrato WIP Total";
         }
         field(13; Reverse; Boolean)
         {
@@ -72,7 +72,7 @@ table 50215 "Contrato WIP Entry"
         {
             Caption = 'WIP Posting Method Used';
             OptionCaption = 'Per Project,Per Project Ledger Entry';
-            OptionMembers = "Per Job","Per Job Ledger Entry";
+            OptionMembers = "Per Contrato","Per Contrato Ledger Entry";
         }
         field(60; "Global Dimension 1 Code"; Code[20])
         {
@@ -159,14 +159,14 @@ table 50215 "Contrato WIP Entry"
         {
             Clustered = true;
         }
-        key(Key2; "Job No.", "Contrato Posting Group", "WIP Posting Date", Type, "Job Complete")
+        key(Key2; "Contrato No.", "Contrato Posting Group", "WIP Posting Date", Type, "Contrato Complete")
         {
             SumIndexFields = "WIP Entry Amount";
         }
         key(Key3; "G/L Account No.")
         {
         }
-        key(Key4; "Job No.", "Job Complete", Type)
+        key(Key4; "Contrato No.", "Contrato Complete", Type)
         {
             SumIndexFields = "WIP Entry Amount";
         }
@@ -179,10 +179,10 @@ table 50215 "Contrato WIP Entry"
     var
         DimMgt: Codeunit DimensionManagement;
 
-    procedure DeleteEntriesForJob(Job: Record Contrato)
+    procedure DeleteEntriesForJob(Contrato: Record Contrato)
     begin
-        SetCurrentKey("Job No.");
-        SetRange("Job No.", Job."No.");
+        SetCurrentKey("Contrato No.");
+        SetRange("Contrato No.", Contrato."No.");
         if not IsEmpty() then
             DeleteAll(true);
     end;

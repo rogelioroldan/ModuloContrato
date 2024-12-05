@@ -13,13 +13,13 @@ page 50226 "Contrato Planning Lines Part"
             repeater(Control1)
             {
                 ShowCaption = false;
-                field("Contrato No."; Rec."Job No.")
+                field("Contrato No."; Rec."Contrato No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the number of the related project.';
                     Visible = false;
                 }
-                field("Contrato Task No."; Rec."Job Task No.")
+                field("Contrato Task No."; Rec."Contrato Task No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the number of the related project task.';
@@ -473,7 +473,7 @@ page 50226 "Contrato Planning Lines Part"
                     ToolTip = 'Specifies the lot number that is applied to the posted item if the planning line was created from the posting of a project journal line.';
                     Visible = false;
                 }
-                field("Contrato Contract Entry No."; Rec."Job Contract Entry No.")
+                field("Contrato Contract Entry No."; Rec."Contrato Contract Entry No.")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the entry number of the project planning line that the sales line is linked to.';
@@ -541,8 +541,8 @@ page 50226 "Contrato Planning Lines Part"
                     Caption = '&Open Contrato Journal';
                     Image = Journals;
                     RunObject = Page "Contrato Journal";
-                    RunPageLink = "Job No." = field("Job No."),
-                                  "Job Task No." = field("Job Task No.");
+                    RunPageLink = "Contrato No." = field("Contrato No."),
+                                  "Contrato Task No." = field("Contrato Task No.");
                     ToolTip = 'Open the project journal, for example, to post usage for a project.';
                 }
                 separator(Action16)
@@ -686,8 +686,8 @@ page 50226 "Contrato Planning Lines Part"
         Contrato: Record Contrato;
     begin
         Rec.FilterGroup := 2;
-        if Rec.GetFilter("Job No.") <> '' then
-            // if Contrato.Get(Rec.GetRangeMin("Job No.")) then
+        if Rec.GetFilter("Contrato No.") <> '' then
+            // if Contrato.Get(Rec.GetRangeMin("Contrato No.")) then
             //     CurrPage.Editable(not (Contrato.Blocked = Contrato.Blocked::All));
         Rec.FilterGroup := 0;
     end;
@@ -823,9 +823,9 @@ page 50226 "Contrato Planning Lines Part"
         TypeFieldEditable := false;
         IsHandled := false;
         if Rec.Type = Rec.Type::Text then begin
-            JobPlanningLineInvoice.SetRange("Job No.", Rec."Job No.");
-            JobPlanningLineInvoice.SetRange("Job Task No.", Rec."Job Task No.");
-            JobPlanningLineInvoice.SetRange("Job Planning Line No.", Rec."Line No.");
+            JobPlanningLineInvoice.SetRange("Contrato No.", Rec."Contrato No.");
+            JobPlanningLineInvoice.SetRange("Contrato Task No.", Rec."Contrato Task No.");
+            JobPlanningLineInvoice.SetRange("Contrato Planning Line No.", Rec."Line No.");
             OnIsTypeFieldEditableOnAfterFilterJobPlanningLineInvoice(JobPlanningLineInvoice, Rec, TypeFieldEditable, IsHandled);
             if IsHandled then
                 exit(TypeFieldEditable);

@@ -20,13 +20,13 @@ table 50220 "Contrato WIP Warning"
         field(3; "Contrato Task No."; Code[20])
         {
             Caption = 'Contrato Task No.';
-            TableRelation = "Contrato Task"."Job Task No.";
+            TableRelation = "Contrato Task"."Contrato Task No.";
         }
         field(4; "Contrato WIP Total Entry No."; Integer)
         {
             Caption = 'Contrato WIP Total Entry No.';
             Editable = false;
-            TableRelation = "Job WIP Total";
+            TableRelation = "Contrato WIP Total";
         }
         field(5; "Warning Message"; Text[250])
         {

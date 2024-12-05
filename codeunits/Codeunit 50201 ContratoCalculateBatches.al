@@ -30,8 +30,8 @@ codeunit 50201 "Contrato Calculate Batches"
         JT.LockTable();
         JT := JT2;
         JT.Find();
-        JobPlanningLine.SetRange("Job No.", JT."Job No.");
-        JobPlanningLine.SetRange("Job Task No.", JT."Job Task No.");
+        JobPlanningLine.SetRange("Contrato No.", JT."Contrato No.");
+        JobPlanningLine.SetRange("Contrato Task No.", JT."Contrato Task No.");
         JobPlanningLine.SetFilter("Planning Date", JT2.GetFilter("Planning Date Filter"));
         if JobPlanningLine.Find('-') then
             repeat
@@ -47,11 +47,11 @@ codeunit 50201 "Contrato Calculate Batches"
         JobPlanningLine2: Record "Contrato Planning Line";
         NextLineNo: Integer;
     begin
-        JobPlanningLine.TestField("Job No.");
-        JobPlanningLine.TestField("Job Task No.");
+        JobPlanningLine.TestField("Contrato No.");
+        JobPlanningLine.TestField("Contrato Task No.");
         JobPlanningLine2 := JobPlanningLine;
-        JobPlanningLine2.SetRange("Job No.", JobPlanningLine2."Job No.");
-        JobPlanningLine2.SetRange("Job Task No.", JobPlanningLine2."Job Task No.");
+        JobPlanningLine2.SetRange("Contrato No.", JobPlanningLine2."Contrato No.");
+        JobPlanningLine2.SetRange("Contrato Task No.", JobPlanningLine2."Contrato Task No.");
         NextLineNo := JobPlanningLine."Line No." + 10000;
         if JobPlanningLine2.Next() <> 0 then
             NextLineNo := (JobPlanningLine."Line No." + JobPlanningLine2."Line No.") div 2;
@@ -74,10 +74,10 @@ codeunit 50201 "Contrato Calculate Batches"
         if JobLedgEntry.Find('-') then
             repeat
                 OnBeforeTransferToPlanningLine(JobLedgEntry);
-                JobLedgEntry.TestField("Job No.");
-                JobLedgEntry.TestField("Job Task No.");
+                JobLedgEntry.TestField("Contrato No.");
+                JobLedgEntry.TestField("Contrato Task No.");
                 JobLedgEntry.TestField("Entry Type", JobLedgEntry."Entry Type"::Usage);
-                JobLedgEntry."Line Type" := Enum::"Job Line Type".FromInteger(LineType);
+                JobLedgEntry."Line Type" := Enum::"Contrato Line Type".FromInteger(LineType);
                 Clear(JobPostLine);
                 JobPostLine.InsertPlLineFromLedgEntry(JobLedgEntry);
             until JobLedgEntry.Next() = 0;
@@ -87,7 +87,7 @@ codeunit 50201 "Contrato Calculate Batches"
 
     procedure ChangePlanningDates(JT: Record "Contrato Task"; ScheduleLine: Boolean; ContractLine: Boolean; PeriodLength: DateFormula; FixedDate: Date; StartingDate: Date; EndingDate: Date)
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobPlanningLine: Record "Contrato Planning Line";
     begin
         JobPlanningLine.LockTable();
@@ -97,15 +97,15 @@ codeunit 50201 "Contrato Calculate Batches"
             EndingDate := DMY2Date(31, 12, 9999);
         if EndingDate < StartingDate then
             Error(Text003);
-        JT.TestField("Job No.");
-        JT.TestField("Job Task No.");
-        Job.Get(JT."Job No.");
-        // if Job.Blocked = Job.Blocked::All then
-        //     Job.TestBlocked();
+        JT.TestField("Contrato No.");
+        JT.TestField("Contrato Task No.");
+        Contrato.Get(JT."Contrato No.");
+        if Contrato.Blocked = Contrato.Blocked::All then
+            Contrato.TestBlocked();
         JT.Find();
-        JobPlanningLine.SetCurrentKey("Job No.", "Job Task No.");
-        JobPlanningLine.SetRange("Job No.", Job."No.");
-        JobPlanningLine.SetRange("Job Task No.", JT."Job Task No.");
+        JobPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
+        JobPlanningLine.SetRange("Contrato No.", Contrato."No.");
+        JobPlanningLine.SetRange("Contrato Task No.", JT."Contrato Task No.");
 
         if ScheduleLine and not ContractLine then
             JobPlanningLine.SetRange("Schedule Line", true);
@@ -133,7 +133,7 @@ codeunit 50201 "Contrato Calculate Batches"
 
     procedure ChangeCurrencyDates(JT: Record "Contrato Task"; scheduleLine: Boolean; ContractLine: Boolean; PeriodLength: DateFormula; FixedDate: Date; StartingDate: Date; EndingDate: Date)
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobPlanningLine: Record "Contrato Planning Line";
         ForceDateUpdate: Boolean;
     begin
@@ -141,15 +141,15 @@ codeunit 50201 "Contrato Calculate Batches"
             EndingDate := DMY2Date(31, 12, 9999);
         if EndingDate < StartingDate then
             Error(Text003);
-        JT.TestField("Job No.");
-        JT.TestField("Job Task No.");
-        Job.Get(JT."Job No.");
-        // if Job.Blocked = Job.Blocked::All then
-        //     Job.TestBlocked();
+        JT.TestField("Contrato No.");
+        JT.TestField("Contrato Task No.");
+        Contrato.Get(JT."Contrato No.");
+        if Contrato.Blocked = Contrato.Blocked::All then
+            Contrato.TestBlocked();
         JT.Find();
-        JobPlanningLine.SetCurrentKey("Job No.", "Job Task No.");
-        JobPlanningLine.SetRange("Job No.", Job."No.");
-        JobPlanningLine.SetRange("Job Task No.", JT."Job Task No.");
+        JobPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
+        JobPlanningLine.SetRange("Contrato No.", Contrato."No.");
+        JobPlanningLine.SetRange("Contrato Task No.", JT."Contrato Task No.");
 
         if scheduleLine and not ContractLine then
             JobPlanningLine.SetRange("Schedule Line", true);
@@ -191,7 +191,7 @@ codeunit 50201 "Contrato Calculate Batches"
 
     procedure CreateJT(JobPlanningLine: Record "Contrato Planning Line")
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobTask: Record "Contrato Task";
         IsHandled: Boolean;
     begin
@@ -204,10 +204,10 @@ codeunit 50201 "Contrato Calculate Batches"
             exit;
         if not JobPlanningLine."Schedule Line" then
             exit;
-        Job.Get(JobPlanningLine."Job No.");
-        JobTask.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
-        JobDiffBuffer[1]."Job No." := JobPlanningLine."Job No.";
-        JobDiffBuffer[1]."Job Task No." := JobPlanningLine."Job Task No.";
+        Contrato.Get(JobPlanningLine."Contrato No.");
+        JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
+        JobDiffBuffer[1]."Contrato No." := JobPlanningLine."Contrato No.";
+        JobDiffBuffer[1]."Job Task No." := JobPlanningLine."Contrato Task No.";
         JobDiffBuffer[1].Type := JobPlanningLine.Type;
         JobDiffBuffer[1]."No." := JobPlanningLine."No.";
         JobDiffBuffer[1]."Location Code" := JobPlanningLine."Location Code";
@@ -248,9 +248,9 @@ codeunit 50201 "Contrato Calculate Batches"
 
         if JobDiffBuffer[1].Find('-') then
             repeat
-                JobLedgEntry.SetCurrentKey("Job No.", "Job Task No.");
-                JobLedgEntry.SetRange("Job No.", JobDiffBuffer[1]."Job No.");
-                JobLedgEntry.SetRange("Job Task No.", JobDiffBuffer[1]."Job Task No.");
+                JobLedgEntry.SetCurrentKey("Contrato No.", "Contrato Task No.");
+                JobLedgEntry.SetRange("Contrato No.", JobDiffBuffer[1]."Contrato No.");
+                JobLedgEntry.SetRange("Contrato Task No.", JobDiffBuffer[1]."Job Task No.");
                 JobLedgEntry.SetRange("Entry Type", JobLedgEntry."Entry Type"::Usage);
                 JobLedgEntry.SetRange(Type, JobDiffBuffer[1].Type);
                 JobLedgEntry.SetRange("No.", JobDiffBuffer[1]."No.");
@@ -287,8 +287,8 @@ codeunit 50201 "Contrato Calculate Batches"
                     JobJnlLine."Source Code" := JobJnlTemplate."Source Code";
                     JobJnlLine."Reason Code" := JobJnlBatch."Reason Code";
                     JobJnlLine.DontCheckStdCost();
-                    JobJnlLine.Validate("Job No.", JobDiffBuffer[1]."Job No.");
-                    JobJnlLine.Validate("Job Task No.", JobDiffBuffer[1]."Job Task No.");
+                    JobJnlLine.Validate("Contrato No.", JobDiffBuffer[1]."Contrato No.");
+                    JobJnlLine.Validate("Contrato Task No.", JobDiffBuffer[1]."Job Task No.");
                     JobJnlLine.Validate("Posting Date", PostingDate);
                     JobJnlLine.Validate(Type, JobDiffBuffer[1].Type);
                     JobJnlLine.Validate("No.", JobDiffBuffer[1]."No.");
@@ -335,7 +335,7 @@ codeunit 50201 "Contrato Calculate Batches"
             Message(Text007, NoOfInvoices);
     end;
 
-    procedure CalculateActualToBudget(var Job: Record Contrato; JT: Record "Contrato Task"; var JobDiffBuffer2: Record "Contrato Difference Buffer"; var JobDiffBuffer3: Record "Contrato Difference Buffer"; CurrencyType: Option LCY,FCY)
+    procedure CalculateActualToBudget(var Contrato: Record Contrato; JT: Record "Contrato Task"; var JobDiffBuffer2: Record "Contrato Difference Buffer"; var JobDiffBuffer3: Record "Contrato Difference Buffer"; CurrencyType: Option LCY,FCY)
     var
         JobPlanningLine: Record "Contrato Planning Line";
         JobLedgEntry: Record "Contrato Ledger Entry";
@@ -350,13 +350,13 @@ codeunit 50201 "Contrato Calculate Batches"
         JobDiffBuffer3.DeleteAll();
 
         JT.Find();
-        JobPlanningLine.SetRange("Job No.", JT."Job No.");
-        JobPlanningLine.SetRange("Job Task No.", JT."Job Task No.");
-        JobPlanningLine.SetFilter("Planning Date", Job.GetFilter("Planning Date Filter"));
+        JobPlanningLine.SetRange("Contrato No.", JT."Contrato No.");
+        JobPlanningLine.SetRange("Contrato Task No.", JT."Contrato Task No.");
+        JobPlanningLine.SetFilter("Planning Date", Contrato.GetFilter("Planning Date Filter"));
 
-        JobLedgEntry.SetRange("Job No.", JT."Job No.");
-        JobLedgEntry.SetRange("Job Task No.", JT."Job Task No.");
-        JobLedgEntry.SetFilter("Posting Date", Job.GetFilter("Posting Date Filter"));
+        JobLedgEntry.SetRange("Contrato No.", JT."Contrato No.");
+        JobLedgEntry.SetRange("Contrato Task No.", JT."Contrato Task No.");
+        JobLedgEntry.SetFilter("Posting Date", Contrato.GetFilter("Posting Date Filter"));
 
         if JobPlanningLine.Find('-') then
             repeat
@@ -448,7 +448,7 @@ codeunit 50201 "Contrato Calculate Batches"
         OnAfterInsertDiffBuffer(JobLedgEntry, JobPlanningLine, JobDiffBuffer, LineType, CurrencyType);
     end;
 
-    procedure GetCurrencyCode(var Job: Record Contrato; Type: Option "0","1","2","3"; CurrencyType: Option "Local Currency","Foreign Currency"): Text[50]
+    procedure GetCurrencyCode(var Contrato: Record Contrato; Type: Option "0","1","2","3"; CurrencyType: Option "Local Currency","Foreign Currency"): Text[50]
     var
         GLSetup: Record "General Ledger Setup";
         CurrencyCode: Code[20];
@@ -457,8 +457,8 @@ codeunit 50201 "Contrato Calculate Batches"
         if CurrencyType = CurrencyType::"Local Currency" then
             CurrencyCode := GLSetup."LCY Code"
         else
-            if Job."Currency Code" <> '' then
-                CurrencyCode := Job."Currency Code"
+            if Contrato."Currency Code" <> '' then
+                CurrencyCode := Contrato."Currency Code"
             else
                 CurrencyCode := GLSetup."LCY Code";
         exit(SelectStr(Type + 1, Text009) + ' (' + CurrencyCode + ')');

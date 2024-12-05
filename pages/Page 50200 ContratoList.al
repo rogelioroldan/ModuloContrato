@@ -168,7 +168,7 @@ page 50200 "Contrato List"
                     Caption = 'Contrato Task &Lines';
                     Image = TaskList;
                     RunObject = Page "Contrato Task Lines";
-                    RunPageLink = "Job No." = field("No.");
+                    RunPageLink = "Contrato No." = field("No.");
                     ToolTip = 'Plan how you want to set up your planning information. In this window you can specify the tasks involved in a project. To start planning a project or to post usage for a project, you must set up at least one project task.';
                 }
                 group("&Dimensions")
@@ -210,7 +210,7 @@ page 50200 "Contrato List"
                     ApplicationArea = All;
                     Caption = '&Statistics';
                     Image = Statistics;
-                    RunObject = Page "Job Statistics";
+                    RunObject = Page "Contrato Statistics";
                     RunPageLink = "No." = field("No.");
                     ShortCutKey = 'F7';
                     ToolTip = 'View this project''s statistics.';
@@ -236,7 +236,7 @@ page 50200 "Contrato List"
                     Caption = 'Co&mments';
                     Image = ViewComments;
                     RunObject = Page "Comment Sheet";
-                    RunPageLink = "Table Name" = const(Job),
+                    RunPageLink = "Table Name" = const(Contrato),
                                   "No." = field("No.");
                     ToolTip = 'View or add comments for the record.';
                 }
@@ -251,8 +251,8 @@ page 50200 "Contrato List"
                     Caption = '&WIP Entries';
                     Image = WIPEntries;
                     RunObject = Page "Contrato WIP Entries";
-                    RunPageLink = "Job No." = field("No.");
-                    RunPageView = sorting("Job No.", "Contrato Posting Group", "WIP Posting Date")
+                    RunPageLink = "Contrato No." = field("No.");
+                    RunPageView = sorting("Contrato No.", "Contrato Posting Group", "WIP Posting Date")
                                   order(descending);
                     ToolTip = 'View entries for the project that are posted as work in process.';
                 }
@@ -261,9 +261,9 @@ page 50200 "Contrato List"
                     ApplicationArea = All;
                     Caption = 'WIP &G/L Entries';
                     Image = WIPLedger;
-                    RunObject = Page "Job WIP G/L Entries";
-                    RunPageLink = "Job No." = field("No.");
-                    RunPageView = sorting("Job No.")
+                    RunObject = Page "Contrato WIP G/L Entries";
+                    RunPageLink = "Contrato No." = field("No.");
+                    RunPageView = sorting("Contrato No.")
                                   order(descending);
                     ToolTip = 'View the project''s WIP G/L entries.';
                 }
@@ -283,8 +283,8 @@ page 50200 "Contrato List"
                     Caption = '&Resource';
                     Image = Resource;
                     Visible = not ExtendedPriceEnabled;
-                    RunObject = Page "Job Resource Prices";
-                    RunPageLink = "Job No." = field("No.");
+                    RunObject = Page "Contrato Resource Prices";
+                    RunPageLink = "Contrato No." = field("No.");
                     ToolTip = 'View this project''s resource prices.';
                     ObsoleteState = Pending;
                     ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation.';
@@ -296,8 +296,8 @@ page 50200 "Contrato List"
                     Caption = '&Item';
                     Image = Item;
                     Visible = not ExtendedPriceEnabled;
-                    RunObject = Page "Job Item Prices";
-                    RunPageLink = "Job No." = field("No.");
+                    RunObject = Page "Contrato Item Prices";
+                    RunPageLink = "Contrato No." = field("No.");
                     ToolTip = 'View this project''s item prices.';
                     ObsoleteState = Pending;
                     ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation.';
@@ -309,8 +309,8 @@ page 50200 "Contrato List"
                     Caption = '&G/L Account';
                     Image = JobPrice;
                     Visible = not ExtendedPriceEnabled;
-                    RunObject = Page "Job G/L Account Prices";
-                    RunPageLink = "Job No." = field("No.");
+                    RunObject = Page "Contrato G/L Account Prices";
+                    RunPageLink = "Contrato No." = field("No.");
                     ToolTip = 'View this project''s G/L account prices.';
                     ObsoleteState = Pending;
                     ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation.';
@@ -483,7 +483,7 @@ page 50200 "Contrato List"
                     ApplicationArea = All;
                     Caption = 'Resource &Allocated per Contrato';
                     Image = ViewJob;
-                    RunObject = Page "Resource Allocated per Job";
+                    RunObject = Page "ResourceAllocatedperContrato";
                     ToolTip = 'View this project''s resource allocation.';
                 }
                 action("Res. Group All&ocated per Contrato")
@@ -491,7 +491,7 @@ page 50200 "Contrato List"
                     ApplicationArea = All;
                     Caption = 'Res. Group All&ocated per Contrato';
                     Image = ViewJob;
-                    RunObject = Page "Res. Gr. Allocated per Job";
+                    RunObject = Page "Res.Gr.AllocatedperContrato";
                     ToolTip = 'View the project''s resource group allocation.';
                 }
             }
@@ -505,8 +505,8 @@ page 50200 "Contrato List"
                     Caption = 'Ledger E&ntries';
                     Image = CustomerLedger;
                     RunObject = Page "Contrato Ledger Entries";
-                    RunPageLink = "Job No." = field("No.");
-                    RunPageView = sorting("Job No.", "Job Task No.", "Entry Type", "Posting Date")
+                    RunPageLink = "Contrato No." = field("No.");
+                    RunPageView = sorting("Contrato No.", "Contrato Task No.", "Entry Type", "Posting Date")
                                   order(descending);
                     ShortCutKey = 'Ctrl+F7';
                     ToolTip = 'View the history of transactions that have been posted for the selected record.';
@@ -529,9 +529,9 @@ page 50200 "Contrato List"
 
                     trigger OnAction()
                     var
-                        CopyJob: Page "Copy Job";
+                        CopyJob: Page "Copy Contrato";
                     begin
-                        //CopyJob.SetFromJob(Rec);
+                        CopyJob.SetFromJob(Rec);
                         CopyJob.RunModal();
                     end;
                 }
@@ -715,11 +715,11 @@ page 50200 "Contrato List"
             action("Report Job Quote")
             {
                 ApplicationArea = All;
-                Caption = 'Preview Job Quote';
+                Caption = 'Preview Contrato Quote';
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
-                ToolTip = 'Open the Job Quote report.';
+                ToolTip = 'Open the Contrato Quote report.';
 
                 trigger OnAction()
                 var

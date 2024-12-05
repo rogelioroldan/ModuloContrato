@@ -38,9 +38,9 @@ page 50219 "Copy Contrato Planning Lines"
                         JobTask: Record "Contrato Task";
                     begin
                         if SourceJobNo <> '' then begin
-                            JobTask.SetRange("Job No.", SourceJobNo);
+                            JobTask.SetRange("Contrato No.", SourceJobNo);
                             if PAGE.RunModal(PAGE::"Contrato Task List", JobTask) = ACTION::LookupOK then
-                                SourceJobTaskNo := JobTask."Job Task No.";
+                                SourceJobTaskNo := JobTask."Contrato Task No.";
                         end;
                     end;
 
@@ -103,9 +103,9 @@ page 50219 "Copy Contrato Planning Lines"
                         JobTask: Record "Contrato Task";
                     begin
                         if TargetJobNo <> '' then begin
-                            JobTask.SetRange("Job No.", TargetJobNo);
+                            JobTask.SetRange("Contrato No.", TargetJobNo);
                             if PAGE.RunModal(PAGE::"Contrato Task List", JobTask) = ACTION::LookupOK then
-                                TargetJobTaskNo := JobTask."Job Task No.";
+                                TargetJobTaskNo := JobTask."Contrato Task No.";
                         end;
                     end;
 
@@ -191,16 +191,16 @@ page 50219 "Copy Contrato Planning Lines"
 
     procedure SetFromJobTask(SourceJobTask2: Record "Contrato Task")
     begin
-        SourceJobNo := SourceJobTask2."Job No.";
+        SourceJobNo := SourceJobTask2."Contrato No.";
         SourceJobTask := SourceJobTask2;
-        SourceJobTaskNo := SourceJobTask2."Job Task No.";
+        SourceJobTaskNo := SourceJobTask2."Contrato Task No.";
     end;
 
     procedure SetToJobTask(TargetJobTask2: Record "Contrato Task")
     begin
-        TargetJobNo := TargetJobTask2."Job No.";
+        TargetJobNo := TargetJobTask2."Contrato No.";
         TargetJobTask := TargetJobTask2;
-        TargetJobTaskNo := TargetJobTask2."Job Task No.";
+        TargetJobTaskNo := TargetJobTask2."Contrato Task No.";
     end;
 
     [IntegrationEvent(false, false)]

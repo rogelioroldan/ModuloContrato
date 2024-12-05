@@ -49,7 +49,7 @@ codeunit 50219 "Contrato Planning Line-Reserve"
 
         CreateReservEntry.CreateReservEntryFor(
           Database::"Contrato Planning Line", JobPlanningLine.Status.AsInteger(),
-          JobPlanningLine."Job No.", '', 0, JobPlanningLine."Job Contract Entry No.", JobPlanningLine."Qty. per Unit of Measure",
+          JobPlanningLine."Contrato No.", '', 0, JobPlanningLine."Contrato Contract Entry No.", JobPlanningLine."Qty. per Unit of Measure",
           Quantity, QuantityBase, ForReservEntry);
         CreateReservEntry.CreateReservEntryFrom(FromTrackingSpecification);
         CreateReservEntry.CreateReservEntry(
@@ -103,7 +103,7 @@ codeunit 50219 "Contrato Planning Line-Reserve"
             JobPlanningLine.FieldError("Line Type", StrSubstNo(InvalidLineTypeErr, Enum::"ContratoPlanningLineLineType"::Budget, Enum::"ContratoPlanningLineLineType"::"Both Budget and Billable"));
 
         if JobPlanningLine.Status = JobPlanningLine.Status::Completed then
-            ItemTrackingDocManagement.ShowItemTrackingForContratoPlanningLine(DATABASE::"Contrato Planning Line", JobPlanningLine."Job No.", JobPlanningLine."Job Contract Entry No.")
+            ItemTrackingDocManagement.ShowItemTrackingForContratoPlanningLine(DATABASE::"Contrato Planning Line", JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Contract Entry No.")
         else begin
             JobPlanningLine.TestField("No.");
             //TrackingSpecification.InitFromJobPlanningLine(JobPlanningLine);
@@ -178,10 +178,10 @@ codeunit 50219 "Contrato Planning Line-Reserve"
     begin
         if (NewJobPlanningLine.Type <> NewJobPlanningLine.Type::Item) and (OldJobPlanningLine.Type <> OldJobPlanningLine.Type::Item) then
             exit;
-        if NewJobPlanningLine."Job Contract Entry No." = 0 then
+        if NewJobPlanningLine."Contrato Contract Entry No." = 0 then
             if not JobPlanningLine.Get(
-                 NewJobPlanningLine."Job No.",
-                 NewJobPlanningLine."Job Task No.",
+                 NewJobPlanningLine."Contrato No.",
+                 NewJobPlanningLine."Contrato Task No.",
                  NewJobPlanningLine."Line No.")
             then
                 exit;
@@ -266,8 +266,8 @@ codeunit 50219 "Contrato Planning Line-Reserve"
                   NewJobPlanningLine."No.", NewJobPlanningLine."Bin Code",
                   NewJobPlanningLine."Location Code", NewJobPlanningLine."Variant Code",
                   DATABASE::"Contrato Planning Line", NewJobPlanningLine.Status.AsInteger(),
-                  NewJobPlanningLine."Job No.", '', 0,
-                  NewJobPlanningLine."Job Contract Entry No."))
+                  NewJobPlanningLine."Contrato No.", '', 0,
+                  NewJobPlanningLine."Contrato Contract Entry No."))
             then
                 HasError := true;
     end;
@@ -289,7 +289,7 @@ codeunit 50219 "Contrato Planning Line-Reserve"
                 if NewJobPlanningLine."Quantity (Base)" = OldJobPlanningLine."Quantity (Base)" then
                     exit;
         if NewJobPlanningLine."Line No." = 0 then
-            if not JobPlanningLine.Get(NewJobPlanningLine."Job No.", NewJobPlanningLine."Job Task No.", NewJobPlanningLine."Line No.") then
+            if not JobPlanningLine.Get(NewJobPlanningLine."Contrato No.", NewJobPlanningLine."Contrato Task No.", NewJobPlanningLine."Line No.") then
                 exit;
         ReservationManagement.SetReservSource(NewJobPlanningLine);
         if NewJobPlanningLine."Qty. per Unit of Measure" <> OldJobPlanningLine."Qty. per Unit of Measure" then
@@ -599,8 +599,8 @@ codeunit 50219 "Contrato Planning Line-Reserve"
     begin
         if MatchThisTable(SourceType) then begin
             JobPlanningLine.Reset();
-            JobPlanningLine.SetCurrentKey("Job Contract Entry No.");
-            JobPlanningLine.SetRange("Job Contract Entry No.", SourceRefNo);
+            JobPlanningLine.SetCurrentKey("Contrato Contract Entry No.");
+            JobPlanningLine.SetRange("Contrato Contract Entry No.", SourceRefNo);
             PAGE.Run(0, JobPlanningLine);
         end;
     end;
@@ -632,8 +632,8 @@ codeunit 50219 "Contrato Planning Line-Reserve"
     var
         JobPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.SetCurrentKey("Job Contract Entry No.");
-        JobPlanningLine.SetRange("Job Contract Entry No.", ReservationEntry."Source Ref. No.");
+        JobPlanningLine.SetCurrentKey("Contrato Contract Entry No.");
+        JobPlanningLine.SetRange("Contrato Contract Entry No.", ReservationEntry."Source Ref. No.");
         JobPlanningLine.FindFirst();
         SourceRecordRef.GetTable(JobPlanningLine);
         case ReturnOption of
@@ -702,8 +702,8 @@ codeunit 50219 "Contrato Planning Line-Reserve"
         JobPlanningLine: Record "Contrato Planning Line";
     begin
         JobPlanningLine.SetRange(Status, ReservationEntry."Source Subtype");
-        JobPlanningLine.SetRange("Job No.", ReservationEntry."Source ID");
-        JobPlanningLine.SetRange("Job Contract Entry No.", ReservationEntry."Source Ref. No.");
+        JobPlanningLine.SetRange("Contrato No.", ReservationEntry."Source ID");
+        JobPlanningLine.SetRange("Contrato Contract Entry No.", ReservationEntry."Source Ref. No.");
         PAGE.RunModal(Page::"Contrato Planning Lines", JobPlanningLine);
     end;
 

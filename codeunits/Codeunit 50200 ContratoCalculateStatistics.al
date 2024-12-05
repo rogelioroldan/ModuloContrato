@@ -140,19 +140,19 @@ codeunit 50200 "Contrato Calculate Statistics"
             Amt[6] := Round(Amt[3] / Amt[4] * 100);
     end;
 
-    procedure ContratoCalculateCommonFilters(var Job: Record Contrato)
+    procedure ContratoCalculateCommonFilters(var Contrato: Record Contrato)
     begin
         ClearAll();
-        JobPlanningLine.SetCurrentKey("Job No.", "Job Task No.");
-        JobLedgEntry.SetCurrentKey("Job No.", "Job Task No.", "Entry Type");
+        JobPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
+        JobLedgEntry.SetCurrentKey("Contrato No.", "Contrato Task No.", "Entry Type");
         JobPlanningLine.FilterGroup(2);
-        JobLedgEntry.SetRange("Job No.", Job."No.");
-        JobPlanningLine.SetRange("Job No.", Job."No.");
+        JobLedgEntry.SetRange("Contrato No.", Contrato."No.");
+        JobPlanningLine.SetRange("Contrato No.", Contrato."No.");
         JobPlanningLine.FilterGroup(0);
-        JobLedgEntry.SetFilter("Posting Date", Job.GetFilter("Posting Date Filter"));
-        JobPlanningLine.SetFilter("Planning Date", Job.GetFilter("Planning Date Filter"));
+        JobLedgEntry.SetFilter("Posting Date", Contrato.GetFilter("Posting Date Filter"));
+        JobPlanningLine.SetFilter("Planning Date", Contrato.GetFilter("Planning Date Filter"));
 
-        OnAfterJobCalculateCommonFilters(Job, JobLedgEntry, JobPlanningLine);
+        OnAfterJobCalculateCommonFilters(Contrato, JobLedgEntry, JobPlanningLine);
     end;
 
     procedure JTCalculateCommonFilters(var JT2: Record "Contrato Task"; var Job2: Record Contrato; UseJobFilter: Boolean)
@@ -162,18 +162,18 @@ codeunit 50200 "Contrato Calculate Statistics"
         ClearAll();
         JT := JT2;
         JobPlanningLine.FilterGroup(2);
-        JobPlanningLine.SetCurrentKey("Job No.", "Job Task No.");
-        JobLedgEntry.SetCurrentKey("Job No.", "Job Task No.", "Entry Type");
-        JobLedgEntry.SetRange("Job No.", JT."Job No.");
-        JobPlanningLine.SetRange("Job No.", JT."Job No.");
+        JobPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
+        JobLedgEntry.SetCurrentKey("Contrato No.", "Contrato Task No.", "Entry Type");
+        JobLedgEntry.SetRange("Contrato No.", JT."Contrato No.");
+        JobPlanningLine.SetRange("Contrato No.", JT."Contrato No.");
         JobPlanningLine.FilterGroup(0);
-        if JT."Job Task No." <> '' then
+        if JT."Contrato Task No." <> '' then
             if JT.Totaling <> '' then begin
-                JobLedgEntry.SetFilter("Job Task No.", JT.Totaling);
-                JobPlanningLine.SetFilter("Job Task No.", JT.Totaling);
+                JobLedgEntry.SetFilter("Contrato Task No.", JT.Totaling);
+                JobPlanningLine.SetFilter("Contrato Task No.", JT.Totaling);
             end else begin
-                JobLedgEntry.SetRange("Job Task No.", JT."Job Task No.");
-                JobPlanningLine.SetRange("Job Task No.", JT."Job Task No.");
+                JobLedgEntry.SetRange("Contrato Task No.", JT."Contrato Task No.");
+                JobPlanningLine.SetRange("Contrato Task No.", JT."Contrato Task No.");
             end;
 
         if not UseJobFilter then begin
@@ -204,7 +204,7 @@ codeunit 50200 "Contrato Calculate Statistics"
         CalcJobPlanAmounts(PlanLineType::Schedule, JobPlanningLine.Type::"G/L Account");
     end;
 
-    local procedure CalcJobLedgAmounts(EntryType: Enum "Job Journal Line Entry Type"; TypeParm: Enum "Contrato Planning Line Type")
+    local procedure CalcJobLedgAmounts(EntryType: Enum ContratoJournalLineEntryType; TypeParm: Enum "Contrato Planning Line Type")
     begin
         JobLedgEntry2.Copy(JobLedgEntry);
         JobLedgEntry2.SetRange("Entry Type", EntryType);
@@ -308,7 +308,7 @@ codeunit 50200 "Contrato Calculate Statistics"
         JobLedgerEntries.Run();
     end;
 
-    procedure GetHeadLineText(AmountField: array[8] of Option " ",SchPrice,UsagePrice,BillablePrice,InvoicedPrice,SchCost,UsageCost,BillableCost,InvoicedCost,SchProfit,UsageProfit,BillableProfit,InvoicedProfit; CurrencyField: array[8] of Option LCY,FCY; var HeadLineText: array[8] of Text[50]; Job: Record Contrato)
+    procedure GetHeadLineText(AmountField: array[8] of Option " ",SchPrice,UsagePrice,BillablePrice,InvoicedPrice,SchCost,UsageCost,BillableCost,InvoicedCost,SchProfit,UsageProfit,BillableProfit,InvoicedProfit; CurrencyField: array[8] of Option LCY,FCY; var HeadLineText: array[8] of Text[50]; Contrato: Record Contrato)
     var
         GLSetup: Record "General Ledger Setup";
         I: Integer;
@@ -320,7 +320,7 @@ codeunit 50200 "Contrato Calculate Statistics"
         for I := 1 to 8 do begin
             Txt := '';
             if CurrencyField[I] > 0 then
-                Txt := Job."Currency Code";
+                Txt := Contrato."Currency Code";
             if Txt = '' then
                 Txt := GLSetup."LCY Code";
             if AmountField[I] > 0 then
@@ -329,7 +329,7 @@ codeunit 50200 "Contrato Calculate Statistics"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterJobCalculateCommonFilters(var Job: Record Contrato; var JobLedgerEntry: Record "Contrato Ledger Entry"; var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterJobCalculateCommonFilters(var Contrato: Record Contrato; var JobLedgerEntry: Record "Contrato Ledger Entry"; var JobPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 

@@ -2,7 +2,7 @@
 page 50204 "Contrato Task Lines"
 {
     Caption = 'Contrato Task Lines';
-    DataCaptionFields = "Job No.";
+    DataCaptionFields = "Contrato No.";
     PageType = List;
     SaveValues = true;
     SourceTable = "Contrato Task";
@@ -16,7 +16,7 @@ page 50204 "Contrato Task Lines"
                 IndentationColumn = DescriptionIndent;
                 IndentationControls = Description;
                 ShowCaption = false;
-                field("Contrato No."; Rec."Job No.")
+                field("Contrato No."; Rec."Contrato No.")
                 {
                     ApplicationArea = Jobs;
                     Style = Strong;
@@ -24,7 +24,7 @@ page 50204 "Contrato Task Lines"
                     ToolTip = 'Specifies the number of the related project.';
                     Visible = false;
                 }
-                field("Contrato Task No."; Rec."Job Task No.")
+                field("Contrato Task No."; Rec."Contrato Task No.")
                 {
                     ApplicationArea = Jobs;
                     Style = Strong;
@@ -38,7 +38,7 @@ page 50204 "Contrato Task Lines"
                     StyleExpr = StyleIsStrong;
                     ToolTip = 'Specifies a description of the project task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the project planning line.';
                 }
-                field("Contrato Task Type"; Rec."Job Task Type")
+                field("Contrato Task Type"; Rec."Contrato Task Type")
                 {
                     ApplicationArea = Jobs;
                     ToolTip = 'Specifies the purpose of the account. Newly created accounts are automatically assigned the Posting account type, but you can change this. Choose the field to select one of the following five options:';
@@ -168,7 +168,7 @@ page 50204 "Contrato Task Lines"
                     var
                         PurchLine: Record "Purchase Line";
                     begin
-                        SetPurchLineFilters(PurchLine, Rec."Job No.", Rec."Job Task No.");
+                        SetPurchLineFilters(PurchLine, Rec."Contrato No.", Rec."Contrato Task No.");
                         PurchLine.SetFilter("Outstanding Amt. Ex. VAT (LCY)", '<> 0');
                         PAGE.RunModal(PAGE::"Purchase Lines", PurchLine);
                     end;
@@ -184,7 +184,7 @@ page 50204 "Contrato Task Lines"
                     var
                         PurchLine: Record "Purchase Line";
                     begin
-                        SetPurchLineFilters(PurchLine, Rec."Job No.", Rec."Job Task No.");
+                        SetPurchLineFilters(PurchLine, Rec."Contrato No.", Rec."Contrato Task No.");
                         PurchLine.SetFilter("Amt. Rcd. Not Invoiced (LCY)", '<> 0');
                         PAGE.RunModal(PAGE::"Purchase Lines", PurchLine);
                     end;
@@ -237,12 +237,12 @@ page 50204 "Contrato Task Lines"
                         JobPlanningLine: Record "Contrato Planning Line";
                         JobPlanningLines: Page "Contrato Planning Lines";
                     begin
-                        Rec.TestField("Job Task Type", Rec."Job Task Type"::Posting);
-                        Rec.TestField("Job No.");
-                        Rec.TestField("Job Task No.");
+                        Rec.TestField("Contrato Task Type", Rec."Contrato Task Type"::Posting);
+                        Rec.TestField("Contrato No.");
+                        Rec.TestField("Contrato Task No.");
                         JobPlanningLine.FilterGroup(2);
-                        JobPlanningLine.SetRange("Job No.", Rec."Job No.");
-                        JobPlanningLine.SetRange("Job Task No.", Rec."Job Task No.");
+                        JobPlanningLine.SetRange("Contrato No.", Rec."Contrato No.");
+                        JobPlanningLine.SetRange("Contrato Task No.", Rec."Contrato Task No.");
                         JobPlanningLine.FilterGroup(0);
                         JobPlanningLines.SetJobTaskNoVisible(false);
                         JobPlanningLines.SetTableView(JobPlanningLine);
@@ -255,8 +255,8 @@ page 50204 "Contrato Task Lines"
                     Caption = 'Contrato Task &Statistics';
                     Image = StatisticsDocument;
                     RunObject = Page "Contrato Task Statistics";
-                    RunPageLink = "Job No." = field("Job No."),
-                                  "Job Task No." = field("Job Task No.");
+                    RunPageLink = "Contrato No." = field("Contrato No."),
+                                  "Contrato Task No." = field("Contrato Task No.");
                     ShortCutKey = 'F7';
                     ToolTip = 'View statistics for the project task.';
                 }
@@ -266,8 +266,8 @@ page 50204 "Contrato Task Lines"
                     Caption = 'Contrato &Task Card';
                     Image = Task;
                     RunObject = Page "Contrato Task Card";
-                    RunPageLink = "Job No." = field("Job No."),
-                                  "Job Task No." = field("Job Task No.");
+                    RunPageLink = "Contrato No." = field("Contrato No."),
+                                  "Contrato Task No." = field("Contrato Task No.");
                     ShortCutKey = 'Shift+F7';
                     ToolTip = 'View detailed information about a project task, such as the description of the task and the type, which can be either a heading, a posting, a begin-total, an end-total, or a total.';
                 }
@@ -285,8 +285,8 @@ page 50204 "Contrato Task Lines"
                         Caption = 'Dimensions-&Single';
                         Image = Dimensions;
                         RunObject = Page "Contrato Task Dimensions";
-                        RunPageLink = "Job No." = field("Job No."),
-                                      "Job Task No." = field("Job Task No.");
+                        RunPageLink = "Contrato No." = field("Contrato No."),
+                                      "Contrato Task No." = field("Contrato Task No.");
                         ShortCutKey = 'Alt+D';
                         ToolTip = 'View or edit the single set of dimensions that are set up for the selected record.';
                     }
@@ -340,8 +340,8 @@ page 50204 "Contrato Task Lines"
                     Caption = '&WIP Entries';
                     Image = WIPEntries;
                     RunObject = Page "Contrato WIP Entries";
-                    RunPageLink = "Job No." = field("Job No.");
-                    RunPageView = sorting("Job No.", "Contrato Posting Group", "WIP Posting Date");
+                    RunPageLink = "Contrato No." = field("Contrato No.");
+                    RunPageView = sorting("Contrato No.", "Contrato Posting Group", "WIP Posting Date");
                     ToolTip = 'View entries for the project that are posted as work in process.';
                 }
                 action("WIP &G/L Entries")
@@ -349,9 +349,9 @@ page 50204 "Contrato Task Lines"
                     ApplicationArea = Jobs;
                     Caption = 'WIP &G/L Entries';
                     Image = WIPLedger;
-                    RunObject = Page "Job WIP G/L Entries";
-                    RunPageLink = "Job No." = field("Job No.");
-                    RunPageView = sorting("Job No.");
+                    RunObject = Page "Contrato WIP G/L Entries";
+                    RunPageLink = "Contrato No." = field("Contrato No.");
+                    RunPageView = sorting("Contrato No.");
                     ToolTip = 'View the project''s WIP G/L entries.';
                 }
             }
@@ -365,9 +365,9 @@ page 50204 "Contrato Task Lines"
                     Caption = 'Contrato Ledger E&ntries';
                     Image = JobLedger;
                     RunObject = Page "Contrato Ledger Entries";
-                    RunPageLink = "Job No." = field("Job No."),
-                                  "Job Task No." = field("Job Task No.");
-                    RunPageView = sorting("Job No.", "Job Task No.");
+                    RunPageLink = "Contrato No." = field("Contrato No."),
+                                  "Contrato Task No." = field("Contrato Task No.");
+                    RunPageView = sorting("Contrato No.", "Contrato Task No.");
                     ShortCutKey = 'Ctrl+F7';
                     ToolTip = 'View the project ledger entries.';
                 }
@@ -501,14 +501,14 @@ page 50204 "Contrato Task Lines"
                         Contrato: Record Contrato;
                         JobTask: Record "Contrato Task";
                     begin
-                        Rec.TestField("Job No.");
-                        Contrato.Get(Rec."Job No.");
-                        // if Job.Blocked = Job.Blocked::All then
-                        //     Job.TestBlocked();
+                        Rec.TestField("Contrato No.");
+                        Contrato.Get(Rec."Contrato No.");
+                        // if Contrato.Blocked = Contrato.Blocked::All then
+                        //     Contrato.TestBlocked();
 
-                        JobTask.SetRange("Job No.", Contrato."No.");
-                        if Rec."Job Task No." <> '' then
-                            JobTask.SetRange("Job Task No.", Rec."Job Task No.");
+                        JobTask.SetRange("Contrato No.", Contrato."No.");
+                        if Rec."Contrato Task No." <> '' then
+                            JobTask.SetRange("Contrato Task No.", Rec."Contrato Task No.");
 
                         REPORT.RunModal(REPORT::"Job Create Sales Invoice", true, false, JobTask);
                     end;
@@ -531,14 +531,14 @@ page 50204 "Contrato Task Lines"
                         Contrato: Record Contrato;
                         JobTask: Record "Contrato Task";
                     begin
-                        Rec.TestField("Job No.");
-                        Contrato.Get(Rec."Job No.");
-                        // if Job.Blocked = Job.Blocked::All then
-                        //     Job.TestBlocked();
+                        Rec.TestField("Contrato No.");
+                        Contrato.Get(Rec."Contrato No.");
+                        // if Contrato.Blocked = Contrato.Blocked::All then
+                        //     Contrato.TestBlocked();
 
-                        Rec.TestField("Job Task No.");
-                        JobTask.SetRange("Job No.", Contrato."No.");
-                        JobTask.SetRange("Job Task No.", Rec."Job Task No.");
+                        Rec.TestField("Contrato Task No.");
+                        JobTask.SetRange("Contrato No.", Contrato."No.");
+                        JobTask.SetRange("Contrato Task No.", Rec."Contrato Task No.");
 
                         REPORT.RunModal(REPORT::"Job Split Planning Line", true, false, JobTask);
                     end;
@@ -556,14 +556,14 @@ page 50204 "Contrato Task Lines"
                         Contrato: Record Contrato;
                         JobTask: Record "Contrato Task";
                     begin
-                        Rec.TestField("Job No.");
-                        Contrato.Get(Rec."Job No.");
-                        // if Job.Blocked = Job.Blocked::All then
-                        //     Job.TestBlocked();
+                        Rec.TestField("Contrato No.");
+                        Contrato.Get(Rec."Contrato No.");
+                        // if Contrato.Blocked = Contrato.Blocked::All then
+                        //     Contrato.TestBlocked();
 
-                        JobTask.SetRange("Job No.", Contrato."No.");
-                        if Rec."Job Task No." <> '' then
-                            JobTask.SetRange("Job Task No.", Rec."Job Task No.");
+                        JobTask.SetRange("Contrato No.", Contrato."No.");
+                        if Rec."Contrato Task No." <> '' then
+                            JobTask.SetRange("Contrato Task No.", Rec."Contrato Task No.");
 
                         REPORT.RunModal(REPORT::"Change Job Dates", true, false, JobTask);
                     end;
@@ -592,7 +592,7 @@ page 50204 "Contrato Task Lines"
                         var
                             CopyJobPlanningLines: Page "Copy Contrato Planning Lines";
                         begin
-                            Rec.TestField("Job Task Type", Rec."Job Task Type"::Posting);
+                            Rec.TestField("Contrato Task Type", Rec."Contrato Task Type"::Posting);
                             CopyJobPlanningLines.SetToJobTask(Rec);
                             CopyJobPlanningLines.RunModal();
                         end;
@@ -609,7 +609,7 @@ page 50204 "Contrato Task Lines"
                         var
                             CopyJobPlanningLines: Page "Copy Contrato Planning Lines";
                         begin
-                            Rec.TestField("Job Task Type", Rec."Job Task Type"::Posting);
+                            Rec.TestField("Contrato Task Type", Rec."Contrato Task Type"::Posting);
                             CopyJobPlanningLines.SetFromJobTask(Rec);
                             CopyJobPlanningLines.RunModal();
                         end;
@@ -632,8 +632,8 @@ page 50204 "Contrato Task Lines"
                             Contrato: Record Contrato;
                             JobCalculateWIP: Report "Job Calculate WIP";
                         begin
-                            Rec.TestField("Job No.");
-                            Contrato.Get(Rec."Job No.");
+                            Rec.TestField("Contrato No.");
+                            Contrato.Get(Rec."Contrato No.");
                             Contrato.SetRange("No.", Contrato."No.");
                             Clear(JobCalculateWIP);
                             JobCalculateWIP.SetTableView(Contrato);
@@ -653,8 +653,8 @@ page 50204 "Contrato Task Lines"
                         var
                             Contrato: Record Contrato;
                         begin
-                            Rec.TestField("Job No.");
-                            Contrato.Get(Rec."Job No.");
+                            Rec.TestField("Contrato No.");
+                            Contrato.Get(Rec."Contrato No.");
                             Contrato.SetRange("No.", Contrato."No.");
                             REPORT.RunModal(REPORT::"Job Post WIP to G/L", true, false, Contrato);
                         end;
@@ -811,7 +811,7 @@ page 50204 "Contrato Task Lines"
     trigger OnAfterGetRecord()
     begin
         DescriptionIndent := Rec.Indentation;
-        StyleIsStrong := Rec."Job Task Type" <> Rec."Job Task Type"::Posting;
+        StyleIsStrong := Rec."Contrato Task Type" <> Rec."Contrato Task Type"::Posting;
     end;
 
     trigger OnNewRecord(BelowxRec: Boolean)

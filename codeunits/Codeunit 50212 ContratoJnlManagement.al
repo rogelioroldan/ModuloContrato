@@ -239,11 +239,11 @@ codeunit 50212 ContratoJnlManagement
         if IsHandled then
             exit(JobDescription);
 
-        if (JobJnlLine."Job No." = '') or
-           (JobJnlLine."Job No." <> LastJobJnlLine."Job No.")
+        if (JobJnlLine."Contrato No." = '') or
+           (JobJnlLine."Contrato No." <> LastJobJnlLine."Contrato No.")
         then begin
             JobDescription := '';
-            if Job.Get(JobJnlLine."Job No.") then
+            if Job.Get(JobJnlLine."Contrato No.") then
                 JobDescription := Job.Description;
         end;
     end;

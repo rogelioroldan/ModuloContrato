@@ -16,8 +16,8 @@ codeunit 50211 "Contrato Transfer Line"
 
     procedure FromJnlLineToLedgEntry(JobJnlLine2: Record "Contrato Journal Line"; var JobLedgEntry: Record "Contrato Ledger Entry")
     begin
-        JobLedgEntry."Job No." := JobJnlLine2."Job No.";
-        JobLedgEntry."Job Task No." := JobJnlLine2."Job Task No.";
+        JobLedgEntry."Contrato No." := JobJnlLine2."Contrato No.";
+        JobLedgEntry."Contrato Task No." := JobJnlLine2."Contrato Task No.";
         JobLedgEntry."Contrato Posting Group" := JobJnlLine2."Posting Group";
         JobLedgEntry."Posting Date" := JobJnlLine2."Posting Date";
         JobLedgEntry."Document Date" := JobJnlLine2."Document Date";
@@ -85,8 +85,8 @@ codeunit 50211 "Contrato Transfer Line"
 
     procedure FromJnlToPlanningLine(JobJnlLine: Record "Contrato Journal Line"; var JobPlanningLine: Record "Contrato Planning Line")
     begin
-        JobPlanningLine."Job No." := JobJnlLine."Job No.";
-        JobPlanningLine."Job Task No." := JobJnlLine."Job Task No.";
+        JobPlanningLine."Contrato No." := JobJnlLine."Contrato No.";
+        JobPlanningLine."Contrato Task No." := JobJnlLine."Contrato Task No.";
         JobPlanningLine."Planning Date" := JobJnlLine."Posting Date";
         JobPlanningLine."Currency Date" := JobJnlLine."Posting Date";
         JobPlanningLine.Type := JobJnlLine.Type;
@@ -147,7 +147,7 @@ codeunit 50211 "Contrato Transfer Line"
         OnAfterFromJnlToPlanningLine(JobPlanningLine, JobJnlLine);
     end;
 
-    procedure FromPlanningSalesLineToJnlLine(JobPlanningLine: Record "Contrato Planning Line"; SalesHeader: Record "Sales Header"; SalesLine: Record "Sales Line"; var JobJnlLine: Record "Contrato Journal Line"; EntryType: Enum "Job Journal Line Entry Type")
+    procedure FromPlanningSalesLineToJnlLine(JobPlanningLine: Record "Contrato Planning Line"; SalesHeader: Record "Sales Header"; SalesLine: Record "Sales Line"; var JobJnlLine: Record "Contrato Journal Line"; EntryType: Enum ContratoJournalLineEntryType)
     var
         SourceCodeSetup: Record "Source Code Setup";
         JobTask: Record "Contrato Task";
@@ -155,10 +155,10 @@ codeunit 50211 "Contrato Transfer Line"
         OnBeforeFromPlanningSalesLineToJnlLine(JobPlanningLine, SalesHeader, SalesLine, JobJnlLine, EntryType);
 
         JobJnlLine."Line No." := SalesLine."Line No.";
-        JobJnlLine."Job No." := JobPlanningLine."Job No.";
-        JobJnlLine."Job Task No." := JobPlanningLine."Job Task No.";
+        JobJnlLine."Contrato No." := JobPlanningLine."Contrato No.";
+        JobJnlLine."Contrato Task No." := JobPlanningLine."Contrato Task No.";
         JobJnlLine.Type := JobPlanningLine.Type;
-        JobTask.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+        JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
         JobJnlLine."Posting Date" := SalesHeader."Posting Date";
         JobJnlLine."Document Date" := SalesHeader."Document Date";
         JobJnlLine."Document No." := SalesLine."Document No.";
@@ -250,15 +250,15 @@ codeunit 50211 "Contrato Transfer Line"
         else
             JobJnlLine.Validate("Line No.", 10000);
 
-        JobJnlLine."Job No." := JobPlanningLine."Job No.";
-        JobJnlLine."Job Task No." := JobPlanningLine."Job Task No.";
+        JobJnlLine."Contrato No." := JobPlanningLine."Contrato No.";
+        JobJnlLine."Contrato Task No." := JobPlanningLine."Contrato Task No.";
 
         if JobPlanningLine."Usage Link" then begin
-            JobJnlLine."Job Planning Line No." := JobPlanningLine."Line No.";
+            JobJnlLine."Contrato Planning Line No." := JobPlanningLine."Line No.";
             JobJnlLine."Line Type" := JobPlanningLine.ConvertToJobLineType();
         end;
 
-        JobTask.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+        JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
         JobJnlLine."Posting Group" := JobTask."Contrato Posting Group";
         JobJnlLine."Posting Date" := PostingDate;
         JobJnlLine."Document Date" := PostingDate;
@@ -267,7 +267,7 @@ codeunit 50211 "Contrato Transfer Line"
             JobJnlLine."Document No." := NoSeries.PeekNextNo(JobJournalBatch."No. Series", PostingDate)
         else
             if JobSetup."Document No. Is Contrato No." then
-                JobJnlLine."Document No." := JobPlanningLine."Job No."
+                JobJnlLine."Document No." := JobPlanningLine."Contrato No."
             else
                 JobJnlLine."Document No." := JobPlanningLine."Document No.";
 
@@ -311,7 +311,7 @@ codeunit 50211 "Contrato Transfer Line"
         JobJnlLine.Insert(true);
     end;
 
-    // Create 'Job Journal Line' from 'Warehouse Activity Line'
+    // Create 'Contrato Journal Line' from 'Warehouse Activity Line'
     procedure FromWarehouseActivityLineToJnlLine(WarehouseActivityLine: Record "Warehouse Activity Line"; PostingDate: Date; JobJournalTemplateName: Code[10]; JobJournalBatchName: Code[10]; var JobJnlLine: Record "Contrato Journal Line")
     var
         JobTask: Record "Contrato Task";
@@ -334,19 +334,19 @@ codeunit 50211 "Contrato Transfer Line"
             PostingDate := WorkDate();
 
         JobPlanningLine.SetLoadFields(
-            "Job No.", "Job Task No.", "Usage Link", "Line No.", "Line Type", Type, "No.", "Gen. Bus. Posting Group", "Gen. Prod. Posting Group",
+            "Contrato No.", "Contrato Task No.", "Usage Link", "Line No.", "Line Type", Type, "No.", "Gen. Bus. Posting Group", "Gen. Prod. Posting Group",
             "Serial No.", "Lot No.", Description, "Description 2", "Unit of Measure Code", "Currency Code", "Currency Factor", "Resource Group No.",
             "Location Code", "Work Type Code", "Customer Price Group", "Variant Code", "Bin Code", "Service Order No.", "Country/Region Code",
             "Qty. per Unit of Measure", "Direct Unit Cost (LCY)", "Unit Cost", "Unit Price", "Line Discount %", "Document No.", "Assemble to Order");
-        JobPlanningLine.SetRange("Job No.", WarehouseActivityLine."Source No.");
-        JobPlanningLine.SetRange("Job Contract Entry No.", WarehouseActivityLine."Source Line No.");
+        JobPlanningLine.SetRange("Contrato No.", WarehouseActivityLine."Source No.");
+        JobPlanningLine.SetRange("Contrato Contract Entry No.", WarehouseActivityLine."Source Line No.");
 
         if JobPlanningLine.IsEmpty() then
             Error(JobPlanningLineNotFoundErr, JobPlanningLines.Caption(), WarehouseActivityLine.TableCaption(), WarehouseActivityLine.FieldCaption("Source No."),
                     WarehouseActivityLine."Source No.", WarehouseActivityLine.FieldCaption("Source Line No."), WarehouseActivityLine."Source Line No.");
 
         if JobPlanningLine.Count() > 1 then
-            Error(DuplicateJobplanningLinesErr, JobPlanningLine.TableCaption(), JobPlanningLine.FieldCaption("Job Contract Entry No."), JobPlanningLine."Job Contract Entry No.");
+            Error(DuplicateJobplanningLinesErr, JobPlanningLine.TableCaption(), JobPlanningLine.FieldCaption("Contrato Contract Entry No."), JobPlanningLine."Contrato Contract Entry No.");
 
         JobPlanningLine.FindFirst();
 
@@ -362,20 +362,20 @@ codeunit 50211 "Contrato Transfer Line"
         else
             JobJnlLine.Validate("Line No.", 10000);
 
-        JobJnlLine."Job No." := JobPlanningLine."Job No.";
-        JobJnlLine."Job Task No." := JobPlanningLine."Job Task No.";
+        JobJnlLine."Contrato No." := JobPlanningLine."Contrato No.";
+        JobJnlLine."Contrato Task No." := JobPlanningLine."Contrato Task No.";
 
         if JobPlanningLine."Usage Link" then begin
-            JobJnlLine."Job Planning Line No." := JobPlanningLine."Line No.";
+            JobJnlLine."Contrato Planning Line No." := JobPlanningLine."Line No.";
             JobJnlLine."Line Type" := JobPlanningLine.ConvertToJobLineType();
         end;
 
-        JobTask.Get(JobPlanningLine."Job No.", JobPlanningLine."Job Task No.");
+        JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
         JobJnlLine."Posting Group" := JobTask."Contrato Posting Group";
         JobJnlLine."Posting Date" := PostingDate;
         JobJnlLine."Document Date" := PostingDate;
 
-        JobJnlLine."Document No." := JobPlanningLine."Job No.";
+        JobJnlLine."Document No." := JobPlanningLine."Contrato No.";
         if JobPlanningLine."Document No." <> '' then
             JobJnlLine."Document No." := JobPlanningLine."Document No.";
 
@@ -421,13 +421,13 @@ codeunit 50211 "Contrato Transfer Line"
 
     procedure FromGenJnlLineToJnlLine(GenJnlLine: Record "Gen. Journal Line"; var JobJnlLine: Record "Contrato Journal Line")
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         JobTask: Record "Contrato Task";
     begin
         OnBeforeFromGenJnlLineToJnlLine(JobJnlLine, GenJnlLine);
 
-        JobJnlLine."Job No." := GenJnlLine."Job No.";
-        JobJnlLine."Job Task No." := GenJnlLine."Job Task No.";
+        JobJnlLine."Contrato No." := GenJnlLine."Job No.";
+        JobJnlLine."Contrato Task No." := GenJnlLine."Job Task No.";
         JobTask.Get(GenJnlLine."Job No.", GenJnlLine."Job Task No.");
 
         JobJnlLine."Posting Date" := GenJnlLine."Posting Date";
@@ -446,8 +446,8 @@ codeunit 50211 "Contrato Transfer Line"
         JobJnlLine."Gen. Prod. Posting Group" := GenJnlLine."Gen. Prod. Posting Group";
         JobJnlLine."Source Code" := GenJnlLine."Source Code";
         JobJnlLine."Reason Code" := GenJnlLine."Reason Code";
-        Job.Get(JobJnlLine."Job No.");
-        JobJnlLine."Customer Price Group" := Job."Customer Price Group";
+        Contrato.Get(JobJnlLine."Contrato No.");
+        JobJnlLine."Customer Price Group" := Contrato."Customer Price Group";
         JobJnlLine."External Document No." := GenJnlLine."External Document No.";
         JobJnlLine."Journal Batch Name" := GenJnlLine."Journal Batch Name";
         JobJnlLine."Shortcut Dimension 1 Code" := GenJnlLine."Shortcut Dimension 1 Code";
@@ -457,7 +457,7 @@ codeunit 50211 "Contrato Transfer Line"
         JobJnlLine.Quantity := GenJnlLine."Job Quantity";
         JobJnlLine."Quantity (Base)" := GenJnlLine."Job Quantity";
         JobJnlLine."Qty. per Unit of Measure" := 1; // MP ??
-        JobJnlLine."Job Planning Line No." := GenJnlLine."Job Planning Line No.";
+        JobJnlLine."Contrato Planning Line No." := GenJnlLine."Job Planning Line No.";
         JobJnlLine."Remaining Qty." := GenJnlLine."Job Remaining Qty.";
         JobJnlLine."Remaining Qty. (Base)" := GenJnlLine."Job Remaining Qty.";
 
@@ -489,8 +489,8 @@ codeunit 50211 "Contrato Transfer Line"
     var
         PriceType: Enum "Price Type";
     begin
-        JobPlanningLine."Job No." := JobLedgEntry."Job No.";
-        JobPlanningLine."Job Task No." := JobLedgEntry."Job Task No.";
+        JobPlanningLine."Contrato No." := JobLedgEntry."Contrato No.";
+        JobPlanningLine."Contrato Task No." := JobLedgEntry."Contrato Task No.";
         JobPlanningLine."Planning Date" := JobLedgEntry."Posting Date";
         JobPlanningLine."Currency Date" := JobLedgEntry."Posting Date";
         JobPlanningLine."Document Date" := JobLedgEntry."Document Date";
@@ -517,7 +517,7 @@ codeunit 50211 "Contrato Transfer Line"
         JobPlanningLine."Description 2" := JobLedgEntry."Description 2";
         JobPlanningLine.CopyTrackingFromJobLedgEntry(JobLedgEntry);
         JobPlanningLine."Service Order No." := JobLedgEntry."Service Order No.";
-        JobPlanningLine."Job Ledger Entry No." := JobLedgEntry."Entry No.";
+        JobPlanningLine."Contrato Ledger Entry No." := JobLedgEntry."Entry No.";
         JobPlanningLine."Ledger Entry Type" := JobLedgEntry."Ledger Entry Type";
         JobPlanningLine."Ledger Entry No." := JobLedgEntry."Ledger Entry No.";
         JobPlanningLine."System-Created Entry" := true;
@@ -589,8 +589,8 @@ codeunit 50211 "Contrato Transfer Line"
         PurchLine.Validate("Job Planning Line No.");
 
         JobJnlLine.DontCheckStdCost();
-        JobJnlLine.Validate("Job No.", PurchLine."Job No.");
-        JobJnlLine.Validate("Job Task No.", PurchLine."Job Task No.");
+        JobJnlLine.Validate("Contrato No.", PurchLine."Job No.");
+        JobJnlLine.Validate("Contrato Task No.", PurchLine."Job Task No.");
         JobTask.Get(PurchLine."Job No.", PurchLine."Job Task No.");
         JobJnlLine.Validate("Posting Date", PurchHeader."Posting Date");
         JobJournalLineValidateType(JobJnlLine, PurchLine);
@@ -738,7 +738,7 @@ codeunit 50211 "Contrato Transfer Line"
                 Round(PurchLine."Job Line Discount Amount" * Factor, Currency."Amount Rounding Precision");
         end;
 
-        JobJnlLine."Job Planning Line No." := PurchLine."Job Planning Line No.";
+        JobJnlLine."Contrato Planning Line No." := PurchLine."Job Planning Line No.";
         JobJnlLine."Remaining Qty." := PurchLine."Job Remaining Qty.";
         JobJnlLine."Remaining Qty. (Base)" := PurchLine."Job Remaining Qty. (Base)";
         JobJnlLine."Location Code" := PurchLine."Location Code";
@@ -778,8 +778,8 @@ codeunit 50211 "Contrato Transfer Line"
     var
         JobPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.SetCurrentKey("Job Contract Entry No.");
-        JobPlanningLine.SetRange("Job Contract Entry No.", SalesLine."Job Contract Entry No.");
+        JobPlanningLine.SetCurrentKey("Contrato Contract Entry No.");
+        JobPlanningLine.SetRange("Contrato Contract Entry No.", SalesLine."Job Contract Entry No.");
         if JobPlanningLine.FindFirst() then begin
             // Update Prices
             if JobPlanningLine."Currency Code" <> '' then begin
@@ -867,7 +867,7 @@ codeunit 50211 "Contrato Transfer Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFromPlanningSalesLineToJnlLine(var JobJnlLine: Record "Contrato Journal Line"; JobPlanningLine: Record "Contrato Planning Line"; SalesHeader: Record "Sales Header"; SalesLine: Record "Sales Line"; EntryType: Enum "Job Journal Line Entry Type")
+    local procedure OnAfterFromPlanningSalesLineToJnlLine(var JobJnlLine: Record "Contrato Journal Line"; JobPlanningLine: Record "Contrato Planning Line"; SalesHeader: Record "Sales Header"; SalesLine: Record "Sales Line"; EntryType: Enum ContratoJournalLineEntryType)
     begin
     end;
 
@@ -897,7 +897,7 @@ codeunit 50211 "Contrato Transfer Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeFromPlanningSalesLineToJnlLine(var JobPlanningLine: Record "Contrato Planning Line"; var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var JobJnlLine: Record "Contrato Journal Line"; var EntryType: Enum "Job Journal Line Entry Type")
+    local procedure OnBeforeFromPlanningSalesLineToJnlLine(var JobPlanningLine: Record "Contrato Planning Line"; var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var JobJnlLine: Record "Contrato Journal Line"; var EntryType: Enum ContratoJournalLineEntryType)
     begin
     end;
 

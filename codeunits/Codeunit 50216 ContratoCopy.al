@@ -9,7 +9,7 @@ codeunit 50216 "Copy Contrato"
         CopyPrices: Boolean;
         CopyQuantity: Boolean;
         CopyDimensions: Boolean;
-        JobPlanningLineSource: Option "Job Planning Lines","Job Ledger Entries";
+        JobPlanningLineSource: Option "Contrato Planning Lines","Contrato Ledger Entries";
         JobPlanningLineType: Option " ",Budget,Billable;
         JobLedgerEntryType: Option " ",Usage,Sale;
         JobTaskRangeFrom: Code[20];
@@ -66,22 +66,22 @@ codeunit 50216 "Copy Contrato"
         if IsHandled then
             exit;
 
-        SourceJobTask.SetRange("Job No.", SourceJob."No.");
+        SourceJobTask.SetRange("Contrato No.", SourceJob."No.");
         case true of
             (JobTaskRangeFrom <> '') and (JobTaskRangeTo <> ''):
-                SourceJobTask.SetRange("Job Task No.", JobTaskRangeFrom, JobTaskRangeTo);
+                SourceJobTask.SetRange("Contrato Task No.", JobTaskRangeFrom, JobTaskRangeTo);
             (JobTaskRangeFrom <> '') and (JobTaskRangeTo = ''):
-                SourceJobTask.SetFilter("Job Task No.", '%1..', JobTaskRangeFrom);
+                SourceJobTask.SetFilter("Contrato Task No.", '%1..', JobTaskRangeFrom);
             (JobTaskRangeFrom = '') and (JobTaskRangeTo <> ''):
-                SourceJobTask.SetFilter("Job Task No.", '..%1', JobTaskRangeTo);
+                SourceJobTask.SetFilter("Contrato Task No.", '..%1', JobTaskRangeTo);
         end;
         OnCopyJobTasksOnAfterSourceJobTaskSetFilters(SourceJobTask, SourceJob);
 
         if SourceJobTask.FindSet() then
             repeat
                 TargetJobTask.Init();
-                TargetJobTask.Validate("Job No.", TargetJob."No.");
-                TargetJobTask.Validate("Job Task No.", SourceJobTask."Job Task No.");
+                TargetJobTask.Validate("Contrato No.", TargetJob."No.");
+                TargetJobTask.Validate("Contrato Task No.", SourceJobTask."Contrato Task No.");
                 TargetJobTask.TransferFields(SourceJobTask, false);
                 if SourceJob."Task Billing Method" = SourceJob."Task Billing Method"::"Multiple customers" then begin
                     TargetJobTask.SetHideValidationDialog(true);
@@ -100,9 +100,9 @@ codeunit 50216 "Copy Contrato"
                 if not IsHandled then
                     TargetJobTask.Insert(true);
                 case true of
-                    JobPlanningLineSource = JobPlanningLineSource::"Job Planning Lines":
+                    JobPlanningLineSource = JobPlanningLineSource::"Contrato Planning Lines":
                         CopyJobPlanningLines(SourceJobTask, TargetJobTask);
-                    JobPlanningLineSource = JobPlanningLineSource::"Job Ledger Entries":
+                    JobPlanningLineSource = JobPlanningLineSource::"Contrato Ledger Entries":
                         CopyJLEsToJobPlanningLines(SourceJobTask, TargetJobTask);
                 end;
                 if CopyDimensions then
@@ -119,7 +119,7 @@ codeunit 50216 "Copy Contrato"
         NextPlanningLineNo: Integer;
         IsHandled: Boolean;
     begin
-        SourceJob.Get(SourceJobTask."Job No.");
+        SourceJob.Get(SourceJobTask."Contrato No.");
 
         case true of
             (JobTaskDateRangeFrom <> 0D) and (JobTaskDateRangeTo <> 0D):
@@ -130,8 +130,8 @@ codeunit 50216 "Copy Contrato"
                 SourceJobTask.SetFilter("Planning Date Filter", '..%1', JobTaskDateRangeTo);
         end;
 
-        SourceJobPlanningLine.SetRange("Job No.", SourceJobTask."Job No.");
-        SourceJobPlanningLine.SetRange("Job Task No.", SourceJobTask."Job Task No.");
+        SourceJobPlanningLine.SetRange("Contrato No.", SourceJobTask."Contrato No.");
+        SourceJobPlanningLine.SetRange("Contrato Task No.", SourceJobTask."Contrato Task No.");
         case JobPlanningLineType of
             JobPlanningLineType::Budget:
                 SourceJobPlanningLine.SetRange("Line Type", SourceJobPlanningLine."Line Type"::Budget);
@@ -150,8 +150,8 @@ codeunit 50216 "Copy Contrato"
                 OnCopyJobPlanningLinesOnBeforeTargetJobPlanningLineInit(TargetJobPlanningLine, SourceJobPlanningLine, TargetJobTask, IsHandled);
                 if not IsHandled then begin
                     TargetJobPlanningLine.Init();
-                    TargetJobPlanningLine.Validate("Job No.", TargetJobTask."Job No.");
-                    TargetJobPlanningLine.Validate("Job Task No.", TargetJobTask."Job Task No.");
+                    TargetJobPlanningLine.Validate("Contrato No.", TargetJobTask."Contrato No.");
+                    TargetJobPlanningLine.Validate("Contrato Task No.", TargetJobTask."Contrato Task No.");
                     if NextPlanningLineNo = 0 then
                         NextPlanningLineNo := FindLastJobPlanningLine(TargetJobPlanningLine);
                     NextPlanningLineNo += 10000;
@@ -201,16 +201,16 @@ codeunit 50216 "Copy Contrato"
         JobTransferLine: Codeunit "Contrato Transfer Line";
         NextPlanningLineNo: Integer;
     begin
-        SourceJob.Get(SourceJobTask."Job No.");
-        TargetJobPlanningLine.SetRange("Job No.", TargetJobTask."Job No.");
-        TargetJobPlanningLine.SetRange("Job Task No.", TargetJobTask."Job Task No.");
+        SourceJob.Get(SourceJobTask."Contrato No.");
+        TargetJobPlanningLine.SetRange("Contrato No.", TargetJobTask."Contrato No.");
+        TargetJobPlanningLine.SetRange("Contrato Task No.", TargetJobTask."Contrato Task No.");
         if TargetJobPlanningLine.FindLast() then
             NextPlanningLineNo := TargetJobPlanningLine."Line No." + 10000
         else
             NextPlanningLineNo := 10000;
 
-        JobLedgEntry.SetRange("Job No.", SourceJobTask."Job No.");
-        JobLedgEntry.SetRange("Job Task No.", SourceJobTask."Job Task No.");
+        JobLedgEntry.SetRange("Contrato No.", SourceJobTask."Contrato No.");
+        JobLedgEntry.SetRange("Contrato Task No.", SourceJobTask."Contrato Task No.");
         case true of
             JobLedgerEntryType = JobLedgerEntryType::Usage:
                 JobLedgEntry.SetRange("Entry Type", JobLedgEntry."Entry Type"::Usage);
@@ -222,7 +222,7 @@ codeunit 50216 "Copy Contrato"
             repeat
                 TargetJobPlanningLine.Init();
                 JobTransferLine.FromJobLedgEntryToPlanningLine(JobLedgEntry, TargetJobPlanningLine);
-                TargetJobPlanningLine."Job No." := TargetJobTask."Job No.";
+                TargetJobPlanningLine."Contrato No." := TargetJobTask."Contrato No.";
                 TargetJobPlanningLine.Validate("Line No.", NextPlanningLineNo);
                 TargetJobPlanningLine.Insert(true);
                 if JobLedgEntry."Entry Type" = JobLedgEntry."Entry Type"::Usage then
@@ -278,17 +278,17 @@ codeunit 50216 "Copy Contrato"
     var
         DimensionManagement: Codeunit DimensionManagement;
     begin
-        DimensionManagement.CopyJobTaskDimToJobTaskDim(SourceJobTask."Job No.",
-          SourceJobTask."Job Task No.",
-          TargetJobTask."Job No.",
-          TargetJobTask."Job Task No.");
+        DimensionManagement.CopyJobTaskDimToJobTaskDim(SourceJobTask."Contrato No.",
+          SourceJobTask."Contrato Task No.",
+          TargetJobTask."Contrato No.",
+          TargetJobTask."Contrato Task No.");
 
         OnAfterCopyJobTaskDimensions(SourceJobTask, TargetJobTask);
     end;
 
     local procedure ExchangeJobPlanningLineAmounts(var JobPlanningLine: Record "Contrato Planning Line"; CurrencyCode: Code[10])
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         CurrExchRate: Record "Currency Exchange Rate";
         Currency: Record Currency;
         IsHandled: Boolean;
@@ -298,10 +298,10 @@ codeunit 50216 "Copy Contrato"
         if IsHandled then
             exit;
 
-        Job.Get(JobPlanningLine."Job No.");
-        if CurrencyCode <> Job."Currency Code" then
-            if (CurrencyCode = '') and (Job."Currency Code" <> '') then begin
-                JobPlanningLine."Currency Code" := Job."Currency Code";
+        Contrato.Get(JobPlanningLine."Contrato No.");
+        if CurrencyCode <> Contrato."Currency Code" then
+            if (CurrencyCode = '') and (Contrato."Currency Code" <> '') then begin
+                JobPlanningLine."Currency Code" := Contrato."Currency Code";
                 JobPlanningLine.UpdateCurrencyFactor();
                 Currency.Get(JobPlanningLine."Currency Code");
                 Currency.TestField("Unit-Amount Rounding Precision");
@@ -317,7 +317,7 @@ codeunit 50216 "Copy Contrato"
                     Currency."Unit-Amount Rounding Precision");
                 JobPlanningLine.Validate("Currency Date");
             end else
-                if (CurrencyCode <> '') and (Job."Currency Code" = '') then begin
+                if (CurrencyCode <> '') and (Contrato."Currency Code" = '') then begin
                     JobPlanningLine."Currency Code" := '';
                     JobPlanningLine."Currency Date" := 0D;
                     JobPlanningLine.UpdateCurrencyFactor();
@@ -325,8 +325,8 @@ codeunit 50216 "Copy Contrato"
                     JobPlanningLine."Unit Price" := JobPlanningLine."Unit Price (LCY)";
                     JobPlanningLine.Validate("Currency Date");
                 end else
-                    if (CurrencyCode <> '') and (Job."Currency Code" <> '') then begin
-                        JobPlanningLine."Currency Code" := Job."Currency Code";
+                    if (CurrencyCode <> '') and (Contrato."Currency Code" <> '') then begin
+                        JobPlanningLine."Currency Code" := Contrato."Currency Code";
                         JobPlanningLine.UpdateCurrencyFactor();
                         Currency.Get(JobPlanningLine."Currency Code");
                         Currency.TestField("Unit-Amount Rounding Precision");
@@ -359,7 +359,7 @@ codeunit 50216 "Copy Contrato"
         JobPlanningLineType := JobPlanningLineType2;
     end;
 
-    procedure SetCopyOptions(CopyPrices2: Boolean; CopyQuantity2: Boolean; CopyDimensions2: Boolean; JobPlanningLineSource2: Option "Job Planning Lines","Job Ledger Entries"; JobPlanningLineType2: Option " ",Budget,Billable; JobLedgerEntryType2: Option " ",Usage,Sale)
+    procedure SetCopyOptions(CopyPrices2: Boolean; CopyQuantity2: Boolean; CopyDimensions2: Boolean; JobPlanningLineSource2: Option "Contrato Planning Lines","Contrato Ledger Entries"; JobPlanningLineType2: Option " ",Budget,Billable; JobLedgerEntryType2: Option " ",Usage,Sale)
     begin
         CopyPrices := CopyPrices2;
         CopyQuantity := CopyQuantity2;
@@ -383,8 +383,8 @@ codeunit 50216 "Copy Contrato"
 
     local procedure FindLastJobPlanningLine(JobPlanningLine: Record "Contrato Planning Line"): Integer
     begin
-        JobPlanningLine.SetRange("Job No.", JobPlanningLine."Job No.");
-        JobPlanningLine.SetRange("Job Task No.", JobPlanningLine."Job Task No.");
+        JobPlanningLine.SetRange("Contrato No.", JobPlanningLine."Contrato No.");
+        JobPlanningLine.SetRange("Contrato Task No.", JobPlanningLine."Contrato Task No.");
         if JobPlanningLine.FindLast() then
             exit(JobPlanningLine."Line No.");
         exit(0);

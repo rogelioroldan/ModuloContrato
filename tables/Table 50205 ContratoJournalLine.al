@@ -14,7 +14,7 @@ table 50205 "Contrato Journal Line"
         {
             Caption = 'Line No.';
         }
-        field(3; "Job No."; Code[20])
+        field(3; "Contrato No."; Code[20])
         {
             Caption = 'Project No.';
             TableRelation = Contrato;
@@ -29,31 +29,31 @@ table 50205 "Contrato Journal Line"
                 if IsHandled then
                     exit;
 
-                if "Job No." = '' then begin
+                if "Contrato No." = '' then begin
                     Validate("Currency Code", '');
-                    Validate("Job Task No.", '');
-                    CreateDimFromDefaultDim(Rec.FieldNo("Job No."));
+                    Validate("Contrato Task No.", '');
+                    CreateDimFromDefaultDim(Rec.FieldNo("Contrato No."));
                     exit;
                 end;
 
                 GetJob();
-                Job.TestBlocked();
+                Contrato.TestBlocked();
                 IsHandled := false;
                 OnValidateJobNoOnBeforeCheckJob(Rec, xRec, Cust, IsHandled);
                 if not IsHandled then begin
-                    Job.TestField("Bill-to Customer No.");
-                    Cust.Get(Job."Bill-to Customer No.");
-                    Validate("Job Task No.", '');
+                    Contrato.TestField("Bill-to Customer No.");
+                    Cust.Get(Contrato."Bill-to Customer No.");
+                    Validate("Contrato Task No.", '');
                 end;
-                "Customer Price Group" := Job."Customer Price Group";
-                Validate("Currency Code", Job."Currency Code");
-                CreateDimFromDefaultDim(Rec.FieldNo("Job No."));
-                SetCountryRegionCodeFromJob(Job);
-                "Price Calculation Method" := Job.GetPriceCalculationMethod();
-                "Cost Calculation Method" := Job.GetCostCalculationMethod();
+                "Customer Price Group" := Contrato."Customer Price Group";
+                Validate("Currency Code", Contrato."Currency Code");
+                CreateDimFromDefaultDim(Rec.FieldNo("Contrato No."));
+                SetCountryRegionCodeFromJob(Contrato);
+                "Price Calculation Method" := Contrato.GetPriceCalculationMethod();
+                "Cost Calculation Method" := Contrato.GetCostCalculationMethod();
                 JobSetup.Get();
                 if JobSetup."Document No. Is Contrato No." and ("Document No." = '') then
-                    Validate("Document No.", Rec."Job No.");
+                    Validate("Document No.", Rec."Contrato No.");
             end;
         }
         field(4; "Posting Date"; Date)
@@ -81,7 +81,7 @@ table 50205 "Contrato Journal Line"
         {
             Caption = 'Document No.';
         }
-        field(6; Type; Enum "Job Journal Line Type")
+        field(6; Type; Enum "Contrato Journal Line Type")
         {
             Caption = 'Type';
 
@@ -116,7 +116,7 @@ table 50205 "Contrato Journal Line"
                     "Applies-to Entry" := 0;
                     "Applies-from Entry" := 0;
                     CheckedAvailability := false;
-                    "Job Planning Line No." := 0;
+                    "Contrato Planning Line No." := 0;
                     if Type = Type::Item then begin
                         "Bin Code" := '';
                         if ("No." <> '') and ("Location Code" <> '') then begin
@@ -175,8 +175,8 @@ table 50205 "Contrato Journal Line"
 
                 //WhseValidateSourceLine.JobJnlLineVerifyChangeForWhsePick(Rec, xRec);
 
-                if "Job Planning Line No." <> 0 then
-                    Validate("Job Planning Line No.");
+                if "Contrato Planning Line No." <> 0 then
+                    Validate("Contrato Planning Line No.");
 
                 CheckItemAvailable();
                 if Type = Type::Item then
@@ -472,7 +472,7 @@ table 50205 "Contrato Journal Line"
             Caption = 'Shpt. Method Code';
             TableRelation = "Shipment Method";
         }
-        field(61; "Entry Type"; Enum "Job Journal Line Entry Type")
+        field(61; "Entry Type"; Enum ContratoJournalLineEntryType)
         {
             Caption = 'Entry Type';
             Editable = false;
@@ -634,10 +634,10 @@ table 50205 "Contrato Journal Line"
             TableRelation = "Time Sheet Detail".Date where("Time Sheet No." = field("Time Sheet No."),
                                                             "Time Sheet Line No." = field("Time Sheet Line No."));
         }
-        field(1000; "Job Task No."; Code[20])
+        field(1000; "Contrato Task No."; Code[20])
         {
             Caption = 'Project Task No.';
-            TableRelation = "Contrato Task"."Job Task No." where("Job No." = field("Job No."));
+            TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
 
             trigger OnValidate()
             var
@@ -649,14 +649,14 @@ table 50205 "Contrato Journal Line"
                 if IsHandled then
                     exit;
 
-                if ("Job Task No." = '') or (("Job Task No." <> xRec."Job Task No.") and (xRec."Job Task No." <> '')) then begin
+                if ("Contrato Task No." = '') or (("Contrato Task No." <> xRec."Contrato Task No.") and (xRec."Contrato Task No." <> '')) then begin
                     Validate("No.", '');
                     exit;
                 end;
 
-                TestField("Job No.");
-                JobTask.Get("Job No.", "Job Task No.");
-                JobTask.TestField("Job Task Type", JobTask."Job Task Type"::Posting);
+                TestField("Contrato No.");
+                JobTask.Get("Contrato No.", "Contrato Task No.");
+                JobTask.TestField("Contrato Task Type", JobTask."Contrato Task Type"::Posting);
                 OnValidateJobTaskNoOnAfterTestJobTaskType(Rec, xRec, JobTask);
                 UpdateDimensions();
             end;
@@ -680,14 +680,14 @@ table 50205 "Contrato Journal Line"
                 UpdateAllAmounts();
             end;
         }
-        field(1003; "Line Type"; Enum "Job Line Type")
+        field(1003; "Line Type"; Enum "Contrato Line Type")
         {
             Caption = 'Line Type';
 
             trigger OnValidate()
             begin
-                if "Job Planning Line No." <> 0 then
-                    Error(Text006, FieldCaption("Line Type"), FieldCaption("Job Planning Line No."));
+                if "Contrato Planning Line No." <> 0 then
+                    Error(Text006, FieldCaption("Line Type"), FieldCaption("Contrato Planning Line No."));
             end;
         }
         field(1004; "Applies-from Entry"; Integer)
@@ -719,7 +719,7 @@ table 50205 "Contrato Journal Line"
                 end;
             end;
         }
-        field(1005; "Job Posting Only"; Boolean)
+        field(1005; "Contrato Posting Only"; Boolean)
         {
             Caption = 'Project Posting Only';
         }
@@ -835,7 +835,7 @@ table 50205 "Contrato Journal Line"
         {
             Caption = 'Description 2';
         }
-        field(1017; "Ledger Entry Type"; Enum "Job Ledger Entry Type")
+        field(1017; "Ledger Entry Type"; Enum "Contrato Ledger Entry Type")
         {
             Caption = 'Ledger Entry Type';
         }
@@ -849,7 +849,7 @@ table 50205 "Contrato Journal Line"
             else
             if ("Ledger Entry Type" = const("G/L Account")) "G/L Entry";
         }
-        field(1019; "Job Planning Line No."; Integer)
+        field(1019; "Contrato Planning Line No."; Integer)
         {
             BlankZero = true;
             Caption = 'Project Planning Line No.';
@@ -860,8 +860,8 @@ table 50205 "Contrato Journal Line"
                 Resource: Record Resource;
                 "Filter": Text;
             begin
-                JobPlanningLine.SetRange("Job No.", "Job No.");
-                JobPlanningLine.SetRange("Job Task No.", "Job Task No.");
+                JobPlanningLine.SetRange("Contrato No.", "Contrato No.");
+                JobPlanningLine.SetRange("Contrato Task No.", "Contrato Task No.");
                 JobPlanningLine.SetRange(Type, Type);
                 JobPlanningLine.SetRange("No.", "No.");
                 JobPlanningLine.SetRange("Usage Link", true);
@@ -872,7 +872,7 @@ table 50205 "Contrato Journal Line"
                 end;
 
                 if PAGE.RunModal(0, JobPlanningLine) = ACTION::LookupOK then
-                    Validate("Job Planning Line No.", JobPlanningLine."Line No.");
+                    Validate("Contrato Planning Line No.", JobPlanningLine."Line No.");
             end;
 
             trigger OnValidate()
@@ -880,12 +880,12 @@ table 50205 "Contrato Journal Line"
                 JobPlanningLine: Record "Contrato Planning Line";
                 WhseValidateSourceLine: Codeunit "Whse. Validate Source Line";
             begin
-                if "Job Planning Line No." <> 0 then begin
+                if "Contrato Planning Line No." <> 0 then begin
                     ValidateJobPlanningLineLink();
-                    JobPlanningLine.Get("Job No.", "Job Task No.", "Job Planning Line No.");
+                    JobPlanningLine.Get("Contrato No.", "Contrato Task No.", "Contrato Planning Line No.");
 
-                    JobPlanningLine.TestField("Job No.", "Job No.");
-                    JobPlanningLine.TestField("Job Task No.", "Job Task No.");
+                    JobPlanningLine.TestField("Contrato No.", "Contrato No.");
+                    JobPlanningLine.TestField("Contrato Task No.", "Contrato Task No.");
                     JobPlanningLine.TestField(Type, Type);
                     JobPlanningLine.TestField("No.", "No.");
                     JobPlanningLine.TestField("Usage Link", true);
@@ -893,9 +893,9 @@ table 50205 "Contrato Journal Line"
 
                     "Line Type" := JobPlanningLine.ConvertToJobLineType();
 
-                    if (JobPlanningLine."Location Code" <> '') and (CurrFieldNo = FieldNo("Job Planning Line No.")) then
+                    if (JobPlanningLine."Location Code" <> '') and (CurrFieldNo = FieldNo("Contrato Planning Line No.")) then
                         "Location Code" := JobPlanningLine."Location Code";
-                    if (JobPlanningLine."Bin Code" <> '') and (CurrFieldNo = FieldNo("Job Planning Line No.")) then
+                    if (JobPlanningLine."Bin Code" <> '') and (CurrFieldNo = FieldNo("Contrato Planning Line No.")) then
                         "Bin Code" := JobPlanningLine."Bin Code";
 
                     Validate("Remaining Qty.", CalcQtyFromBaseQty(JobPlanningLine."Remaining Qty. (Base)" - "Quantity (Base)"));
@@ -917,11 +917,11 @@ table 50205 "Contrato Journal Line"
             var
                 JobPlanningLine: Record "Contrato Planning Line";
             begin
-                if ("Remaining Qty." <> 0) and ("Job Planning Line No." = 0) then
-                    Error(Text004, FieldCaption("Remaining Qty."), FieldCaption("Job Planning Line No."));
+                if ("Remaining Qty." <> 0) and ("Contrato Planning Line No." = 0) then
+                    Error(Text004, FieldCaption("Remaining Qty."), FieldCaption("Contrato Planning Line No."));
 
-                if "Job Planning Line No." <> 0 then begin
-                    JobPlanningLine.Get("Job No.", "Job Task No.", "Job Planning Line No.");
+                if "Contrato Planning Line No." <> 0 then begin
+                    JobPlanningLine.Get("Contrato No.", "Contrato Task No.", "Contrato Planning Line No.");
                     if JobPlanningLine.Quantity >= 0 then begin
                         if "Remaining Qty." < 0 then
                             "Remaining Qty." := 0;
@@ -1138,7 +1138,7 @@ table 50205 "Contrato Journal Line"
         Cust: Record Customer;
         ItemJnlLine: Record "Item Journal Line";
         GLAcc: Record "G/L Account";
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         WorkType: Record "Work Type";
         JobJnlBatch: Record "Contrato Journal Batch";
         JobJnlLine: Record "Contrato Journal Line";
@@ -1252,7 +1252,7 @@ table 50205 "Contrato Journal Line"
             Description := Item.Description;
             "Description 2" := Item."Description 2";
             GetJob();
-            if Job."Language Code" <> '' then
+            if Contrato."Language Code" <> '' then
                 GetItemTranslation();
             "Posting Group" := Item."Inventory Posting Group";
             "Gen. Prod. Posting Group" := Item."Gen. Prod. Posting Group";
@@ -1317,10 +1317,10 @@ table 50205 "Contrato Journal Line"
             IsHandled := false;
             OnCheckItemAvailableOnBeforeAssignQuantity(Rec, ItemJnlLine, IsHandled);
             if not IsHandled then
-                if "Job Planning Line No." = 0 then
+                if "Contrato Planning Line No." = 0 then
                     ItemJnlLine.Quantity := Quantity
                 else begin
-                    JobPlanningLine.Get("Job No.", "Job Task No.", "Job Planning Line No.");
+                    JobPlanningLine.Get("Contrato No.", "Contrato Task No.", "Contrato Planning Line No.");
                     if JobPlanningLine."Remaining Qty." < (Quantity + "Remaining Qty.") then
                         ItemJnlLine.Quantity := (Quantity + "Remaining Qty.") - JobPlanningLine."Remaining Qty."
                     else
@@ -1336,7 +1336,7 @@ table 50205 "Contrato Journal Line"
     var
         LineIsEmpty: Boolean;
     begin
-        LineIsEmpty := ("Job No." = '') and ("No." = '') and (Quantity = 0);
+        LineIsEmpty := ("Contrato No." = '') and ("No." = '') and (Quantity = 0);
         OnBeforeEmptyLine(Rec, LineIsEmpty);
         exit(LineIsEmpty);
     end;
@@ -1361,7 +1361,7 @@ table 50205 "Contrato Journal Line"
             "Posting Date" := LastJobJnlLine."Posting Date";
             "Document Date" := LastJobJnlLine."Posting Date";
             if JobsSetup."Document No. Is Contrato No." and (LastJobJnlLine."Document No." = '') then
-                "Document No." := Rec."Job No."
+                "Document No." := Rec."Contrato No."
             else
                 "Document No." := LastJobJnlLine."Document No.";
             Type := LastJobJnlLine.Type;
@@ -1372,7 +1372,7 @@ table 50205 "Contrato Journal Line"
             "Document Date" := WorkDate();
             if JobsSetup."Document No. Is Contrato No." then begin
                 if "Document No." = '' then
-                    "Document No." := Rec."Job No.";
+                    "Document No." := Rec."Contrato No.";
             end else
                 if JobJnlBatch."No. Series" <> '' then
                     "Document No." := NoSeries.PeekNextNo(JobJnlBatch."No. Series", "Posting Date");
@@ -1382,8 +1382,8 @@ table 50205 "Contrato Journal Line"
         "Source Code" := JobJnlTemplate."Source Code";
         "Reason Code" := JobJnlBatch."Reason Code";
         "Posting No. Series" := JobJnlBatch."Posting No. Series";
-        "Price Calculation Method" := Job.GetPriceCalculationMethod();
-        "Cost Calculation Method" := Job.GetCostCalculationMethod();
+        "Price Calculation Method" := Contrato.GetPriceCalculationMethod();
+        "Cost Calculation Method" := Contrato.GetCostCalculationMethod();
 
         OnAfterSetUpNewLine(Rec, LastJobJnlLine, JobJnlTemplate, JobJnlBatch);
     end;
@@ -1449,13 +1449,13 @@ table 50205 "Contrato Journal Line"
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeGetJob(Rec, Job, IsHandled);
+        OnBeforeGetJob(Rec, Contrato, IsHandled);
         if IsHandled then
             exit;
 
-        TestField("Job No.");
-        if "Job No." <> Job."No." then
-            Job.Get("Job No.");
+        TestField("Contrato No.");
+        if "Contrato No." <> Contrato."No." then
+            Contrato.Get("Contrato No.");
     end;
 
     procedure UpdateCurrencyFactor()
@@ -1580,7 +1580,7 @@ table 50205 "Contrato Journal Line"
         if IsHandled then
             exit;
 
-        Validate(Rec."Country/Region Code", Job."Bill-to Country/Region Code");
+        Validate(Rec."Country/Region Code", Contrato."Bill-to Country/Region Code");
     end;
 
     local procedure SelectItemEntry(CurrentFieldNo: Integer)
@@ -1644,7 +1644,7 @@ table 50205 "Contrato Journal Line"
     procedure GetItemTranslation()
     begin
         GetJob();
-        if ItemTranslation.Get("No.", "Variant Code", Job."Language Code") then begin
+        if ItemTranslation.Get("No.", "Variant Code", Contrato."Language Code") then begin
             Description := ItemTranslation.Description;
             "Description 2" := ItemTranslation."Description 2";
         end;
@@ -1882,7 +1882,7 @@ table 50205 "Contrato Journal Line"
     procedure SwitchLinesWithErrorsFilter(var ShowAllLinesEnabled: Boolean)
     var
         TempErrorMessage: Record "Error Message" temporary;
-        JobJournalErrorsMgt: Codeunit "Job Journal Errors Mgt.";
+        JobJournalErrorsMgt: Codeunit "Contrato Journal Errors Mgt.";
     begin
         if ShowAllLinesEnabled then begin
             MarkedOnly(false);
@@ -1945,7 +1945,7 @@ table 50205 "Contrato Journal Line"
 
     procedure GetLineWithPrice(var LineWithPrice: Interface "Line With Price")
     var
-        JobJournalLinePrice: Codeunit "Job Journal Line - Price";
+        JobJournalLinePrice: Codeunit "Contrato Journal Line - Price";
     begin
         LineWithPrice := JobJournalLinePrice;
         OnAfterGetLineWithPrice(LineWithPrice);
@@ -2064,21 +2064,21 @@ table 50205 "Contrato Journal Line"
         JobPlanningLine: Record "Contrato Planning Line";
         JobJournalLine: Record "Contrato Journal Line";
     begin
-        JobJournalLine.SetRange("Job No.", "Job No.");
-        JobJournalLine.SetRange("Job Task No.", "Job Task No.");
-        JobJournalLine.SetRange("Job Planning Line No.", "Job Planning Line No.");
+        JobJournalLine.SetRange("Contrato No.", "Contrato No.");
+        JobJournalLine.SetRange("Contrato Task No.", "Contrato Task No.");
+        JobJournalLine.SetRange("Contrato Planning Line No.", "Contrato Planning Line No.");
 
         if JobJournalLine.FindFirst() then
             if ("Journal Template Name" <> JobJournalLine."Journal Template Name") or
                ("Journal Batch Name" <> JobJournalLine."Journal Batch Name") or
                ("Line No." <> JobJournalLine."Line No.")
             then begin
-                JobPlanningLine.Get("Job No.", "Job Task No.", "Job Planning Line No.");
+                JobPlanningLine.Get("Contrato No.", "Contrato Task No.", "Contrato Planning Line No.");
                 if not Confirm(Text007, false,
                      TableCaption,
                      StrSubstNo('%1, %2, %3', "Journal Template Name", "Journal Batch Name", "Line No."),
                      JobPlanningLine.TableCaption(),
-                     StrSubstNo('%1, %2, %3', JobPlanningLine."Job No.", JobPlanningLine."Job Task No.", JobPlanningLine."Line No."),
+                     StrSubstNo('%1, %2, %3', JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.", JobPlanningLine."Line No."),
                      FieldCaption("Remaining Qty."))
                 then
                     Error('');
@@ -2103,13 +2103,13 @@ table 50205 "Contrato Journal Line"
         OnBeforeUpdateDimensions(Rec, CurrFieldNo, IsHandled);
         if not IsHandled then begin
             CreateDimFromDefaultDim(0);
-            if "Job Task No." <> '' then begin
+            if "Contrato Task No." <> '' then begin
                 DimensionSetIDArr[1] := "Dimension Set ID";
                 DimensionSetIDArr[2] :=
-                DimMgt.CreateDimSetFromJobTaskDim("Job No.",
-                    "Job Task No.", "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code");
+                DimMgt.CreateDimSetFromJobTaskDim("Contrato No.",
+                    "Contrato Task No.", "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code");
                 // DimMgt.CreateDimForJobJournalLineWithHigherPriorities(
-                // Rec, CurrFieldNo, DimensionSetIDArr[3], "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code", "Source Code", DATABASE::Job);
+                // Rec, CurrFieldNo, DimensionSetIDArr[3], "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code", "Source Code", DATABASE::Contrato);
                 "Dimension Set ID" :=
                 DimMgt.GetCombinedDimensionSetID(
                     DimensionSetIDArr, "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code");
@@ -2208,8 +2208,8 @@ table 50205 "Contrato Journal Line"
         case true of
             FieldNo = Rec.FieldNo("No."):
                 TableValuePair.Add(DimMgt.TypeToTableID2(Rec.Type.AsInteger()), Rec."No.");
-            FieldNo = Rec.FieldNo("Job No."):
-                TableValuePair.Add(Database::Contrato, Rec."Job No.");
+            FieldNo = Rec.FieldNo("Contrato No."):
+                TableValuePair.Add(Database::Contrato, Rec."Contrato No.");
             FieldNo = Rec.FieldNo("Resource Group No."):
                 TableValuePair.Add(Database::"Resource Group", Rec."Resource Group No.");
             FieldNo = Rec.FieldNo("Location Code"):
@@ -2222,7 +2222,7 @@ table 50205 "Contrato Journal Line"
     local procedure InitDefaultDimensionSources(var DefaultDimSource: List of [Dictionary of [Integer, Code[20]]]; FieldNo: Integer)
     begin
         DimMgt.AddDimSource(DefaultDimSource, DimMgt.TypeToTableID2(Rec.Type.AsInteger()), Rec."No.", FieldNo = Rec.FieldNo("No."));
-        DimMgt.AddDimSource(DefaultDimSource, Database::Contrato, Rec."Job No.", FieldNo = Rec.FieldNo("Job No."));
+        DimMgt.AddDimSource(DefaultDimSource, Database::Contrato, Rec."Contrato No.", FieldNo = Rec.FieldNo("Contrato No."));
         DimMgt.AddDimSource(DefaultDimSource, Database::"Resource Group", Rec."Resource Group No.", FieldNo = Rec.FieldNo("Resource Group No."));
         DimMgt.AddDimSource(DefaultDimSource, Database::Location, Rec."Location Code", FieldNo = Rec.FieldNo("Location Code"));
 
@@ -2233,7 +2233,7 @@ table 50205 "Contrato Journal Line"
     var
         JobTask: Record "Contrato Task";
     begin
-        if JobTask.Get(Rec."Job No.", Rec."Job Task No.") and (JobTask."Location Code" <> '') then
+        if JobTask.Get(Rec."Contrato No.", Rec."Contrato Task No.") and (JobTask."Location Code" <> '') then
             Validate("Location Code", JobTask."Location Code");
     end;
 
@@ -2241,7 +2241,7 @@ table 50205 "Contrato Journal Line"
     var
         JobTask: Record "Contrato Task";
     begin
-        if JobTask.Get(Rec."Job No.", Rec."Job Task No.") and (JobTask."Bin Code" <> '') then begin
+        if JobTask.Get(Rec."Contrato No.", Rec."Contrato Task No.") and (JobTask."Bin Code" <> '') then begin
             if ("Location Code" <> '') and (JobTask."Location Code" <> "Location Code") then
                 exit(false);
             if WMSManagement.GetDefaultBin("No.", "Variant Code", "Location Code", JobTask."Bin Code") then begin
@@ -2385,7 +2385,7 @@ table 50205 "Contrato Journal Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeGetJob(var JobJournalLine: Record "Contrato Journal Line"; var Job: Record Contrato; var IsHandled: Boolean);
+    local procedure OnBeforeGetJob(var JobJournalLine: Record "Contrato Journal Line"; var Contrato: Record Contrato; var IsHandled: Boolean);
     begin
     end;
 
@@ -2420,7 +2420,7 @@ table 50205 "Contrato Journal Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeSetCountryRegionCodeFromJob(var JobJournalLine: Record "Contrato Journal Line"; Job: Record Contrato; var IsHandled: Boolean)
+    local procedure OnBeforeSetCountryRegionCodeFromJob(var JobJournalLine: Record "Contrato Journal Line"; Contrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
