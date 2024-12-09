@@ -9,7 +9,7 @@ codeunit 50212 ContratoJnlManagement
     end;
 
     var
-        LastJobJnlLine: Record "Contrato Journal Line";
+        LastContratoJnlLine: Record "Contrato Journal Line";
         OpenFromBatch: Boolean;
 
         Text000: Label 'PROJECT';
@@ -19,274 +19,274 @@ codeunit 50212 ContratoJnlManagement
         Text004: Label 'DEFAULT';
         Text005: Label 'Default Journal';
 
-    procedure TemplateSelection(PageID: Integer; RecurringJnl: Boolean; var JobJnlLine: Record "Contrato Journal Line"; var JnlSelected: Boolean)
+    procedure TemplateSelection(PageID: Integer; RecurringJnl: Boolean; var ContratoJnlLine: Record "Contrato Journal Line"; var JnlSelected: Boolean)
     var
-        JobJnlTemplate: Record "Contrato Journal Template";
+        ContratoJnlTemplate: Record "Contrato Journal Template";
     begin
         JnlSelected := true;
 
-        JobJnlTemplate.Reset();
-        JobJnlTemplate.SetRange("Page ID", PageID);
-        JobJnlTemplate.SetRange(Recurring, RecurringJnl);
-        OnTemplateSelectionOnAfterJobJnlTemplateSetFilters(PageID, RecurringJnl, JobJnlLine, JobJnlTemplate);
-        case JobJnlTemplate.Count of
+        ContratoJnlTemplate.Reset();
+        ContratoJnlTemplate.SetRange("Page ID", PageID);
+        ContratoJnlTemplate.SetRange(Recurring, RecurringJnl);
+        OnTemplateSelectionOnAfterContratoJnlTemplateSetFilters(PageID, RecurringJnl, ContratoJnlLine, ContratoJnlTemplate);
+        case ContratoJnlTemplate.Count of
             0:
                 begin
-                    JobJnlTemplate.Init();
-                    JobJnlTemplate.Recurring := RecurringJnl;
+                    ContratoJnlTemplate.Init();
+                    ContratoJnlTemplate.Recurring := RecurringJnl;
                     if not RecurringJnl then begin
-                        JobJnlTemplate.Name := Text000;
-                        JobJnlTemplate.Description := Text001;
+                        ContratoJnlTemplate.Name := Text000;
+                        ContratoJnlTemplate.Description := Text001;
                     end else begin
-                        JobJnlTemplate.Name := Text002;
-                        JobJnlTemplate.Description := Text003;
+                        ContratoJnlTemplate.Name := Text002;
+                        ContratoJnlTemplate.Description := Text003;
                     end;
-                    JobJnlTemplate.Validate("Page ID");
-                    JobJnlTemplate.Insert();
+                    ContratoJnlTemplate.Validate("Page ID");
+                    ContratoJnlTemplate.Insert();
                     Commit();
                 end;
             1:
-                JobJnlTemplate.FindFirst();
+                ContratoJnlTemplate.FindFirst();
             else
-                JnlSelected := PAGE.RunModal(0, JobJnlTemplate) = ACTION::LookupOK;
+                JnlSelected := PAGE.RunModal(0, ContratoJnlTemplate) = ACTION::LookupOK;
         end;
         if JnlSelected then begin
-            JobJnlLine.FilterGroup := 2;
-            JobJnlLine.SetRange("Journal Template Name", JobJnlTemplate.Name);
-            JobJnlLine.FilterGroup := 0;
+            ContratoJnlLine.FilterGroup := 2;
+            ContratoJnlLine.SetRange("Journal Template Name", ContratoJnlTemplate.Name);
+            ContratoJnlLine.FilterGroup := 0;
             if OpenFromBatch then begin
-                JobJnlLine."Journal Template Name" := '';
-                PAGE.Run(JobJnlTemplate."Page ID", JobJnlLine);
+                ContratoJnlLine."Journal Template Name" := '';
+                PAGE.Run(ContratoJnlTemplate."Page ID", ContratoJnlLine);
             end;
         end;
     end;
 
-    procedure TemplateSelectionFromBatch(var JobJnlBatch: Record "Contrato Journal Batch")
+    procedure TemplateSelectionFromBatch(var ContratoJnlBatch: Record "Contrato Journal Batch")
     var
-        JobJnlLine: Record "Contrato Journal Line";
-        JobJnlTemplate: Record "Contrato Journal Template";
+        ContratoJnlLine: Record "Contrato Journal Line";
+        ContratoJnlTemplate: Record "Contrato Journal Template";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeTemplateSelectionFromBatch(JobJnlBatch, OpenFromBatch, IsHandled);
+        OnBeforeTemplateSelectionFromBatch(ContratoJnlBatch, OpenFromBatch, IsHandled);
         if IsHandled then
             exit;
 
         OpenFromBatch := true;
-        JobJnlTemplate.Get(JobJnlBatch."Journal Template Name");
-        JobJnlTemplate.TestField("Page ID");
-        JobJnlBatch.TestField(Name);
+        ContratoJnlTemplate.Get(ContratoJnlBatch."Journal Template Name");
+        ContratoJnlTemplate.TestField("Page ID");
+        ContratoJnlBatch.TestField(Name);
 
-        JobJnlLine.FilterGroup := 2;
-        JobJnlLine.SetRange("Journal Template Name", JobJnlTemplate.Name);
-        JobJnlLine.FilterGroup := 0;
+        ContratoJnlLine.FilterGroup := 2;
+        ContratoJnlLine.SetRange("Journal Template Name", ContratoJnlTemplate.Name);
+        ContratoJnlLine.FilterGroup := 0;
 
-        JobJnlLine."Journal Template Name" := '';
-        JobJnlLine."Journal Batch Name" := JobJnlBatch.Name;
-        PAGE.Run(JobJnlTemplate."Page ID", JobJnlLine);
+        ContratoJnlLine."Journal Template Name" := '';
+        ContratoJnlLine."Journal Batch Name" := ContratoJnlBatch.Name;
+        PAGE.Run(ContratoJnlTemplate."Page ID", ContratoJnlLine);
     end;
 
-    procedure OpenJnl(var CurrentJnlBatchName: Code[10]; var JobJnlLine: Record "Contrato Journal Line")
+    procedure OpenJnl(var CurrentJnlBatchName: Code[10]; var ContratoJnlLine: Record "Contrato Journal Line")
     begin
-        OnBeforeOpenJnl(CurrentJnlBatchName, JobJnlLine);
+        OnBeforeOpenJnl(CurrentJnlBatchName, ContratoJnlLine);
 
-        CheckTemplateName(JobJnlLine.GetRangeMax("Journal Template Name"), CurrentJnlBatchName);
-        JobJnlLine.FilterGroup := 2;
-        JobJnlLine.SetRange("Journal Batch Name", CurrentJnlBatchName);
-        JobJnlLine.FilterGroup := 0;
+        CheckTemplateName(ContratoJnlLine.GetRangeMax("Journal Template Name"), CurrentJnlBatchName);
+        ContratoJnlLine.FilterGroup := 2;
+        ContratoJnlLine.SetRange("Journal Batch Name", CurrentJnlBatchName);
+        ContratoJnlLine.FilterGroup := 0;
     end;
 
-    procedure OpenJnlBatch(var JobJnlBatch: Record "Contrato Journal Batch")
+    procedure OpenJnlBatch(var ContratoJnlBatch: Record "Contrato Journal Batch")
     var
-        JobJnlTemplate: Record "Contrato Journal Template";
-        JobJnlLine: Record "Contrato Journal Line";
+        ContratoJnlTemplate: Record "Contrato Journal Template";
+        ContratoJnlLine: Record "Contrato Journal Line";
         JnlSelected: Boolean;
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeOpenJnlBatch(JobJnlBatch, IsHandled);
+        OnBeforeOpenJnlBatch(ContratoJnlBatch, IsHandled);
         if IsHandled then
             exit;
 
-        if JobJnlBatch.GetFilter("Journal Template Name") <> '' then
+        if ContratoJnlBatch.GetFilter("Journal Template Name") <> '' then
             exit;
-        JobJnlBatch.FilterGroup(2);
-        if JobJnlBatch.GetFilter("Journal Template Name") <> '' then begin
-            JobJnlBatch.FilterGroup(0);
+        ContratoJnlBatch.FilterGroup(2);
+        if ContratoJnlBatch.GetFilter("Journal Template Name") <> '' then begin
+            ContratoJnlBatch.FilterGroup(0);
             exit;
         end;
-        JobJnlBatch.FilterGroup(0);
+        ContratoJnlBatch.FilterGroup(0);
 
-        if not JobJnlBatch.Find('-') then begin
-            if not JobJnlTemplate.FindFirst() then
-                TemplateSelection(0, false, JobJnlLine, JnlSelected);
-            if JobJnlTemplate.FindFirst() then
-                CheckTemplateName(JobJnlTemplate.Name, JobJnlBatch.Name);
-            JobJnlTemplate.SetRange(Recurring, true);
-            if not JobJnlTemplate.FindFirst() then
-                TemplateSelection(0, true, JobJnlLine, JnlSelected);
-            if JobJnlTemplate.FindFirst() then
-                CheckTemplateName(JobJnlTemplate.Name, JobJnlBatch.Name);
-            JobJnlTemplate.SetRange(Recurring);
+        if not ContratoJnlBatch.Find('-') then begin
+            if not ContratoJnlTemplate.FindFirst() then
+                TemplateSelection(0, false, ContratoJnlLine, JnlSelected);
+            if ContratoJnlTemplate.FindFirst() then
+                CheckTemplateName(ContratoJnlTemplate.Name, ContratoJnlBatch.Name);
+            ContratoJnlTemplate.SetRange(Recurring, true);
+            if not ContratoJnlTemplate.FindFirst() then
+                TemplateSelection(0, true, ContratoJnlLine, JnlSelected);
+            if ContratoJnlTemplate.FindFirst() then
+                CheckTemplateName(ContratoJnlTemplate.Name, ContratoJnlBatch.Name);
+            ContratoJnlTemplate.SetRange(Recurring);
         end;
-        JobJnlBatch.Find('-');
+        ContratoJnlBatch.Find('-');
         JnlSelected := true;
-        JobJnlBatch.CalcFields(Recurring);
-        JobJnlTemplate.SetRange(Recurring, JobJnlBatch.Recurring);
-        if JobJnlBatch.GetFilter("Journal Template Name") <> '' then
-            JobJnlTemplate.SetRange(Name, JobJnlBatch.GetFilter("Journal Template Name"));
-        case JobJnlTemplate.Count of
+        ContratoJnlBatch.CalcFields(Recurring);
+        ContratoJnlTemplate.SetRange(Recurring, ContratoJnlBatch.Recurring);
+        if ContratoJnlBatch.GetFilter("Journal Template Name") <> '' then
+            ContratoJnlTemplate.SetRange(Name, ContratoJnlBatch.GetFilter("Journal Template Name"));
+        case ContratoJnlTemplate.Count of
             1:
-                JobJnlTemplate.FindFirst();
+                ContratoJnlTemplate.FindFirst();
             else
-                JnlSelected := PAGE.RunModal(0, JobJnlTemplate) = ACTION::LookupOK;
+                JnlSelected := PAGE.RunModal(0, ContratoJnlTemplate) = ACTION::LookupOK;
         end;
         if not JnlSelected then
             Error('');
 
-        JobJnlBatch.FilterGroup(0);
-        JobJnlBatch.SetRange("Journal Template Name", JobJnlTemplate.Name);
-        JobJnlBatch.FilterGroup(2);
+        ContratoJnlBatch.FilterGroup(0);
+        ContratoJnlBatch.SetRange("Journal Template Name", ContratoJnlTemplate.Name);
+        ContratoJnlBatch.FilterGroup(2);
     end;
 
     local procedure CheckTemplateName(CurrentJnlTemplateName: Code[10]; var CurrentJnlBatchName: Code[10])
     var
-        JobJnlBatch: Record "Contrato Journal Batch";
+        ContratoJnlBatch: Record "Contrato Journal Batch";
     begin
-        JobJnlBatch.SetRange("Journal Template Name", CurrentJnlTemplateName);
-        if not JobJnlBatch.Get(CurrentJnlTemplateName, CurrentJnlBatchName) then begin
-            if not JobJnlBatch.FindFirst() then begin
-                JobJnlBatch.Init();
-                JobJnlBatch."Journal Template Name" := CurrentJnlTemplateName;
-                JobJnlBatch.SetupNewBatch();
-                JobJnlBatch.Name := Text004;
-                JobJnlBatch.Description := Text005;
-                JobJnlBatch.Insert(true);
+        ContratoJnlBatch.SetRange("Journal Template Name", CurrentJnlTemplateName);
+        if not ContratoJnlBatch.Get(CurrentJnlTemplateName, CurrentJnlBatchName) then begin
+            if not ContratoJnlBatch.FindFirst() then begin
+                ContratoJnlBatch.Init();
+                ContratoJnlBatch."Journal Template Name" := CurrentJnlTemplateName;
+                ContratoJnlBatch.SetupNewBatch();
+                ContratoJnlBatch.Name := Text004;
+                ContratoJnlBatch.Description := Text005;
+                ContratoJnlBatch.Insert(true);
                 Commit();
             end;
-            CurrentJnlBatchName := JobJnlBatch.Name;
+            CurrentJnlBatchName := ContratoJnlBatch.Name;
         end;
     end;
 
-    procedure CheckName(CurrentJnlBatchName: Code[10]; var JobJnlLine: Record "Contrato Journal Line")
+    procedure CheckName(CurrentJnlBatchName: Code[10]; var ContratoJnlLine: Record "Contrato Journal Line")
     var
-        JobJnlBatch: Record "Contrato Journal Batch";
+        ContratoJnlBatch: Record "Contrato Journal Batch";
     begin
-        JobJnlBatch.Get(JobJnlLine.GetRangeMax("Journal Template Name"), CurrentJnlBatchName);
+        ContratoJnlBatch.Get(ContratoJnlLine.GetRangeMax("Journal Template Name"), CurrentJnlBatchName);
     end;
 
-    procedure SetName(CurrentJnlBatchName: Code[10]; var JobJnlLine: Record "Contrato Journal Line")
+    procedure SetName(CurrentJnlBatchName: Code[10]; var ContratoJnlLine: Record "Contrato Journal Line")
     begin
-        JobJnlLine.FilterGroup := 2;
-        JobJnlLine.SetRange("Journal Batch Name", CurrentJnlBatchName);
-        JobJnlLine.FilterGroup := 0;
-        if JobJnlLine.Find('-') then;
+        ContratoJnlLine.FilterGroup := 2;
+        ContratoJnlLine.SetRange("Journal Batch Name", CurrentJnlBatchName);
+        ContratoJnlLine.FilterGroup := 0;
+        if ContratoJnlLine.Find('-') then;
     end;
 
-    procedure LookupName(var CurrentJnlBatchName: Code[10]; var JobJnlLine: Record "Contrato Journal Line")
+    procedure LookupName(var CurrentJnlBatchName: Code[10]; var ContratoJnlLine: Record "Contrato Journal Line")
     var
-        JobJnlBatch: Record "Contrato Journal Batch";
+        ContratoJnlBatch: Record "Contrato Journal Batch";
     begin
         Commit();
-        JobJnlBatch."Journal Template Name" := JobJnlLine.GetRangeMax("Journal Template Name");
-        JobJnlBatch.Name := JobJnlLine.GetRangeMax("Journal Batch Name");
-        JobJnlBatch.FilterGroup(2);
-        JobJnlBatch.SetRange("Journal Template Name", JobJnlBatch."Journal Template Name");
-        OnLookupNameOnAfterSetFilters(JobJnlBatch);
-        JobJnlBatch.FilterGroup(0);
-        if PAGE.RunModal(0, JobJnlBatch) = ACTION::LookupOK then begin
-            CurrentJnlBatchName := JobJnlBatch.Name;
-            SetName(CurrentJnlBatchName, JobJnlLine);
+        ContratoJnlBatch."Journal Template Name" := ContratoJnlLine.GetRangeMax("Journal Template Name");
+        ContratoJnlBatch.Name := ContratoJnlLine.GetRangeMax("Journal Batch Name");
+        ContratoJnlBatch.FilterGroup(2);
+        ContratoJnlBatch.SetRange("Journal Template Name", ContratoJnlBatch."Journal Template Name");
+        OnLookupNameOnAfterSetFilters(ContratoJnlBatch);
+        ContratoJnlBatch.FilterGroup(0);
+        if PAGE.RunModal(0, ContratoJnlBatch) = ACTION::LookupOK then begin
+            CurrentJnlBatchName := ContratoJnlBatch.Name;
+            SetName(CurrentJnlBatchName, ContratoJnlLine);
         end;
     end;
 
-    procedure GetNames(var JobJnlLine: Record "Contrato Journal Line"; var JobDescription: Text[100]; var AccName: Text[100])
+    procedure GetNames(var ContratoJnlLine: Record "Contrato Journal Line"; var ContratoDescription: Text[100]; var AccName: Text[100])
     var
         Res: Record Resource;
         Item: Record Item;
         GLAcc: Record "G/L Account";
     begin
-        JobDescription := GetJobDescription(JobJnlLine);
+        ContratoDescription := GetContratoDescription(ContratoJnlLine);
 
-        if (JobJnlLine.Type <> LastJobJnlLine.Type) or
-           (JobJnlLine."No." <> LastJobJnlLine."No.")
+        if (ContratoJnlLine.Type <> LastContratoJnlLine.Type) or
+           (ContratoJnlLine."No." <> LastContratoJnlLine."No.")
         then begin
             AccName := '';
-            if JobJnlLine."No." <> '' then
-                case JobJnlLine.Type of
-                    JobJnlLine.Type::Resource:
-                        if Res.Get(JobJnlLine."No.") then
+            if ContratoJnlLine."No." <> '' then
+                case ContratoJnlLine.Type of
+                    ContratoJnlLine.Type::Resource:
+                        if Res.Get(ContratoJnlLine."No.") then
                             AccName := Res.Name;
-                    JobJnlLine.Type::Item:
-                        if Item.Get(JobJnlLine."No.") then
+                    ContratoJnlLine.Type::Item:
+                        if Item.Get(ContratoJnlLine."No.") then
                             AccName := Item.Description;
-                    JobJnlLine.Type::"G/L Account":
-                        if GLAcc.Get(JobJnlLine."No.") then
+                    ContratoJnlLine.Type::"G/L Account":
+                        if GLAcc.Get(ContratoJnlLine."No.") then
                             AccName := GLAcc.Name;
                 end;
         end;
 
-        LastJobJnlLine := JobJnlLine;
+        LastContratoJnlLine := ContratoJnlLine;
     end;
 
-    local procedure GetJobDescription(JobJnlLine: Record "Contrato Journal Line") JobDescription: Text[100]
+    local procedure GetContratoDescription(ContratoJnlLine: Record "Contrato Journal Line") ContratoDescription: Text[100]
     var
-        Job: Record Contrato;
+        Contrato: Record Contrato;
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeGetJobDescription(JobJnlLine, LastJobJnlLine, JobDescription, IsHandled);
+        OnBeforeGetContratoDescription(ContratoJnlLine, LastContratoJnlLine, ContratoDescription, IsHandled);
         if IsHandled then
-            exit(JobDescription);
+            exit(ContratoDescription);
 
-        if (JobJnlLine."Contrato No." = '') or
-           (JobJnlLine."Contrato No." <> LastJobJnlLine."Contrato No.")
+        if (ContratoJnlLine."Contrato No." = '') or
+           (ContratoJnlLine."Contrato No." <> LastContratoJnlLine."Contrato No.")
         then begin
-            JobDescription := '';
-            if Job.Get(JobJnlLine."Contrato No.") then
-                JobDescription := Job.Description;
+            ContratoDescription := '';
+            if Contrato.Get(ContratoJnlLine."Contrato No.") then
+                ContratoDescription := Contrato.Description;
         end;
     end;
 
     procedure GetNextEntryNo(): Integer
     var
-        JobEntryNo: Record "Contrato Entry No.";
+        ContratoEntryNo: Record "Contrato Entry No.";
     begin
-        JobEntryNo.LockTable();
-        if not JobEntryNo.Get() then
-            JobEntryNo.Insert();
-        JobEntryNo."Entry No." := JobEntryNo."Entry No." + 1;
-        JobEntryNo.Modify();
-        exit(JobEntryNo."Entry No.");
+        ContratoEntryNo.LockTable();
+        if not ContratoEntryNo.Get() then
+            ContratoEntryNo.Insert();
+        ContratoEntryNo."Entry No." := ContratoEntryNo."Entry No." + 1;
+        ContratoEntryNo.Modify();
+        exit(ContratoEntryNo."Entry No.");
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnLookupNameOnAfterSetFilters(var JobJournalBatch: Record "Contrato Journal Batch")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeOpenJnlBatch(var JobJournalBatch: Record "Contrato Journal Batch"; var IsHandled: Boolean)
+    local procedure OnLookupNameOnAfterSetFilters(var ContratoJournalBatch: Record "Contrato Journal Batch")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeGetJobDescription(JobJnlLine: Record "Contrato Journal Line"; LastJobJnlLine: Record "Contrato Journal Line"; var JobDescription: Text[100]; var IsHandled: Boolean)
+    local procedure OnBeforeOpenJnlBatch(var ContratoJournalBatch: Record "Contrato Journal Batch"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeOpenJnl(var CurrentJnlBatchName: Code[10]; var JobJournalLine: Record "Contrato Journal Line")
+    local procedure OnBeforeGetContratoDescription(ContratoJnlLine: Record "Contrato Journal Line"; LastContratoJnlLine: Record "Contrato Journal Line"; var ContratoDescription: Text[100]; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeTemplateSelectionFromBatch(var JobJnlBatch: Record "Contrato Journal Batch"; var OpenFromBatch: Boolean; var IsHandled: Boolean)
+    local procedure OnBeforeOpenJnl(var CurrentJnlBatchName: Code[10]; var ContratoJournalLine: Record "Contrato Journal Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnTemplateSelectionOnAfterJobJnlTemplateSetFilters(PageID: Integer; RecurringJnl: Boolean; var JobJnlLine: Record "Contrato Journal Line"; var JobJournalTemplate: Record "Contrato Journal Template")
+    local procedure OnBeforeTemplateSelectionFromBatch(var ContratoJnlBatch: Record "Contrato Journal Batch"; var OpenFromBatch: Boolean; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnTemplateSelectionOnAfterContratoJnlTemplateSetFilters(PageID: Integer; RecurringJnl: Boolean; var ContratoJnlLine: Record "Contrato Journal Line"; var ContratoJournalTemplate: Record "Contrato Journal Template")
     begin
     end;
 }

@@ -18,7 +18,7 @@ page 50243 "ResourceAllocatedperContrato"
                 Caption = 'General';
                 field(ResourceFilter; ResourceFilter)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Resource Filter';
                     Lookup = true;
                     LookupPageID = "Resource List";
@@ -27,7 +27,7 @@ page 50243 "ResourceAllocatedperContrato"
                 }
                 field(AmountType; AmountType)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Amount Type';
                     ToolTip = 'Specifies if the amount is for prices, costs, or profit values.';
                 }
@@ -37,7 +37,7 @@ page 50243 "ResourceAllocatedperContrato"
                 Caption = 'Matrix Options';
                 field(PeriodType; PeriodType)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'View by';
                     ToolTip = 'Specifies by which period amounts are displayed.';
 
@@ -49,7 +49,7 @@ page 50243 "ResourceAllocatedperContrato"
                 }
                 field(DateFilter; DateFilter)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Date Filter';
                     ToolTip = 'Specifies the dates that will be used to filter the amounts in the window.';
 
@@ -62,7 +62,7 @@ page 50243 "ResourceAllocatedperContrato"
                 }
                 field(ColumnsSet; ColumnsSet)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Column set';
                     Editable = false;
                     ToolTip = 'Specifies the range of values that are displayed in the matrix window, for example, the total period. To change the contents of the field, choose Next Set or Previous Set.';
@@ -77,7 +77,7 @@ page 50243 "ResourceAllocatedperContrato"
         {
             action(ShowMatrix)
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Show Matrix';
                 Image = ShowMatrix;
                 ToolTip = 'Open the matrix window to see data according to the specified values.';
@@ -85,25 +85,25 @@ page 50243 "ResourceAllocatedperContrato"
                 trigger OnAction()
                 var
                     HorizontalRecord: Record "Contrato Planning Line";
-                    ResAllPerJobFormWithMatrix: Page ResourceAllocperContratoMatrix;
+                    ResAllPerContratoFormWithMatrix: Page ResourceAllocperContratoMatrix;
                     IsHandled: Boolean;
                 begin
                     IsHandled := false;
-                    OnActionShowMatrix(JobRec, ResourceFilter, MatrixColumnCaptions, MatrixRecords, AmountType, IsHandled);
+                    OnActionShowMatrix(ContratoRec, ResourceFilter, MatrixColumnCaptions, MatrixRecords, AmountType, IsHandled);
                     if IsHandled then
                         exit;
 
                     HorizontalRecord.SetRange("No.", ResourceFilter);
                     HorizontalRecord.SetRange(Type, HorizontalRecord.Type::Resource);
-                    JobRec.SetRange("Resource Filter", ResourceFilter);
-                    OnActionShowMatrixOnAfterSetJobFilters(JobRec);
-                    ResAllPerJobFormWithMatrix.LoadMatrix(JobRec, HorizontalRecord, MatrixColumnCaptions, MatrixRecords, AmountType);
-                    ResAllPerJobFormWithMatrix.RunModal();
+                    ContratoRec.SetRange("Resource Filter", ResourceFilter);
+                    OnActionShowMatrixOnAfterSetContratoFilters(ContratoRec);
+                    ResAllPerContratoFormWithMatrix.LoadMatrix(ContratoRec, HorizontalRecord, MatrixColumnCaptions, MatrixRecords, AmountType);
+                    ResAllPerContratoFormWithMatrix.RunModal();
                 end;
             }
             action("Previous Set")
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Previous Set';
                 Image = PreviousSet;
                 ToolTip = 'Go to the previous set of data.';
@@ -115,7 +115,7 @@ page 50243 "ResourceAllocatedperContrato"
             }
             action("Next Set")
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Next Set';
                 Image = NextSet;
                 ToolTip = 'Go to the next set of data.';
@@ -155,7 +155,7 @@ page 50243 "ResourceAllocatedperContrato"
     var
         MatrixRecords: array[32] of Record Date;
         ResRec2: Record Resource;
-        JobRec: Record Contrato;
+        ContratoRec: Record Contrato;
         FilterTokens: Codeunit "Filter Tokens";
         DateFilter: Text;
         ResourceFilter: Text;
@@ -184,12 +184,12 @@ page 50243 "ResourceAllocatedperContrato"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnActionShowMatrix(var JobRec: Record Contrato; ResourceFilter: Text; MatrixColumnCaptions: array[32] of Text; MatrixRecords: array[32] of Record Date; AmountType: Enum "Analysis Amount Type"; var IsHandled: Boolean)
+    local procedure OnActionShowMatrix(var ContratoRec: Record Contrato; ResourceFilter: Text; MatrixColumnCaptions: array[32] of Text; MatrixRecords: array[32] of Record Date; AmountType: Enum "Analysis Amount Type"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnActionShowMatrixOnAfterSetJobFilters(var JobRec: Record Contrato)
+    local procedure OnActionShowMatrixOnAfterSetContratoFilters(var ContratoRec: Record Contrato)
     begin
     end;
 }

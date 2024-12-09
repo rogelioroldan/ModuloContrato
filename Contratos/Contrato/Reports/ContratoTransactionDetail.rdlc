@@ -1,0 +1,383 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="No_Contrato">
+          <DataField>No_Contrato</DataField>
+        </Field>
+        <Field Name="ContratoTotalCost1">
+          <DataField>ContratoTotalCost1</DataField>
+        </Field>
+        <Field Name="ContratoTotalCost1Format">
+          <DataField>ContratoTotalCost1Format</DataField>
+        </Field>
+        <Field Name="ContratoTotalCost2">
+          <DataField>ContratoTotalCost2</DataField>
+        </Field>
+        <Field Name="ContratoTotalCost2Format">
+          <DataField>ContratoTotalCost2Format</DataField>
+        </Field>
+        <Field Name="ContratoTotalPrice1">
+          <DataField>ContratoTotalPrice1</DataField>
+        </Field>
+        <Field Name="ContratoTotalPrice1Format">
+          <DataField>ContratoTotalPrice1Format</DataField>
+        </Field>
+        <Field Name="ContratoTotalPrice2">
+          <DataField>ContratoTotalPrice2</DataField>
+        </Field>
+        <Field Name="ContratoTotalPrice2Format">
+          <DataField>ContratoTotalPrice2Format</DataField>
+        </Field>
+        <Field Name="ContratoTotalLineDiscAmount1">
+          <DataField>ContratoTotalLineDiscAmount1</DataField>
+        </Field>
+        <Field Name="ContratoTotalLineDiscAmount1Format">
+          <DataField>ContratoTotalLineDiscAmount1Format</DataField>
+        </Field>
+        <Field Name="ContratoTotalLineDiscAmount2">
+          <DataField>ContratoTotalLineDiscAmount2</DataField>
+        </Field>
+        <Field Name="ContratoTotalLineDiscAmount2Format">
+          <DataField>ContratoTotalLineDiscAmount2Format</DataField>
+        </Field>
+        <Field Name="ContratoTotalLineAmount1">
+          <DataField>ContratoTotalLineAmount1</DataField>
+        </Field>
+        <Field Name="ContratoTotalLineAmount1Format">
+          <DataField>ContratoTotalLineAmount1Format</DataField>
+        </Field>
+        <Field Name="ContratoTotalLineAmount2">
+          <DataField>ContratoTotalLineAmount2</DataField>
+        </Field>
+        <Field Name="ContratoTotalLineAmount2Format">
+          <DataField>ContratoTotalLineAmount2Format</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="TodayFormatted">
+          <DataField>TodayFormatted</DataField>
+        </Field>
+        <Field Name="ContratoFilterCaption">
+          <DataField>ContratoFilterCaption</DataField>
+        </Field>
+        <Field Name="ContratoFilter">
+          <DataField>ContratoFilter</DataField>
+        </Field>
+        <Field Name="ContratoLedgEntryFilterCaption">
+          <DataField>ContratoLedgEntryFilterCaption</DataField>
+        </Field>
+        <Field Name="ContratoLedgEntryFilter">
+          <DataField>ContratoLedgEntryFilter</DataField>
+        </Field>
+        <Field Name="Description_Contrato">
+          <DataField>Description_Contrato</DataField>
+        </Field>
+        <Field Name="CurrencyField0">
+          <DataField>CurrencyField0</DataField>
+        </Field>
+        <Field Name="CurrencyField1">
+          <DataField>CurrencyField1</DataField>
+        </Field>
+        <Field Name="CurrencyField2">
+          <DataField>CurrencyField2</DataField>
+        </Field>
+        <Field Name="CurrencyField3">
+          <DataField>CurrencyField3</DataField>
+        </Field>
+        <Field Name="ContratoTransactionDetailCaption">
+          <DataField>ContratoTransactionDetailCaption</DataField>
+        </Field>
+        <Field Name="PageNoCaption">
+          <DataField>PageNoCaption</DataField>
+        </Field>
+        <Field Name="ContratoNoCaption">
+          <DataField>ContratoNoCaption</DataField>
+        </Field>
+        <Field Name="PostingDateCaption">
+          <DataField>PostingDateCaption</DataField>
+        </Field>
+        <Field Name="ContratoLedgEntryEntryTypeCaption">
+          <DataField>ContratoLedgEntryEntryTypeCaption</DataField>
+        </Field>
+        <Field Name="ContratoLedgEntryDocNoCaption">
+          <DataField>ContratoLedgEntryDocNoCaption</DataField>
+        </Field>
+        <Field Name="ContratoLedgEntryTypeCaption">
+          <DataField>ContratoLedgEntryTypeCaption</DataField>
+        </Field>
+        <Field Name="ContratoLedgEntryNoCaption">
+          <DataField>ContratoLedgEntryNoCaption</DataField>
+        </Field>
+        <Field Name="ContratoLedgEntryQtyCaption">
+          <DataField>ContratoLedgEntryQtyCaption</DataField>
+        </Field>
+        <Field Name="ContratoLedgEntryUOMCodeCaption">
+          <DataField>ContratoLedgEntryUOMCodeCaption</DataField>
+        </Field>
+        <Field Name="ContratoLedgEntryEntryNoCaption">
+          <DataField>ContratoLedgEntryEntryNoCaption</DataField>
+        </Field>
+        <Field Name="ContratoTaskNo_ContratoTask">
+          <DataField>ContratoTaskNo_ContratoTask</DataField>
+        </Field>
+        <Field Name="Description_ContratoTask">
+          <DataField>Description_ContratoTask</DataField>
+        </Field>
+        <Field Name="CurrencyField">
+          <DataField>CurrencyField</DataField>
+        </Field>
+        <Field Name="TotalCostTotal1">
+          <DataField>TotalCostTotal1</DataField>
+        </Field>
+        <Field Name="TotalCostTotal1Format">
+          <DataField>TotalCostTotal1Format</DataField>
+        </Field>
+        <Field Name="TotalCostTotal2">
+          <DataField>TotalCostTotal2</DataField>
+        </Field>
+        <Field Name="TotalCostTotal2Format">
+          <DataField>TotalCostTotal2Format</DataField>
+        </Field>
+        <Field Name="TotalPriceTotal1">
+          <DataField>TotalPriceTotal1</DataField>
+        </Field>
+        <Field Name="TotalPriceTotal1Format">
+          <DataField>TotalPriceTotal1Format</DataField>
+        </Field>
+        <Field Name="TotalPriceTotal2">
+          <DataField>TotalPriceTotal2</DataField>
+        </Field>
+        <Field Name="TotalPriceTotal2Format">
+          <DataField>TotalPriceTotal2Format</DataField>
+        </Field>
+        <Field Name="TotalLineDiscAmt1">
+          <DataField>TotalLineDiscAmt1</DataField>
+        </Field>
+        <Field Name="TotalLineDiscAmt1Format">
+          <DataField>TotalLineDiscAmt1Format</DataField>
+        </Field>
+        <Field Name="TotalLineDiscAmt2">
+          <DataField>TotalLineDiscAmt2</DataField>
+        </Field>
+        <Field Name="TotalLineDiscAmt2Format">
+          <DataField>TotalLineDiscAmt2Format</DataField>
+        </Field>
+        <Field Name="TotalLineAmt1">
+          <DataField>TotalLineAmt1</DataField>
+        </Field>
+        <Field Name="TotalLineAmt1Format">
+          <DataField>TotalLineAmt1Format</DataField>
+        </Field>
+        <Field Name="ContratoNo_ContratoTask">
+          <DataField>ContratoNo_ContratoTask</DataField>
+        </Field>
+        <Field Name="ContratoTaskContratoTaskNoCaption">
+          <DataField>ContratoTaskContratoTaskNoCaption</DataField>
+        </Field>
+        <Field Name="TotalUsageCaption">
+          <DataField>TotalUsageCaption</DataField>
+        </Field>
+        <Field Name="TotalSaleCaption">
+          <DataField>TotalSaleCaption</DataField>
+        </Field>
+        <Field Name="EntryNo_ContratoLedgEntry">
+          <DataField>EntryNo_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="LineAmtLCY_ContratoLedgEntry">
+          <DataField>LineAmtLCY_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="LineAmtLCY_ContratoLedgEntryFormat">
+          <DataField>LineAmtLCY_ContratoLedgEntryFormat</DataField>
+        </Field>
+        <Field Name="LineDiscAmtLCY_ContratoLedgEntry">
+          <DataField>LineDiscAmtLCY_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="LineDiscAmtLCY_ContratoLedgEntryFormat">
+          <DataField>LineDiscAmtLCY_ContratoLedgEntryFormat</DataField>
+        </Field>
+        <Field Name="TotalPriceLCY_ContratoLedgEntry">
+          <DataField>TotalPriceLCY_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="TotalPriceLCY_ContratoLedgEntryFormat">
+          <DataField>TotalPriceLCY_ContratoLedgEntryFormat</DataField>
+        </Field>
+        <Field Name="TotalCostLCY_ContratoLedgEntry">
+          <DataField>TotalCostLCY_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="TotalCostLCY_ContratoLedgEntryFormat">
+          <DataField>TotalCostLCY_ContratoLedgEntryFormat</DataField>
+        </Field>
+        <Field Name="UOMCode_ContratoLedgEntry">
+          <DataField>UOMCode_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="Quantity_ContratoLedgEntry">
+          <DataField>Quantity_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="Quantity_ContratoLedgEntryFormat">
+          <DataField>Quantity_ContratoLedgEntryFormat</DataField>
+        </Field>
+        <Field Name="No_ContratoLedgEntry">
+          <DataField>No_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="Type_ContratoLedgEntry">
+          <DataField>Type_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="DocNo_ContratoLedgEntry">
+          <DataField>DocNo_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="EntryType_ContratoLedgEntry">
+          <DataField>EntryType_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="PostDate_ContratoLedgEntry">
+          <DataField>PostDate_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="LineAmt_ContratoLedgEntry">
+          <DataField>LineAmt_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="LineAmt_ContratoLedgEntryFormat">
+          <DataField>LineAmt_ContratoLedgEntryFormat</DataField>
+        </Field>
+        <Field Name="LineDiscAmt_ContratoLedgEntry">
+          <DataField>LineDiscAmt_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="LineDiscAmt_ContratoLedgEntryFormat">
+          <DataField>LineDiscAmt_ContratoLedgEntryFormat</DataField>
+        </Field>
+        <Field Name="TotalPrice_ContratoLedgEntry">
+          <DataField>TotalPrice_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="TotalPrice_ContratoLedgEntryFormat">
+          <DataField>TotalPrice_ContratoLedgEntryFormat</DataField>
+        </Field>
+        <Field Name="TotalCost_ContratoLedgEntry">
+          <DataField>TotalCost_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="TotalCost_ContratoLedgEntryFormat">
+          <DataField>TotalCost_ContratoLedgEntryFormat</DataField>
+        </Field>
+        <Field Name="TotalCostTotal11">
+          <DataField>TotalCostTotal11</DataField>
+        </Field>
+        <Field Name="TotalCostTotal11Format">
+          <DataField>TotalCostTotal11Format</DataField>
+        </Field>
+        <Field Name="TotalCostTotal21">
+          <DataField>TotalCostTotal21</DataField>
+        </Field>
+        <Field Name="TotalCostTotal21Format">
+          <DataField>TotalCostTotal21Format</DataField>
+        </Field>
+        <Field Name="TotalPriceTotal11">
+          <DataField>TotalPriceTotal11</DataField>
+        </Field>
+        <Field Name="TotalPriceTotal11Format">
+          <DataField>TotalPriceTotal11Format</DataField>
+        </Field>
+        <Field Name="TotalPriceTotal21">
+          <DataField>TotalPriceTotal21</DataField>
+        </Field>
+        <Field Name="TotalPriceTotal21Format">
+          <DataField>TotalPriceTotal21Format</DataField>
+        </Field>
+        <Field Name="TotalLineDiscAmt11">
+          <DataField>TotalLineDiscAmt11</DataField>
+        </Field>
+        <Field Name="TotalLineDiscAmt11Format">
+          <DataField>TotalLineDiscAmt11Format</DataField>
+        </Field>
+        <Field Name="TotalLineDiscAmt21">
+          <DataField>TotalLineDiscAmt21</DataField>
+        </Field>
+        <Field Name="TotalLineDiscAmt21Format">
+          <DataField>TotalLineDiscAmt21Format</DataField>
+        </Field>
+        <Field Name="TotalLineAmt11">
+          <DataField>TotalLineAmt11</DataField>
+        </Field>
+        <Field Name="TotalLineAmt11Format">
+          <DataField>TotalLineAmt11Format</DataField>
+        </Field>
+        <Field Name="ContratoNo_ContratoLedgEntry">
+          <DataField>ContratoNo_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="ContratoTaskNo_ContratoLedgEntry">
+          <DataField>ContratoTaskNo_ContratoLedgEntry</DataField>
+        </Field>
+        <Field Name="UsageCaption">
+          <DataField>UsageCaption</DataField>
+        </Field>
+        <Field Name="SalesCaption">
+          <DataField>SalesCaption</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

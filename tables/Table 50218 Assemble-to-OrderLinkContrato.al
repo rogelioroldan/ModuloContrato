@@ -93,8 +93,8 @@ table 50218 "Assemble-to-OrderLinkContrato"
         Text007: Label 'A %1 exists for the %2. \\If you want to record and post a different %3, then you must do this in the %4 field on the related %1.';
         Text008: Label '%1 %2', Comment = 'Key Value, say: %1=Line No. %2=10000';
         ItemTrackingQtyDiffErr: Label 'The item tracking defined on Assembly Header with Document Type %1, No. %2 exceeds %3 on Project Planning Line with Contrato No. %4, Contrato Task No. %5, Line No. %6.\\ You must adjust the existing item tracking before you can reenter the new quantity.', Comment = '%1 = Document Type, %2 = No., %3 = Qty. to Assemble (Base), %4 = Contrato No., %5 = Contrato Task No., %6 = Line No.';
-        CreateAsmForJobErr: Label 'It is not possible to create an assembly order for a job task that is completed.';
-        AssebmlyOrderExistsForJobErr: Label 'One or more assembly orders exists for the project %1.\\You must delete the assembly order before you can change the job status.', Comment = '%1 = Contrato No.';
+        CreateAsmForContratoErr: Label 'It is not possible to create an assembly order for a Contrato task that is completed.';
+        AssebmlyOrderExistsForContratoErr: Label 'One or more assembly orders exists for the project %1.\\You must delete the assembly order before you can change the Contrato status.', Comment = '%1 = Contrato No.';
 
     procedure UpdateAsmFromSalesLine(var NewSalesLine: Record "Sales Line")
     begin
@@ -175,46 +175,46 @@ table 50218 "Assemble-to-OrderLinkContrato"
         OnAfterUpdateAsm(AsmHeader, Rec, NewSalesLine, AsmExists);
     end;
 
-    procedure UpdateAsmFromJobPlanningLine(var NewJobPlanningLine: Record "Contrato Planning Line")
+    procedure UpdateAsmFromContratoPlanningLine(var NewContratoPlanningLine: Record "Contrato Planning Line")
     begin
-        UpdateAsmFromJobPlanningLine(NewJobPlanningLine, AsmExistsForJobPlanningLine(NewJobPlanningLine));
+        UpdateAsmFromContratoPlanningLine(NewContratoPlanningLine, AsmExistsForContratoPlanningLine(NewContratoPlanningLine));
     end;
 
-    local procedure UpdateAsmFromJobPlanningLine(var NewJobPlanningLine: Record "Contrato Planning Line"; AsmExists: Boolean)
+    local procedure UpdateAsmFromContratoPlanningLine(var NewContratoPlanningLine: Record "Contrato Planning Line"; AsmExists: Boolean)
     var
         Contrato: Record Contrato;
     begin
         if AsmExists then begin
-            if not NewJobPlanningLine.IsAsmToOrderAllowed() then begin
-                DeleteAsmFromJobPlanningLine(NewJobPlanningLine);
+            if not NewContratoPlanningLine.IsAsmToOrderAllowed() then begin
+                DeleteAsmFromContratoPlanningLine(NewContratoPlanningLine);
                 exit;
             end;
-            if NewJobPlanningLine."Qty. to Assemble" = 0 then begin
-                DeleteAsmFromJobPlanningLine(NewJobPlanningLine);
-                NewJobPlanningLine."Assemble to Order" := false;
+            if NewContratoPlanningLine."Qty. to Assemble" = 0 then begin
+                DeleteAsmFromContratoPlanningLine(NewContratoPlanningLine);
+                NewContratoPlanningLine."Assemble to Order" := false;
                 InsertAssembeToOrderLinkIfInvtAdjmtEntryOrderExist();
                 exit;
             end;
-            if not DeleteAssembleToOrderLink(NewJobPlanningLine) then
+            if not DeleteAssembleToOrderLink(NewContratoPlanningLine) then
                 exit;
         end else begin
-            if JobPlanningLineIsNotCorrect(NewJobPlanningLine) then
+            if ContratoPlanningLineIsNotCorrect(NewContratoPlanningLine) then
                 exit;
 
-            if not NewJobPlanningLine.IsAsmToOrderAllowed() then begin
-                NewJobPlanningLine."Qty. to Assemble" := 0;
-                NewJobPlanningLine."Qty. to Assemble (Base)" := 0;
+            if not NewContratoPlanningLine.IsAsmToOrderAllowed() then begin
+                NewContratoPlanningLine."Qty. to Assemble" := 0;
+                NewContratoPlanningLine."Qty. to Assemble (Base)" := 0;
                 exit;
             end;
 
-            Contrato.Get(NewJobPlanningLine."Contrato No.");
-            CheckJobStatus(Contrato);
-            AssignAssembleToOrderData(NewJobPlanningLine, Contrato);
-            NewJobPlanningLine."Assemble to Order" := true;
+            Contrato.Get(NewContratoPlanningLine."Contrato No.");
+            CheckContratoStatus(Contrato);
+            AssignAssembleToOrderData(NewContratoPlanningLine, Contrato);
+            NewContratoPlanningLine."Assemble to Order" := true;
         end;
-        SynchronizeAsmFromJobPlanningLine(NewJobPlanningLine, "Document Type" = "Document Type"::Order);
+        SynchronizeAsmFromContratoPlanningLine(NewContratoPlanningLine, "Document Type" = "Document Type"::Order);
         Insert();
-        AssignGlobalDimensionsFromJobTask(NewJobPlanningLine);
+        AssignGlobalDimensionsFromContratoTask(NewContratoPlanningLine);
     end;
 
     procedure UpdateAsmDimFromSalesLine(SalesLine: Record "Sales Line")
@@ -338,14 +338,14 @@ table 50218 "Assemble-to-OrderLinkContrato"
     end;
 
 
-    internal procedure UpdateAsmBinCodeFromJobPlanningLine(JobPlanningLine: Record "Contrato Planning Line")
+    internal procedure UpdateAsmBinCodeFromContratoPlanningLine(ContratoPlanningLine: Record "Contrato Planning Line")
     var
         Window: Dialog;
     begin
-        if AsmExistsForJobPlanningLine(JobPlanningLine) then
+        if AsmExistsForContratoPlanningLine(ContratoPlanningLine) then
             if GetAsmHeader() and GuiAllowed() then begin
-                Window.Open(GetWindowOpenTextJob(JobPlanningLine));
-                UpdateAsmBinCode(JobPlanningLine."Bin Code");
+                Window.Open(GetWindowOpenTextContrato(ContratoPlanningLine));
+                UpdateAsmBinCode(ContratoPlanningLine."Bin Code");
                 Window.Close();
             end;
     end;
@@ -372,9 +372,9 @@ table 50218 "Assemble-to-OrderLinkContrato"
         end;
     end;
 
-    procedure DeleteAsmFromJobPlanningLine(JobPlanningLine: Record "Contrato Planning Line")
+    procedure DeleteAsmFromContratoPlanningLine(ContratoPlanningLine: Record "Contrato Planning Line")
     begin
-        if AsmExistsForJobPlanningLine(JobPlanningLine) then begin
+        if AsmExistsForContratoPlanningLine(ContratoPlanningLine) then begin
             Delete();
             if "Document Type" = "Document Type"::Order then
                 UnreserveAsm();
@@ -463,7 +463,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
         AsmHeader.ShowDueDateBeforeWorkDateMsg();
     end;
 
-    local procedure SynchronizeAsmFromJobPlanningLine(var NewJobPlanningLine: Record "Contrato Planning Line"; ReserveLine: Boolean)
+    local procedure SynchronizeAsmFromContratoPlanningLine(var NewContratoPlanningLine: Record "Contrato Planning Line"; ReserveLine: Boolean)
     var
         TempTrackingSpecification: Record "Tracking Specification" temporary;
         Window: Dialog;
@@ -472,46 +472,46 @@ table 50218 "Assemble-to-OrderLinkContrato"
     begin
         GetAsmHeader();
 
-        Window.Open(GetWindowOpenTextJob(NewJobPlanningLine));
+        Window.Open(GetWindowOpenTextContrato(NewContratoPlanningLine));
 
         CaptureItemTracking(TempTrackingSpecification, QtyTracked, QtyTrackedBase);
 
-        if NewJobPlanningLine."Qty. to Assemble (Base)" < QtyTrackedBase then
+        if NewContratoPlanningLine."Qty. to Assemble (Base)" < QtyTrackedBase then
             Error(ItemTrackingQtyDiffErr,
               AsmHeader."Document Type",
               AsmHeader."No.",
-              NewJobPlanningLine.FieldCaption("Qty. to Assemble"),
-              NewJobPlanningLine."Contrato No.",
-              NewJobPlanningLine."Contrato Task No.",
-              NewJobPlanningLine."Line No.");
+              NewContratoPlanningLine.FieldCaption("Qty. to Assemble"),
+              NewContratoPlanningLine."Contrato No.",
+              NewContratoPlanningLine."Contrato Task No.",
+              NewContratoPlanningLine."Line No.");
 
         UnreserveAsm();
-        ChangeAsmHeaderFromJobPLanningLine(NewJobPlanningLine);
+        ChangeAsmHeaderFromContratoPLanningLine(NewContratoPlanningLine);
 
         if ReserveLine then
-            ReserveAsmToJob(NewJobPlanningLine,
+            ReserveAsmToContrato(NewContratoPlanningLine,
               AsmHeader."Remaining Quantity" - QtyTracked,
               AsmHeader."Remaining Quantity (Base)" - QtyTrackedBase);
-        RestoreItemTracking(TempTrackingSpecification, NewJobPlanningLine);
+        RestoreItemTracking(TempTrackingSpecification, NewContratoPlanningLine);
 
-        NewJobPlanningLine.CheckAsmToOrder(AsmHeader);
+        NewContratoPlanningLine.CheckAsmToOrder(AsmHeader);
         Window.Close();
 
         AsmHeader.SetWarningsOn();
         AsmHeader.ShowDueDateBeforeWorkDateMsg();
     end;
 
-    local procedure ChangeAsmHeaderFromJobPLanningLine(var NewJobPlanningLine: Record "Contrato Planning Line")
+    local procedure ChangeAsmHeaderFromContratoPLanningLine(var NewContratoPlanningLine: Record "Contrato Planning Line")
     begin
         AsmHeader.SetWarningsOff();
-        ChangeItem(NewJobPlanningLine."No.");
-        ChangeLocation(NewJobPlanningLine."Location Code");
-        ChangeVariant(NewJobPlanningLine."Variant Code");
-        ChangeBinCode(NewJobPlanningLine."Bin Code");
-        ChangeUOM(NewJobPlanningLine."Unit of Measure Code");
-        ChangePostingDate(NewJobPlanningLine."Planning Date");
+        ChangeItem(NewContratoPlanningLine."No.");
+        ChangeLocation(NewContratoPlanningLine."Location Code");
+        ChangeVariant(NewContratoPlanningLine."Variant Code");
+        ChangeBinCode(NewContratoPlanningLine."Bin Code");
+        ChangeUOM(NewContratoPlanningLine."Unit of Measure Code");
+        ChangePostingDate(NewContratoPlanningLine."Planning Date");
         ChangePlanningFlexibility();
-        ChangeQty(NewJobPlanningLine."Qty. to Assemble");
+        ChangeQty(NewContratoPlanningLine."Qty. to Assemble");
         AsmHeader.Modify(true);
     end;
 
@@ -553,26 +553,26 @@ table 50218 "Assemble-to-OrderLinkContrato"
         SetRange("Contrato No.", Contrato."No.");
         SetRange("Document Type", "Document Type"::Order);
         if not IsEmpty() then
-            Error(AssebmlyOrderExistsForJobErr, Contrato."No.");
+            Error(AssebmlyOrderExistsForContratoErr, Contrato."No.");
     end;
 
-    procedure MakeAsmOrderLinkedToJobPlanningOrderLine(var JobPlanningLine: Record "Contrato Planning Line")
+    procedure MakeAsmOrderLinkedToContratoPlanningOrderLine(var ContratoPlanningLine: Record "Contrato Planning Line")
     var
         ToAsmOrderHeader: Record "Assembly Header";
     begin
-        if not JobPlanningLine."Assemble to Order" then
+        if not ContratoPlanningLine."Assemble to Order" then
             exit;
 
-        if JobPlanningLine.Status = JobPlanningLine.Status::Order then
+        if ContratoPlanningLine.Status = ContratoPlanningLine.Status::Order then
             exit;
 
-        if JobPlanningLine."Line Type" = JobPlanningLine."Line Type"::Billable then
+        if ContratoPlanningLine."Line Type" = ContratoPlanningLine."Line Type"::Billable then
             exit;
 
-        if not AsmExistsForJobPlanningLine(JobPlanningLine) then
+        if not AsmExistsForContratoPlanningLine(ContratoPlanningLine) then
             exit;
 
-        JobPlanningLine.TestField(Type, JobPlanningLine.Type::Item);
+        ContratoPlanningLine.TestField(Type, ContratoPlanningLine.Type::Item);
         if GetAsmHeader() then begin
             ToAsmOrderHeader.Init();
             CopyAsmToNewAsmOrder(AsmHeader, ToAsmOrderHeader, true);
@@ -581,18 +581,18 @@ table 50218 "Assemble-to-OrderLinkContrato"
             "Assembly Document Type" := ToAsmOrderHeader."Document Type";
             "Assembly Document No." := ToAsmOrderHeader."No.";
             Type := Type::Contrato;
-            "Document No." := JobPlanningLine."Document No.";
+            "Document No." := ContratoPlanningLine."Document No.";
             "Document Type" := "Document Type"::Order;
-            "Document Line No." := JobPlanningLine."Line No.";
-            "Contrato No." := JobPlanningLine."Contrato No.";
-            "Contrato Task No." := JobPlanningLine."Contrato Task No.";
+            "Document Line No." := ContratoPlanningLine."Line No.";
+            "Contrato No." := ContratoPlanningLine."Contrato No.";
+            "Contrato Task No." := ContratoPlanningLine."Contrato Task No.";
 
-            SynchronizeAsmFromJobPlanningLine(JobPlanningLine, true);
+            SynchronizeAsmFromContratoPlanningLine(ContratoPlanningLine, true);
             RecalcAutoReserve(ToAsmOrderHeader);
             Insert();
         end;
-        if JobPlanningLine.Status <> JobPlanningLine.Status::Order then
-            DeleteAsmFromJobPlanningLine(JobPlanningLine);
+        if ContratoPlanningLine.Status <> ContratoPlanningLine.Status::Order then
+            DeleteAsmFromContratoPlanningLine(ContratoPlanningLine);
     end;
 
     local procedure NeedsSynchronization(SalesLine: Record "Sales Line") Result: Boolean
@@ -619,24 +619,24 @@ table 50218 "Assemble-to-OrderLinkContrato"
            (AsmHeader."Remaining Quantity (Base)" <> AsmHeader."Reserved Qty. (Base)")));
     end;
 
-    local procedure NeedsSynchronization(JobPlanningLine: Record "Contrato Planning Line") Result: Boolean
+    local procedure NeedsSynchronization(ContratoPlanningLine: Record "Contrato Planning Line") Result: Boolean
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeNeedsSynchronizationForProjectPlanningLine(AsmHeader, JobPlanningLine, Result, IsHandled);
+        OnBeforeNeedsSynchronizationForProjectPlanningLine(AsmHeader, ContratoPlanningLine, Result, IsHandled);
         if IsHandled then
             exit(Result);
 
         GetAsmHeader();
         AsmHeader.CalcFields("Reserved Qty. (Base)");
         exit(
-          (JobPlanningLine."No." <> AsmHeader."Item No.") or
-          (JobPlanningLine."Location Code" <> AsmHeader."Location Code") or
-          (JobPlanningLine."Variant Code" <> AsmHeader."Variant Code") or
-          (JobPlanningLine."Bin Code" <> AsmHeader."Bin Code") or
-          (JobPlanningLine."Qty. to Assemble (Base)" <> AsmHeader."Quantity (Base)") or
-          (JobPlanningLine."Unit of Measure Code" <> AsmHeader."Unit of Measure Code") or
+          (ContratoPlanningLine."No." <> AsmHeader."Item No.") or
+          (ContratoPlanningLine."Location Code" <> AsmHeader."Location Code") or
+          (ContratoPlanningLine."Variant Code" <> AsmHeader."Variant Code") or
+          (ContratoPlanningLine."Bin Code" <> AsmHeader."Bin Code") or
+          (ContratoPlanningLine."Qty. to Assemble (Base)" <> AsmHeader."Quantity (Base)") or
+          (ContratoPlanningLine."Unit of Measure Code" <> AsmHeader."Unit of Measure Code") or
           (AsmHeader."Planning Flexibility" <> AsmHeader."Planning Flexibility"::None) or
           (AsmHeader."Remaining Quantity (Base)" <> AsmHeader."Reserved Qty. (Base)"));
     end;
@@ -779,7 +779,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
         end;
     end;
 
-    procedure ReserveAsmToJob(var JobPlanningLine: Record "Contrato Planning Line"; QtyToReserve: Decimal; QtyToReserveBase: Decimal)
+    procedure ReserveAsmToContrato(var ContratoPlanningLine: Record "Contrato Planning Line"; QtyToReserve: Decimal; QtyToReserveBase: Decimal)
     var
         ReservEntry: Record "Reservation Entry";
         TrackingSpecification: Record "Tracking Specification";
@@ -792,13 +792,13 @@ table 50218 "Assemble-to-OrderLinkContrato"
         AsmHeaderReserve.SetBinding(ReservEntry.Binding::"Order-to-Order");
         AsmHeaderReserve.SetDisallowCancellation(true);
         TrackingSpecification.InitTrackingSpecification(
-            Database::"Contrato Planning Line", 2, JobPlanningLine."Contrato No.", '', 0, JobPlanningLine."Contrato Contract Entry No.",
+            Database::"Contrato Planning Line", 2, ContratoPlanningLine."Contrato No.", '', 0, ContratoPlanningLine."Contrato Contract Entry No.",
             AsmHeader."Variant Code", AsmHeader."Location Code", AsmHeader."Qty. per Unit of Measure");
         AsmHeaderReserve.CreateReservationSetFrom(TrackingSpecification);
         AsmHeaderReserve.CreateReservation(AsmHeader, AsmHeader.Description, AsmHeader."Due Date", QtyToReserve, QtyToReserveBase);
 
-        if JobPlanningLine.Reserve = JobPlanningLine.Reserve::Never then
-            JobPlanningLine.Reserve := JobPlanningLine.Reserve::Optional;
+        if ContratoPlanningLine.Reserve = ContratoPlanningLine.Reserve::Never then
+            ContratoPlanningLine.Reserve := ContratoPlanningLine.Reserve::Optional;
     end;
 
     local procedure UnreserveAsm()
@@ -899,7 +899,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
         TrackingSpecification.DeleteAll();
     end;
 
-    local procedure RestoreItemTracking(var TrackingSpecification: Record "Tracking Specification"; JobPlanningLine: Record "Contrato Planning Line")
+    local procedure RestoreItemTracking(var TrackingSpecification: Record "Tracking Specification"; ContratoPlanningLine: Record "Contrato Planning Line")
     var
         ReservEntry: Record "Reservation Entry";
         FromTrackingSpecification: Record "Tracking Specification";
@@ -922,7 +922,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
               DATABASE::"Assembly Header", AsmHeader."Document Type".AsInteger(), AsmHeader."No.", '', 0, 0,
               AsmHeader."Qty. per Unit of Measure", 0, TrackingSpecification."Quantity (Base)", ReservEntry);
 
-            FromTrackingSpecification.InitFromContratoPlanningLine(JobPlanningLine);
+            FromTrackingSpecification.InitFromContratoPlanningLine(ContratoPlanningLine);
             FromTrackingSpecification."Qty. per Unit of Measure" := AsmHeader."Qty. per Unit of Measure";
             FromTrackingSpecification.CopyTrackingFromTrackingSpec(TrackingSpecification);
             CreateReservEntry.CreateReservEntryFrom(FromTrackingSpecification);
@@ -1120,10 +1120,10 @@ table 50218 "Assemble-to-OrderLinkContrato"
         end;
     end;
 
-    local procedure ShowAsm(JobPlanningLine: Record "Contrato Planning Line")
+    local procedure ShowAsm(ContratoPlanningLine: Record "Contrato Planning Line")
     begin
-        JobPlanningLine.TestField("Qty. to Assemble (Base)");
-        if AsmExistsForJobPlanningLine(JobPlanningLine) then begin
+        ContratoPlanningLine.TestField("Qty. to Assemble (Base)");
+        if AsmExistsForContratoPlanningLine(ContratoPlanningLine) then begin
             GetAsmHeader();
             case AsmHeader."Document Type" of
                 AsmHeader."Document Type"::Quote:
@@ -1137,7 +1137,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
     procedure ShowAsmDocument()
     var
         SalesLine: Record "Sales Line";
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
         case Rec.Type of
             Rec.Type::Sale:
@@ -1147,8 +1147,8 @@ table 50218 "Assemble-to-OrderLinkContrato"
                 end;
             Rec.Type::Contrato:
                 begin
-                    JobPlanningLine.Get(Rec."Contrato No.", Rec."Contrato Task No.", Rec."Document Line No.");
-                    ShowAsm(JobPlanningLine);
+                    ContratoPlanningLine.Get(Rec."Contrato No.", Rec."Contrato Task No.", Rec."Document Line No.");
+                    ShowAsm(ContratoPlanningLine);
                 end;
         end;
     end;
@@ -1173,12 +1173,12 @@ table 50218 "Assemble-to-OrderLinkContrato"
         end;
     end;
 
-    procedure ShowAsmToJobPlanningLines(JobPlanningLine: Record "Contrato Planning Line")
+    procedure ShowAsmToContratoPlanningLines(ContratoPlanningLine: Record "Contrato Planning Line")
     var
         AsmLine: Record "Assembly Line";
     begin
-        JobPlanningLine.TestField("Qty. to Assemble (Base)");
-        if AsmExistsForJobPlanningLine(JobPlanningLine) then begin
+        ContratoPlanningLine.TestField("Qty. to Assemble (Base)");
+        if AsmExistsForContratoPlanningLine(ContratoPlanningLine) then begin
             AsmLine.FilterGroup := 2;
             AsmLine.SetRange("Document Type", "Assembly Document Type");
             AsmLine.SetRange("Document No.", "Assembly Document No.");
@@ -1210,14 +1210,14 @@ table 50218 "Assemble-to-OrderLinkContrato"
         end;
     end;
 
-    procedure ShowJobPlanningLines()
+    procedure ShowContratoPlanningLines()
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.SetRange("Contrato No.", Rec."Contrato No.");
-        JobPlanningLine.SetRange("Contrato Task No.", Rec."Contrato Task No.");
-        JobPlanningLine.SetRange("Line No.", Rec."Document Line No.");
-        Page.RunModal(Page::"Contrato Planning Lines", JobPlanningLine);
+        ContratoPlanningLine.SetRange("Contrato No.", Rec."Contrato No.");
+        ContratoPlanningLine.SetRange("Contrato Task No.", Rec."Contrato Task No.");
+        ContratoPlanningLine.SetRange("Line No.", Rec."Document Line No.");
+        Page.RunModal(Page::"Contrato Planning Lines", ContratoPlanningLine);
     end;
 
     procedure SalesLineCheckAvailShowWarning(SalesLine: Record "Sales Line"; var TempAsmHeader: Record "Assembly Header" temporary; var TempAsmLine: Record "Assembly Line" temporary): Boolean
@@ -1435,15 +1435,15 @@ table 50218 "Assemble-to-OrderLinkContrato"
         exit(FindFirst());
     end;
 
-    procedure AsmExistsForJobPlanningLine(JobPlanningLine: Record "Contrato Planning Line"): Boolean
+    procedure AsmExistsForContratoPlanningLine(ContratoPlanningLine: Record "Contrato Planning Line"): Boolean
     begin
         Reset();
         SetCurrentKey(Type, "Contrato No.", "Contrato Task No.", "Document Line No.");
         SetRange(Type, Type::Contrato);
-        SetRange("Contrato No.", JobPlanningLine."Contrato No.");
-        SetRange("Contrato Task No.", JobPlanningLine."Contrato Task No.");
-        SetRange("Document Line No.", JobPlanningLine."Line No.");
-        if JobPlanningLine.Status = JobPlanningLine.Status::Order then
+        SetRange("Contrato No.", ContratoPlanningLine."Contrato No.");
+        SetRange("Contrato Task No.", ContratoPlanningLine."Contrato Task No.");
+        SetRange("Document Line No.", ContratoPlanningLine."Line No.");
+        if ContratoPlanningLine.Status = ContratoPlanningLine.Status::Order then
             SetRange("Document Type", "Document Type"::Order)
         else
             SetRange("Document Type", "Document Type"::Quote);
@@ -1584,7 +1584,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
     procedure InitQtyToAsm(AssemblyHeader: Record "Assembly Header"; var QtyToAsm: Decimal; var QtyToAsmBase: Decimal)
     var
         SalesLine: Record "Sales Line";
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         IsHandled: Boolean;
     begin
         IsHandled := false;
@@ -1599,7 +1599,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
         end else begin
             if ("Contrato No." = '') or ("Contrato Task No." = '') then
                 exit;
-            JobPlanningLine.Get("Contrato No.", "Contrato Task No.", "Document Line No.");
+            ContratoPlanningLine.Get("Contrato No.", "Contrato Task No.", "Document Line No.");
             QtyToAsm := AssemblyHeader."Remaining Quantity";
             QtyToAsmBase := AssemblyHeader."Remaining Quantity (Base)";
         end;
@@ -1627,11 +1627,11 @@ table 50218 "Assemble-to-OrderLinkContrato"
             ConstructKeyTextAsmHeader()));
     end;
 
-    local procedure GetWindowOpenTextJob(JobPlanningLine: Record "Contrato Planning Line"): Text
+    local procedure GetWindowOpenTextContrato(ContratoPlanningLine: Record "Contrato Planning Line"): Text
     begin
         exit(StrSubstNo(Text000,
-            JobPlanningLine.TableCaption(),
-            ConstructKeyTextJobPlanningLine(JobPlanningLine),
+            ContratoPlanningLine.TableCaption(),
+            ConstructKeyTextContratoPlanningLine(ContratoPlanningLine),
             AsmHeader.TableCaption(),
             ConstructKeyTextAsmHeader()));
     end;
@@ -1676,14 +1676,14 @@ table 50218 "Assemble-to-OrderLinkContrato"
         exit(StrSubstNo(Text008, StrSubstNo(Text008, DocTypeText, DocNoText), LineNoText));
     end;
 
-    local procedure ConstructKeyTextJobPlanningLine(JobPlanningLine: Record "Contrato Planning Line"): Text
+    local procedure ConstructKeyTextContratoPlanningLine(ContratoPlanningLine: Record "Contrato Planning Line"): Text
     var
-        JobTaskNoText, JobNoText, LineNoText : Text;
+        ContratoTaskNoText, ContratoNoText, LineNoText : Text;
     begin
-        JobNoText := StrSubstNo(Text008, JobPlanningLine.FieldCaption("Contrato No."), JobPlanningLine."Contrato No.");
-        JobTaskNoText := StrSubstNo(Text008, JobPlanningLine.FieldCaption("Contrato Task No."), JobPlanningLine."Contrato Task No.");
-        LineNoText := StrSubstNo(Text008, JobPlanningLine.FieldCaption("Line No."), JobPlanningLine."Line No.");
-        exit(StrSubstNo(Text008, StrSubstNo(Text008, JobNoText, JobTaskNoText), LineNoText));
+        ContratoNoText := StrSubstNo(Text008, ContratoPlanningLine.FieldCaption("Contrato No."), ContratoPlanningLine."Contrato No.");
+        ContratoTaskNoText := StrSubstNo(Text008, ContratoPlanningLine.FieldCaption("Contrato Task No."), ContratoPlanningLine."Contrato Task No.");
+        LineNoText := StrSubstNo(Text008, ContratoPlanningLine.FieldCaption("Line No."), ContratoPlanningLine."Line No.");
+        exit(StrSubstNo(Text008, StrSubstNo(Text008, ContratoNoText, ContratoTaskNoText), LineNoText));
     end;
 
     local procedure ConstructKeyTextWhseShptLine(WhseShptLine: Record "Warehouse Shipment Line"): Text
@@ -1733,7 +1733,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
         PAGE.Run(PAGE::"Assembly Orders", TempAssemblyHeader);
     end;
 
-    procedure ShowAsmOrders(Contrato: Record Contrato; JobTaskNo: Code[20])
+    procedure ShowAsmOrders(Contrato: Record Contrato; ContratoTaskNo: Code[20])
     var
         AssembleToOrderLink: Record "Assemble-to-OrderLinkContrato";
         AssemblyHeader: Record "Assembly Header";
@@ -1744,8 +1744,8 @@ table 50218 "Assemble-to-OrderLinkContrato"
         AssembleToOrderLink.SetCurrentKey(Type, "Contrato No.", "Contrato Task No.", "Document Line No.");
         AssembleToOrderLink.SetRange(Type, AssembleToOrderLink.Type::Contrato);
         AssembleToOrderLink.SetRange("Contrato No.", Contrato."No.");
-        if JobTaskNo <> '' then
-            AssembleToOrderLink.SetRange("Contrato Task No.", JobTaskNo);
+        if ContratoTaskNo <> '' then
+            AssembleToOrderLink.SetRange("Contrato Task No.", ContratoTaskNo);
         if AssembleToOrderLink.FindSet() then
             repeat
                 if not TempAssemblyHeader.Get(AssembleToOrderLink."Assembly Document Type", AssembleToOrderLink."Assembly Document No.") then
@@ -1775,23 +1775,23 @@ table 50218 "Assemble-to-OrderLinkContrato"
         HideConfirm := NewHideConfirm;
     end;
 
-    local procedure JobPlanningLineIsNotCorrect(var NewJobPlanningLine: Record "Contrato Planning Line"): Boolean
+    local procedure ContratoPlanningLineIsNotCorrect(var NewContratoPlanningLine: Record "Contrato Planning Line"): Boolean
     var
-        NewJobPlanningLine2: Record "Contrato Planning Line";
+        NewContratoPlanningLine2: Record "Contrato Planning Line";
     begin
-        if NewJobPlanningLine."Qty. to Assemble" = 0 then
+        if NewContratoPlanningLine."Qty. to Assemble" = 0 then
             exit(true);
-        if not NewJobPlanningLine2.Get(NewJobPlanningLine."Contrato No.", NewJobPlanningLine."Contrato Task No.", NewJobPlanningLine."Line No.") then
+        if not NewContratoPlanningLine2.Get(NewContratoPlanningLine."Contrato No.", NewContratoPlanningLine."Contrato Task No.", NewContratoPlanningLine."Line No.") then
             exit(true);
     end;
 
-    local procedure CheckJobStatus(Contrato: Record Contrato)
+    local procedure CheckContratoStatus(Contrato: Record Contrato)
     begin
         if Contrato.Status = Contrato.Status::Completed then
-            Error(CreateAsmForJobErr);
+            Error(CreateAsmForContratoErr);
     end;
 
-    local procedure AssignAssembleToOrderData(var NewJobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato)
+    local procedure AssignAssembleToOrderData(var NewContratoPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato)
     begin
         if Contrato.Status = Contrato.Status::Open then begin
             InsertAsmHeader(AsmHeader, "Assembly Document Type"::Order, '');
@@ -1804,30 +1804,30 @@ table 50218 "Assemble-to-OrderLinkContrato"
         "Assembly Document Type" := AsmHeader."Document Type";
         "Assembly Document No." := AsmHeader."No.";
         Type := Type::Contrato;
-        "Document No." := NewJobPlanningLine."Document No.";
-        "Contrato No." := NewJobPlanningLine."Contrato No.";
-        "Contrato Task No." := NewJobPlanningLine."Contrato Task No.";
-        "Document Line No." := NewJobPlanningLine."Line No.";
+        "Document No." := NewContratoPlanningLine."Document No.";
+        "Contrato No." := NewContratoPlanningLine."Contrato No.";
+        "Contrato Task No." := NewContratoPlanningLine."Contrato Task No.";
+        "Document Line No." := NewContratoPlanningLine."Line No.";
     end;
 
-    local procedure AssignGlobalDimensionsFromJobTask(var NewJobPlanningLine: Record "Contrato Planning Line")
+    local procedure AssignGlobalDimensionsFromContratoTask(var NewContratoPlanningLine: Record "Contrato Planning Line")
     var
-        JobTask: Record "Contrato Task";
+        ContratoTask: Record "Contrato Task";
     begin
-        if not JobTask.Get(NewJobPlanningLine."Contrato No.", NewJobPlanningLine."Contrato Task No.") then
+        if not ContratoTask.Get(NewContratoPlanningLine."Contrato No.", NewContratoPlanningLine."Contrato Task No.") then
             exit;
-        AsmHeader."Shortcut Dimension 1 Code" := JobTask."Global Dimension 1 Code";
-        AsmHeader."Shortcut Dimension 2 Code" := JobTask."Global Dimension 2 Code";
+        AsmHeader."Shortcut Dimension 1 Code" := ContratoTask."Global Dimension 1 Code";
+        AsmHeader."Shortcut Dimension 2 Code" := ContratoTask."Global Dimension 2 Code";
         AsmHeader.Modify(true);
     end;
 
-    local procedure DeleteAssembleToOrderLink(var NewJobPlanningLine: Record "Contrato Planning Line"): Boolean
+    local procedure DeleteAssembleToOrderLink(var NewContratoPlanningLine: Record "Contrato Planning Line"): Boolean
     begin
         if not GetAsmHeader() then begin
             Delete();
             InsertAsmHeader(AsmHeader, "Assembly Document Type", "Assembly Document No.");
         end else begin
-            if not NeedsSynchronization(NewJobPlanningLine) then
+            if not NeedsSynchronization(NewContratoPlanningLine) then
                 exit(false);
             AsmReopenIfReleased();
             Delete();
@@ -1906,7 +1906,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeNeedsSynchronizationForProjectPlanningLine(AssemblyHeader: Record "Assembly Header"; JobPlanningLine: Record "Contrato Planning Line"; var Result: Boolean; var IsHandled: Boolean)
+    local procedure OnBeforeNeedsSynchronizationForProjectPlanningLine(AssemblyHeader: Record "Assembly Header"; ContratoPlanningLine: Record "Contrato Planning Line"; var Result: Boolean; var IsHandled: Boolean)
     begin
     end;
 

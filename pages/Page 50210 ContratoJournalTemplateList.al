@@ -14,65 +14,65 @@ page 50210 "Contrato Journal Template List"
                 ShowCaption = false;
                 field(Name; Rec.Name)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the name of this journal template. You can enter a maximum of 10 characters, both numbers and letters.';
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies a description of the project journal template for easy identification.';
                 }
                 field("Test Report ID"; Rec."Test Report ID")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the test report that is printed when you create a Test Report.';
                     Visible = false;
                 }
                 field("Page ID"; Rec."Page ID")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the number of the page that is used to show the journal or worksheet that uses the template.';
                     Visible = false;
                 }
                 field("Posting Report ID"; Rec."Posting Report ID")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the posting report you want to be associated with this journal. To see the available IDs, choose the field.';
                     Visible = false;
                 }
                 field("Force Posting Report"; Rec."Force Posting Report")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies whether a report is printed automatically when you post.';
                     Visible = false;
                 }
                 field("Source Code"; Rec."Source Code")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the source code that specifies where the entry was created.';
                     Visible = false;
                 }
                 field("Reason Code"; Rec."Reason Code")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the reason code, a supplementary source code that enables you to trace the entry.';
                     Visible = false;
                 }
                 field("Test Report Caption"; Rec."Test Report Caption")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the name of the test report that you selected in the Test Report ID field.';
                     Visible = false;
                 }
                 field("Page Caption"; Rec."Page Caption")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the displayed name of the journal or worksheet that uses the template.';
                     Visible = false;
                 }
                 field("Posting Report Caption"; Rec."Posting Report Caption")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the name of the posting report that is printed when you print the project journal.';
                     Visible = false;
                 }

@@ -1,13 +1,13 @@
 codeunit 50222 "Price Source Group - Contrato" implements "Price Source Group"
 {
     var
-        JobSourceType: Enum "Job Price Source Type";
+        ContratoSourceType: Enum "Contrato Price Source Type";
 
     procedure IsSourceTypeSupported(SourceType: Enum "Price Source Type"): Boolean;
     var
         Ordinals: list of [Integer];
     begin
-        Ordinals := JobSourceType.Ordinals();
+        Ordinals := ContratoSourceType.Ordinals();
         exit(Ordinals.Contains(SourceType.AsInteger()))
     end;
 

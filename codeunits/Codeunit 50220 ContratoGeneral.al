@@ -13,7 +13,7 @@ codeunit 50220 "ContratoGeneral"
         ItemLedgEntry.SetRange("Job No.", ID);
         ItemLedgEntry.SetRange("Order Line No.", RefNo);
 
-        if Type = Database::"Job Planning Line" then
+        if Type = Database::"Contrato Planning Line" then
             ItemLedgEntry.SetRange("Entry Type", ItemLedgEntry."Entry Type"::"Negative Adjmt.")
         else
             exit(false);

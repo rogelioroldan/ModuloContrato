@@ -1,6 +1,6 @@
 table 50209 "Contrato Entry No."
 {
-    Caption = 'Job Entry No.';
+    Caption = 'Contrato Entry No.';
     DataClassification = CustomerContent;
 
     fields

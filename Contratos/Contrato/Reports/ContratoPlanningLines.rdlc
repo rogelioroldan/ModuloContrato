@@ -1,0 +1,358 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="ContratoPlannLineTypeCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ContratoPlannLineTypeCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContratoPlannLineTypeCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ContratoPlannLineDocNoCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ContratoPlannLineDocNoCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContratoPlannLineDocNoCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ContratoPlannLineNoCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ContratoPlannLineNoCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContratoPlannLineNoCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ContratoPlannLineDescCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ContratoPlannLineDescCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContratoPlannLineDescCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ContratoPlannLineQtyCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ContratoPlannLineQtyCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContratoPlannLineQtyCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ContratoPlannLineUOMCodeCptn">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ContratoPlannLineUOMCodeCptn</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContratoPlannLineUOMCodeCptn</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ContratoTaskNo_ContratoTaskCptn">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ContratoTaskNo_ContratoTaskCptn</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContratoTaskNo_ContratoTaskCptn</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="No_Contrato">
+          <DataField>No_Contrato</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="TodayFormatted">
+          <DataField>TodayFormatted</DataField>
+        </Field>
+        <Field Name="ContratoTaskCaption">
+          <DataField>ContratoTaskCaption</DataField>
+        </Field>
+        <Field Name="ShowJTFilter">
+          <DataField>ShowJTFilter</DataField>
+        </Field>
+        <Field Name="Desc_Contrato">
+          <DataField>Desc_Contrato</DataField>
+        </Field>
+        <Field Name="CurrCodeContrato0Fld">
+          <DataField>CurrCodeContrato0Fld</DataField>
+        </Field>
+        <Field Name="CurrCodeContrato2Fld">
+          <DataField>CurrCodeContrato2Fld</DataField>
+        </Field>
+        <Field Name="CurrCodeContrato3Fld">
+          <DataField>CurrCodeContrato3Fld</DataField>
+        </Field>
+        <Field Name="ContratoPlanningLinesCaption">
+          <DataField>ContratoPlanningLinesCaption</DataField>
+        </Field>
+        <Field Name="CurrReportPageNoCaption">
+          <DataField>CurrReportPageNoCaption</DataField>
+        </Field>
+        <Field Name="ContratoPlannLinePlannDtCptn">
+          <DataField>ContratoPlannLinePlannDtCptn</DataField>
+        </Field>
+        <Field Name="LineTypeCaption">
+          <DataField>LineTypeCaption</DataField>
+        </Field>
+        <Field Name="ContratoTaskNo_ContratoTask">
+          <DataField>ContratoTaskNo_ContratoTask</DataField>
+        </Field>
+        <Field Name="Desc_ContratoTask">
+          <DataField>Desc_ContratoTask</DataField>
+        </Field>
+        <Field Name="TotalCost1_ContratoTask">
+          <DataField>TotalCost1_ContratoTask</DataField>
+        </Field>
+        <Field Name="TotalCost1_ContratoTaskFormat">
+          <DataField>TotalCost1_ContratoTaskFormat</DataField>
+        </Field>
+        <Field Name="TotalCost2_ContratoTask">
+          <DataField>TotalCost2_ContratoTask</DataField>
+        </Field>
+        <Field Name="TotalCost2_ContratoTaskFormat">
+          <DataField>TotalCost2_ContratoTaskFormat</DataField>
+        </Field>
+        <Field Name="FooterTotalCost1_ContratoTask">
+          <DataField>FooterTotalCost1_ContratoTask</DataField>
+        </Field>
+        <Field Name="FooterTotalCost1_ContratoTaskFormat">
+          <DataField>FooterTotalCost1_ContratoTaskFormat</DataField>
+        </Field>
+        <Field Name="FooterTotalCost2_ContratoTask">
+          <DataField>FooterTotalCost2_ContratoTask</DataField>
+        </Field>
+        <Field Name="FooterTotalCost2_ContratoTaskFormat">
+          <DataField>FooterTotalCost2_ContratoTaskFormat</DataField>
+        </Field>
+        <Field Name="FooterLineDisAmt1_ContratoTask">
+          <DataField>FooterLineDisAmt1_ContratoTask</DataField>
+        </Field>
+        <Field Name="FooterLineDisAmt1_ContratoTaskFormat">
+          <DataField>FooterLineDisAmt1_ContratoTaskFormat</DataField>
+        </Field>
+        <Field Name="FooterLineDisAmt2_ContratoTask">
+          <DataField>FooterLineDisAmt2_ContratoTask</DataField>
+        </Field>
+        <Field Name="FooterLineDisAmt2_ContratoTaskFormat">
+          <DataField>FooterLineDisAmt2_ContratoTaskFormat</DataField>
+        </Field>
+        <Field Name="FooterLineAmt1_ContratoTask">
+          <DataField>FooterLineAmt1_ContratoTask</DataField>
+        </Field>
+        <Field Name="FooterLineAmt1_ContratoTaskFormat">
+          <DataField>FooterLineAmt1_ContratoTaskFormat</DataField>
+        </Field>
+        <Field Name="FooterLineAmt2_ContratoTask">
+          <DataField>FooterLineAmt2_ContratoTask</DataField>
+        </Field>
+        <Field Name="FooterLineAmt2_ContratoTaskFormat">
+          <DataField>FooterLineAmt2_ContratoTaskFormat</DataField>
+        </Field>
+        <Field Name="ContratoTaskNo_ContratoTaskCaption">
+          <DataField>ContratoTaskNo_ContratoTaskCaption</DataField>
+        </Field>
+        <Field Name="TotalScheduleCaption">
+          <DataField>TotalScheduleCaption</DataField>
+        </Field>
+        <Field Name="TotalContractCaption">
+          <DataField>TotalContractCaption</DataField>
+        </Field>
+        <Field Name="TotCostLCY_ContratoPlanningLine">
+          <DataField>TotCostLCY_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="TotCostLCY_ContratoPlanningLineFormat">
+          <DataField>TotCostLCY_ContratoPlanningLineFormat</DataField>
+        </Field>
+        <Field Name="Qty_ContratoPlanningLine">
+          <DataField>Qty_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="Qty_ContratoPlanningLineFormat">
+          <DataField>Qty_ContratoPlanningLineFormat</DataField>
+        </Field>
+        <Field Name="Desc_ContratoPlanningLine">
+          <DataField>Desc_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="No_ContratoPlanningLine">
+          <DataField>No_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="Type_ContratoPlanningLine">
+          <DataField>Type_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="PlannDate_ContratoPlanningLine">
+          <DataField>PlannDate_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="DocNo_ContratoPlanningLine">
+          <DataField>DocNo_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="UOMCode_ContratoPlanningLine">
+          <DataField>UOMCode_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="LineDiscAmLCY_ContratoPlanningLine">
+          <DataField>LineDiscAmLCY_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="LineDiscAmLCY_ContratoPlanningLineFormat">
+          <DataField>LineDiscAmLCY_ContratoPlanningLineFormat</DataField>
+        </Field>
+        <Field Name="AmtLCY_ContratoPlanningLine">
+          <DataField>AmtLCY_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="AmtLCY_ContratoPlanningLineFormat">
+          <DataField>AmtLCY_ContratoPlanningLineFormat</DataField>
+        </Field>
+        <Field Name="LineType_ContratoPlanningLine">
+          <DataField>LineType_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="FieldLocalCurr_ContratoPlanningLine">
+          <DataField>FieldLocalCurr_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="TotalCost_ContratoPlanningLine">
+          <DataField>TotalCost_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="TotalCost_ContratoPlanningLineFormat">
+          <DataField>TotalCost_ContratoPlanningLineFormat</DataField>
+        </Field>
+        <Field Name="LineDiscAmt_ContratoPlanningLine">
+          <DataField>LineDiscAmt_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="LineDiscAmt_ContratoPlanningLineFormat">
+          <DataField>LineDiscAmt_ContratoPlanningLineFormat</DataField>
+        </Field>
+        <Field Name="LineAmt_ContratoPlanningLine">
+          <DataField>LineAmt_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="LineAmt_ContratoPlanningLineFormat">
+          <DataField>LineAmt_ContratoPlanningLineFormat</DataField>
+        </Field>
+        <Field Name="ForeignCurr_ContratoPlanningLine">
+          <DataField>ForeignCurr_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="TotalCost1_ContratoPlanningLine">
+          <DataField>TotalCost1_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="TotalCost1_ContratoPlanningLineFormat">
+          <DataField>TotalCost1_ContratoPlanningLineFormat</DataField>
+        </Field>
+        <Field Name="LineAmt1_ContratoPlanningLine">
+          <DataField>LineAmt1_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="LineAmt1_ContratoPlanningLineFormat">
+          <DataField>LineAmt1_ContratoPlanningLineFormat</DataField>
+        </Field>
+        <Field Name="LineDisAmt1_ContratoPlanningLine">
+          <DataField>LineDisAmt1_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="LineDisAmt1_ContratoPlanningLineFormat">
+          <DataField>LineDisAmt1_ContratoPlanningLineFormat</DataField>
+        </Field>
+        <Field Name="LineAmt2_ContratoPlanningLine">
+          <DataField>LineAmt2_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="LineAmt2_ContratoPlanningLineFormat">
+          <DataField>LineAmt2_ContratoPlanningLineFormat</DataField>
+        </Field>
+        <Field Name="LineDisAmt2_ContratoPlanningLine">
+          <DataField>LineDisAmt2_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="LineDisAmt2_ContratoPlanningLineFormat">
+          <DataField>LineDisAmt2_ContratoPlanningLineFormat</DataField>
+        </Field>
+        <Field Name="TotalCost2_ContratoPlanningLine">
+          <DataField>TotalCost2_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="TotalCost2_ContratoPlanningLineFormat">
+          <DataField>TotalCost2_ContratoPlanningLineFormat</DataField>
+        </Field>
+        <Field Name="ContratoNo_ContratoPlanningLine">
+          <DataField>ContratoNo_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="ContratoTaskNo_ContratoPlanningLine">
+          <DataField>ContratoTaskNo_ContratoPlanningLine</DataField>
+        </Field>
+        <Field Name="ScheduleCaption">
+          <DataField>ScheduleCaption</DataField>
+        </Field>
+        <Field Name="ContractCaption">
+          <DataField>ContractCaption</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

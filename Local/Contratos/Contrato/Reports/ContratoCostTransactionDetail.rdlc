@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="FORMAT_TODAY_0_4_">
+          <DataField>FORMAT_TODAY_0_4_</DataField>
+        </Field>
+        <Field Name="TIME">
+          <DataField>TIME</DataField>
+        </Field>
+        <Field Name="CompanyInformation_Name">
+          <DataField>CompanyInformation_Name</DataField>
+        </Field>
+        <Field Name="USERID">
+          <DataField>USERID</DataField>
+        </Field>
+        <Field Name="Contrato_TABLECAPTION__________ContratoFilter">
+          <DataField>Contrato_TABLECAPTION__________ContratoFilter</DataField>
+        </Field>
+        <Field Name="ContratoFilter">
+          <DataField>ContratoFilter</DataField>
+        </Field>
+        <Field Name="TABLECAPTION_________FIELDCAPTION__No_____________No__">
+          <DataField>TABLECAPTION_________FIELDCAPTION__No_____________No__</DataField>
+        </Field>
+        <Field Name="Contrato_Description">
+          <DataField>Contrato_Description</DataField>
+        </Field>
+        <Field Name="Contrato_No_">
+          <DataField>Contrato_No_</DataField>
+        </Field>
+        <Field Name="Contrato_Posting_Date_Filter">
+          <DataField>Contrato_Posting_Date_Filter</DataField>
+        </Field>
+        <Field Name="Contrato_Cost_Transaction_DetailCaption">
+          <DataField>Contrato_Cost_Transaction_DetailCaption</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENOCaption">
+          <DataField>CurrReport_PAGENOCaption</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Posting_Date_Caption">
+          <DataField>Contrato_Ledger_Entry__Posting_Date_Caption</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry_TypeCaption">
+          <DataField>Contrato_Ledger_Entry_TypeCaption</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Document_No__Caption">
+          <DataField>Contrato_Ledger_Entry__Document_No__Caption</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Entry_Type_Caption">
+          <DataField>Contrato_Ledger_Entry__Entry_Type_Caption</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__No__Caption">
+          <DataField>Contrato_Ledger_Entry__No__Caption</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry_QuantityCaption">
+          <DataField>Contrato_Ledger_Entry_QuantityCaption</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Unit_of_Measure_Code_Caption">
+          <DataField>Contrato_Ledger_Entry__Unit_of_Measure_Code_Caption</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Total_Cost__LCY__Caption">
+          <DataField>Contrato_Ledger_Entry__Total_Cost__LCY__Caption</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Total_Price__LCY__Caption">
+          <DataField>Contrato_Ledger_Entry__Total_Price__LCY__Caption</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Amt__Posted_to_G_L_Caption">
+          <DataField>Contrato_Ledger_Entry__Amt__Posted_to_G_L_Caption</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Amt__Recognized_Caption">
+          <DataField>Contrato_Ledger_Entry__Amt__Recognized_Caption</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Posting_Date_">
+          <DataField>Contrato_Ledger_Entry__Posting_Date_</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry_Type">
+          <DataField>Contrato_Ledger_Entry_Type</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Document_No__">
+          <DataField>Contrato_Ledger_Entry__Document_No__</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Entry_Type_">
+          <DataField>Contrato_Ledger_Entry__Entry_Type_</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__No__">
+          <DataField>Contrato_Ledger_Entry__No__</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry_Quantity">
+          <DataField>Contrato_Ledger_Entry_Quantity</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry_QuantityFormat">
+          <DataField>Contrato_Ledger_Entry_QuantityFormat</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Unit_of_Measure_Code_">
+          <DataField>Contrato_Ledger_Entry__Unit_of_Measure_Code_</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Total_Cost__LCY__">
+          <DataField>Contrato_Ledger_Entry__Total_Cost__LCY__</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Total_Cost__LCY__Format">
+          <DataField>Contrato_Ledger_Entry__Total_Cost__LCY__Format</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Total_Price__LCY__">
+          <DataField>Contrato_Ledger_Entry__Total_Price__LCY__</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Total_Price__LCY__Format">
+          <DataField>Contrato_Ledger_Entry__Total_Price__LCY__Format</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Amt__Posted_to_G_L_">
+          <DataField>Contrato_Ledger_Entry__Amt__Posted_to_G_L_</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry__Amt__Posted_to_G_L_Format">
+          <DataField>Contrato_Ledger_Entry__Amt__Posted_to_G_L_Format</DataField>
+        </Field>
+        <Field Name="TotalCost_1_">
+          <DataField>TotalCost_1_</DataField>
+        </Field>
+        <Field Name="TotalCost_1_Format">
+          <DataField>TotalCost_1_Format</DataField>
+        </Field>
+        <Field Name="TotalPrice_1_">
+          <DataField>TotalPrice_1_</DataField>
+        </Field>
+        <Field Name="TotalPrice_1_Format">
+          <DataField>TotalPrice_1_Format</DataField>
+        </Field>
+        <Field Name="AmtPostedToGL_1_">
+          <DataField>AmtPostedToGL_1_</DataField>
+        </Field>
+        <Field Name="AmtPostedToGL_1_Format">
+          <DataField>AmtPostedToGL_1_Format</DataField>
+        </Field>
+        <Field Name="STRSUBSTNO_Text000_FIELDCAPTION__Contrato_No_____Contrato_No___">
+          <DataField>STRSUBSTNO_Text000_FIELDCAPTION__Contrato_No_____Contrato_No___</DataField>
+        </Field>
+        <Field Name="STRSUBSTNO_Text001_FIELDCAPTION__Contrato_No_____Contrato_No___">
+          <DataField>STRSUBSTNO_Text001_FIELDCAPTION__Contrato_No_____Contrato_No___</DataField>
+        </Field>
+        <Field Name="TotalCost_2_">
+          <DataField>TotalCost_2_</DataField>
+        </Field>
+        <Field Name="TotalCost_2_Format">
+          <DataField>TotalCost_2_Format</DataField>
+        </Field>
+        <Field Name="TotalPrice_2_">
+          <DataField>TotalPrice_2_</DataField>
+        </Field>
+        <Field Name="TotalPrice_2_Format">
+          <DataField>TotalPrice_2_Format</DataField>
+        </Field>
+        <Field Name="AmtPostedToGL_2_">
+          <DataField>AmtPostedToGL_2_</DataField>
+        </Field>
+        <Field Name="AmtPostedToGL_2_Format">
+          <DataField>AmtPostedToGL_2_Format</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry_Entry_No_">
+          <DataField>Contrato_Ledger_Entry_Entry_No_</DataField>
+        </Field>
+        <Field Name="Contrato_Ledger_Entry_Contrato_No_">
+          <DataField>Contrato_Ledger_Entry_Contrato_No_</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

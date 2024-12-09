@@ -23,16 +23,16 @@ page 50203 "Contrato Planning Lines"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the number of the related project task.';
-                    Visible = JobTaskNoVisible;
+                    Visible = ContratoTaskNoVisible;
                 }
                 field("Line Type"; Rec."Line Type")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the type of planning line.';
                 }
                 field("Usage Link"; Rec."Usage Link")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies whether the Usage Link field applies to the project planning line. When this check box is selected, usage entries are linked to the project planning line. Selecting this check box creates a link to the project planning line from places where usage has been posted, such as the project journal or a purchase line. You can select this check box only if the line type of the project planning line is Budget or Both Budget and Billable.';
                     Visible = false;
 
@@ -43,7 +43,7 @@ page 50203 "Contrato Planning Lines"
                 }
                 field("Planning Date"; Rec."Planning Date")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = PlanningDateEditable;
                     ToolTip = 'Specifies the date of the planning line. You can use the planning date for filtering the totals of the project, for example, if you want to see the scheduled usage for a specific month of the year.';
 
@@ -54,31 +54,31 @@ page 50203 "Contrato Planning Lines"
                 }
                 field("Planned Delivery Date"; Rec."Planned Delivery Date")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the date that is planned to deliver the item connected to the project planning line. For a resource, the planned delivery date is the date that the resource performs services with respect to the project.';
                 }
                 field("Currency Date"; Rec."Currency Date")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = CurrencyDateEditable;
                     ToolTip = 'Specifies the date that will be used to find the exchange rate for the currency in the Currency Date field.';
                     Visible = false;
                 }
                 field("Document No."; Rec."Document No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = DocumentNoEditable;
                     ToolTip = 'Specifies a document number for the planning line.';
                 }
                 field("Line No."; Rec."Line No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the planning line''s entry number.';
                     Visible = false;
                 }
                 field(Type; Rec.Type)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = TypeEditable;
                     ToolTip = 'Specifies the type of account to which the planning line relates.';
 
@@ -89,7 +89,7 @@ page 50203 "Contrato Planning Lines"
                 }
                 field("No."; Rec."No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = NoEditable;
                     ToolTip = 'Specifies the number of the account to which the resource, item or general ledger account is posted, depending on your selection in the Type field.';
 
@@ -104,13 +104,13 @@ page 50203 "Contrato Planning Lines"
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = DescriptionEditable;
                     ToolTip = 'Specifies the name of the resource, item, or G/L account to which this entry applies. You can change the description.';
                 }
                 field("Description 2"; Rec."Description 2")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies information in addition to the description.';
                     Visible = false;
                 }
@@ -128,13 +128,13 @@ page 50203 "Contrato Planning Lines"
                 }
                 field("Gen. Bus. Posting Group"; Rec."Gen. Bus. Posting Group")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the vendor''s or customer''s trade type to link transactions made for this business partner with the appropriate general ledger account according to the general posting setup.';
                     Visible = false;
                 }
                 field("Gen. Prod. Posting Group"; Rec."Gen. Prod. Posting Group")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the item''s product type to link transactions made for this item with the appropriate general ledger account according to the general posting setup.';
                     Visible = false;
                 }
@@ -181,14 +181,14 @@ page 50203 "Contrato Planning Lines"
                 }
                 field("Work Type Code"; Rec."Work Type Code")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = WorkTypeCodeEditable;
                     ToolTip = 'Specifies which work type the resource applies to. Prices are updated based on this entry.';
                     Visible = false;
                 }
                 field("Unit of Measure Code"; Rec."Unit of Measure Code")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = UnitOfMeasureCodeEditable;
                     ToolTip = 'Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.';
                     Visible = false;
@@ -211,7 +211,7 @@ page 50203 "Contrato Planning Lines"
                 }
                 field(Quantity; Rec.Quantity)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the number of units of the resource, item, or general ledger account that should be specified on the planning line. If you later change the No., the quantity you have entered remains on the line.';
 
                     trigger OnValidate()
@@ -228,7 +228,7 @@ page 50203 "Contrato Planning Lines"
 
                     trigger OnDrillDown()
                     begin
-                        Rec.ShowAsmToJobPlanningLines();
+                        Rec.ShowAsmToContratoPlanningLines();
                     end;
 
                     trigger OnValidate()
@@ -244,213 +244,213 @@ page 50203 "Contrato Planning Lines"
                 }
                 field("Quantity (Base)"; Rec."Quantity (Base)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the quantity expressed in the base units of measure.';
                     Visible = false;
                 }
                 field("Remaining Qty."; Rec."Remaining Qty.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the remaining quantity of the resource, item, or G/L Account that remains to complete a project. The quantity is calculated as the difference between Quantity and Qty. Posted.';
                     Visible = false;
                 }
                 field("Direct Unit Cost (LCY)"; Rec."Direct Unit Cost (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = false;
                     ToolTip = 'Specifies the cost, in the local currency, of one unit of the selected item or resource.';
                     Visible = false;
                 }
                 field("Unit Cost"; Rec."Unit Cost")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = UnitCostEditable;
                     ToolTip = 'Specifies the cost of one unit of the item or resource on the line.';
                 }
                 field("Unit Cost (LCY)"; Rec."Unit Cost (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the cost, in LCY, of one unit of the item or resource on the line.';
                     Visible = false;
                 }
                 field("Total Cost"; Rec."Total Cost")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the total cost for the planning line. The total cost is in the project currency, which comes from the Currency Code field in the Contrato Card.';
                 }
                 field("Remaining Total Cost"; Rec."Remaining Total Cost")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the remaining total cost for the planning line. The total cost is in the project currency, which comes from the Currency Code field in the Contrato Card.';
                     Visible = false;
                 }
                 field("Total Cost (LCY)"; Rec."Total Cost (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the total cost for the planning line. The amount is in the local currency.';
                     Visible = false;
                 }
                 field("Remaining Total Cost (LCY)"; Rec."Remaining Total Cost (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the remaining total cost (LCY) for the planning line. The amount is in the local currency.';
                     Visible = false;
                 }
                 field("Unit Price"; Rec."Unit Price")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = UnitPriceEditable;
                     ToolTip = 'Specifies the price of one unit of the item or resource. You can enter a price manually or have it entered according to the Price/Profit Calculation field on the related card.';
                 }
                 field("Unit Price (LCY)"; Rec."Unit Price (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the price, in LCY, of one unit of the item or resource. You can enter a price manually or have it entered according to the Price/Profit Calculation field on the related card.';
                     Visible = false;
                 }
                 field("Line Amount"; Rec."Line Amount")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = LineAmountEditable;
                     ToolTip = 'Specifies the amount that will be posted to the project ledger.';
                 }
                 field("Remaining Line Amount"; Rec."Remaining Line Amount")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the amount that will be posted to the project ledger.';
                     Visible = false;
                 }
                 field("Line Amount (LCY)"; Rec."Line Amount (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the amount in the local currency that will be posted to the project ledger.';
                     Visible = false;
                 }
                 field("Remaining Line Amount (LCY)"; Rec."Remaining Line Amount (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the amount in the local currency that will be posted to the project ledger.';
                     Visible = false;
                 }
                 field("Line Discount Amount"; Rec."Line Discount Amount")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = LineDiscountAmountEditable;
                     ToolTip = 'Specifies the discount amount that is granted for the item on the line.';
                     Visible = false;
                 }
                 field("Line Discount %"; Rec."Line Discount %")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = LineDiscountPctEditable;
                     ToolTip = 'Specifies the discount percentage that is granted for the item on the line.';
                     Visible = false;
                 }
                 field("Total Price"; Rec."Total Price")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the total price in the project currency on the planning line.';
                     Visible = false;
                 }
                 field("Total Price (LCY)"; Rec."Total Price (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the total price on the planning line. The total price is in the local currency.';
                     Visible = false;
                 }
                 field("Qty. Posted"; Rec."Qty. Posted")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the quantity that has been posted to the project ledger, if the Usage Link check box has been selected.';
                     Visible = false;
                 }
                 field("Qty. to Transfer to Journal"; Rec."Qty. to Transfer to Journal")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the quantity you want to transfer to the project journal. Its default value is calculated as quantity minus the quantity that has already been posted, if the Apply Usage Link check box has been selected.';
                 }
                 field("Posted Total Cost"; Rec."Posted Total Cost")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the total cost that has been posted to the project ledger, if the Usage Link check box has been selected.';
                     Visible = false;
                 }
                 field("Posted Total Cost (LCY)"; Rec."Posted Total Cost (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the total cost (LCY) that has been posted to the project ledger, if the Usage Link check box has been selected.';
                     Visible = false;
                 }
                 field("Posted Line Amount"; Rec."Posted Line Amount")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the amount that has been posted to the project ledger. This field is only filled in if the Apply Usage Link check box selected on the project card.';
                     Visible = false;
                 }
                 field("Posted Line Amount (LCY)"; Rec."Posted Line Amount (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the amount in the local currency that has been posted to the project ledger. This field is only filled in if the Apply Usage Link check box selected on the project card.';
                     Visible = false;
                 }
                 field("Qty. Transferred to Invoice"; Rec."Qty. Transferred to Invoice")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the quantity that has been transferred to a sales invoice or credit memo.';
                     Visible = false;
 
                     trigger OnDrillDown()
                     begin
-                        Rec.DrillDownJobInvoices();
+                        Rec.DrillDownContratoInvoices();
                     end;
                 }
                 field("Qty. to Transfer to Invoice"; Rec."Qty. to Transfer to Invoice")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the quantity you want to transfer to the sales invoice or credit memo. The value in this field is calculated as Quantity - Qty. Transferred to Invoice.';
                     Visible = false;
                 }
                 field("Qty. Invoiced"; Rec."Qty. Invoiced")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the quantity that been posted through a sales invoice.';
                     Visible = false;
 
                     trigger OnDrillDown()
                     begin
-                        Rec.DrillDownJobInvoices();
+                        Rec.DrillDownContratoInvoices();
                     end;
                 }
                 field("Qty. to Invoice"; Rec."Qty. to Invoice")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the quantity that remains to be invoiced. It is calculated as Quantity - Qty. Invoiced.';
                     Visible = false;
                 }
                 field("Invoiced Amount (LCY)"; Rec."Invoiced Amount (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies, in local currency, the sales amount that was invoiced for this planning line.';
 
                     trigger OnDrillDown()
                     begin
-                        Rec.DrillDownJobInvoices();
+                        Rec.DrillDownContratoInvoices();
                     end;
                 }
                 field("Invoiced Cost Amount (LCY)"; Rec."Invoiced Cost Amount (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies, in the local currency, the cost amount that was invoiced for this planning line.';
                     Visible = false;
 
                     trigger OnDrillDown()
                     begin
-                        Rec.DrillDownJobInvoices();
+                        Rec.DrillDownContratoInvoices();
                     end;
                 }
                 field("User ID"; Rec."User ID")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the ID of the user who posted the entry, to be used, for example, in the change log.';
                     Visible = false;
 
@@ -475,31 +475,31 @@ page 50203 "Contrato Planning Lines"
                 }
                 field("Contrato Contract Entry No."; Rec."Contrato Contract Entry No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the entry number of the project planning line that the sales line is linked to.';
                     Visible = false;
                 }
                 field("Ledger Entry Type"; Rec."Ledger Entry Type")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the entry type of the project ledger entry associated with the planning line.';
                     Visible = false;
                 }
                 field("Ledger Entry No."; Rec."Ledger Entry No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the entry number of the project ledger entry associated with the project planning line.';
                     Visible = false;
                 }
                 field("System-Created Entry"; Rec."System-Created Entry")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies that an entry has been created by Business Central and is related to a project ledger entry. The check box is selected automatically.';
                     Visible = false;
                 }
                 field(Overdue; Rec.Overdue())
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Overdue';
                     Editable = false;
                     ToolTip = 'Specifies that the project is overdue. ';
@@ -558,23 +558,23 @@ page 50203 "Contrato Planning Lines"
 
                     trigger OnAction()
                     var
-                        JobLedgerEntry: Record "Contrato Ledger Entry";
-                        JobUsageLink: Record "Contrato Usage Link";
-                        JobLedgerEntries: Page "Contrato Ledger Entries";
+                        ContratoLedgerEntry: Record "Contrato Ledger Entry";
+                        ContratoUsageLink: Record "Contrato Usage Link";
+                        ContratoLedgerEntries: Page "Contrato Ledger Entries";
                     begin
-                        JobUsageLink.SetRange("Contrato No.", Rec."Contrato No.");
-                        JobUsageLink.SetRange("Contrato Task No.", Rec."Contrato Task No.");
-                        JobUsageLink.SetRange("Line No.", Rec."Line No.");
-                        if JobUsageLink.FindSet() then
+                        ContratoUsageLink.SetRange("Contrato No.", Rec."Contrato No.");
+                        ContratoUsageLink.SetRange("Contrato Task No.", Rec."Contrato Task No.");
+                        ContratoUsageLink.SetRange("Line No.", Rec."Line No.");
+                        if ContratoUsageLink.FindSet() then
                             repeat
-                                JobLedgerEntry.Get(JobUsageLink."Entry No.");
-                                JobLedgerEntry.Mark := true;
-                            until JobUsageLink.Next() = 0;
+                                ContratoLedgerEntry.Get(ContratoUsageLink."Entry No.");
+                                ContratoLedgerEntry.Mark := true;
+                            until ContratoUsageLink.Next() = 0;
 
-                        JobLedgerEntry.MarkedOnly(true);
-                        Clear(JobLedgerEntries);
-                        JobLedgerEntries.SetTableView(JobLedgerEntry);
-                        JobLedgerEntries.Run();
+                        ContratoLedgerEntry.MarkedOnly(true);
+                        Clear(ContratoLedgerEntries);
+                        ContratoLedgerEntries.SetTableView(ContratoLedgerEntry);
+                        ContratoLedgerEntries.Run();
                     end;
                 }
                 action("&Reservation Entries")
@@ -607,11 +607,11 @@ page 50203 "Contrato Planning Lines"
                 }
                 action(SendToCalendar)
                 {
-                    AccessByPermission = TableData "Job Planning Line - Calendar" = RIM;
-                    ApplicationArea = Jobs;
+                    AccessByPermission = TableData "ContratoPlanningLine-Calendar" = RIM;
+                    ApplicationArea = Contratos;
                     Caption = 'Send to Calendar';
                     Image = CalendarChanged;
-                    RunObject = Codeunit "Job Planning Line - Calendar";
+                    RunObject = Codeunit "ContratoPlanningLine-Calendar";
                     RunPageOnRec = true;
                     ToolTip = 'Create a calendar appointment for the resource on each project planning line.';
                     Visible = CanSendToCalendar;
@@ -655,7 +655,7 @@ page 50203 "Contrato Planning Lines"
 
                         trigger OnAction()
                         begin
-                            Rec.ShowAsmToJobPlanningLines();
+                            Rec.ShowAsmToContratoPlanningLines();
                         end;
                     }
                 }
@@ -667,40 +667,40 @@ page 50203 "Contrato Planning Lines"
             {
                 Caption = 'F&unctions';
                 Image = "Action";
-                action(CreateJobJournalLines)
+                action(CreateContratoJournalLines)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Create Contrato &Journal Lines';
                     Image = PostOrder;
-                    ToolTip = 'Use a batch job to help you create sales journal lines for the involved project planning lines.';
+                    ToolTip = 'Use a batch Contrato to help you create sales journal lines for the involved project planning lines.';
 
                     trigger OnAction()
                     var
-                        JobPlanningLine: Record "Contrato Planning Line";
-                        JobJnlLine: Record "Contrato Journal Line";
-                        JobTransferLine: Codeunit "Contrato Transfer Line";
-                        JobTransferJobPlanningLine: Page "Job Transfer Job Planning Line";
+                        ContratoPlanningLine: Record "Contrato Planning Line";
+                        ContratoJnlLine: Record "Contrato Journal Line";
+                        ContratoTransferLine: Codeunit "Contrato Transfer Line";
+                        ContratoTransferContratoPlanningLine: Page "ContrTransferContrPlanningLine";
                     begin
-                        if JobTransferJobPlanningLine.RunModal() = ACTION::OK then begin
-                            JobPlanningLine.Copy(Rec);
-                            CurrPage.SetSelectionFilter(JobPlanningLine);
+                        if ContratoTransferContratoPlanningLine.RunModal() = ACTION::OK then begin
+                            ContratoPlanningLine.Copy(Rec);
+                            CurrPage.SetSelectionFilter(ContratoPlanningLine);
 
-                            JobPlanningLine.SetFilter(Type, '<>%1', JobPlanningLine.Type::Text);
-                            if JobPlanningLine.FindSet() then
+                            ContratoPlanningLine.SetFilter(Type, '<>%1', ContratoPlanningLine.Type::Text);
+                            if ContratoPlanningLine.FindSet() then
                                 repeat
-                                    JobTransferLine.FromPlanningLineToJnlLine(
-                                      JobPlanningLine, JobTransferJobPlanningLine.GetPostingDate(), JobTransferJobPlanningLine.GetJobJournalTemplateName(),
-                                      JobTransferJobPlanningLine.GetJobJournalBatchName(), JobJnlLine);
-                                until JobPlanningLine.Next() = 0;
+                                    ContratoTransferLine.FromPlanningLineToJnlLine(
+                                      ContratoPlanningLine, ContratoTransferContratoPlanningLine.GetPostingDate(), ContratoTransferContratoPlanningLine.GetContratoJournalTemplateName(),
+                                      ContratoTransferContratoPlanningLine.GetContratoJournalBatchName(), ContratoJnlLine);
+                                until ContratoPlanningLine.Next() = 0;
 
                             CurrPage.Update(false);
-                            Message(Text002, JobPlanningLine.TableCaption(), JobJnlLine.TableCaption());
+                            Message(Text002, ContratoPlanningLine.TableCaption(), ContratoJnlLine.TableCaption());
                         end;
                     end;
                 }
                 action("&Open Contrato Journal")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = '&Open Contrato Journal';
                     Image = Journals;
                     RunObject = Page "Contrato Journal";
@@ -713,11 +713,11 @@ page 50203 "Contrato Planning Lines"
                 }
                 action("Create &Sales Invoice")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Create &Sales Invoice';
                     Ellipsis = true;
                     Image = JobSalesInvoice;
-                    ToolTip = 'Use a batch job to help you create sales invoices for the involved project tasks.';
+                    ToolTip = 'Use a batch Contrato to help you create sales invoices for the involved project tasks.';
 
                     trigger OnAction()
                     var
@@ -731,7 +731,7 @@ page 50203 "Contrato Planning Lines"
                 }
                 action("Create Sales &Credit Memo")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Create Sales &Credit Memo';
                     Ellipsis = true;
                     Image = CreditMemo;
@@ -749,7 +749,7 @@ page 50203 "Contrato Planning Lines"
                 }
                 action("Sales &Invoices/Credit Memos")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Sales &Invoices/Credit Memos';
                     Ellipsis = true;
                     Image = GetSourceDoc;
@@ -757,7 +757,7 @@ page 50203 "Contrato Planning Lines"
 
                     trigger OnAction()
                     begin
-                        JobCreateInvoice.GetJobPlanningLineInvoices(Rec);
+                        ContratoCreateInvoice.GetContratoPlanningLineInvoices(Rec);
                     end;
                 }
                 separator(Action123)
@@ -842,52 +842,52 @@ page 50203 "Contrato Planning Lines"
         {
             action("Contrato Actual to Budget (Cost)")
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Contrato Actual to Budget (Cost)';
                 Image = "Report";
-                RunObject = Report "Job Actual to Budget (Cost)";
+                RunObject = Report "ContratoActualtoBudget(Cost)";
                 ToolTip = 'Compare budgeted and usage amounts for selected projects. All lines of the selected project show quantity, total cost, and line amount.';
             }
             action("<Report Contrato Actual to Budget (Price)>")
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Contrato Actual to Budget (Price)';
                 Image = "Report";
-                RunObject = Report "Job Actual to Budget (Price)";
+                RunObject = Report "ContratoActualtoBudget(Price)";
                 ToolTip = 'Compare the actual price of your projects to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
             }
             action("Contrato Analysis")
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Contrato Analysis';
                 Image = "Report";
-                RunObject = Report "Job Analysis";
+                RunObject = Report "Contrato Analysis";
                 ToolTip = 'Analyze the project, such as the scheduled prices, usage prices, and contract prices, and then compares the three sets of prices.';
             }
             action("Contrato - Planning Lines")
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Contrato - Planning Lines';
                 Image = "Report";
-                RunObject = Report "Job - Planning Lines";
+                RunObject = Report "Contrato - Planning Lines";
                 ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (Budget) or you can specify what you actually agreed with your customer that he should pay for the project (Billable).';
             }
             action("Contrato - Suggested Billing")
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Contrato - Suggested Billing';
                 Image = "Report";
-                RunObject = Report "Job Cost Suggested Billing";
+                RunObject = Report "ContratoCostSuggestedBilling";
                 ToolTip = 'View a list of all projects, grouped by customer, how much the customer has already been invoiced, and how much remains to be invoiced, that is, the suggested billing.';
             }
-            action("Jobs - Transaction Detail")
+            action("Contratos - Transaction Detail")
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Projects - Transaction Detail';
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
-                RunObject = Report "Job Cost Transaction Detail";
+                RunObject = Report "ContratoCostTransactionDetail";
                 ToolTip = 'View all postings with entries for a selected project for a selected period, which have been charged to a certain project. At the end of each project list, the amounts are totaled separately for the Sales and Usage entry types.';
             }
         }
@@ -900,7 +900,7 @@ page 50203 "Contrato Planning Lines"
                 actionref("Create &Sales Invoice_Promoted"; "Create &Sales Invoice")
                 {
                 }
-                actionref(CreateJobJournalLines_Promoted; CreateJobJournalLines)
+                actionref(CreateContratoJournalLines_Promoted; CreateContratoJournalLines)
                 {
                 }
                 actionref("Sales &Invoices/Credit Memos_Promoted"; "Sales &Invoices/Credit Memos")
@@ -985,7 +985,7 @@ page 50203 "Contrato Planning Lines"
         CurrencyDateEditable := true;
         PlanningDateEditable := true;
 
-        JobTaskNoVisible := true;
+        ContratoTaskNoVisible := true;
 
         CanSendToCalendar := EmailAccount.IsAnyAccountRegistered();
         ExtendedPriceEnabled := PriceCalculationMgt.IsExtendedPriceCalculationEnabled();
@@ -1020,7 +1020,7 @@ page 50203 "Contrato Planning Lines"
     end;
 
     var
-        JobCreateInvoice: Codeunit "Contrato Create-Invoice";
+        ContratoCreateInvoice: Codeunit "Contrato Create-Invoice";
         Text001: Label 'This project planning line was automatically generated. Do you want to continue?';
         Text002: Label 'The %1 was successfully transferred to a %2.';
         ExtendedPriceEnabled: Boolean;
@@ -1028,7 +1028,7 @@ page 50203 "Contrato Planning Lines"
         SelectMultipleItemsVisible: Boolean;
 
     protected var
-        JobTaskNoVisible: Boolean;
+        ContratoTaskNoVisible: Boolean;
         PlanningDateEditable: Boolean;
         CurrencyDateEditable: Boolean;
         DocumentNoEditable: Boolean;
@@ -1049,13 +1049,13 @@ page 50203 "Contrato Planning Lines"
 
     local procedure CreateSalesInvoice(CrMemo: Boolean)
     var
-        JobPlanningLine: Record "Contrato Planning Line";
-        JobCreateInvoice: Codeunit "Contrato Create-Invoice";
+        ContratoPlanningLine: Record "Contrato Planning Line";
+        ContratoCreateInvoice: Codeunit "Contrato Create-Invoice";
     begin
         Rec.TestField("Line No.");
-        JobPlanningLine.Copy(Rec);
-        CurrPage.SetSelectionFilter(JobPlanningLine);
-        JobCreateInvoice.CreateSalesInvoice(JobPlanningLine, CrMemo)
+        ContratoPlanningLine.Copy(Rec);
+        CurrPage.SetSelectionFilter(ContratoPlanningLine);
+        ContratoCreateInvoice.CreateSalesInvoice(ContratoPlanningLine, CrMemo)
     end;
 
     protected procedure SetEditable(Edit: Boolean)
@@ -1080,9 +1080,9 @@ page 50203 "Contrato Planning Lines"
         OnAfterSetEditable(Edit, Rec);
     end;
 
-    procedure SetJobTaskNoVisible(NewJobTaskNoVisible: Boolean)
+    procedure SetContratoTaskNoVisible(NewContratoTaskNoVisible: Boolean)
     begin
-        JobTaskNoVisible := NewJobTaskNoVisible;
+        ContratoTaskNoVisible := NewContratoTaskNoVisible;
     end;
 
     local procedure PerformAutoReserve()
@@ -1157,19 +1157,19 @@ page 50203 "Contrato Planning Lines"
 
     local procedure IsTypeFieldEditable(): Boolean
     var
-        JobPlanningLineInvoice: Record "Contrato Planning Line Invoice";
+        ContratoPlanningLineInvoice: Record "Contrato Planning Line Invoice";
         IsHandled, TypeFieldEditable : Boolean;
     begin
         TypeFieldEditable := false;
         IsHandled := false;
         if Rec.Type = Rec.Type::Text then begin
-            JobPlanningLineInvoice.SetRange("Contrato No.", Rec."Contrato No.");
-            JobPlanningLineInvoice.SetRange("Contrato Task No.", Rec."Contrato Task No.");
-            JobPlanningLineInvoice.SetRange("Contrato Planning Line No.", Rec."Line No.");
-            OnIsTypeFieldEditableOnAfterFilterJobPlanningLineInvoice(JobPlanningLineInvoice, Rec, TypeFieldEditable, IsHandled);
+            ContratoPlanningLineInvoice.SetRange("Contrato No.", Rec."Contrato No.");
+            ContratoPlanningLineInvoice.SetRange("Contrato Task No.", Rec."Contrato Task No.");
+            ContratoPlanningLineInvoice.SetRange("Contrato Planning Line No.", Rec."Line No.");
+            OnIsTypeFieldEditableOnAfterFilterContratoPlanningLineInvoice(ContratoPlanningLineInvoice, Rec, TypeFieldEditable, IsHandled);
             if IsHandled then
                 exit(TypeFieldEditable);
-            exit(JobPlanningLineInvoice.IsEmpty());
+            exit(ContratoPlanningLineInvoice.IsEmpty());
         end;
 
         OnAfterIsTypeFieldEditable(Rec, TypeFieldEditable, IsHandled);
@@ -1185,32 +1185,32 @@ page 50203 "Contrato Planning Lines"
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnAfterNoOnAfterValidate(var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterNoOnAfterValidate(var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnIsTypeFieldEditableOnAfterFilterJobPlanningLineInvoice(var JobPlanningLineInvoice: Record "Contrato Planning Line Invoice"; JobPlanningLine: Record "Contrato Planning Line"; var TypeFieldEditable: Boolean; var IsHandled: Boolean)
+    local procedure OnIsTypeFieldEditableOnAfterFilterContratoPlanningLineInvoice(var ContratoPlanningLineInvoice: Record "Contrato Planning Line Invoice"; ContratoPlanningLine: Record "Contrato Planning Line"; var TypeFieldEditable: Boolean; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnAfterIsTypeFieldEditable(var JobPlanningLine: Record "Contrato Planning Line"; var TypeFieldEditable: Boolean; var IsHandled: Boolean)
+    local procedure OnAfterIsTypeFieldEditable(var ContratoPlanningLine: Record "Contrato Planning Line"; var TypeFieldEditable: Boolean; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnCreateSalesCreditMemoOnBeforeAction(var JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean);
+    local procedure OnCreateSalesCreditMemoOnBeforeAction(var ContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnCreateSalesInvoiceOnBeforeAction(var JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean);
+    local procedure OnCreateSalesInvoiceOnBeforeAction(var ContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnAfterSetEditable(Edit: Boolean; var JobPlanningLine: Record "Contrato Planning Line");
+    local procedure OnAfterSetEditable(Edit: Boolean; var ContratoPlanningLine: Record "Contrato Planning Line");
     begin
     end;
 }

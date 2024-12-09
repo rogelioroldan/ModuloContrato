@@ -1,9 +1,9 @@
 page 50205 "Contrato Journal"
 {
-    AdditionalSearchTerms = 'project posting, Contrato Journals';
-    ApplicationArea = Jobs;
+    AdditionalSearchTerms = 'Contrato posting, Contrato Journals';
+    ApplicationArea = Contratos;
     AutoSplitKey = true;
-    Caption = 'Project Journals';
+    Caption = 'Contrato Journals';
     DataCaptionFields = "Journal Batch Name";
     DelayedInsert = true;
     PageType = Worksheet;
@@ -17,7 +17,7 @@ page 50205 "Contrato Journal"
         {
             field(CurrentJnlBatchName; CurrentJnlBatchName)
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Batch Name';
                 Lookup = true;
                 ToolTip = 'Specifies the name of the journal batch, a personalized journal layout, that the journal is based on.';
@@ -25,14 +25,14 @@ page 50205 "Contrato Journal"
                 trigger OnLookup(var Text: Text): Boolean
                 begin
                     CurrPage.SaveRecord();
-                    JobJnlManagement.LookupName(CurrentJnlBatchName, Rec);
+                    ContratoJnlManagement.LookupName(CurrentJnlBatchName, Rec);
                     SetControlAppearanceFromBatch();
                     CurrPage.Update(false);
                 end;
 
                 trigger OnValidate()
                 begin
-                    JobJnlManagement.CheckName(CurrentJnlBatchName, Rec);
+                    ContratoJnlManagement.CheckName(CurrentJnlBatchName, Rec);
                     CurrentJnlBatchNameOnAfterVali();
                 end;
             }
@@ -41,47 +41,47 @@ page 50205 "Contrato Journal"
                 ShowCaption = false;
                 field("Line Type"; Rec."Line Type")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the type of planning line to create when a project ledger entry is posted. If the field is empty, no planning lines are created.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the type of planning line to create when a Contrato ledger entry is posted. If the field is empty, no planning lines are created.';
                 }
                 field("Posting Date"; Rec."Posting Date")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the posting date you want to assign to each journal line. For more information, see Entering Dates and Times.';
                 }
                 field("Document Date"; Rec."Document Date")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the date when the related document was created.';
                     Visible = false;
                 }
                 field("Document No."; Rec."Document No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies a document number for the journal line.';
                     ShowMandatory = true;
                 }
                 field("External Document No."; Rec."External Document No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies a document number that refers to the customer''s or vendor''s numbering system.';
                     Visible = false;
                 }
                 field("Contrato No."; Rec."Contrato No.")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the number of the project.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the number of the Contrato.';
 
                     trigger OnValidate()
                     begin
-                        JobJnlManagement.GetNames(Rec, JobDescription, AccName);
+                        ContratoJnlManagement.GetNames(Rec, ContratoDescription, AccName);
                         Rec.ShowShortcutDimCode(ShortcutDimCode);
                     end;
                 }
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the number of the related project task.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the number of the related Contrato task.';
 
                     trigger OnValidate()
                     begin
@@ -90,12 +90,12 @@ page 50205 "Contrato Journal"
                 }
                 field(Type; Rec.Type)
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies an account type for project usage to be posted in the project journal. You can choose from the following options:';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies an account type for Contrato usage to be posted in the Contrato journal. You can choose from the following options:';
 
                     trigger OnValidate()
                     begin
-                        JobJnlManagement.GetNames(Rec, JobDescription, AccName);
+                        ContratoJnlManagement.GetNames(Rec, ContratoDescription, AccName);
                     end;
                 }
                 field("Price Calculation Method"; Rec."Price Calculation Method")
@@ -112,41 +112,41 @@ page 50205 "Contrato Journal"
                 }
                 field("No."; Rec."No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the number of the involved entry or record, according to the specified number series.';
 
                     trigger OnValidate()
                     begin
-                        JobJnlManagement.GetNames(Rec, JobDescription, AccName);
+                        ContratoJnlManagement.GetNames(Rec, ContratoDescription, AccName);
                         Rec.ShowShortcutDimCode(ShortcutDimCode);
                     end;
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the name of the resource, item, or general ledger account to which this entry applies. You can change the description.';
                 }
                 field("Description 2"; Rec."Description 2")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies information in addition to the description.';
                     Visible = false;
                 }
                 field("Contrato Planning Line No."; Rec."Contrato Planning Line No.")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the project planning line number that the usage should be linked to when the project journal is posted. You can only link to project planning lines that have the Apply Usage Link option enabled.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the Contrato planning line number that the usage should be linked to when the Contrato journal is posted. You can only link to Contrato planning lines that have the Apply Usage Link option enabled.';
                     Visible = false;
                 }
                 field("Gen. Bus. Posting Group"; Rec."Gen. Bus. Posting Group")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the vendor''s or customer''s trade type to link transactions made for this business partner with the appropriate general ledger account according to the general posting setup.';
                     Visible = false;
                 }
                 field("Gen. Prod. Posting Group"; Rec."Gen. Prod. Posting Group")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the item''s product type to link transactions made for this item with the appropriate general ledger account according to the general posting setup.';
                     Visible = false;
                 }
@@ -168,13 +168,13 @@ page 50205 "Contrato Journal"
                 }
                 field("Work Type Code"; Rec."Work Type Code")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies which work type the resource applies to. Prices are updated based on this entry.';
                 }
                 field("Currency Code"; Rec."Currency Code")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the project''s currency code that listed in the Currency Code field in the Project Card. You can only create a Project Journal using this currency code.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the Contrato''s currency code that listed in the Currency Code field in the Contrato Card. You can only create a Contrato Journal using this currency code.';
                     Visible = false;
 
                     trigger OnAssistEdit()
@@ -190,26 +190,26 @@ page 50205 "Contrato Journal"
                 }
                 field("Unit of Measure Code"; Rec."Unit of Measure Code")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.';
                 }
                 field(Quantity; Rec.Quantity)
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the number of units of the project journal''s No. field, that is, either the resource, item, or G/L account number, that applies. If you later change the value in the No. field, the quantity does not change on the journal line.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the number of units of the Contrato journal''s No. field, that is, either the resource, item, or G/L account number, that applies. If you later change the value in the No. field, the quantity does not change on the journal line.';
                 }
                 field("Remaining Qty."; Rec."Remaining Qty.")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the quantity of the resource or item that remains to complete a project. The remaining quantity is calculated as the difference between Quantity and Qty. Posted. You can modify this field to indicate the quantity you want to remain on the project planning line after you post usage.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the quantity of the resource or item that remains to complete a Contrato. The remaining quantity is calculated as the difference between Quantity and Qty. Posted. You can modify this field to indicate the quantity you want to remain on the Contrato planning line after you post usage.';
                     Visible = false;
                 }
 #if not CLEAN25
                 field(QuantityToTransferToInvoice; Rec."Qty. to Transfer to Invoice")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Visible = false;
-                    ToolTip = 'Specifies the number of units of the project journal''s No. field, that is, either the resource, item, or G/L account number, that applies. If you later change the value in the No. field, the quantity does not change on the journal line.';
+                    ToolTip = 'Specifies the number of units of the Contrato journal''s No. field, that is, either the resource, item, or G/L account number, that applies. If you later change the value in the No. field, the quantity does not change on the journal line.';
                     ObsoleteReason = 'Field Service is moved to Field Service Integration app.';
                     ObsoleteState = Pending;
                     ObsoleteTag = '25.0';
@@ -217,88 +217,88 @@ page 50205 "Contrato Journal"
 #endif
                 field("Direct Unit Cost (LCY)"; Rec."Direct Unit Cost (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the cost, in the local currency, of one unit of the selected item or resource.';
                     Visible = false;
                 }
                 field("Unit Cost"; Rec."Unit Cost")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the cost of one unit of the item or resource on the line.';
                 }
                 field("Unit Cost (LCY)"; Rec."Unit Cost (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the cost, in LCY, of one unit of the item or resource on the line.';
                 }
                 field("Total Cost"; Rec."Total Cost")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the total cost for the journal line. The total cost is calculated based on the project currency, which comes from the Currency Code field on the Project card.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the total cost for the journal line. The total cost is calculated based on the Contrato currency, which comes from the Currency Code field on the Contrato card.';
                 }
                 field("Total Cost (LCY)"; Rec."Total Cost (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the total cost for this journal line. The amount is in the local currency.';
                 }
                 field("Unit Price"; Rec."Unit Price")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the price of one unit of the item or resource. You can enter a price manually or have it entered according to the Price/Profit Calculation field on the related card.';
                 }
                 field("Unit Price (LCY)"; Rec."Unit Price (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the price, in LCY, of one unit of the item or resource. You can enter a price manually or have it entered according to the Price/Profit Calculation field on the related card.';
                     Visible = false;
                 }
                 field("Line Amount"; Rec."Line Amount")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the amount that will be posted to the project ledger.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the amount that will be posted to the Contrato ledger.';
                 }
                 field("Line Amount (LCY)"; Rec."Line Amount (LCY)")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the amount in the local currency that will be posted to the project ledger.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the amount in the local currency that will be posted to the Contrato ledger.';
                     Visible = false;
                 }
                 field("Line Discount Amount"; Rec."Line Discount Amount")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the discount amount that is granted for the item on the line.';
                 }
                 field("Line Discount %"; Rec."Line Discount %")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the line discount percentage.';
                 }
                 field("Total Price"; Rec."Total Price")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the total price in the project currency on the journal line.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the total price in the Contrato currency on the journal line.';
                     Visible = false;
                 }
                 field("Total Price (LCY)"; Rec."Total Price (LCY)")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the total price for the journal line. The amount is in the local currency.';
                     Visible = false;
                 }
                 field("Applies-to Entry"; Rec."Applies-to Entry")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies if the project journal line has of type Item and the usage of the item will be applied to an already-posted item ledger entry. If this is the case, enter the entry number that the usage will be applied to.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies if the Contrato journal line has of type Item and the usage of the item will be applied to an already-posted item ledger entry. If this is the case, enter the entry number that the usage will be applied to.';
                 }
                 field("Applies-from Entry"; Rec."Applies-from Entry")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the number of the item ledger entry that the journal line costs have been applied from. This should be done when you reverse the usage of an item in a project and you want to return the item to inventory at the same cost as before it was used in the project.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the number of the item ledger entry that the journal line costs have been applied from. This should be done when you reverse the usage of an item in a Contrato and you want to return the item to inventory at the same cost as before it was used in the Contrato.';
                     Visible = false;
                 }
                 field("Country/Region Code"; Rec."Country/Region Code")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the country/region of the address.';
                     Visible = false;
                 }
@@ -316,19 +316,19 @@ page 50205 "Contrato Journal"
                 }
                 field("Time Sheet No."; Rec."Time Sheet No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the number of a time sheet. A number is assigned to each time sheet when it is created. You cannot edit the number.';
                     Visible = false;
                 }
                 field("Time Sheet Line No."; Rec."Time Sheet Line No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the line number for a time sheet.';
                     Visible = false;
                 }
                 field("Time Sheet Date"; Rec."Time Sheet Date")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the date that a time sheet is created.';
                     Visible = false;
                 }
@@ -461,13 +461,13 @@ page 50205 "Contrato Journal"
                     }
                     group("Contrato Description")
                     {
-                        Caption = 'Project Description';
-                        field(JobDescription; JobDescription)
+                        Caption = 'Contrato Description';
+                        field(ContratoDescription; ContratoDescription)
                         {
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Editable = false;
                             ShowCaption = false;
-                            ToolTip = 'Specifies a description of the project.';
+                            ToolTip = 'Specifies a description of the Contrato.';
                         }
                     }
                     group("Account Name")
@@ -475,10 +475,10 @@ page 50205 "Contrato Journal"
                         Caption = 'Account Name';
                         field(AccName; AccName)
                         {
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Caption = 'Account Name';
                             Editable = false;
-                            ToolTip = 'Specifies the name of the customer or vendor that the project is related to.';
+                            ToolTip = 'Specifies the name of the customer or vendor that the Contrato is related to.';
                         }
                     }
                 }
@@ -523,7 +523,7 @@ page 50205 "Contrato Journal"
                     Caption = 'Dimensions';
                     Image = Dimensions;
                     ShortCutKey = 'Alt+D';
-                    ToolTip = 'View or edit dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.';
+                    ToolTip = 'View or edit dimensions, such as area, Contrato, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.';
 
                     trigger OnAction()
                     begin
@@ -547,11 +547,11 @@ page 50205 "Contrato Journal"
             }
             group("&Contrato")
             {
-                Caption = '&Project';
+                Caption = '&Contrato';
                 Image = Job;
                 action(Card)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Card';
                     Image = EditLines;
                     RunObject = Page "Contrato Card";
@@ -561,7 +561,7 @@ page 50205 "Contrato Journal"
                 }
                 action("Ledger E&ntries")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Ledger E&ntries';
                     Image = CustomerLedger;
                     RunObject = Page "Contrato Ledger Entries";
@@ -580,27 +580,27 @@ page 50205 "Contrato Journal"
                 Image = "Action";
                 action(CalcRemainingUsage)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Calc. Remaining Usage';
                     Ellipsis = true;
                     Image = CalculateRemainingUsage;
-                    ToolTip = 'Calculate the remaining usage for the project. The batch job calculates, for each project task, the difference between scheduled usage of items, resources, and expenses and actual usage posted in project ledger entries. The remaining usage is then displayed in the project journal from where you can post it.';
+                    ToolTip = 'Calculate the remaining usage for the Contrato. The batch Contrato calculates, for each Contrato task, the difference between scheduled usage of items, resources, and expenses and actual usage posted in Contrato ledger entries. The remaining usage is then displayed in the Contrato journal from where you can post it.';
 
                     trigger OnAction()
                     var
-                        JobCalcRemainingUsage: Report "Job Calc. Remaining Usage";
+                        ContratoCalcRemainingUsage: Report "Contrato Calc. Remaining Usage";
                     begin
                         Rec.TestField("Journal Template Name");
                         Rec.TestField("Journal Batch Name");
-                        Clear(JobCalcRemainingUsage);
-                        JobCalcRemainingUsage.SetBatch(Rec."Journal Template Name", Rec."Journal Batch Name");
-                        JobCalcRemainingUsage.SetDocNo(Rec."Document No.");
-                        JobCalcRemainingUsage.RunModal();
+                        Clear(ContratoCalcRemainingUsage);
+                        ContratoCalcRemainingUsage.SetBatch(Rec."Journal Template Name", Rec."Journal Batch Name");
+                        ContratoCalcRemainingUsage.SetDocNo(Rec."Document No.");
+                        ContratoCalcRemainingUsage.RunModal();
                     end;
                 }
                 action(SuggestLinesFromTimeSheets)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Suggest Lines from Time Sheets';
                     Ellipsis = true;
                     Image = SuggestLines;
@@ -608,10 +608,10 @@ page 50205 "Contrato Journal"
 
                     trigger OnAction()
                     var
-                        SuggestJobJnlLines: Report "Suggest Job Jnl. Lines";
+                        SuggestContratoJnlLines: Report "Suggest Contrato Jnl. Lines";
                     begin
-                        //SuggestJobJnlLines.SetJobJnlLine(Rec);
-                        SuggestJobJnlLines.RunModal();
+                        SuggestContratoJnlLines.SetContratoJnlLine(Rec);
+                        SuggestContratoJnlLines.RunModal();
                     end;
                 }
             }
@@ -621,21 +621,21 @@ page 50205 "Contrato Journal"
                 Image = Post;
                 action(Reconcile)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Reconcile';
                     Image = Reconcile;
                     ShortCutKey = 'Ctrl+F11';
-                    ToolTip = 'View what has been reconciled for the project. The window shows the quantity entered on the project journal lines, totaled by unit of measure and by work type.';
+                    ToolTip = 'View what has been reconciled for the Contrato. The window shows the quantity entered on the Contrato journal lines, totaled by unit of measure and by work type.';
 
                     trigger OnAction()
                     begin
-                        // JobJnlReconcile.SetJobJnlLine(Rec);
-                        JobJnlReconcile.Run();
+                        // ContratoJnlReconcile.SetContratoJnlLine(Rec);
+                        ContratoJnlReconcile.Run();
                     end;
                 }
                 action("Test Report")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Test Report';
                     Ellipsis = true;
                     Image = TestReport;
@@ -643,12 +643,12 @@ page 50205 "Contrato Journal"
 
                     trigger OnAction()
                     begin
-                        //ReportPrint.PrintJobJnlLine(Rec);
+                        //ReportPrint.PrintContratoJnlLine(Rec);
                     end;
                 }
                 action("P&ost")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'P&ost';
                     Image = PostOrder;
                     ShortCutKey = 'F9';
@@ -663,7 +663,7 @@ page 50205 "Contrato Journal"
                 }
                 action(PreviewPosting)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Preview Posting';
                     Image = ViewPostedOrder;
                     ShortCutKey = 'Ctrl+Alt+F9';
@@ -677,7 +677,7 @@ page 50205 "Contrato Journal"
                 }
                 action("Post and &Print")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Post and &Print';
                     Image = PostPrint;
                     ShortCutKey = 'Shift+F9';
@@ -784,7 +784,7 @@ page 50205 "Contrato Journal"
             }
             group(Category_Category7)
             {
-                Caption = 'Project', Comment = 'Generated from the PromotedActionCategories property index 6.';
+                Caption = 'Contrato', Comment = 'Generated from the PromotedActionCategories property index 6.';
 
             }
             group(Category_Category8)
@@ -821,7 +821,7 @@ page 50205 "Contrato Journal"
 
     trigger OnAfterGetCurrRecord()
     begin
-        JobJnlManagement.GetNames(Rec, JobDescription, AccName);
+        ContratoJnlManagement.GetNames(Rec, ContratoDescription, AccName);
         if not (ClientTypeManagement.GetCurrentClientType() in [CLIENTTYPE::SOAP, CLIENTTYPE::OData, CLIENTTYPE::ODataV4, CLIENTTYPE::Api]) then
             NumberOfRecords := Rec.Count();
     end;
@@ -833,12 +833,12 @@ page 50205 "Contrato Journal"
 
     trigger OnDeleteRecord(): Boolean
     var
-        ReserveJobJnlLine: Codeunit "Contrato Jnl. Line-Reserve";
+        ReserveContratoJnlLine: Codeunit "Contrato Jnl. Line-Reserve";
     begin
         Commit();
-        if not ReserveJobJnlLine.DeleteLineConfirm(Rec) then
+        if not ReserveContratoJnlLine.DeleteLineConfirm(Rec) then
             exit(false);
-        ReserveJobJnlLine.DeleteLine(Rec);
+        ReserveContratoJnlLine.DeleteLine(Rec);
     end;
 
     trigger OnNewRecord(BelowxRec: Boolean)
@@ -865,12 +865,12 @@ page 50205 "Contrato Journal"
     end;
 
     var
-        JobJnlManagement: Codeunit ContratoJnlManagement;
+        ContratoJnlManagement: Codeunit ContratoJnlManagement;
         ReportPrint: Codeunit "Test Report-Print";
         ClientTypeManagement: Codeunit "Client Type Management";
-        JobJournalErrorsMgt: Codeunit "Contrato Journal Errors Mgt.";
-        JobJnlReconcile: Page "Job Journal Reconcile";
-        JobDescription: Text[100];
+        ContratoJournalErrorsMgt: Codeunit "Contrato Journal Errors Mgt.";
+        ContratoJnlReconcile: Page "Job Journal Reconcile";
+        ContratoDescription: Text[100];
         AccName: Text[100];
         NumberOfRecords: Integer;
         CurrentJnlBatchName: Code[10];
@@ -893,7 +893,7 @@ page 50205 "Contrato Journal"
     local procedure CurrentJnlBatchNameOnAfterVali()
     begin
         CurrPage.SaveRecord();
-        JobJnlManagement.SetName(CurrentJnlBatchName, Rec);
+        ContratoJnlManagement.SetName(CurrentJnlBatchName, Rec);
         SetControlAppearanceFromBatch();
         CurrPage.Update(false);
     end;
@@ -904,20 +904,20 @@ page 50205 "Contrato Journal"
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeOpenJournal(Rec, JobJnlManagement, CurrentJnlBatchName, IsHandled);
+        OnBeforeOpenJournal(Rec, ContratoJnlManagement, CurrentJnlBatchName, IsHandled);
         if IsHandled then
             exit;
 
         if Rec.IsOpenedFromBatch() then begin
             CurrentJnlBatchName := Rec."Journal Batch Name";
-            JobJnlManagement.OpenJnl(CurrentJnlBatchName, Rec);
+            ContratoJnlManagement.OpenJnl(CurrentJnlBatchName, Rec);
             SetControlAppearanceFromBatch();
             exit;
         end;
-        JobJnlManagement.TemplateSelection(PAGE::"Contrato Journal", false, Rec, JnlSelected);
+        ContratoJnlManagement.TemplateSelection(PAGE::"Contrato Journal", false, Rec, JnlSelected);
         if not JnlSelected then
             Error('');
-        JobJnlManagement.OpenJnl(CurrentJnlBatchName, Rec);
+        ContratoJnlManagement.OpenJnl(CurrentJnlBatchName, Rec);
         SetControlAppearanceFromBatch();
     end;
 
@@ -942,37 +942,37 @@ page 50205 "Contrato Journal"
 
     local procedure SetControlAppearanceFromBatch()
     var
-        JobJournalBatch: Record "Contrato Journal Batch";
+        ContratoJournalBatch: Record "Contrato Journal Batch";
         BackgroundErrorHandlingMgt: Codeunit "Background Error Handling Mgt.";
     begin
-        if not JobJournalBatch.Get(Rec.GetRangeMax("Journal Template Name"), CurrentJnlBatchName) then
+        if not ContratoJournalBatch.Get(Rec.GetRangeMax("Journal Template Name"), CurrentJnlBatchName) then
             exit;
 
         BackgroundErrorCheck := BackgroundErrorHandlingMgt.BackgroundValidationFeatureEnabled();
         ShowAllLinesEnabled := true;
         Rec.SwitchLinesWithErrorsFilter(ShowAllLinesEnabled);
-        JobJournalErrorsMgt.SetFullBatchCheck(true);
+        ContratoJournalErrorsMgt.SetFullBatchCheck(true);
     end;
 
     local procedure ShowPreview()
     var
-        JobJnlPost: Codeunit "Contrato Jnl.-Post";
+        ContratoJnlPost: Codeunit "Contrato Jnl.-Post";
     begin
-        JobJnlPost.Preview(Rec);
+        ContratoJnlPost.Preview(Rec);
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterValidateShortcutDimCode(var JobJournalLine: Record "Contrato Journal Line"; var ShortcutDimCode: array[8] of Code[20]; DimIndex: Integer)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeOpenPage(var JobJournalLine: Record "Contrato Journal Line"; var CurrentJnlBatchName: Code[10])
+    local procedure OnAfterValidateShortcutDimCode(var ContratoJournalLine: Record "Contrato Journal Line"; var ShortcutDimCode: array[8] of Code[20]; DimIndex: Integer)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeOpenJournal(var JobJournalLine: Record "Contrato Journal Line"; var JobJnlManagement: Codeunit ContratoJnlManagement; CurrentJnlBatchName: Code[10]; var IsHandled: Boolean)
+    local procedure OnBeforeOpenPage(var ContratoJournalLine: Record "Contrato Journal Line"; var CurrentJnlBatchName: Code[10])
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeOpenJournal(var ContratoJournalLine: Record "Contrato Journal Line"; var ContratoJnlManagement: Codeunit ContratoJnlManagement; CurrentJnlBatchName: Code[10]; var IsHandled: Boolean)
     begin
     end;
 }

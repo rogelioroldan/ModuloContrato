@@ -568,12 +568,12 @@ table 50224 "Contrato Archive"
 
     trigger OnDelete()
     var
-        JobTaskArchive: Record "Contrato Task Archive";
+        ContratoTaskArchive: Record "Contrato Task Archive";
         CommentLineArchive: Record "Comment Line Archive";
     begin
-        JobTaskArchive.SetRange("Contrato No.", "No.");
-        JobTaskArchive.SetRange("Version No.", "Version No.");
-        JobTaskArchive.DeleteAll(true);
+        ContratoTaskArchive.SetRange("Contrato No.", "No.");
+        ContratoTaskArchive.SetRange("Version No.", "Version No.");
+        ContratoTaskArchive.DeleteAll(true);
 
         CommentLineArchive.SetRange("Table Name", CommentLineArchive."Table Name"::Contrato);
         CommentLineArchive.SetRange("No.", "No.");
@@ -639,7 +639,7 @@ table 50224 "Contrato Archive"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterShipToAddressEqualsSellToAddress(var JobArchive: Record "Contrato Archive"; var Result: Boolean)
+    local procedure OnAfterShipToAddressEqualsSellToAddress(var ContratoArchive: Record "Contrato Archive"; var Result: Boolean)
     begin
     end;
 }

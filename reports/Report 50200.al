@@ -1,6 +1,6 @@
 report 50200 "Contr Trans To Planning Lines"
 {
-    Caption = 'Job Transfer To Planning Lines';
+    Caption = 'Contrato Transfer To Planning Lines';
     ProcessingOnly = true;
 
     dataset
@@ -20,7 +20,7 @@ report 50200 "Contr Trans To Planning Lines"
                     Caption = 'Options';
                     field(TransferTo; LineType)
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Transfer To';
                         ToolTip = 'Specifies the type of planning lines that should be created.';
                     }
@@ -39,17 +39,17 @@ report 50200 "Contr Trans To Planning Lines"
 
     trigger OnPreReport()
     begin
-        JobCalcBatches.TransferToPlanningLine(JobLedgEntry, LineType.AsInteger() + 1);
+        ContratoCalcBatches.TransferToPlanningLine(ContratoLedgEntry, LineType.AsInteger() + 1);
     end;
 
     var
-        JobLedgEntry: Record "Contrato Ledger Entry";
-        JobCalcBatches: Codeunit "Contrato Calculate Batches";
+        ContratoLedgEntry: Record "Contrato Ledger Entry";
+        ContratoCalcBatches: Codeunit "Contrato Calculate Batches";
         LineType: Enum ContratoPlanningLineLineType;
 
-    procedure GetJobLedgEntry(var JobLedgEntry2: Record "Contrato Ledger Entry")
+    procedure GetContratoLedgEntry(var ContratoLedgEntry2: Record "Contrato Ledger Entry")
     begin
-        JobLedgEntry.Copy(JobLedgEntry2);
+        ContratoLedgEntry.Copy(ContratoLedgEntry2);
     end;
 }
 

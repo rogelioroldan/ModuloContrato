@@ -13,264 +13,264 @@ codeunit 50207 "Contrato Link Usage"
         Text001: Label 'The specified %1 does not have %2 enabled.', Comment = 'The specified Project Planning Line does not have Usage Link enabled.';
         ConfirmUsageWithBlankLineTypeQst: Label 'Usage will not be linked to the project planning line because the Line Type field is empty.\\Do you want to continue?';
 
-    internal procedure ApplyUsage(JobLedgerEntry: Record "Contrato Ledger Entry"; JobJournalLine: Record "Contrato Journal Line"; IsCalledFromInventoryPutawayPick: Boolean)
+    internal procedure ApplyUsage(ContratoLedgerEntry: Record "Contrato Ledger Entry"; ContratoJournalLine: Record "Contrato Journal Line"; IsCalledFromInventoryPutawayPick: Boolean)
     begin
         CalledFromInvtPutawayPick := IsCalledFromInventoryPutawayPick;
-        ApplyUsage(JobLedgerEntry, JobJournalLine);
+        ApplyUsage(ContratoLedgerEntry, ContratoJournalLine);
     end;
 
-    procedure ApplyUsage(JobLedgerEntry: Record "Contrato Ledger Entry"; JobJournalLine: Record "Contrato Journal Line")
+    procedure ApplyUsage(ContratoLedgerEntry: Record "Contrato Ledger Entry"; ContratoJournalLine: Record "Contrato Journal Line")
     begin
-        if JobJournalLine."Contrato Planning Line No." = 0 then
-            MatchUsageUnspecified(JobLedgerEntry, JobJournalLine."Line Type" = JobJournalLine."Line Type"::" ")
+        if ContratoJournalLine."Contrato Planning Line No." = 0 then
+            MatchUsageUnspecified(ContratoLedgerEntry, ContratoJournalLine."Line Type" = ContratoJournalLine."Line Type"::" ")
         else
-            MatchUsageSpecified(JobLedgerEntry, JobJournalLine);
+            MatchUsageSpecified(ContratoLedgerEntry, ContratoJournalLine);
 
-        OnAfterApplyUsage(JobLedgerEntry, JobJournalLine);
+        OnAfterApplyUsage(ContratoLedgerEntry, ContratoJournalLine);
     end;
 
-    local procedure MatchUsageUnspecified(JobLedgerEntry: Record "Contrato Ledger Entry"; EmptyLineType: Boolean)
+    local procedure MatchUsageUnspecified(ContratoLedgerEntry: Record "Contrato Ledger Entry"; EmptyLineType: Boolean)
     var
-        JobPlanningLine: Record "Contrato Planning Line";
-        JobUsageLink: Record "Contrato Usage Link";
+        ContratoPlanningLine: Record "Contrato Planning Line";
+        ContratoUsageLink: Record "Contrato Usage Link";
         Confirmed, IsHandled : Boolean;
         MatchedQty: Decimal;
         MatchedTotalCost: Decimal;
         MatchedLineAmount: Decimal;
         RemainingQtyToMatch, RemainingQtyToMatchPerUoM : Decimal;
     begin
-        RemainingQtyToMatch := JobLedgerEntry."Quantity (Base)";
+        RemainingQtyToMatch := ContratoLedgerEntry."Quantity (Base)";
         repeat
-            if not FindMatchingJobPlanningLine(JobPlanningLine, JobLedgerEntry) then
+            if not FindMatchingContratoPlanningLine(ContratoPlanningLine, ContratoLedgerEntry) then
                 if EmptyLineType then begin
-                    OnMatchUsageUnspecifiedOnBeforeConfirm(JobPlanningLine, JobLedgerEntry, Confirmed);
+                    OnMatchUsageUnspecifiedOnBeforeConfirm(ContratoPlanningLine, ContratoLedgerEntry, Confirmed);
                     if not Confirmed then
                         Confirmed := Confirm(ConfirmUsageWithBlankLineTypeQst, false);
                     if not Confirmed then
                         Error('');
                     RemainingQtyToMatch := 0;
                 end else
-                    CreateJobPlanningLine(JobPlanningLine, JobLedgerEntry, RemainingQtyToMatch);
+                    CreateContratoPlanningLine(ContratoPlanningLine, ContratoLedgerEntry, RemainingQtyToMatch);
 
             IsHandled := false;
-            OnMatchUsageUnspecifiedOnBeforeCheckPostedQty(JobPlanningLine, JobLedgerEntry, RemainingQtyToMatch, IsHandled);
+            OnMatchUsageUnspecifiedOnBeforeCheckPostedQty(ContratoPlanningLine, ContratoLedgerEntry, RemainingQtyToMatch, IsHandled);
             if not IsHandled then begin
-                RemainingQtyToMatchPerUoM := UOMMgt.CalcQtyFromBase(RemainingQtyToMatch, JobPlanningLine."Qty. per Unit of Measure");
-                if (RemainingQtyToMatchPerUoM = JobPlanningLine."Qty. Posted") and (JobPlanningLine."Remaining Qty. (Base)" = 0) then
+                RemainingQtyToMatchPerUoM := UOMMgt.CalcQtyFromBase(RemainingQtyToMatch, ContratoPlanningLine."Qty. per Unit of Measure");
+                if (RemainingQtyToMatchPerUoM = ContratoPlanningLine."Qty. Posted") and (ContratoPlanningLine."Remaining Qty. (Base)" = 0) then
                     exit;
             end;
 
             if RemainingQtyToMatch <> 0 then begin
-                JobUsageLink.Create(JobPlanningLine, JobLedgerEntry);
-                if Abs(RemainingQtyToMatch) > Abs(JobPlanningLine."Remaining Qty. (Base)") then
-                    MatchedQty := JobPlanningLine."Remaining Qty. (Base)"
+                ContratoUsageLink.Create(ContratoPlanningLine, ContratoLedgerEntry);
+                if Abs(RemainingQtyToMatch) > Abs(ContratoPlanningLine."Remaining Qty. (Base)") then
+                    MatchedQty := ContratoPlanningLine."Remaining Qty. (Base)"
                 else
                     MatchedQty := RemainingQtyToMatch;
-                OnMatchUsageUnspecifiedOnAfterCalcMatchedQty(JobLedgerEntry, MatchedQty);
-                MatchedTotalCost := (JobLedgerEntry."Total Cost" / JobLedgerEntry."Quantity (Base)") * MatchedQty;
-                MatchedLineAmount := (JobLedgerEntry."Line Amount" / JobLedgerEntry."Quantity (Base)") * MatchedQty;
+                OnMatchUsageUnspecifiedOnAfterCalcMatchedQty(ContratoLedgerEntry, MatchedQty);
+                MatchedTotalCost := (ContratoLedgerEntry."Total Cost" / ContratoLedgerEntry."Quantity (Base)") * MatchedQty;
+                MatchedLineAmount := (ContratoLedgerEntry."Line Amount" / ContratoLedgerEntry."Quantity (Base)") * MatchedQty;
 
-                OnBeforeJobPlanningLineUse(JobPlanningLine, JobLedgerEntry);
-                JobPlanningLine.Use(
+                OnBeforeContratoPlanningLineUse(ContratoPlanningLine, ContratoLedgerEntry);
+                ContratoPlanningLine.Use(
                     UOMMgt.CalcQtyFromBase(
-                        JobPlanningLine."No.", JobPlanningLine."Variant Code", JobPlanningLine."Unit of Measure Code",
-                        MatchedQty, JobPlanningLine."Qty. per Unit of Measure"),
-                    MatchedTotalCost, MatchedLineAmount, JobLedgerEntry."Posting Date", JobLedgerEntry."Currency Factor");
+                        ContratoPlanningLine."No.", ContratoPlanningLine."Variant Code", ContratoPlanningLine."Unit of Measure Code",
+                        MatchedQty, ContratoPlanningLine."Qty. per Unit of Measure"),
+                    MatchedTotalCost, MatchedLineAmount, ContratoLedgerEntry."Posting Date", ContratoLedgerEntry."Currency Factor");
                 RemainingQtyToMatch -= MatchedQty;
-                OnMatchUsageUnspecifiedOnAfterUpdateRemainingQtyToMatch(JobLedgerEntry, RemainingQtyToMatch);
+                OnMatchUsageUnspecifiedOnAfterUpdateRemainingQtyToMatch(ContratoLedgerEntry, RemainingQtyToMatch);
             end;
         until RemainingQtyToMatch = 0;
     end;
 
-    local procedure MatchUsageSpecified(JobLedgerEntry: Record "Contrato Ledger Entry"; JobJournalLine: Record "Contrato Journal Line")
+    local procedure MatchUsageSpecified(ContratoLedgerEntry: Record "Contrato Ledger Entry"; ContratoJournalLine: Record "Contrato Journal Line")
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeMatchUsageSpecified(JobPlanningLine, JobJournalLine, JobLedgerEntry, IsHandled);
+        OnBeforeMatchUsageSpecified(ContratoPlanningLine, ContratoJournalLine, ContratoLedgerEntry, IsHandled);
         if IsHandled then
             exit;
 
-        JobPlanningLine.Get(JobLedgerEntry."Contrato No.", JobLedgerEntry."Contrato Task No.", JobJournalLine."Contrato Planning Line No.");
-        if not JobPlanningLine."Usage Link" then
-            Error(Text001, JobPlanningLine.TableCaption(), JobPlanningLine.FieldCaption("Usage Link"));
+        ContratoPlanningLine.Get(ContratoLedgerEntry."Contrato No.", ContratoLedgerEntry."Contrato Task No.", ContratoJournalLine."Contrato Planning Line No.");
+        if not ContratoPlanningLine."Usage Link" then
+            Error(Text001, ContratoPlanningLine.TableCaption(), ContratoPlanningLine.FieldCaption("Usage Link"));
 
-        HandleMatchUsageSpecifiedJobPlanningLine(JobPlanningLine, JobJournalLine, JobLedgerEntry);
+        HandleMatchUsageSpecifiedContratoPlanningLine(ContratoPlanningLine, ContratoJournalLine, ContratoLedgerEntry);
 
-        OnAfterMatchUsageSpecified(JobPlanningLine, JobJournalLine, JobLedgerEntry);
+        OnAfterMatchUsageSpecified(ContratoPlanningLine, ContratoJournalLine, ContratoLedgerEntry);
     end;
 
-    procedure HandleMatchUsageSpecifiedJobPlanningLine(var JobPlanningLine: Record "Contrato Planning Line"; JobJournalLine: Record "Contrato Journal Line"; JobLedgerEntry: Record "Contrato Ledger Entry")
+    procedure HandleMatchUsageSpecifiedContratoPlanningLine(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoJournalLine: Record "Contrato Journal Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry")
     var
-        JobUsageLink: Record "Contrato Usage Link";
+        ContratoUsageLink: Record "Contrato Usage Link";
         PostedQtyBase: Decimal;
         TotalQtyBase: Decimal;
         TotalRemainingQtyPrePostBase: Decimal;
-        PartialJobPlanningLineQuantityPosting, UpdateQuantity : Boolean;
+        PartialContratoPlanningLineQuantityPosting, UpdateQuantity : Boolean;
     begin
-        if JobPlanningLine."Assemble to Order" then begin
-            PostedQtyBase := AssembledQtyBase(JobPlanningLine);
-            TotalRemainingQtyPrePostBase := JobPlanningLine."Qty. to Assemble (Base)" - AssembledQtyBase(JobPlanningLine);
+        if ContratoPlanningLine."Assemble to Order" then begin
+            PostedQtyBase := AssembledQtyBase(ContratoPlanningLine);
+            TotalRemainingQtyPrePostBase := ContratoPlanningLine."Qty. to Assemble (Base)" - AssembledQtyBase(ContratoPlanningLine);
         end else begin
-            PostedQtyBase := JobPlanningLine."Quantity (Base)" - JobPlanningLine."Remaining Qty. (Base)";
-            TotalRemainingQtyPrePostBase := JobJournalLine."Quantity (Base)" + JobJournalLine."Remaining Qty. (Base)";
+            PostedQtyBase := ContratoPlanningLine."Quantity (Base)" - ContratoPlanningLine."Remaining Qty. (Base)";
+            TotalRemainingQtyPrePostBase := ContratoJournalLine."Quantity (Base)" + ContratoJournalLine."Remaining Qty. (Base)";
         end;
         TotalQtyBase := PostedQtyBase + TotalRemainingQtyPrePostBase;
-        OnBeforeHandleMatchUsageSpecifiedJobPlanningLine(PostedQtyBase, TotalRemainingQtyPrePostBase, TotalQtyBase, JobPlanningLine, JobJournalLine);
-        JobPlanningLine.SetBypassQtyValidation(true);
+        OnBeforeHandleMatchUsageSpecifiedContratoPlanningLine(PostedQtyBase, TotalRemainingQtyPrePostBase, TotalQtyBase, ContratoPlanningLine, ContratoJournalLine);
+        ContratoPlanningLine.SetBypassQtyValidation(true);
 
-        if Abs(UOMMgt.CalcQtyFromBase(JobPlanningLine."No.", JobPlanningLine."Variant Code", JobPlanningLine."Unit of Measure Code", TotalQtyBase, JobPlanningLine."Qty. per Unit of Measure")) < Abs(JobPlanningLine.Quantity) then begin
-            PartialJobPlanningLineQuantityPosting := (JobLedgerEntry."Serial No." <> '') or (JobLedgerEntry."Lot No." <> '');
-            HandleMatchUsageSpecifiedJobPlanningLineOnAfterCalcPartialJobPlanningLineQuantityPosting(JobPlanningLine, JobJournalLine, JobLedgerEntry, PartialJobPlanningLineQuantityPosting);
+        if Abs(UOMMgt.CalcQtyFromBase(ContratoPlanningLine."No.", ContratoPlanningLine."Variant Code", ContratoPlanningLine."Unit of Measure Code", TotalQtyBase, ContratoPlanningLine."Qty. per Unit of Measure")) < Abs(ContratoPlanningLine.Quantity) then begin
+            PartialContratoPlanningLineQuantityPosting := (ContratoLedgerEntry."Serial No." <> '') or (ContratoLedgerEntry."Lot No." <> '');
+            HandleMatchUsageSpecifiedContratoPlanningLineOnAfterCalcPartialContratoPlanningLineQuantityPosting(ContratoPlanningLine, ContratoJournalLine, ContratoLedgerEntry, PartialContratoPlanningLineQuantityPosting);
         end;
         // CalledFromInvtPutawayPick - Skip this quantity validation for Inventory Pick posting as quantity cannot be updated with an active Warehouse Activity Line.
-        UpdateQuantity := not (CalledFromInvtPutawayPick or PartialJobPlanningLineQuantityPosting);
-        OnHandleMatchUsageSpecifiedJobPlanningLineOnBeforeUpdateQuantity(JobPlanningLine, JobJournalLine, UpdateQuantity);
+        UpdateQuantity := not (CalledFromInvtPutawayPick or PartialContratoPlanningLineQuantityPosting);
+        OnHandleMatchUsageSpecifiedContratoPlanningLineOnBeforeUpdateQuantity(ContratoPlanningLine, ContratoJournalLine, UpdateQuantity);
         if UpdateQuantity then
-            if (TotalQtyBase > JobPlanningLine.Quantity) or (JobPlanningLine.Quantity = 0) then
-                JobPlanningLine.Validate(Quantity,
+            if (TotalQtyBase > ContratoPlanningLine.Quantity) or (ContratoPlanningLine.Quantity = 0) then
+                ContratoPlanningLine.Validate(Quantity,
                     UOMMgt.CalcQtyFromBase(
-                        JobPlanningLine."No.", JobPlanningLine."Variant Code", JobPlanningLine."Unit of Measure Code",
-                        TotalQtyBase, JobPlanningLine."Qty. per Unit of Measure"));
+                        ContratoPlanningLine."No.", ContratoPlanningLine."Variant Code", ContratoPlanningLine."Unit of Measure Code",
+                        TotalQtyBase, ContratoPlanningLine."Qty. per Unit of Measure"));
 
-        JobPlanningLine.CopyTrackingFromJobLedgEntry(JobLedgerEntry);
-        OnHandleMatchUsageSpecifiedJobPlanningLineOnBeforeJobPlanningLineUse(JobPlanningLine, JobJournalLine, JobLedgerEntry);
-        JobPlanningLine.Use(
+        ContratoPlanningLine.CopyTrackingFromContratoLedgEntry(ContratoLedgerEntry);
+        OnHandleMatchUsageSpecifiedContratoPlanningLineOnBeforeContratoPlanningLineUse(ContratoPlanningLine, ContratoJournalLine, ContratoLedgerEntry);
+        ContratoPlanningLine.Use(
             UOMMgt.CalcQtyFromBase(
-                JobPlanningLine."No.", JobPlanningLine."Variant Code", JobPlanningLine."Unit of Measure Code",
-                JobLedgerEntry."Quantity (Base)", JobPlanningLine."Qty. per Unit of Measure"),
-            JobLedgerEntry."Total Cost", JobLedgerEntry."Line Amount", JobLedgerEntry."Posting Date", JobLedgerEntry."Currency Factor");
-        OnHandleMatchUsageSpecifiedJobPlanningLineOnAfterJobPlanningLineUse(JobPlanningLine, JobJournalLine, JobLedgerEntry);
-        JobUsageLink.Create(JobPlanningLine, JobLedgerEntry);
+                ContratoPlanningLine."No.", ContratoPlanningLine."Variant Code", ContratoPlanningLine."Unit of Measure Code",
+                ContratoLedgerEntry."Quantity (Base)", ContratoPlanningLine."Qty. per Unit of Measure"),
+            ContratoLedgerEntry."Total Cost", ContratoLedgerEntry."Line Amount", ContratoLedgerEntry."Posting Date", ContratoLedgerEntry."Currency Factor");
+        OnHandleMatchUsageSpecifiedContratoPlanningLineOnAfterContratoPlanningLineUse(ContratoPlanningLine, ContratoJournalLine, ContratoLedgerEntry);
+        ContratoUsageLink.Create(ContratoPlanningLine, ContratoLedgerEntry);
     end;
 
-    procedure FindMatchingJobPlanningLine(var JobPlanningLine: Record "Contrato Planning Line"; JobLedgerEntry: Record "Contrato Ledger Entry"): Boolean
+    procedure FindMatchingContratoPlanningLine(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry"): Boolean
     var
         Resource: Record Resource;
         "Filter": Text;
-        JobPlanningLineFound: Boolean;
+        ContratoPlanningLineFound: Boolean;
     begin
-        JobPlanningLine.Reset();
-        JobPlanningLine.SetCurrentKey("Contrato No.", "Schedule Line", Type, "No.", "Planning Date");
-        JobPlanningLine.SetRange("Contrato No.", JobLedgerEntry."Contrato No.");
-        JobPlanningLine.SetRange("Contrato Task No.", JobLedgerEntry."Contrato Task No.");
-        JobPlanningLine.SetRange(Type, JobLedgerEntry.Type);
-        JobPlanningLine.SetRange("No.", JobLedgerEntry."No.");
-        JobPlanningLine.SetRange("Location Code", JobLedgerEntry."Location Code");
-        JobPlanningLine.SetRange("Schedule Line", true);
-        JobPlanningLine.SetRange("Usage Link", true);
+        ContratoPlanningLine.Reset();
+        ContratoPlanningLine.SetCurrentKey("Contrato No.", "Schedule Line", Type, "No.", "Planning Date");
+        ContratoPlanningLine.SetRange("Contrato No.", ContratoLedgerEntry."Contrato No.");
+        ContratoPlanningLine.SetRange("Contrato Task No.", ContratoLedgerEntry."Contrato Task No.");
+        ContratoPlanningLine.SetRange(Type, ContratoLedgerEntry.Type);
+        ContratoPlanningLine.SetRange("No.", ContratoLedgerEntry."No.");
+        ContratoPlanningLine.SetRange("Location Code", ContratoLedgerEntry."Location Code");
+        ContratoPlanningLine.SetRange("Schedule Line", true);
+        ContratoPlanningLine.SetRange("Usage Link", true);
 
-        if JobLedgerEntry.Type = JobLedgerEntry.Type::Resource then begin
-            Filter := Resource.GetUnitOfMeasureFilter(JobLedgerEntry."No.", JobLedgerEntry."Unit of Measure Code");
-            JobPlanningLine.SetFilter("Unit of Measure Code", Filter);
+        if ContratoLedgerEntry.Type = ContratoLedgerEntry.Type::Resource then begin
+            Filter := Resource.GetUnitOfMeasureFilter(ContratoLedgerEntry."No.", ContratoLedgerEntry."Unit of Measure Code");
+            ContratoPlanningLine.SetFilter("Unit of Measure Code", Filter);
         end;
 
-        if (JobLedgerEntry."Line Type" = JobLedgerEntry."Line Type"::Billable) or
-           (JobLedgerEntry."Line Type" = JobLedgerEntry."Line Type"::"Both Budget and Billable")
+        if (ContratoLedgerEntry."Line Type" = ContratoLedgerEntry."Line Type"::Billable) or
+           (ContratoLedgerEntry."Line Type" = ContratoLedgerEntry."Line Type"::"Both Budget and Billable")
         then
-            JobPlanningLine.SetRange("Contract Line", true);
+            ContratoPlanningLine.SetRange("Contract Line", true);
 
-        if JobLedgerEntry.Quantity > 0 then
-            JobPlanningLine.SetFilter("Remaining Qty.", '>0')
+        if ContratoLedgerEntry.Quantity > 0 then
+            ContratoPlanningLine.SetFilter("Remaining Qty.", '>0')
         else
-            JobPlanningLine.SetFilter("Remaining Qty.", '<0');
+            ContratoPlanningLine.SetFilter("Remaining Qty.", '<0');
 
-        case JobLedgerEntry.Type of
-            JobLedgerEntry.Type::Item:
-                JobPlanningLine.SetRange("Variant Code", JobLedgerEntry."Variant Code");
-            JobLedgerEntry.Type::Resource:
-                JobPlanningLine.SetRange("Work Type Code", JobLedgerEntry."Work Type Code");
+        case ContratoLedgerEntry.Type of
+            ContratoLedgerEntry.Type::Item:
+                ContratoPlanningLine.SetRange("Variant Code", ContratoLedgerEntry."Variant Code");
+            ContratoLedgerEntry.Type::Resource:
+                ContratoPlanningLine.SetRange("Work Type Code", ContratoLedgerEntry."Work Type Code");
         end;
 
         // Match most specific Contrato Planning Line.
-        OnFindMatchingJobPlanningLineOnBeforeMatchSpecificJobPlanningLine(JobPlanningLine, JobLedgerEntry);
-        if JobPlanningLine.FindFirst() then
+        OnFindMatchingContratoPlanningLineOnBeforeMatchSpecificContratoPlanningLine(ContratoPlanningLine, ContratoLedgerEntry);
+        if ContratoPlanningLine.FindFirst() then
             exit(true);
 
-        JobPlanningLine.SetRange("Variant Code", '');
-        JobPlanningLine.SetRange("Work Type Code", '');
+        ContratoPlanningLine.SetRange("Variant Code", '');
+        ContratoPlanningLine.SetRange("Work Type Code", '');
 
         // Match Location Code, while Variant Code and Work Type Code are blank.
-        OnFindMatchingJobPlanningLineOnBeforeMatchJobPlanningLineLocation(JobPlanningLine, JobLedgerEntry);
-        if JobPlanningLine.FindFirst() then
+        OnFindMatchingContratoPlanningLineOnBeforeMatchContratoPlanningLineLocation(ContratoPlanningLine, ContratoLedgerEntry);
+        if ContratoPlanningLine.FindFirst() then
             exit(true);
 
-        JobPlanningLine.SetRange("Location Code", '');
+        ContratoPlanningLine.SetRange("Location Code", '');
 
-        case JobLedgerEntry.Type of
-            JobLedgerEntry.Type::Item:
-                JobPlanningLine.SetRange("Variant Code", JobLedgerEntry."Variant Code");
-            JobLedgerEntry.Type::Resource:
-                JobPlanningLine.SetRange("Work Type Code", JobLedgerEntry."Work Type Code");
+        case ContratoLedgerEntry.Type of
+            ContratoLedgerEntry.Type::Item:
+                ContratoPlanningLine.SetRange("Variant Code", ContratoLedgerEntry."Variant Code");
+            ContratoLedgerEntry.Type::Resource:
+                ContratoPlanningLine.SetRange("Work Type Code", ContratoLedgerEntry."Work Type Code");
         end;
 
         // Match Variant Code / Work Type Code, while Location Code is blank.
-        if JobPlanningLine.FindFirst() then
+        if ContratoPlanningLine.FindFirst() then
             exit(true);
 
-        JobPlanningLine.SetRange("Variant Code", '');
-        JobPlanningLine.SetRange("Work Type Code", '');
+        ContratoPlanningLine.SetRange("Variant Code", '');
+        ContratoPlanningLine.SetRange("Work Type Code", '');
 
         // Match unspecific Contrato Planning Line.
-        if JobPlanningLine.FindFirst() then
+        if ContratoPlanningLine.FindFirst() then
             exit(true);
 
-        JobPlanningLineFound := false;
-        OnAfterFindMatchingJobPlanningLine(JobPlanningLine, JobLedgerEntry, JobPlanningLineFound);
-        exit(JobPlanningLineFound);
+        ContratoPlanningLineFound := false;
+        OnAfterFindMatchingContratoPlanningLine(ContratoPlanningLine, ContratoLedgerEntry, ContratoPlanningLineFound);
+        exit(ContratoPlanningLineFound);
     end;
 
-    local procedure CreateJobPlanningLine(var JobPlanningLine: Record "Contrato Planning Line"; JobLedgerEntry: Record "Contrato Ledger Entry"; RemainingQtyToMatch: Decimal)
+    local procedure CreateContratoPlanningLine(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry"; RemainingQtyToMatch: Decimal)
     var
         Contrato: Record Contrato;
-        JobPostLine: Codeunit "Contrato Post-Line";
+        ContratoPostLine: Codeunit "Contrato Post-Line";
     begin
         RemainingQtyToMatch :=
             UOMMgt.CalcQtyFromBase(
-                JobLedgerEntry."No.", JobLedgerEntry."Variant Code", JobLedgerEntry."Unit of Measure Code",
-                RemainingQtyToMatch, JobLedgerEntry."Qty. per Unit of Measure");
+                ContratoLedgerEntry."No.", ContratoLedgerEntry."Variant Code", ContratoLedgerEntry."Unit of Measure Code",
+                RemainingQtyToMatch, ContratoLedgerEntry."Qty. per Unit of Measure");
 
-        case JobLedgerEntry."Line Type" of
-            JobLedgerEntry."Line Type"::" ":
-                JobLedgerEntry."Line Type" := JobLedgerEntry."Line Type"::Budget;
-            JobLedgerEntry."Line Type"::Billable:
-                JobLedgerEntry."Line Type" := JobLedgerEntry."Line Type"::"Both Budget and Billable";
+        case ContratoLedgerEntry."Line Type" of
+            ContratoLedgerEntry."Line Type"::" ":
+                ContratoLedgerEntry."Line Type" := ContratoLedgerEntry."Line Type"::Budget;
+            ContratoLedgerEntry."Line Type"::Billable:
+                ContratoLedgerEntry."Line Type" := ContratoLedgerEntry."Line Type"::"Both Budget and Billable";
         end;
-        JobPlanningLine.Reset();
-        JobPostLine.InsertPlLineFromLedgEntry(JobLedgerEntry);
+        ContratoPlanningLine.Reset();
+        ContratoPostLine.InsertPlLineFromLedgEntry(ContratoLedgerEntry);
         // Retrieve the newly created Contrato PlanningLine.
-        JobPlanningLine.SetRange("Contrato No.", JobLedgerEntry."Contrato No.");
-        JobPlanningLine.SetRange("Contrato Task No.", JobLedgerEntry."Contrato Task No.");
-        JobPlanningLine.SetRange("Schedule Line", true);
-        JobPlanningLine.FindLast();
-        JobPlanningLine.Validate("Usage Link", true);
-        JobPlanningLine.Validate(Quantity, RemainingQtyToMatch);
-        OnBeforeModifyJobPlanningLine(JobPlanningLine, JobLedgerEntry);
-        JobPlanningLine.Modify();
+        ContratoPlanningLine.SetRange("Contrato No.", ContratoLedgerEntry."Contrato No.");
+        ContratoPlanningLine.SetRange("Contrato Task No.", ContratoLedgerEntry."Contrato Task No.");
+        ContratoPlanningLine.SetRange("Schedule Line", true);
+        ContratoPlanningLine.FindLast();
+        ContratoPlanningLine.Validate("Usage Link", true);
+        ContratoPlanningLine.Validate(Quantity, RemainingQtyToMatch);
+        OnBeforeModifyContratoPlanningLine(ContratoPlanningLine, ContratoLedgerEntry);
+        ContratoPlanningLine.Modify();
 
         // If type is Both Budget And Billable and that type isn't allowed,
         // retrieve the Billabe line and modify the quantity as well.
         // Do the same if the type is G/L Account (Contrato Planning Lines will always be split in one Budget and one Billable line).
-        Contrato.Get(JobLedgerEntry."Contrato No.");
-        if (JobLedgerEntry."Line Type" = JobLedgerEntry."Line Type"::"Both Budget and Billable") and
-           ((not Contrato."Allow Schedule/Contract Lines") or (JobLedgerEntry.Type = JobLedgerEntry.Type::"G/L Account"))
+        Contrato.Get(ContratoLedgerEntry."Contrato No.");
+        if (ContratoLedgerEntry."Line Type" = ContratoLedgerEntry."Line Type"::"Both Budget and Billable") and
+           ((not Contrato."Allow Schedule/Contract Lines") or (ContratoLedgerEntry.Type = ContratoLedgerEntry.Type::"G/L Account"))
         then begin
-            JobPlanningLine.Get(JobLedgerEntry."Contrato No.", JobLedgerEntry."Contrato Task No.", JobPlanningLine."Line No." + 10000);
-            JobPlanningLine.Validate(Quantity, RemainingQtyToMatch);
-            JobPlanningLine.Modify();
-            JobPlanningLine.Get(JobLedgerEntry."Contrato No.", JobLedgerEntry."Contrato Task No.", JobPlanningLine."Line No." - 10000);
+            ContratoPlanningLine.Get(ContratoLedgerEntry."Contrato No.", ContratoLedgerEntry."Contrato Task No.", ContratoPlanningLine."Line No." + 10000);
+            ContratoPlanningLine.Validate(Quantity, RemainingQtyToMatch);
+            ContratoPlanningLine.Modify();
+            ContratoPlanningLine.Get(ContratoLedgerEntry."Contrato No.", ContratoLedgerEntry."Contrato Task No.", ContratoPlanningLine."Line No." - 10000);
         end;
     end;
 
-    local procedure AssembledQtyBase(var JobPlanningLine: Record "Contrato Planning Line") AssembledQty: Decimal
+    local procedure AssembledQtyBase(var ContratoPlanningLine: Record "Contrato Planning Line") AssembledQty: Decimal
     var
         PostedATOLink: Record "Posted Assemble-to-Order Link";
     begin
         PostedATOLink.SetCurrentKey("Job No.", "Job Task No.", "Document Line No.");
-        PostedATOLink.SetRange("Job No.", JobPlanningLine."Contrato No.");
-        PostedATOLink.SetRange("Job Task No.", JobPlanningLine."Contrato Task No.");
-        PostedATOLink.SetRange("Document Line No.", JobPlanningLine."Line No.");
+        PostedATOLink.SetRange("Job No.", ContratoPlanningLine."Contrato No.");
+        PostedATOLink.SetRange("Job Task No.", ContratoPlanningLine."Contrato Task No.");
+        PostedATOLink.SetRange("Document Line No.", ContratoPlanningLine."Line No.");
         if PostedATOLink.FindSet() then
             repeat
                 AssembledQty += PostedATOLink."Assembled Quantity (Base)";
@@ -278,87 +278,87 @@ codeunit 50207 "Contrato Link Usage"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFindMatchingJobPlanningLine(var JobPlanningLine: Record "Contrato Planning Line"; JobLedgerEntry: Record "Contrato Ledger Entry"; var JobPlanningLineFound: Boolean)
+    local procedure OnAfterFindMatchingContratoPlanningLine(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry"; var ContratoPlanningLineFound: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterMatchUsageSpecified(var JobPlanningLine: Record "Contrato Planning Line"; var JobJournalLine: Record "Contrato Journal Line"; var JobLedgerEntry: Record "Contrato Ledger Entry");
+    local procedure OnAfterMatchUsageSpecified(var ContratoPlanningLine: Record "Contrato Planning Line"; var ContratoJournalLine: Record "Contrato Journal Line"; var ContratoLedgerEntry: Record "Contrato Ledger Entry");
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeModifyJobPlanningLine(var JobPlanningLine: Record "Contrato Planning Line"; JobLedgerEntry: Record "Contrato Ledger Entry")
+    local procedure OnBeforeModifyContratoPlanningLine(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeJobPlanningLineUse(var JobPlanningLine: Record "Contrato Planning Line"; JobLedgerEntry: Record "Contrato Ledger Entry")
+    local procedure OnBeforeContratoPlanningLineUse(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeMatchUsageSpecified(var JobPlanningLine: Record "Contrato Planning Line"; var JobJournalLine: Record "Contrato Journal Line"; var JobLedgerEntry: Record "Contrato Ledger Entry"; var IsHandled: Boolean);
+    local procedure OnBeforeMatchUsageSpecified(var ContratoPlanningLine: Record "Contrato Planning Line"; var ContratoJournalLine: Record "Contrato Journal Line"; var ContratoLedgerEntry: Record "Contrato Ledger Entry"; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnHandleMatchUsageSpecifiedJobPlanningLineOnAfterJobPlanningLineUse(var JobPlanningLine: Record "Contrato Planning Line"; JobJournalLine: Record "Contrato Journal Line"; JobLedgerEntry: Record "Contrato Ledger Entry");
+    local procedure OnHandleMatchUsageSpecifiedContratoPlanningLineOnAfterContratoPlanningLineUse(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoJournalLine: Record "Contrato Journal Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry");
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnHandleMatchUsageSpecifiedJobPlanningLineOnBeforeJobPlanningLineUse(var JobPlanningLine: Record "Contrato Planning Line"; JobJournalLine: Record "Contrato Journal Line"; JobLedgerEntry: Record "Contrato Ledger Entry");
+    local procedure OnHandleMatchUsageSpecifiedContratoPlanningLineOnBeforeContratoPlanningLineUse(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoJournalLine: Record "Contrato Journal Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry");
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnMatchUsageUnspecifiedOnBeforeConfirm(JobPlanningLine: Record "Contrato Planning Line"; JobLedgerEntry: Record "Contrato Ledger Entry"; var Confirmed: Boolean)
+    local procedure OnMatchUsageUnspecifiedOnBeforeConfirm(ContratoPlanningLine: Record "Contrato Planning Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry"; var Confirmed: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnMatchUsageUnspecifiedOnAfterCalcMatchedQty(var JobLedgerEntry: Record "Contrato Ledger Entry"; var MatchedQty: Decimal)
+    local procedure OnMatchUsageUnspecifiedOnAfterCalcMatchedQty(var ContratoLedgerEntry: Record "Contrato Ledger Entry"; var MatchedQty: Decimal)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnMatchUsageUnspecifiedOnAfterUpdateRemainingQtyToMatch(var JobLedgerEntry: Record "Contrato Ledger Entry"; var RemainingQtyToMatch: Decimal)
+    local procedure OnMatchUsageUnspecifiedOnAfterUpdateRemainingQtyToMatch(var ContratoLedgerEntry: Record "Contrato Ledger Entry"; var RemainingQtyToMatch: Decimal)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnFindMatchingJobPlanningLineOnBeforeMatchSpecificJobPlanningLine(var JobPlanningLine: Record "Contrato Planning Line"; JobLedgerEntry: Record "Contrato Ledger Entry")
+    local procedure OnFindMatchingContratoPlanningLineOnBeforeMatchSpecificContratoPlanningLine(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnFindMatchingJobPlanningLineOnBeforeMatchJobPlanningLineLocation(var JobPlanningLine: Record "Contrato Planning Line"; JobLedgerEntry: Record "Contrato Ledger Entry")
+    local procedure OnFindMatchingContratoPlanningLineOnBeforeMatchContratoPlanningLineLocation(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure HandleMatchUsageSpecifiedJobPlanningLineOnAfterCalcPartialJobPlanningLineQuantityPosting(JobPlanningLine: Record "Contrato Planning Line"; JobJournalLine: Record "Contrato Journal Line"; JobLedgerEntry: Record "Contrato Ledger Entry"; var PartialJobPlanningLineQuantityPosting: Boolean)
+    local procedure HandleMatchUsageSpecifiedContratoPlanningLineOnAfterCalcPartialContratoPlanningLineQuantityPosting(ContratoPlanningLine: Record "Contrato Planning Line"; ContratoJournalLine: Record "Contrato Journal Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry"; var PartialContratoPlanningLineQuantityPosting: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeHandleMatchUsageSpecifiedJobPlanningLine(var PostedQtyBase: Decimal; var TotalQtyBase: Decimal; var TotalRemainingQtyPrePostBase: Decimal; JobPlanningLine: Record "Contrato Planning Line"; JobJournalLine: Record "Contrato Journal Line")
+    local procedure OnBeforeHandleMatchUsageSpecifiedContratoPlanningLine(var PostedQtyBase: Decimal; var TotalQtyBase: Decimal; var TotalRemainingQtyPrePostBase: Decimal; ContratoPlanningLine: Record "Contrato Planning Line"; ContratoJournalLine: Record "Contrato Journal Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnHandleMatchUsageSpecifiedJobPlanningLineOnBeforeUpdateQuantity(var JobPlanningLine: Record "Contrato Planning Line"; JobJournalLine: Record "Contrato Journal Line"; var UpdateQuantity: Boolean)
+    local procedure OnHandleMatchUsageSpecifiedContratoPlanningLineOnBeforeUpdateQuantity(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoJournalLine: Record "Contrato Journal Line"; var UpdateQuantity: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnMatchUsageUnspecifiedOnBeforeCheckPostedQty(JobPlanningLine: Record "Contrato Planning Line"; JobLedgerEntry: Record "Contrato Ledger Entry"; RemainingQtyToMatch: Decimal; var IsHandled: Boolean)
+    local procedure OnMatchUsageUnspecifiedOnBeforeCheckPostedQty(ContratoPlanningLine: Record "Contrato Planning Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry"; RemainingQtyToMatch: Decimal; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterApplyUsage(var JobLedgerEntry: Record "Contrato Ledger Entry"; var JobJournalLine: Record "Contrato Journal Line")
+    local procedure OnAfterApplyUsage(var ContratoLedgerEntry: Record "Contrato Ledger Entry"; var ContratoJournalLine: Record "Contrato Journal Line")
     begin
     end;
 }

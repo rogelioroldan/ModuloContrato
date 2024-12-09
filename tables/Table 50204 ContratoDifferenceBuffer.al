@@ -1,6 +1,6 @@
 table 50204 "Contrato Difference Buffer"
 {
-    Caption = 'Job Difference Buffer';
+    Caption = 'Contrato Difference Buffer';
     ReplicateData = false;
     DataClassification = CustomerContent;
 
@@ -11,12 +11,12 @@ table 50204 "Contrato Difference Buffer"
             Caption = 'Contrato No.';
             DataClassification = SystemMetadata;
         }
-        field(2; "Job Task No."; Code[20])
+        field(2; "Contrato Task No."; Code[20])
         {
             Caption = 'Contrato Task No.';
             DataClassification = SystemMetadata;
         }
-        field(3; Type; Enum "Job Journal Line Type")
+        field(3; Type; Enum "Contrato Journal Line Type")
         {
             Caption = 'Type';
             DataClassification = SystemMetadata;
@@ -92,7 +92,7 @@ table 50204 "Contrato Difference Buffer"
 
     keys
     {
-        key(Key1; "Contrato No.", "Job Task No.", Type, "Entry type", "No.", "Location Code", "Variant Code", "Unit of Measure code", "Work Type Code")
+        key(Key1; "Contrato No.", "Contrato Task No.", Type, "Entry type", "No.", "Location Code", "Variant Code", "Unit of Measure code", "Work Type Code")
         {
             Clustered = true;
         }

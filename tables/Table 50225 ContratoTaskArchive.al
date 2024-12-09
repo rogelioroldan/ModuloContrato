@@ -528,12 +528,12 @@ table 50225 "Contrato Task Archive"
 
     trigger OnDelete()
     var
-        JobPlanningLineArchive: Record "Contrato Planning Line Archive";
+        ContratoPlanningLineArchive: Record "Contrato Planning Line Archive";
     begin
-        JobPlanningLineArchive.SetRange("Contrato No.", "Contrato No.");
-        JobPlanningLineArchive.SetRange("Contrato Task No.", "Contrato Task No.");
-        JobPlanningLineArchive.SetRange("Version No.", "Version No.");
-        JobPlanningLineArchive.DeleteAll(true);
+        ContratoPlanningLineArchive.SetRange("Contrato No.", "Contrato No.");
+        ContratoPlanningLineArchive.SetRange("Contrato Task No.", "Contrato Task No.");
+        ContratoPlanningLineArchive.SetRange("Version No.", "Version No.");
+        ContratoPlanningLineArchive.DeleteAll(true);
     end;
 }
 

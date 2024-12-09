@@ -94,14 +94,14 @@ table 50211 "Contrato Planning Line Invoice"
     {
     }
 
-    procedure InitFromJobPlanningLine(JobPlanningLine: Record "Contrato Planning Line")
+    procedure InitFromContratoPlanningLine(ContratoPlanningLine: Record "Contrato Planning Line")
     begin
-        "Contrato No." := JobPlanningLine."Contrato No.";
-        "Contrato Task No." := JobPlanningLine."Contrato Task No.";
-        "Contrato Planning Line No." := JobPlanningLine."Line No.";
-        "Quantity Transferred" := JobPlanningLine."Qty. to Transfer to Invoice";
+        "Contrato No." := ContratoPlanningLine."Contrato No.";
+        "Contrato Task No." := ContratoPlanningLine."Contrato Task No.";
+        "Contrato Planning Line No." := ContratoPlanningLine."Line No.";
+        "Quantity Transferred" := ContratoPlanningLine."Qty. to Transfer to Invoice";
 
-        OnAfterInitFromJobPlanningLine(Rec, JobPlanningLine);
+        OnAfterInitFromContratoPlanningLine(Rec, ContratoPlanningLine);
     end;
 
     procedure InitFromSales(SalesHeader: Record "Sales Header"; PostingDate: Date; LineNo: Integer)
@@ -116,7 +116,7 @@ table 50211 "Contrato Planning Line Invoice"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterInitFromJobPlanningLine(var JobPlanningLineInvoice: Record "Contrato Planning Line Invoice"; JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterInitFromContratoPlanningLine(var ContratoPlanningLineInvoice: Record "Contrato Planning Line Invoice"; ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 }

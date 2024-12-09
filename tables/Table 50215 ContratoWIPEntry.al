@@ -179,7 +179,7 @@ table 50215 "Contrato WIP Entry"
     var
         DimMgt: Codeunit DimensionManagement;
 
-    procedure DeleteEntriesForJob(Contrato: Record Contrato)
+    procedure DeleteEntriesForContrato(Contrato: Record Contrato)
     begin
         SetCurrentKey("Contrato No.");
         SetRange("Contrato No.", Contrato."No.");

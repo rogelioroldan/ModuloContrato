@@ -20,7 +20,7 @@ page 50216 "Contratos Setup"
                 field("AutomaticUpdateContraItemCost"; Rec."AutomaticUpdateContraItemCost")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies in the Projects Setup window that cost changes are automatically adjusted each time the Adjust Cost - Item Entries batch job is run. The adjustment process and its results are the same as when you run the Update Project Item Cost batch job.';
+                    ToolTip = 'Specifies in the Projects Setup window that cost changes are automatically adjusted each time the Adjust Cost - Item Entries batch Contrato is run. The adjustment process and its results are the same as when you run the Update Project Item Cost batch Contrato.';
                 }
                 field("Apply Usage Link by Default"; Rec."Apply Usage Link by Default")
                 {
@@ -104,7 +104,7 @@ page 50216 "Contratos Setup"
             {
                 Caption = 'Archiving';
 
-                field("Archive Orders"; Rec."Archive Jobs")
+                field("Archive Orders"; Rec."Archive Contratos")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies if you want to automatically archive projects.';

@@ -88,10 +88,10 @@ page 50202 "Contrato Invoices"
 
                     trigger OnAction()
                     var
-                        JobCreateInvoice: Codeunit "Contrato Create-Invoice";
+                        ContratoCreateInvoice: Codeunit "Contrato Create-Invoice";
                     begin
-                        JobCreateInvoice.OpenSalesInvoice(Rec);
-                        JobCreateInvoice.FindInvoices(Rec, JobNo, JobTaskNo, JobPlanningLineNo, DetailLevel);
+                        ContratoCreateInvoice.OpenSalesInvoice(Rec);
+                        ContratoCreateInvoice.FindInvoices(Rec, ContratoNo, ContratoTaskNo, ContratoPlanningLineNo, DetailLevel);
                         if Rec.Get(Rec."Contrato No.", Rec."Contrato Task No.", Rec."Contrato Planning Line No.", Rec."Document Type", Rec."Document No.", Rec."Line No.") then;
                     end;
                 }
@@ -117,37 +117,37 @@ page 50202 "Contrato Invoices"
 
     trigger OnOpenPage()
     var
-        JobCreateInvoice: Codeunit "Contrato Create-Invoice";
+        ContratoCreateInvoice: Codeunit "Contrato Create-Invoice";
     begin
-        JobCreateInvoice.FindInvoices(Rec, JobNo, JobTaskNo, JobPlanningLineNo, DetailLevel);
+        ContratoCreateInvoice.FindInvoices(Rec, ContratoNo, ContratoTaskNo, ContratoPlanningLineNo, DetailLevel);
     end;
 
     var
-        JobNo: Code[20];
-        JobTaskNo: Code[20];
-        JobPlanningLineNo: Integer;
+        ContratoNo: Code[20];
+        ContratoTaskNo: Code[20];
+        ContratoPlanningLineNo: Integer;
         DetailLevel: Option All,"Per Contrato","Per Contrato Task","Per Contrato Planning Line";
         ShowDetails: Boolean;
 
-    procedure SetPrJob(Contrato: Record Contrato)
+    procedure SetPrContrato(Contrato: Record Contrato)
     begin
         DetailLevel := DetailLevel::"Per Contrato";
-        JobNo := Contrato."No.";
+        ContratoNo := Contrato."No.";
     end;
 
-    procedure SetPrJobTask(JobTask: Record "Contrato Task")
+    procedure SetPrContratoTask(ContratoTask: Record "Contrato Task")
     begin
         DetailLevel := DetailLevel::"Per Contrato Task";
-        JobNo := JobTask."Contrato No.";
-        JobTaskNo := JobTask."Contrato Task No.";
+        ContratoNo := ContratoTask."Contrato No.";
+        ContratoTaskNo := ContratoTask."Contrato Task No.";
     end;
 
-    procedure SetPrJobPlanningLine(JobPlanningLine: Record "Contrato Planning Line")
+    procedure SetPrContratoPlanningLine(ContratoPlanningLine: Record "Contrato Planning Line")
     begin
         DetailLevel := DetailLevel::"Per Contrato Planning Line";
-        JobNo := JobPlanningLine."Contrato No.";
-        JobTaskNo := JobPlanningLine."Contrato Task No.";
-        JobPlanningLineNo := JobPlanningLine."Line No.";
+        ContratoNo := ContratoPlanningLine."Contrato No.";
+        ContratoTaskNo := ContratoPlanningLine."Contrato Task No.";
+        ContratoPlanningLineNo := ContratoPlanningLine."Line No.";
     end;
 
     procedure SetShowDetails(NewShowDetails: Boolean)

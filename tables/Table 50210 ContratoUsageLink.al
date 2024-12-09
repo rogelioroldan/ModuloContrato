@@ -47,15 +47,15 @@ table 50210 "Contrato Usage Link"
     {
     }
 
-    procedure Create(JobPlanningLine: Record "Contrato Planning Line"; JobLedgerEntry: Record "Contrato Ledger Entry")
+    procedure Create(ContratoPlanningLine: Record "Contrato Planning Line"; ContratoLedgerEntry: Record "Contrato Ledger Entry")
     begin
-        if Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.", JobPlanningLine."Line No.", JobLedgerEntry."Entry No.") then
+        if Get(ContratoPlanningLine."Contrato No.", ContratoPlanningLine."Contrato Task No.", ContratoPlanningLine."Line No.", ContratoLedgerEntry."Entry No.") then
             exit;
 
-        Validate("Contrato No.", JobPlanningLine."Contrato No.");
-        Validate("Contrato Task No.", JobPlanningLine."Contrato Task No.");
-        Validate("Line No.", JobPlanningLine."Line No.");
-        Validate("Entry No.", JobLedgerEntry."Entry No.");
+        Validate("Contrato No.", ContratoPlanningLine."Contrato No.");
+        Validate("Contrato Task No.", ContratoPlanningLine."Contrato Task No.");
+        Validate("Line No.", ContratoPlanningLine."Line No.");
+        Validate("Entry No.", ContratoLedgerEntry."Entry No.");
         Insert(true);
     end;
 }

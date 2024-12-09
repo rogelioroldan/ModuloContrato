@@ -152,16 +152,16 @@ table 50221 "Contrato WIP Total"
 
     trigger OnDelete()
     var
-        JobWIPWarning: Record "Contrato WIP Warning";
+        ContratoWIPWarning: Record "Contrato WIP Warning";
     begin
-        JobWIPWarning.DeleteEntries(Rec);
+        ContratoWIPWarning.DeleteEntries(Rec);
     end;
 
-    procedure DeleteEntriesForJobTask(JobTask: Record "Contrato Task")
+    procedure DeleteEntriesForContratoTask(ContratoTask: Record "Contrato Task")
     begin
         SetCurrentKey("Contrato No.", "Contrato Task No.");
-        SetRange("Contrato No.", JobTask."Contrato No.");
-        SetRange("Contrato Task No.", JobTask."Contrato Task No.");
+        SetRange("Contrato No.", ContratoTask."Contrato No.");
+        SetRange("Contrato Task No.", ContratoTask."Contrato Task No.");
         SetRange("Posted to G/L", false);
         if not IsEmpty() then
             DeleteAll(true);

@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="TodayFormatted">
+          <DataField>TodayFormatted</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="ContratotableCaptContratoFilter">
+          <DataField>ContratotableCaptContratoFilter</DataField>
+        </Field>
+        <Field Name="ContratoFilter">
+          <DataField>ContratoFilter</DataField>
+        </Field>
+        <Field Name="ContratoTasktableCaptFilter">
+          <DataField>ContratoTasktableCaptFilter</DataField>
+        </Field>
+        <Field Name="ContratoTaskFilter">
+          <DataField>ContratoTaskFilter</DataField>
+        </Field>
+        <Field Name="No_Contrato">
+          <DataField>No_Contrato</DataField>
+        </Field>
+        <Field Name="CurrReportPageNoCaption">
+          <DataField>CurrReportPageNoCaption</DataField>
+        </Field>
+        <Field Name="ContratoAnalysisCapt">
+          <DataField>ContratoAnalysisCapt</DataField>
+        </Field>
+        <Field Name="HeadLineText8">
+          <DataField>HeadLineText8</DataField>
+        </Field>
+        <Field Name="HeadLineText7">
+          <DataField>HeadLineText7</DataField>
+        </Field>
+        <Field Name="HeadLineText6">
+          <DataField>HeadLineText6</DataField>
+        </Field>
+        <Field Name="HeadLineText5">
+          <DataField>HeadLineText5</DataField>
+        </Field>
+        <Field Name="HeadLineText4">
+          <DataField>HeadLineText4</DataField>
+        </Field>
+        <Field Name="HeadLineText3">
+          <DataField>HeadLineText3</DataField>
+        </Field>
+        <Field Name="HeadLineText2">
+          <DataField>HeadLineText2</DataField>
+        </Field>
+        <Field Name="HeadLineText1">
+          <DataField>HeadLineText1</DataField>
+        </Field>
+        <Field Name="Description_Contrato">
+          <DataField>Description_Contrato</DataField>
+        </Field>
+        <Field Name="DescriptionCaption">
+          <DataField>DescriptionCaption</DataField>
+        </Field>
+        <Field Name="ContratoTaskNoCapt">
+          <DataField>ContratoTaskNoCapt</DataField>
+        </Field>
+        <Field Name="ContratoTaskNo_ContratoTask">
+          <DataField>ContratoTaskNo_ContratoTask</DataField>
+        </Field>
+        <Field Name="Indentation_ContratoTask">
+          <DataField>Indentation_ContratoTask</DataField>
+        </Field>
+        <Field Name="ShowIntBody1">
+          <DataField>ShowIntBody1</DataField>
+        </Field>
+        <Field Name="Amt1">
+          <DataField>Amt1</DataField>
+        </Field>
+        <Field Name="Amt1Format">
+          <DataField>Amt1Format</DataField>
+        </Field>
+        <Field Name="Amt2">
+          <DataField>Amt2</DataField>
+        </Field>
+        <Field Name="Amt2Format">
+          <DataField>Amt2Format</DataField>
+        </Field>
+        <Field Name="Amt3">
+          <DataField>Amt3</DataField>
+        </Field>
+        <Field Name="Amt3Format">
+          <DataField>Amt3Format</DataField>
+        </Field>
+        <Field Name="Amt4">
+          <DataField>Amt4</DataField>
+        </Field>
+        <Field Name="Amt4Format">
+          <DataField>Amt4Format</DataField>
+        </Field>
+        <Field Name="Amt5">
+          <DataField>Amt5</DataField>
+        </Field>
+        <Field Name="Amt5Format">
+          <DataField>Amt5Format</DataField>
+        </Field>
+        <Field Name="Amt6">
+          <DataField>Amt6</DataField>
+        </Field>
+        <Field Name="Amt6Format">
+          <DataField>Amt6Format</DataField>
+        </Field>
+        <Field Name="Amt7">
+          <DataField>Amt7</DataField>
+        </Field>
+        <Field Name="Amt7Format">
+          <DataField>Amt7Format</DataField>
+        </Field>
+        <Field Name="Amt8">
+          <DataField>Amt8</DataField>
+        </Field>
+        <Field Name="Amt8Format">
+          <DataField>Amt8Format</DataField>
+        </Field>
+        <Field Name="ShowIntBody2">
+          <DataField>ShowIntBody2</DataField>
+        </Field>
+        <Field Name="ShowIntBody3">
+          <DataField>ShowIntBody3</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

@@ -16,27 +16,27 @@ page 50211 "Contrato Journal Batches"
                 ShowCaption = false;
                 field(Name; Rec.Name)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the name of this project journal. You can enter a maximum of 10 characters, both numbers and letters.';
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies a description of this journal.';
                 }
                 field("No. Series"; Rec."No. Series")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the number series from which entry or record numbers are assigned to new entries or records.';
                 }
                 field("Posting No. Series"; Rec."Posting No. Series")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the code for the number series that will be used to assign document numbers to ledger entries that are posted from this journal batch. To see the number series that have been set up in the No. Series table, choose the field.';
                 }
                 field("Reason Code"; Rec."Reason Code")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the reason code, a supplementary source code that enables you to trace the entry.';
                     Visible = true;
                 }
@@ -63,7 +63,7 @@ page 50211 "Contrato Journal Batches"
         {
             action("Edit Journal")
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Edit Journal';
                 Image = OpenJournal;
                 ShortCutKey = 'Return';
@@ -71,7 +71,7 @@ page 50211 "Contrato Journal Batches"
 
                 trigger OnAction()
                 begin
-                    JobJnlMgt.TemplateSelectionFromBatch(Rec);
+                    ContratoJnlMgt.TemplateSelectionFromBatch(Rec);
                 end;
             }
             group("P&osting")
@@ -80,19 +80,19 @@ page 50211 "Contrato Journal Batches"
                 Image = Post;
                 action("Test Report")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Test Report';
                     Image = TestReport;
                     ToolTip = 'View a test report so that you can find and correct any errors before you perform the actual posting of the journal or document.';
 
                     trigger OnAction()
                     begin
-                        //ReportPrint.PrintJobJnlBatch(Rec);
+                        //ReportPrint.PrintContratoJnlBatch(Rec);
                     end;
                 }
                 action("P&ost")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'P&ost';
                     Image = PostOrder;
                     RunObject = Codeunit "Contrato Jnl.-B.Post";
@@ -101,7 +101,7 @@ page 50211 "Contrato Journal Batches"
                 }
                 action("Post and &Print")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Post and &Print';
                     Image = PostPrint;
                     RunObject = Codeunit "Contrato Jnl.-B.Post+Print";
@@ -147,22 +147,22 @@ page 50211 "Contrato Journal Batches"
 
     trigger OnOpenPage()
     begin
-        JobJnlMgt.OpenJnlBatch(Rec);
+        ContratoJnlMgt.OpenJnlBatch(Rec);
     end;
 
     var
         ReportPrint: Codeunit "Test Report-Print";
-        JobJnlMgt: Codeunit ContratoJnlManagement;
+        ContratoJnlMgt: Codeunit ContratoJnlManagement;
 
     local procedure DataCaption(): Text[250]
     var
-        JobJnlTemplate: Record "Contrato Journal Template";
+        ContratoJnlTemplate: Record "Contrato Journal Template";
     begin
         if not CurrPage.LookupMode then
             if Rec.GetFilter("Journal Template Name") <> '' then
                 if Rec.GetRangeMin("Journal Template Name") = Rec.GetRangeMax("Journal Template Name") then
-                    if JobJnlTemplate.Get(Rec.GetRangeMin("Journal Template Name")) then
-                        exit(JobJnlTemplate.Name + ' ' + JobJnlTemplate.Description);
+                    if ContratoJnlTemplate.Get(Rec.GetRangeMin("Journal Template Name")) then
+                        exit(ContratoJnlTemplate.Name + ' ' + ContratoJnlTemplate.Description);
     end;
 }
 

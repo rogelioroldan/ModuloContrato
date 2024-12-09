@@ -20,7 +20,7 @@ codeunit 50219 "Contrato Planning Line-Reserve"
         InvalidLineTypeErr: Label 'must be %1 or %2', Comment = '%1 and %2 are line type options, fx. Budget or Billable';
         SummaryTypeTxt: Label '%1, %2', Locked = true;
 
-    procedure CreateReservation(JobPlanningLine: Record "Contrato Planning Line"; Description: Text[100]; ExpectedReceiptDate: Date; Quantity: Decimal; QuantityBase: Decimal; ForReservEntry: Record "Reservation Entry")
+    procedure CreateReservation(ContratoPlanningLine: Record "Contrato Planning Line"; Description: Text[100]; ExpectedReceiptDate: Date; Quantity: Decimal; QuantityBase: Decimal; ForReservEntry: Record "Reservation Entry")
     var
         PlanningDate: Date;
         SignFactor: Integer;
@@ -28,42 +28,42 @@ codeunit 50219 "Contrato Planning Line-Reserve"
         if FromTrackingSpecification."Source Type" = 0 then
             Error(Text005Err);
 
-        JobPlanningLine.TestField(Type, JobPlanningLine.Type::Item);
-        JobPlanningLine.TestField("No.");
-        JobPlanningLine.TestField("Planning Date");
+        ContratoPlanningLine.TestField(Type, ContratoPlanningLine.Type::Item);
+        ContratoPlanningLine.TestField("No.");
+        ContratoPlanningLine.TestField("Planning Date");
 
-        JobPlanningLine.CalcFields("Reserved Qty. (Base)");
-        CheckReservedQtyBase(JobPlanningLine, QuantityBase);
+        ContratoPlanningLine.CalcFields("Reserved Qty. (Base)");
+        CheckReservedQtyBase(ContratoPlanningLine, QuantityBase);
 
-        JobPlanningLine.TestField("Variant Code", FromTrackingSpecification."Variant Code");
-        JobPlanningLine.TestField("Location Code", FromTrackingSpecification."Location Code");
+        ContratoPlanningLine.TestField("Variant Code", FromTrackingSpecification."Variant Code");
+        ContratoPlanningLine.TestField("Location Code", FromTrackingSpecification."Location Code");
 
         SignFactor := -1;
 
         if QuantityBase * SignFactor < 0 then
-            PlanningDate := JobPlanningLine."Planning Date"
+            PlanningDate := ContratoPlanningLine."Planning Date"
         else begin
             PlanningDate := ExpectedReceiptDate;
-            ExpectedReceiptDate := JobPlanningLine."Planning Date";
+            ExpectedReceiptDate := ContratoPlanningLine."Planning Date";
         end;
 
         CreateReservEntry.CreateReservEntryFor(
-          Database::"Contrato Planning Line", JobPlanningLine.Status.AsInteger(),
-          JobPlanningLine."Contrato No.", '', 0, JobPlanningLine."Contrato Contract Entry No.", JobPlanningLine."Qty. per Unit of Measure",
+          Database::"Contrato Planning Line", ContratoPlanningLine.Status.AsInteger(),
+          ContratoPlanningLine."Contrato No.", '', 0, ContratoPlanningLine."Contrato Contract Entry No.", ContratoPlanningLine."Qty. per Unit of Measure",
           Quantity, QuantityBase, ForReservEntry);
         CreateReservEntry.CreateReservEntryFrom(FromTrackingSpecification);
         CreateReservEntry.CreateReservEntry(
-          JobPlanningLine."No.", JobPlanningLine."Variant Code", JobPlanningLine."Location Code",
+          ContratoPlanningLine."No.", ContratoPlanningLine."Variant Code", ContratoPlanningLine."Location Code",
           Description, ExpectedReceiptDate, PlanningDate, 0);
 
         FromTrackingSpecification."Source Type" := 0;
     end;
 
-    procedure CreateBindingReservation(JobPlanningLine: Record "Contrato Planning Line"; Description: Text[100]; ExpectedReceiptDate: Date; Quantity: Decimal; QuantityBase: Decimal)
+    procedure CreateBindingReservation(ContratoPlanningLine: Record "Contrato Planning Line"; Description: Text[100]; ExpectedReceiptDate: Date; Quantity: Decimal; QuantityBase: Decimal)
     var
         DummyReservationEntry: Record "Reservation Entry";
     begin
-        CreateReservation(JobPlanningLine, Description, ExpectedReceiptDate, Quantity, QuantityBase, DummyReservationEntry);
+        CreateReservation(ContratoPlanningLine, Description, ExpectedReceiptDate, Quantity, QuantityBase, DummyReservationEntry);
     end;
 
     procedure CreateReservationSetFrom(TrackingSpecification: Record "Tracking Specification")
@@ -71,19 +71,19 @@ codeunit 50219 "Contrato Planning Line-Reserve"
         FromTrackingSpecification := TrackingSpecification;
     end;
 
-    local procedure CheckReservedQtyBase(JobPlanningLine: Record "Contrato Planning Line"; QuantityBase: Decimal)
+    local procedure CheckReservedQtyBase(ContratoPlanningLine: Record "Contrato Planning Line"; QuantityBase: Decimal)
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckReservedQtyBase(JobPlanningLine, IsHandled, QuantityBase);
+        OnBeforeCheckReservedQtyBase(ContratoPlanningLine, IsHandled, QuantityBase);
         if IsHandled then
             exit;
 
-        if Abs(JobPlanningLine."Remaining Qty. (Base)") < Abs(JobPlanningLine."Reserved Qty. (Base)") + QuantityBase then
+        if Abs(ContratoPlanningLine."Remaining Qty. (Base)") < Abs(ContratoPlanningLine."Reserved Qty. (Base)") + QuantityBase then
             Error(
               Text000Err,
-              Abs(JobPlanningLine."Remaining Qty. (Base)") - Abs(JobPlanningLine."Reserved Qty. (Base)"));
+              Abs(ContratoPlanningLine."Remaining Qty. (Base)") - Abs(ContratoPlanningLine."Reserved Qty. (Base)"));
     end;
 
     procedure SetBinding(Binding: Enum "Reservation Binding")
@@ -91,62 +91,62 @@ codeunit 50219 "Contrato Planning Line-Reserve"
         CreateReservEntry.SetBinding(Binding);
     end;
 
-    procedure CallItemTracking(var JobPlanningLine: Record "Contrato Planning Line")
+    procedure CallItemTracking(var ContratoPlanningLine: Record "Contrato Planning Line")
     var
         TrackingSpecification: Record "Tracking Specification";
         ItemTrackingDocManagement: Codeunit "ContratoGeneral";
         ItemTrackingLines: Page "Item Tracking Lines";
     begin
         // Throw error if "Type" != "Item" or "Line Type" != "Budget" or "Budget and Billable"
-        JobPlanningLine.TestField(Type, JobPlanningLine.Type::Item);
-        if not (JobPlanningLine."Line Type" in [Enum::"ContratoPlanningLineLineType"::"Both Budget and Billable", Enum::"ContratoPlanningLineLineType"::Budget]) then
-            JobPlanningLine.FieldError("Line Type", StrSubstNo(InvalidLineTypeErr, Enum::"ContratoPlanningLineLineType"::Budget, Enum::"ContratoPlanningLineLineType"::"Both Budget and Billable"));
+        ContratoPlanningLine.TestField(Type, ContratoPlanningLine.Type::Item);
+        if not (ContratoPlanningLine."Line Type" in [Enum::"ContratoPlanningLineLineType"::"Both Budget and Billable", Enum::"ContratoPlanningLineLineType"::Budget]) then
+            ContratoPlanningLine.FieldError("Line Type", StrSubstNo(InvalidLineTypeErr, Enum::"ContratoPlanningLineLineType"::Budget, Enum::"ContratoPlanningLineLineType"::"Both Budget and Billable"));
 
-        if JobPlanningLine.Status = JobPlanningLine.Status::Completed then
-            ItemTrackingDocManagement.ShowItemTrackingForContratoPlanningLine(DATABASE::"Contrato Planning Line", JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Contract Entry No.")
+        if ContratoPlanningLine.Status = ContratoPlanningLine.Status::Completed then
+            ItemTrackingDocManagement.ShowItemTrackingForContratoPlanningLine(DATABASE::"Contrato Planning Line", ContratoPlanningLine."Contrato No.", ContratoPlanningLine."Contrato Contract Entry No.")
         else begin
-            JobPlanningLine.TestField("No.");
-            //TrackingSpecification.InitFromJobPlanningLine(JobPlanningLine);
-            ItemTrackingLines.SetSourceSpec(TrackingSpecification, JobPlanningLine."Planning Due Date");
-            ItemTrackingLines.SetInbound(JobPlanningLine.IsInbound());
+            ContratoPlanningLine.TestField("No.");
+            //TrackingSpecification.InitFromContratoPlanningLine(ContratoPlanningLine);
+            ItemTrackingLines.SetSourceSpec(TrackingSpecification, ContratoPlanningLine."Planning Due Date");
+            ItemTrackingLines.SetInbound(ContratoPlanningLine.IsInbound());
             ItemTrackingLines.RunModal();
         end;
     end;
 
-    procedure ReservQuantity(JobPlanningLine: Record "Contrato Planning Line"; var QtyToReserve: Decimal; var QtyToReserveBase: Decimal)
+    procedure ReservQuantity(ContratoPlanningLine: Record "Contrato Planning Line"; var QtyToReserve: Decimal; var QtyToReserveBase: Decimal)
     begin
-        case JobPlanningLine.Status of
-            JobPlanningLine.Status::Planning,
-            JobPlanningLine.Status::Quote,
-            JobPlanningLine.Status::Order,
-            JobPlanningLine.Status::Completed:
+        case ContratoPlanningLine.Status of
+            ContratoPlanningLine.Status::Planning,
+            ContratoPlanningLine.Status::Quote,
+            ContratoPlanningLine.Status::Order,
+            ContratoPlanningLine.Status::Completed:
                 begin
-                    QtyToReserve := JobPlanningLine."Remaining Qty.";
-                    QtyToReserveBase := JobPlanningLine."Remaining Qty. (Base)";
+                    QtyToReserve := ContratoPlanningLine."Remaining Qty.";
+                    QtyToReserveBase := ContratoPlanningLine."Remaining Qty. (Base)";
                 end;
         end;
 
-        OnAfterReservQuantity(JobPlanningLine, QtyToReserve, QtyToReserveBase);
+        OnAfterReservQuantity(ContratoPlanningLine, QtyToReserve, QtyToReserveBase);
     end;
 
-    procedure Caption(JobPlanningLine: Record "Contrato Planning Line") CaptionText: Text
+    procedure Caption(ContratoPlanningLine: Record "Contrato Planning Line") CaptionText: Text
     begin
-        CaptionText := JobPlanningLine.GetSourceCaption();
+        CaptionText := ContratoPlanningLine.GetSourceCaption();
     end;
 
-    procedure FindReservEntry(JobPlanningLine: Record "Contrato Planning Line"; var ReservationEntry: Record "Reservation Entry"): Boolean
+    procedure FindReservEntry(ContratoPlanningLine: Record "Contrato Planning Line"; var ReservationEntry: Record "Reservation Entry"): Boolean
     begin
         ReservationEntry.InitSortingAndFilters(false);
-        JobPlanningLine.SetReservationFilters(ReservationEntry);
+        ContratoPlanningLine.SetReservationFilters(ReservationEntry);
         exit(ReservationEntry.FindLast());
     end;
 
-    procedure GetReservedQtyFromInventory(JobPlanningLine: Record "Contrato Planning Line"): Decimal
+    procedure GetReservedQtyFromInventory(ContratoPlanningLine: Record "Contrato Planning Line"): Decimal
     var
         ReservationEntry: Record "Reservation Entry";
         QtyReservedFromItemLedger: Query "Qty. Reserved From Item Ledger";
     begin
-        JobPlanningLine.SetReservationEntry(ReservationEntry);
+        ContratoPlanningLine.SetReservationEntry(ReservationEntry);
         //QtyReservedFromItemLedger.SetSourceFilter(ReservationEntry);
         QtyReservedFromItemLedger.Open();
         if QtyReservedFromItemLedger.Read() then
@@ -169,141 +169,141 @@ codeunit 50219 "Contrato Planning Line-Reserve"
         exit(0);
     end;
 
-    procedure VerifyChange(var NewJobPlanningLine: Record "Contrato Planning Line"; var OldJobPlanningLine: Record "Contrato Planning Line")
+    procedure VerifyChange(var NewContratoPlanningLine: Record "Contrato Planning Line"; var OldContratoPlanningLine: Record "Contrato Planning Line")
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         ReservationEntry: Record "Reservation Entry";
         ShowError: Boolean;
         HasError: Boolean;
     begin
-        if (NewJobPlanningLine.Type <> NewJobPlanningLine.Type::Item) and (OldJobPlanningLine.Type <> OldJobPlanningLine.Type::Item) then
+        if (NewContratoPlanningLine.Type <> NewContratoPlanningLine.Type::Item) and (OldContratoPlanningLine.Type <> OldContratoPlanningLine.Type::Item) then
             exit;
-        if NewJobPlanningLine."Contrato Contract Entry No." = 0 then
-            if not JobPlanningLine.Get(
-                 NewJobPlanningLine."Contrato No.",
-                 NewJobPlanningLine."Contrato Task No.",
-                 NewJobPlanningLine."Line No.")
+        if NewContratoPlanningLine."Contrato Contract Entry No." = 0 then
+            if not ContratoPlanningLine.Get(
+                 NewContratoPlanningLine."Contrato No.",
+                 NewContratoPlanningLine."Contrato Task No.",
+                 NewContratoPlanningLine."Line No.")
             then
                 exit;
 
-        NewJobPlanningLine.CalcFields("Reserved Qty. (Base)");
-        ShowError := NewJobPlanningLine."Reserved Qty. (Base)" <> 0;
+        NewContratoPlanningLine.CalcFields("Reserved Qty. (Base)");
+        ShowError := NewContratoPlanningLine."Reserved Qty. (Base)" <> 0;
 
-        if NewJobPlanningLine."Usage Link" <> OldJobPlanningLine."Usage Link" then begin
+        if NewContratoPlanningLine."Usage Link" <> OldContratoPlanningLine."Usage Link" then begin
             if ShowError then
-                NewJobPlanningLine.FieldError("Usage Link", Text004Err);
+                NewContratoPlanningLine.FieldError("Usage Link", Text004Err);
             HasError := true;
         end;
 
-        if (NewJobPlanningLine."Planning Date" = 0D) and (OldJobPlanningLine."Planning Date" <> 0D) then begin
+        if (NewContratoPlanningLine."Planning Date" = 0D) and (OldContratoPlanningLine."Planning Date" <> 0D) then begin
             if ShowError then
-                NewJobPlanningLine.FieldError("Planning Date", Text002Err);
+                NewContratoPlanningLine.FieldError("Planning Date", Text002Err);
             HasError := true;
         end;
 
-        if NewJobPlanningLine."No." <> OldJobPlanningLine."No." then begin
+        if NewContratoPlanningLine."No." <> OldContratoPlanningLine."No." then begin
             if ShowError then
-                NewJobPlanningLine.FieldError("No.", Text004Err);
+                NewContratoPlanningLine.FieldError("No.", Text004Err);
             HasError := true;
         end;
 
-        if NewJobPlanningLine."Variant Code" <> OldJobPlanningLine."Variant Code" then begin
+        if NewContratoPlanningLine."Variant Code" <> OldContratoPlanningLine."Variant Code" then begin
             if ShowError then
-                NewJobPlanningLine.FieldError("Variant Code", Text004Err);
+                NewContratoPlanningLine.FieldError("Variant Code", Text004Err);
             HasError := true;
         end;
 
-        if NewJobPlanningLine."Location Code" <> OldJobPlanningLine."Location Code" then begin
+        if NewContratoPlanningLine."Location Code" <> OldContratoPlanningLine."Location Code" then begin
             if ShowError then
-                NewJobPlanningLine.FieldError("Location Code", Text004Err);
+                NewContratoPlanningLine.FieldError("Location Code", Text004Err);
             HasError := true;
         end;
 
-        if NewJobPlanningLine."Line No." <> OldJobPlanningLine."Line No." then
+        if NewContratoPlanningLine."Line No." <> OldContratoPlanningLine."Line No." then
             HasError := true;
 
-        if NewJobPlanningLine.Type <> OldJobPlanningLine.Type then begin
+        if NewContratoPlanningLine.Type <> OldContratoPlanningLine.Type then begin
             if ShowError then
-                NewJobPlanningLine.FieldError(Type, Text004Err);
+                NewContratoPlanningLine.FieldError(Type, Text004Err);
             HasError := true;
         end;
 
-        VerifyBinInJobPlanningLine(NewJobPlanningLine, OldJobPlanningLine, HasError);
+        VerifyBinInContratoPlanningLine(NewContratoPlanningLine, OldContratoPlanningLine, HasError);
 
-        OnVerifyChangeOnBeforeHasErrorCheck(NewJobPlanningLine, OldJobPlanningLine, HasError, ShowError);
+        OnVerifyChangeOnBeforeHasErrorCheck(NewContratoPlanningLine, OldContratoPlanningLine, HasError, ShowError);
 
         if HasError then
-            if (NewJobPlanningLine."No." <> OldJobPlanningLine."No.") or
-               FindReservEntry(NewJobPlanningLine, ReservationEntry)
+            if (NewContratoPlanningLine."No." <> OldContratoPlanningLine."No.") or
+               FindReservEntry(NewContratoPlanningLine, ReservationEntry)
             then begin
-                if (NewJobPlanningLine."No." <> OldJobPlanningLine."No.") or (NewJobPlanningLine.Type <> OldJobPlanningLine.Type) then begin
-                    ReservationManagement.SetReservSource(OldJobPlanningLine);
+                if (NewContratoPlanningLine."No." <> OldContratoPlanningLine."No.") or (NewContratoPlanningLine.Type <> OldContratoPlanningLine.Type) then begin
+                    ReservationManagement.SetReservSource(OldContratoPlanningLine);
                     ReservationManagement.DeleteReservEntries(true, 0);
-                    ReservationManagement.SetReservSource(NewJobPlanningLine);
+                    ReservationManagement.SetReservSource(NewContratoPlanningLine);
                 end else begin
-                    ReservationManagement.SetReservSource(NewJobPlanningLine);
+                    ReservationManagement.SetReservSource(NewContratoPlanningLine);
                     ReservationManagement.DeleteReservEntries(true, 0);
                 end;
-                ReservationManagement.AutoTrack(NewJobPlanningLine."Remaining Qty. (Base)");
+                ReservationManagement.AutoTrack(NewContratoPlanningLine."Remaining Qty. (Base)");
             end;
 
-        if HasError or (NewJobPlanningLine."Planning Date" <> OldJobPlanningLine."Planning Date")
+        if HasError or (NewContratoPlanningLine."Planning Date" <> OldContratoPlanningLine."Planning Date")
         then begin
-            AssignForPlanning(NewJobPlanningLine);
-            if (NewJobPlanningLine."No." <> OldJobPlanningLine."No.") or
-               (NewJobPlanningLine."Variant Code" <> OldJobPlanningLine."Variant Code") or
-               (NewJobPlanningLine."Location Code" <> OldJobPlanningLine."Location Code")
+            AssignForPlanning(NewContratoPlanningLine);
+            if (NewContratoPlanningLine."No." <> OldContratoPlanningLine."No.") or
+               (NewContratoPlanningLine."Variant Code" <> OldContratoPlanningLine."Variant Code") or
+               (NewContratoPlanningLine."Location Code" <> OldContratoPlanningLine."Location Code")
             then
-                AssignForPlanning(OldJobPlanningLine);
+                AssignForPlanning(OldContratoPlanningLine);
         end;
     end;
 
-    local procedure VerifyBinInJobPlanningLine(var NewJobPlanningLine: Record "Contrato Planning Line"; var OldJobPlanningLine: Record "Contrato Planning Line"; var HasError: Boolean)
+    local procedure VerifyBinInContratoPlanningLine(var NewContratoPlanningLine: Record "Contrato Planning Line"; var OldContratoPlanningLine: Record "Contrato Planning Line"; var HasError: Boolean)
     begin
-        if (NewJobPlanningLine.Type = NewJobPlanningLine.Type::Item) and (OldJobPlanningLine.Type = OldJobPlanningLine.Type::Item) then
-            if (NewJobPlanningLine."Bin Code" <> OldJobPlanningLine."Bin Code") and
+        if (NewContratoPlanningLine.Type = NewContratoPlanningLine.Type::Item) and (OldContratoPlanningLine.Type = OldContratoPlanningLine.Type::Item) then
+            if (NewContratoPlanningLine."Bin Code" <> OldContratoPlanningLine."Bin Code") and
                (not ReservationManagement.CalcIsAvailTrackedQtyInBin(
-                  NewJobPlanningLine."No.", NewJobPlanningLine."Bin Code",
-                  NewJobPlanningLine."Location Code", NewJobPlanningLine."Variant Code",
-                  DATABASE::"Contrato Planning Line", NewJobPlanningLine.Status.AsInteger(),
-                  NewJobPlanningLine."Contrato No.", '', 0,
-                  NewJobPlanningLine."Contrato Contract Entry No."))
+                  NewContratoPlanningLine."No.", NewContratoPlanningLine."Bin Code",
+                  NewContratoPlanningLine."Location Code", NewContratoPlanningLine."Variant Code",
+                  DATABASE::"Contrato Planning Line", NewContratoPlanningLine.Status.AsInteger(),
+                  NewContratoPlanningLine."Contrato No.", '', 0,
+                  NewContratoPlanningLine."Contrato Contract Entry No."))
             then
                 HasError := true;
     end;
 
-    procedure VerifyQuantity(var NewJobPlanningLine: Record "Contrato Planning Line"; var OldJobPlanningLine: Record "Contrato Planning Line")
+    procedure VerifyQuantity(var NewContratoPlanningLine: Record "Contrato Planning Line"; var OldContratoPlanningLine: Record "Contrato Planning Line")
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeVerifyQuantity(NewJobPlanningLine, OldJobPlanningLine, IsHandled);
+        OnBeforeVerifyQuantity(NewContratoPlanningLine, OldContratoPlanningLine, IsHandled);
         if IsHandled then
             exit;
 
-        if NewJobPlanningLine.Type <> NewJobPlanningLine.Type::Item then
+        if NewContratoPlanningLine.Type <> NewContratoPlanningLine.Type::Item then
             exit;
-        if NewJobPlanningLine.Status = OldJobPlanningLine.Status then
-            if NewJobPlanningLine."Line No." = OldJobPlanningLine."Line No." then
-                if NewJobPlanningLine."Quantity (Base)" = OldJobPlanningLine."Quantity (Base)" then
+        if NewContratoPlanningLine.Status = OldContratoPlanningLine.Status then
+            if NewContratoPlanningLine."Line No." = OldContratoPlanningLine."Line No." then
+                if NewContratoPlanningLine."Quantity (Base)" = OldContratoPlanningLine."Quantity (Base)" then
                     exit;
-        if NewJobPlanningLine."Line No." = 0 then
-            if not JobPlanningLine.Get(NewJobPlanningLine."Contrato No.", NewJobPlanningLine."Contrato Task No.", NewJobPlanningLine."Line No.") then
+        if NewContratoPlanningLine."Line No." = 0 then
+            if not ContratoPlanningLine.Get(NewContratoPlanningLine."Contrato No.", NewContratoPlanningLine."Contrato Task No.", NewContratoPlanningLine."Line No.") then
                 exit;
-        ReservationManagement.SetReservSource(NewJobPlanningLine);
-        if NewJobPlanningLine."Qty. per Unit of Measure" <> OldJobPlanningLine."Qty. per Unit of Measure" then
+        ReservationManagement.SetReservSource(NewContratoPlanningLine);
+        if NewContratoPlanningLine."Qty. per Unit of Measure" <> OldContratoPlanningLine."Qty. per Unit of Measure" then
             ReservationManagement.ModifyUnitOfMeasure();
-        if NewJobPlanningLine."Remaining Qty. (Base)" * OldJobPlanningLine."Remaining Qty. (Base)" < 0 then
+        if NewContratoPlanningLine."Remaining Qty. (Base)" * OldContratoPlanningLine."Remaining Qty. (Base)" < 0 then
             ReservationManagement.DeleteReservEntries(true, 0)
         else
-            ReservationManagement.DeleteReservEntries(false, NewJobPlanningLine."Remaining Qty. (Base)");
+            ReservationManagement.DeleteReservEntries(false, NewContratoPlanningLine."Remaining Qty. (Base)");
         ReservationManagement.ClearSurplus();
-        ReservationManagement.AutoTrack(NewJobPlanningLine."Remaining Qty. (Base)");
-        AssignForPlanning(NewJobPlanningLine);
+        ReservationManagement.AutoTrack(NewContratoPlanningLine."Remaining Qty. (Base)");
+        AssignForPlanning(NewContratoPlanningLine);
     end;
 
-    procedure TransferJobLineToItemJnlLine(var JobPlanningLine: Record "Contrato Planning Line"; var NewItemJournalLine: Record "Item Journal Line"; TransferQty: Decimal): Decimal
+    procedure TransferContratoLineToItemJnlLine(var ContratoPlanningLine: Record "Contrato Planning Line"; var NewItemJournalLine: Record "Item Journal Line"; TransferQty: Decimal): Decimal
     var
         OldReservationEntry: Record "Reservation Entry";
         ItemTrackingSetup: Record "Item Tracking Setup";
@@ -313,7 +313,7 @@ codeunit 50219 "Contrato Planning Line-Reserve"
         UnTrackedQty: Decimal;
         xTransferQty: Decimal;
     begin
-        if not FindReservEntry(JobPlanningLine, OldReservationEntry) then
+        if not FindReservEntry(ContratoPlanningLine, OldReservationEntry) then
             exit(TransferQty);
 
         // Store initial values
@@ -323,11 +323,11 @@ codeunit 50219 "Contrato Planning Line-Reserve"
 
         OldReservationEntry.Lock();
 
-        // Handle Item Tracking on job planning line:
+        // Handle Item Tracking on Contrato planning line:
         Clear(CreateReservEntry);
         if NewItemJournalLine."Entry Type" = NewItemJournalLine."Entry Type"::"Negative Adjmt." then
             if NewItemJournalLine.TrackingExists() then begin
-                // Try to match against Item Tracking on the job planning line:
+                // Try to match against Item Tracking on the Contrato planning line:
                 OldReservationEntry.SetTrackingFilterFromItemJnlLine(NewItemJournalLine);
                 if OldReservationEntry.IsEmpty() then
                     OldReservationEntry.ClearTrackingFilter()
@@ -335,7 +335,7 @@ codeunit 50219 "Contrato Planning Line-Reserve"
                     ItemTrackingFilterIsSet := true;
             end;
 
-        NewItemJournalLine.TestItemFields(JobPlanningLine."No.", JobPlanningLine."Variant Code", JobPlanningLine."Location Code");
+        NewItemJournalLine.TestItemFields(ContratoPlanningLine."No.", ContratoPlanningLine."Variant Code", ContratoPlanningLine."Location Code");
 
         if TransferQty = 0 then
             exit;
@@ -343,7 +343,7 @@ codeunit 50219 "Contrato Planning Line-Reserve"
         ItemTrackingSetup.CopyTrackingFromItemJnlLine(NewItemJournalLine);
         if ReservationEngineMgt.InitRecordSet(OldReservationEntry, ItemTrackingSetup) then
             repeat
-                OldReservationEntry.TestItemFields(JobPlanningLine."No.", JobPlanningLine."Variant Code", JobPlanningLine."Location Code");
+                OldReservationEntry.TestItemFields(ContratoPlanningLine."No.", ContratoPlanningLine."Variant Code", ContratoPlanningLine."Location Code");
 
                 if NewItemJournalLine."Entry Type" = NewItemJournalLine."Entry Type"::"Negative Adjmt." then
                     // Set the tracking for the item journal inside the loop as it is cleared within TransferReservEntry
@@ -368,28 +368,28 @@ codeunit 50219 "Contrato Planning Line-Reserve"
         // Handle remaining transfer quantity
         if TransferQty <> 0 then begin
             TrackedQty -= (xTransferQty - TransferQty);
-            UnTrackedQty := JobPlanningLine."Remaining Qty. (Base)" - TrackedQty;
+            UnTrackedQty := ContratoPlanningLine."Remaining Qty. (Base)" - TrackedQty;
             if TransferQty > UnTrackedQty then begin
-                ReservationManagement.SetReservSource(JobPlanningLine);
-                ReservationManagement.DeleteReservEntries(false, JobPlanningLine."Remaining Qty. (Base)");
+                ReservationManagement.SetReservSource(ContratoPlanningLine);
+                ReservationManagement.DeleteReservEntries(false, ContratoPlanningLine."Remaining Qty. (Base)");
             end;
         end;
         exit(TransferQty);
     end;
 
-    procedure DeleteLine(var JobPlanningLine: Record "Contrato Planning Line")
+    procedure DeleteLine(var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
-        DeleteLineInternal(JobPlanningLine, true);
+        DeleteLineInternal(ContratoPlanningLine, true);
     end;
 
-    internal procedure DeleteLineInternal(var JobPlanningLine: Record "Contrato Planning Line"; ConfirmFirst: Boolean)
+    internal procedure DeleteLineInternal(var ContratoPlanningLine: Record "Contrato Planning Line"; ConfirmFirst: Boolean)
     var
         ReservationEntry: Record "Reservation Entry";
     begin
-        ReservationManagement.SetReservSource(JobPlanningLine);
+        ReservationManagement.SetReservSource(ContratoPlanningLine);
 
         ReservationEntry.InitSortingAndFilters(false);
-        JobPlanningLine.SetReservationFilters(ReservationEntry);
+        ContratoPlanningLine.SetReservationFilters(ReservationEntry);
         if not ReservationEntry.IsEmpty() then
             if ConfirmFirst then begin
                 if ReservationManagement.DeleteItemTrackingConfirm() then
@@ -397,24 +397,24 @@ codeunit 50219 "Contrato Planning Line-Reserve"
             end else
                 ReservationManagement.SetItemTrackingHandling(1);
         ReservationManagement.DeleteReservEntries(true, 0);
-        JobPlanningLine.CalcFields("Reserved Qty. (Base)");
-        AssignForPlanning(JobPlanningLine);
+        ContratoPlanningLine.CalcFields("Reserved Qty. (Base)");
+        AssignForPlanning(ContratoPlanningLine);
     end;
 
-    local procedure AssignForPlanning(var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure AssignForPlanning(var ContratoPlanningLine: Record "Contrato Planning Line")
     var
         PlanningAssignment: Record "Planning Assignment";
     begin
-        if JobPlanningLine.Status <> JobPlanningLine.Status::Order then
+        if ContratoPlanningLine.Status <> ContratoPlanningLine.Status::Order then
             exit;
-        if JobPlanningLine.Type <> JobPlanningLine.Type::Item then
+        if ContratoPlanningLine.Type <> ContratoPlanningLine.Type::Item then
             exit;
-        if JobPlanningLine."No." <> '' then
+        if ContratoPlanningLine."No." <> '' then
             PlanningAssignment.ChkAssignOne(
-                JobPlanningLine."No.", JobPlanningLine."Variant Code", JobPlanningLine."Location Code", JobPlanningLine."Planning Date");
+                ContratoPlanningLine."No.", ContratoPlanningLine."Variant Code", ContratoPlanningLine."Location Code", ContratoPlanningLine."Planning Date");
     end;
 
-    procedure BindToPurchase(JobPlanningLine: Record "Contrato Planning Line"; PurchaseLine: Record "Purchase Line"; ReservQty: Decimal; ReservQtyBase: Decimal)
+    procedure BindToPurchase(ContratoPlanningLine: Record "Contrato Planning Line"; PurchaseLine: Record "Purchase Line"; ReservQty: Decimal; ReservQtyBase: Decimal)
     var
         TrackingSpecification: Record "Tracking Specification";
         ReservationEntry: Record "Reservation Entry";
@@ -424,10 +424,10 @@ codeunit 50219 "Contrato Planning Line-Reserve"
           DATABASE::"Purchase Line", PurchaseLine."Document Type".AsInteger(), PurchaseLine."Document No.", '', 0, PurchaseLine."Line No.",
           PurchaseLine."Variant Code", PurchaseLine."Location Code", PurchaseLine."Qty. per Unit of Measure");
         CreateReservationSetFrom(TrackingSpecification);
-        CreateBindingReservation(JobPlanningLine, PurchaseLine.Description, PurchaseLine."Expected Receipt Date", ReservQty, ReservQtyBase);
+        CreateBindingReservation(ContratoPlanningLine, PurchaseLine.Description, PurchaseLine."Expected Receipt Date", ReservQty, ReservQtyBase);
     end;
 
-    procedure BindToRequisition(JobPlanningLine: Record "Contrato Planning Line"; RequisitionLine: Record "Requisition Line"; ReservQty: Decimal; ReservQtyBase: Decimal)
+    procedure BindToRequisition(ContratoPlanningLine: Record "Contrato Planning Line"; RequisitionLine: Record "Requisition Line"; ReservQty: Decimal; ReservQtyBase: Decimal)
     var
         TrackingSpecification: Record "Tracking Specification";
         ReservationEntry: Record "Reservation Entry";
@@ -438,10 +438,10 @@ codeunit 50219 "Contrato Planning Line-Reserve"
           0, RequisitionLine."Worksheet Template Name", RequisitionLine."Journal Batch Name", 0, RequisitionLine."Line No.",
           RequisitionLine."Variant Code", RequisitionLine."Location Code", RequisitionLine."Qty. per Unit of Measure");
         CreateReservationSetFrom(TrackingSpecification);
-        CreateBindingReservation(JobPlanningLine, RequisitionLine.Description, RequisitionLine."Due Date", ReservQty, ReservQtyBase);
+        CreateBindingReservation(ContratoPlanningLine, RequisitionLine.Description, RequisitionLine."Due Date", ReservQty, ReservQtyBase);
     end;
 
-    procedure BindToTransfer(JobPlanningLine: Record "Contrato Planning Line"; TransferLine: Record "Transfer Line"; ReservQty: Decimal; ReservQtyBase: Decimal)
+    procedure BindToTransfer(ContratoPlanningLine: Record "Contrato Planning Line"; TransferLine: Record "Transfer Line"; ReservQty: Decimal; ReservQtyBase: Decimal)
     var
         TrackingSpecification: Record "Tracking Specification";
         ReservationEntry: Record "Reservation Entry";
@@ -451,17 +451,17 @@ codeunit 50219 "Contrato Planning Line-Reserve"
           DATABASE::"Transfer Line", 1, TransferLine."Document No.", '', 0, TransferLine."Line No.",
           TransferLine."Variant Code", TransferLine."Transfer-to Code", TransferLine."Qty. per Unit of Measure");
         CreateReservationSetFrom(TrackingSpecification);
-        CreateBindingReservation(JobPlanningLine, TransferLine.Description, TransferLine."Receipt Date", ReservQty, ReservQtyBase);
+        CreateBindingReservation(ContratoPlanningLine, TransferLine.Description, TransferLine."Receipt Date", ReservQty, ReservQtyBase);
     end;
 
-    procedure BindToProdOrder(JobPlanningLine: Record "Contrato Planning Line"; ProdOrderLine: Record "Prod. Order Line"; ReservQty: Decimal; ReservQtyBase: Decimal)
+    procedure BindToProdOrder(ContratoPlanningLine: Record "Contrato Planning Line"; ProdOrderLine: Record "Prod. Order Line"; ReservQty: Decimal; ReservQtyBase: Decimal)
     var
         TrackingSpecification: Record "Tracking Specification";
         ReservationEntry: Record "Reservation Entry";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeBindToProdOrder(JobPlanningLine, ProdOrderLine, ReservQty, ReservQtyBase, IsHandled);
+        OnBeforeBindToProdOrder(ContratoPlanningLine, ProdOrderLine, ReservQty, ReservQtyBase, IsHandled);
         if IsHandled then
             exit;
 
@@ -470,10 +470,10 @@ codeunit 50219 "Contrato Planning Line-Reserve"
           DATABASE::"Prod. Order Line", ProdOrderLine.Status.AsInteger(), ProdOrderLine."Prod. Order No.", '', ProdOrderLine."Line No.", 0,
           ProdOrderLine."Variant Code", ProdOrderLine."Location Code", ProdOrderLine."Qty. per Unit of Measure");
         CreateReservationSetFrom(TrackingSpecification);
-        CreateBindingReservation(JobPlanningLine, ProdOrderLine.Description, ProdOrderLine."Ending Date", ReservQty, ReservQtyBase);
+        CreateBindingReservation(ContratoPlanningLine, ProdOrderLine.Description, ProdOrderLine."Ending Date", ReservQty, ReservQtyBase);
     end;
 
-    procedure BindToAssembly(JobPlanningLine: Record "Contrato Planning Line"; AssemblyHeader: Record "Assembly Header"; ReservQty: Decimal; ReservQtyBase: Decimal)
+    procedure BindToAssembly(ContratoPlanningLine: Record "Contrato Planning Line"; AssemblyHeader: Record "Assembly Header"; ReservQty: Decimal; ReservQtyBase: Decimal)
     var
         TrackingSpecification: Record "Tracking Specification";
         ReservationEntry: Record "Reservation Entry";
@@ -483,36 +483,36 @@ codeunit 50219 "Contrato Planning Line-Reserve"
           DATABASE::"Assembly Header", AssemblyHeader."Document Type".AsInteger(), AssemblyHeader."No.", '', 0, 0,
           AssemblyHeader."Variant Code", AssemblyHeader."Location Code", AssemblyHeader."Qty. per Unit of Measure");
         CreateReservationSetFrom(TrackingSpecification);
-        CreateBindingReservation(JobPlanningLine, AssemblyHeader.Description, AssemblyHeader."Due Date", ReservQty, ReservQtyBase);
+        CreateBindingReservation(ContratoPlanningLine, AssemblyHeader.Description, AssemblyHeader."Due Date", ReservQty, ReservQtyBase);
     end;
 
     [EventSubscriber(ObjectType::Page, PAGE::Reservation, 'OnGetQtyPerUOMFromSourceRecRef', '', false, false)]
     local procedure OnGetQtyPerUOMFromSourceRecRef(SourceRecRef: RecordRef; var QtyPerUOM: Decimal; var QtyReserved: Decimal; var QtyReservedBase: Decimal; var QtyToReserve: Decimal; var QtyToReserveBase: Decimal)
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
         if MatchThisTable(SourceRecRef.Number) then begin
-            SourceRecRef.SetTable(JobPlanningLine);
-            JobPlanningLine.Find();
-            if JobPlanningLine.UpdatePlanned() then begin
-                JobPlanningLine.Modify(true);
+            SourceRecRef.SetTable(ContratoPlanningLine);
+            ContratoPlanningLine.Find();
+            if ContratoPlanningLine.UpdatePlanned() then begin
+                ContratoPlanningLine.Modify(true);
                 Commit();
             end;
-            QtyPerUOM := JobPlanningLine.GetReservationQty(QtyReserved, QtyReservedBase, QtyToReserve, QtyToReserveBase);
+            QtyPerUOM := ContratoPlanningLine.GetReservationQty(QtyReserved, QtyReservedBase, QtyToReserve, QtyToReserveBase);
         end;
     end;
 
     local procedure SetReservSourceFor(SourceRecordRef: RecordRef; var ReservationEntry: Record "Reservation Entry"; var CaptionText: Text)
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
-        SourceRecordRef.SetTable(JobPlanningLine);
-        JobPlanningLine.TestField(Type, JobPlanningLine.Type::Item);
-        JobPlanningLine.TestField("Planning Date");
+        SourceRecordRef.SetTable(ContratoPlanningLine);
+        ContratoPlanningLine.TestField(Type, ContratoPlanningLine.Type::Item);
+        ContratoPlanningLine.TestField("Planning Date");
 
-        JobPlanningLine.SetReservationEntry(ReservationEntry);
+        ContratoPlanningLine.SetReservationEntry(ReservationEntry);
 
-        CaptionText := JobPlanningLine.GetSourceCaption();
+        CaptionText := ContratoPlanningLine.GetSourceCaption();
     end;
 
     local procedure EntryStartNo(): Integer
@@ -540,13 +540,13 @@ codeunit 50219 "Contrato Planning Line-Reserve"
     [EventSubscriber(ObjectType::Page, Page::Reservation, 'OnDrillDownTotalQuantity', '', false, false)]
     local procedure OnDrillDownTotalQuantity(SourceRecRef: RecordRef; ReservEntry: Record "Reservation Entry"; EntrySummary: Record "Entry Summary"; Location: Record Location; MaxQtyToReserve: Decimal)
     var
-        AvailableJobPlanningLines: page "Available - Job Planning Lines";
+        AvailableContratoPlanningLines: page AvailableContratoPlanningLines;
     begin
         if MatchThisEntry(EntrySummary."Entry No.") then begin
-            Clear(AvailableJobPlanningLines);
-            AvailableJobPlanningLines.SetCurrentSubType(EntrySummary."Entry No." - EntryStartNo());
-            AvailableJobPlanningLines.SetSource(SourceRecRef, ReservEntry, ReservEntry.GetTransferDirection());
-            AvailableJobPlanningLines.RunModal();
+            Clear(AvailableContratoPlanningLines);
+            AvailableContratoPlanningLines.SetCurrentSubType(EntrySummary."Entry No." - EntryStartNo());
+            AvailableContratoPlanningLines.SetSource(SourceRecRef, ReservEntry, ReservEntry.GetTransferDirection());
+            AvailableContratoPlanningLines.RunModal();
         end;
     end;
 
@@ -571,12 +571,12 @@ codeunit 50219 "Contrato Planning Line-Reserve"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Reservation Management", 'OnCreateReservation', '', false, false)]
     local procedure OnCreateReservation(SourceRecRef: RecordRef; TrackingSpecification: Record "Tracking Specification"; ForReservEntry: Record "Reservation Entry"; Description: Text[100]; ExpectedDate: Date; Quantity: Decimal; QuantityBase: Decimal)
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
         if MatchThisTable(ForReservEntry."Source Type") then begin
             CreateReservationSetFrom(TrackingSpecification);
-            SourceRecRef.SetTable(JobPlanningLine);
-            CreateReservation(JobPlanningLine, Description, ExpectedDate, Quantity, QuantityBase, ForReservEntry);
+            SourceRecRef.SetTable(ContratoPlanningLine);
+            CreateReservation(ContratoPlanningLine, Description, ExpectedDate, Quantity, QuantityBase, ForReservEntry);
         end;
     end;
 
@@ -595,52 +595,52 @@ codeunit 50219 "Contrato Planning Line-Reserve"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Reservation Management", 'OnLookupLine', '', false, false)]
     local procedure OnLookupLine(SourceType: Integer; SourceRefNo: Integer)
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
         if MatchThisTable(SourceType) then begin
-            JobPlanningLine.Reset();
-            JobPlanningLine.SetCurrentKey("Contrato Contract Entry No.");
-            JobPlanningLine.SetRange("Contrato Contract Entry No.", SourceRefNo);
-            PAGE.Run(0, JobPlanningLine);
+            ContratoPlanningLine.Reset();
+            ContratoPlanningLine.SetCurrentKey("Contrato Contract Entry No.");
+            ContratoPlanningLine.SetRange("Contrato Contract Entry No.", SourceRefNo);
+            PAGE.Run(0, ContratoPlanningLine);
         end;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Reservation Management", 'OnFilterReservFor', '', false, false)]
     local procedure OnFilterReservFor(SourceRecRef: RecordRef; var ReservEntry: Record "Reservation Entry"; var CaptionText: Text)
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
         if MatchThisTable(SourceRecRef.Number) then begin
-            SourceRecRef.SetTable(JobPlanningLine);
-            JobPlanningLine.SetReservationFilters(ReservEntry);
-            CaptionText := JobPlanningLine.GetSourceCaption();
+            SourceRecRef.SetTable(ContratoPlanningLine);
+            ContratoPlanningLine.SetReservationFilters(ReservEntry);
+            CaptionText := ContratoPlanningLine.GetSourceCaption();
         end;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Reservation Management", 'OnCalculateRemainingQty', '', false, false)]
     local procedure OnCalculateRemainingQty(SourceRecRef: RecordRef; var ReservEntry: Record "Reservation Entry"; var RemainingQty: Decimal; var RemainingQtyBase: Decimal)
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
         if MatchThisTable(ReservEntry."Source Type") then begin
-            SourceRecRef.SetTable(JobPlanningLine);
-            JobPlanningLine.GetRemainingQty(RemainingQty, RemainingQtyBase);
+            SourceRecRef.SetTable(ContratoPlanningLine);
+            ContratoPlanningLine.GetRemainingQty(RemainingQty, RemainingQtyBase);
         end;
     end;
 
     local procedure GetSourceValue(ReservationEntry: Record "Reservation Entry"; var SourceRecordRef: RecordRef; ReturnOption: Option "Net Qty. (Base)","Gross Qty. (Base)"): Decimal
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.SetCurrentKey("Contrato Contract Entry No.");
-        JobPlanningLine.SetRange("Contrato Contract Entry No.", ReservationEntry."Source Ref. No.");
-        JobPlanningLine.FindFirst();
-        SourceRecordRef.GetTable(JobPlanningLine);
+        ContratoPlanningLine.SetCurrentKey("Contrato Contract Entry No.");
+        ContratoPlanningLine.SetRange("Contrato Contract Entry No.", ReservationEntry."Source Ref. No.");
+        ContratoPlanningLine.FindFirst();
+        SourceRecordRef.GetTable(ContratoPlanningLine);
         case ReturnOption of
             ReturnOption::"Net Qty. (Base)":
-                exit(JobPlanningLine."Remaining Qty. (Base)");
+                exit(ContratoPlanningLine."Remaining Qty. (Base)");
             ReturnOption::"Gross Qty. (Base)":
-                exit(JobPlanningLine."Quantity (Base)");
+                exit(ContratoPlanningLine."Quantity (Base)");
         end;
     end;
 
@@ -653,20 +653,20 @@ codeunit 50219 "Contrato Planning Line-Reserve"
 
     local procedure UpdateStatistics(ReservationEntry: Record "Reservation Entry"; var TempEntrySummary: Record "Entry Summary" temporary; AvailabilityDate: Date; LineType: Option; Positive: Boolean; var TotalQuantity: Decimal)
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         AvailabilityFilter: Text;
     begin
-        if not JobPlanningLine.ReadPermission then
+        if not ContratoPlanningLine.ReadPermission then
             exit;
 
         AvailabilityFilter := ReservationEntry.GetAvailabilityFilter(AvailabilityDate, Positive);
-        JobPlanningLine.FilterLinesForReservation(ReservationEntry, LineType, AvailabilityFilter, Positive);
-        if JobPlanningLine.FindSet() then
+        ContratoPlanningLine.FilterLinesForReservation(ReservationEntry, LineType, AvailabilityFilter, Positive);
+        if ContratoPlanningLine.FindSet() then
             repeat
-                JobPlanningLine.CalcFields("Reserved Qty. (Base)");
-                TempEntrySummary."Total Reserved Quantity" -= JobPlanningLine."Reserved Qty. (Base)";
-                TotalQuantity += JobPlanningLine."Remaining Qty. (Base)";
-            until JobPlanningLine.Next() = 0;
+                ContratoPlanningLine.CalcFields("Reserved Qty. (Base)");
+                TempEntrySummary."Total Reserved Quantity" -= ContratoPlanningLine."Reserved Qty. (Base)";
+                TotalQuantity += ContratoPlanningLine."Remaining Qty. (Base)";
+            until ContratoPlanningLine.Next() = 0;
 
         if TotalQuantity = 0 then
             exit;
@@ -674,7 +674,7 @@ codeunit 50219 "Contrato Planning Line-Reserve"
         if (TotalQuantity < 0) = Positive then begin
             TempEntrySummary."Table ID" := DATABASE::"Contrato Planning Line";
             TempEntrySummary."Summary Type" :=
-                CopyStr(StrSubstNo(SummaryTypeTxt, JobPlanningLine.TableCaption(), JobPlanningLine.Status), 1, MaxStrLen(TempEntrySummary."Summary Type"));
+                CopyStr(StrSubstNo(SummaryTypeTxt, ContratoPlanningLine.TableCaption(), ContratoPlanningLine.Status), 1, MaxStrLen(TempEntrySummary."Summary Type"));
             TempEntrySummary."Total Quantity" := -TotalQuantity;
             TempEntrySummary."Total Available Quantity" := TempEntrySummary."Total Quantity" - TempEntrySummary."Total Reserved Quantity";
             if not TempEntrySummary.Insert() then
@@ -699,36 +699,36 @@ codeunit 50219 "Contrato Planning Line-Reserve"
 
     local procedure ShowSourceLines(var ReservationEntry: Record "Reservation Entry")
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.SetRange(Status, ReservationEntry."Source Subtype");
-        JobPlanningLine.SetRange("Contrato No.", ReservationEntry."Source ID");
-        JobPlanningLine.SetRange("Contrato Contract Entry No.", ReservationEntry."Source Ref. No.");
-        PAGE.RunModal(Page::"Contrato Planning Lines", JobPlanningLine);
+        ContratoPlanningLine.SetRange(Status, ReservationEntry."Source Subtype");
+        ContratoPlanningLine.SetRange("Contrato No.", ReservationEntry."Source ID");
+        ContratoPlanningLine.SetRange("Contrato Contract Entry No.", ReservationEntry."Source Ref. No.");
+        PAGE.RunModal(Page::"Contrato Planning Lines", ContratoPlanningLine);
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterReservQuantity(JobPlanningLine: Record "Contrato Planning Line"; var QtyToReserve: Decimal; var QtyToReserveBase: Decimal)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckReservedQtyBase(JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean; var QuantityBase: Decimal)
+    local procedure OnAfterReservQuantity(ContratoPlanningLine: Record "Contrato Planning Line"; var QtyToReserve: Decimal; var QtyToReserveBase: Decimal)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeVerifyQuantity(var NewJobPlanningLine: Record "Contrato Planning Line"; var OldJobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeCheckReservedQtyBase(ContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean; var QuantityBase: Decimal)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnVerifyChangeOnBeforeHasErrorCheck(NewJobPlanningLine: Record "Contrato Planning Line"; OldJobPlanningLine: Record "Contrato Planning Line"; var HasError: Boolean; var ShowError: Boolean)
+    local procedure OnBeforeVerifyQuantity(var NewContratoPlanningLine: Record "Contrato Planning Line"; var OldContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeBindToProdOrder(JobPlanningLine: Record "Contrato Planning Line"; ProdOrderLine: Record "Prod. Order Line"; ReservQty: Decimal; ReservQtyBase: Decimal; var IsHandled: Boolean)
+    local procedure OnVerifyChangeOnBeforeHasErrorCheck(NewContratoPlanningLine: Record "Contrato Planning Line"; OldContratoPlanningLine: Record "Contrato Planning Line"; var HasError: Boolean; var ShowError: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnBeforeBindToProdOrder(ContratoPlanningLine: Record "Contrato Planning Line"; ProdOrderLine: Record "Prod. Order Line"; ReservQty: Decimal; ReservQtyBase: Decimal; var IsHandled: Boolean)
     begin
     end;
 }

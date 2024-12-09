@@ -122,14 +122,14 @@ page 50237 "ContratoJournalErrorsFactbox"
 
     local procedure CheckErrorsInBackground()
     var
-        JobJournalErrorsMgt: Codeunit "Contrato Journal Errors Mgt.";
+        ContratoJournalErrorsMgt: Codeunit "Contrato Journal Errors Mgt.";
         Args: Dictionary of [Text, Text];
     begin
         BackgroundErrorHandlingMgt.FeatureTelemetryLogUptakeUsed();
         if TaskIdCountErrors <> 0 then
             CurrPage.CancelBackgroundTask(TaskIdCountErrors);
 
-        JobJournalErrorsMgt.CollectJobJnlCheckParameters(Rec, ErrorHandlingParameters);
+        ContratoJournalErrorsMgt.CollectContratoJnlCheckParameters(Rec, ErrorHandlingParameters);
         ErrorHandlingParameters.ToArgs(Args);
 
         CurrPage.EnqueueBackgroundTask(TaskIdCountErrors, Codeunit::"Check Job Jnl. Line. Backgr.", Args);

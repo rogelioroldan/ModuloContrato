@@ -5,14 +5,14 @@ codeunit 50226 "Contrato Jnl.-Post"
 
     trigger OnRun()
     begin
-        JobJnlLine.Copy(Rec);
+        ContratoJnlLine.Copy(Rec);
         Code();
-        Rec.Copy(JobJnlLine);
+        Rec.Copy(ContratoJnlLine);
     end;
 
     var
-        JobJnlTemplate: Record "Contrato Journal Template";
-        JobJnlLine: Record "Contrato Journal Line";
+        ContratoJnlTemplate: Record "Contrato Journal Template";
+        ContratoJnlLine: Record "Contrato Journal Line";
         JournalErrorsMgt: Codeunit "Journal Errors Mgt.";
         TempJnlBatchName: Code[10];
         HideDialog: Boolean;
@@ -27,53 +27,53 @@ codeunit 50226 "Contrato Jnl.-Post"
 
     local procedure "Code"()
     var
-        JobJnlPostBatch: Codeunit "Contrato Jnl.-Post Batch";
+        ContratoJnlPostBatch: Codeunit "Contrato Jnl.-Post Batch";
         GenJnlPostPreview: Codeunit "Gen. Jnl.-Post Preview";
         IsHandled: Boolean;
     begin
-        OnBeforeCode(JobJnlLine, HideDialog, SuppressCommit);
+        OnBeforeCode(ContratoJnlLine, HideDialog, SuppressCommit);
 
-        JobJnlTemplate.Get(JobJnlLine."Journal Template Name");
-        JobJnlTemplate.TestField("Force Posting Report", false);
-        if JobJnlTemplate.Recurring and (JobJnlLine.GetFilter("Posting Date") <> '') then
-            JobJnlLine.FieldError("Posting Date", Text000);
+        ContratoJnlTemplate.Get(ContratoJnlLine."Journal Template Name");
+        ContratoJnlTemplate.TestField("Force Posting Report", false);
+        if ContratoJnlTemplate.Recurring and (ContratoJnlLine.GetFilter("Posting Date") <> '') then
+            ContratoJnlLine.FieldError("Posting Date", Text000);
 
         IsHandled := false;
-        OnCodeOnBeforeConfirm(JobJnlLine, IsHandled);
+        OnCodeOnBeforeConfirm(ContratoJnlLine, IsHandled);
         if not PreviewMode then
             if not IsHandled then
                 if not Confirm(Text001) then
                     exit;
 
-        OnCodeOnAfterConfirm(JobJnlLine);
+        OnCodeOnAfterConfirm(ContratoJnlLine);
 
-        TempJnlBatchName := JobJnlLine."Journal Batch Name";
+        TempJnlBatchName := ContratoJnlLine."Journal Batch Name";
 
-        JobJnlPostBatch.SetSuppressCommit(SuppressCommit or PreviewMode);
-        JobJnlPostBatch.Run(JobJnlLine);
+        ContratoJnlPostBatch.SetSuppressCommit(SuppressCommit or PreviewMode);
+        ContratoJnlPostBatch.Run(ContratoJnlLine);
 
         if PreviewMode then
             GenJnlPostPreview.ThrowError();
 
         if not HideDialog then
-            if JobJnlLine."Line No." = 0 then
+            if ContratoJnlLine."Line No." = 0 then
                 Message(JournalErrorsMgt.GetNothingToPostErrorMsg())
             else
-                if TempJnlBatchName = JobJnlLine."Journal Batch Name" then
+                if TempJnlBatchName = ContratoJnlLine."Journal Batch Name" then
                     Message(Text003)
                 else
                     Message(
                         Text004 +
                         Text005,
-                        JobJnlLine."Journal Batch Name");
+                        ContratoJnlLine."Journal Batch Name");
 
-        if not JobJnlLine.Find('=><') or (TempJnlBatchName <> JobJnlLine."Journal Batch Name") then begin
-            JobJnlLine.Reset();
-            JobJnlLine.FilterGroup(2);
-            JobJnlLine.SetRange("Journal Template Name", JobJnlLine."Journal Template Name");
-            JobJnlLine.SetRange("Journal Batch Name", JobJnlLine."Journal Batch Name");
-            JobJnlLine.FilterGroup(0);
-            JobJnlLine."Line No." := 1;
+        if not ContratoJnlLine.Find('=><') or (TempJnlBatchName <> ContratoJnlLine."Journal Batch Name") then begin
+            ContratoJnlLine.Reset();
+            ContratoJnlLine.FilterGroup(2);
+            ContratoJnlLine.SetRange("Journal Template Name", ContratoJnlLine."Journal Template Name");
+            ContratoJnlLine.SetRange("Journal Batch Name", ContratoJnlLine."Journal Batch Name");
+            ContratoJnlLine.FilterGroup(0);
+            ContratoJnlLine."Line No." := 1;
         end;
     end;
 
@@ -92,38 +92,38 @@ codeunit 50226 "Contrato Jnl.-Post"
         PreviewMode := NewPreviewMode;
     end;
 
-    internal procedure Preview(var JobJournalLine: Record "Contrato Journal Line")
+    internal procedure Preview(var ContratoJournalLine: Record "Contrato Journal Line")
     var
-        JobJnlPost: Codeunit "Contrato Jnl.-Post";
+        ContratoJnlPost: Codeunit "Contrato Jnl.-Post";
         GenJnlPostPreview: Codeunit "Gen. Jnl.-Post Preview";
     begin
-        BindSubscription(JobJnlPost);
-        GenJnlPostPreview.Preview(JobJnlPost, JobJournalLine);
+        BindSubscription(ContratoJnlPost);
+        GenJnlPostPreview.Preview(ContratoJnlPost, ContratoJournalLine);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Preview", 'OnRunPreview', '', false, false)]
     local procedure OnRunPreview(var Result: Boolean; Subscriber: Variant; RecVar: Variant)
     var
-        JobJournalLine: Record "Contrato Journal Line";
-        JobJnlPost: Codeunit "Contrato Jnl.-Post";
+        ContratoJournalLine: Record "Contrato Journal Line";
+        ContratoJnlPost: Codeunit "Contrato Jnl.-Post";
     begin
-        JobJournalLine.Copy(RecVar);
-        JobJnlPost.SetPreviewMode(true);
-        Result := JobJnlPost.Run(JobJournalLine);
+        ContratoJournalLine.Copy(RecVar);
+        ContratoJnlPost.SetPreviewMode(true);
+        Result := ContratoJnlPost.Run(ContratoJournalLine);
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCode(var JobJnlLine: Record "Contrato Journal Line"; var HideDialog: Boolean; var SuppressCommit: Boolean)
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnCodeOnAfterConfirm(var JobJnlLine: Record "Contrato Journal Line")
+    local procedure OnBeforeCode(var ContratoJnlLine: Record "Contrato Journal Line"; var HideDialog: Boolean; var SuppressCommit: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCodeOnBeforeConfirm(JobJnlLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
+    local procedure OnCodeOnAfterConfirm(var ContratoJnlLine: Record "Contrato Journal Line")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnCodeOnBeforeConfirm(ContratoJnlLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
     begin
     end;
 }

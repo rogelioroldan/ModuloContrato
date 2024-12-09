@@ -1,16 +1,9 @@
 table 50230 "Contrato G/L Account Price"
 {
     Caption = 'Contrato G/L Account Price';
-#if not CLEAN23
     DrillDownPageID = "Contrato G/L Account Prices";
     LookupPageID = "Contrato G/L Account Prices";
-    ObsoleteState = Pending;
-    ObsoleteTag = '16.0';
-#else
-    ObsoleteState = Removed;
-    ObsoleteTag = '26.0';
-#endif    
-    ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation: table Price List Line';
+
     DataClassification = CustomerContent;
 
     fields
@@ -24,7 +17,7 @@ table 50230 "Contrato G/L Account Price"
 #if not CLEAN23
             trigger OnValidate()
             begin
-                GetJob();
+                GetContrato();
                 "Currency Code" := Contrato."Currency Code";
             end;
 #endif
@@ -127,7 +120,7 @@ table 50230 "Contrato G/L Account Price"
         Contrato: Record Contrato;
         JT: Record "Contrato Task";
 
-    local procedure GetJob()
+    local procedure GetContrato()
     begin
         TestField("Contrato No.");
         Contrato.Get("Contrato No.");
@@ -146,7 +139,7 @@ table 50230 "Contrato G/L Account Price"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckGLAccountNotEmpty(var JobGLAccountPrice: Record "Contrato G/L Account Price"; var IsHandled: Boolean)
+    local procedure OnBeforeCheckGLAccountNotEmpty(var ContratoGLAccountPrice: Record "Contrato G/L Account Price"; var IsHandled: Boolean)
     begin
     end;
 #endif

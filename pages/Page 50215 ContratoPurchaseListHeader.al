@@ -7,8 +7,8 @@ page 50215 "Purchase Contrato Price Lists"
     QueryCategory = 'Purchase Contrato Price Lists';
     RefreshOnActivate = true;
     SourceTable = "Price List Header";
-    SourceTableView = where("Source Group" = const(Job), "Price Type" = const(Purchase));
-    ApplicationArea = Jobs;
+    SourceTableView = where("Source Group" = const(Contrato), "Price Type" = const(Purchase));
+    ApplicationArea = Contratos;
     UsageCategory = Lists;
 
     layout
@@ -20,73 +20,73 @@ page 50215 "Purchase Contrato Price Lists"
                 ShowCaption = false;
                 field(Code; Rec.Code)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Code';
                     ToolTip = 'Specifies the unique identifier of the price list.';
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Description';
                     ToolTip = 'Specifies the description of the price list.';
                 }
                 field(Status; Rec.Status)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Status';
                     ToolTip = 'Specifies whether the price list is in Draft status and can be edited, Inactive and cannot be edited or used, or Active and can be edited (when Allow Editing Active Price is enabled) and used for price calculations.';
                 }
                 field("Allow Updating Defaults"; Rec."Allow Updating Defaults")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies whether users can change the values in the fields on the price list lines that contain default values from the header. This does not affect the ability to allow line or invoice discounts.';
                 }
                 field(Defines; Rec."Amount Type")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Defines';
                     ToolTip = 'Specifies whether the price list defines prices, discounts, or both.';
                 }
                 field("Currency Code"; CurrRec."Currency Code")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Currency';
                     ToolTip = 'Specifies the currency that is used on the price list.';
                 }
                 field(SourceGroup; Rec."Source Group")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Assign-to Group';
                     Visible = false;
                     ToolTip = 'Specifies whether the prices come from groups of customers, vendors or projects.';
                 }
                 field(SourceType; CurrRec."Source Type")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Assign-to Type';
                     ToolTip = 'Specifies the type of entity to which the price list is assigned. The options are relevant to the entity you are currently viewing.';
                 }
                 field(SourceNo; CurrRec."Source No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Assign-to';
                     ToolTip = 'Specifies the entity to which the prices are assigned. The options depend on the selection in the Assign-to Type field. If you choose an entity, the price list will be used only for that entity.';
                 }
                 field(ParentSourceNo; CurrRec."Parent Source No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Assign-to Project No.';
                     ToolTip = 'Specifies the project to which the prices are assigned. If you choose an entity, the price list will be used only for that entity.';
                 }
                 field("Starting Date"; CurrRec."Starting Date")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Starting Date';
                     ToolTip = 'Specifies the date from which the price is valid.';
                 }
                 field("Ending Date"; CurrRec."Ending Date")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Ending Date';
                     ToolTip = 'Specifies the date when the purchase price agreement ends.';
                 }
@@ -143,7 +143,7 @@ page 50215 "Purchase Contrato Price Lists"
     begin
         Rec.FilterGroup := 2;
         Rec.CopyFilters(PriceListHeader);
-        Rec.SetRange("Source Group", Rec."Source Group"::Job);
+        Rec.SetRange("Source Group", Rec."Source Group"::Contrato);
         Rec.SetRange("Price Type", Rec."Price Type"::Purchase);
         Rec.FilterGroup := 0;
     end;

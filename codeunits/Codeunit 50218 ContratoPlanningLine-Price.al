@@ -1,7 +1,7 @@
 codeunit 50218 "Contrato Planning Line - Price" implements "Line With Price"
 {
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         PriceSourceList: Codeunit "Price Source List";
         CurrPriceType: Enum "Price Type";
         PriceCalculated: Boolean;
@@ -18,12 +18,12 @@ codeunit 50218 "Contrato Planning Line - Price" implements "Line With Price"
         StockkeepingUnit: Record "Stockkeeping Unit";
     begin
         ClearAll();
-        JobPlanningLine := Line;
+        ContratoPlanningLine := Line;
         CurrPriceType := PriceType;
         PriceCalculated := false;
         DiscountIsAllowed := true;
-        if JobPlanningLine.Type = JobPlanningLine.Type::Item then
-            IsSKU := StockkeepingUnit.Get(JobPlanningLine."Location Code", JobPlanningLine."No.", JobPlanningLine."Variant Code");
+        if ContratoPlanningLine.Type = ContratoPlanningLine.Type::Item then
+            IsSKU := StockkeepingUnit.Get(ContratoPlanningLine."Location Code", ContratoPlanningLine."No.", ContratoPlanningLine."Variant Code");
         AddSources();
     end;
 
@@ -39,7 +39,7 @@ codeunit 50218 "Contrato Planning Line - Price" implements "Line With Price"
 
     procedure GetLine(var Line: Variant)
     begin
-        Line := JobPlanningLine;
+        Line := ContratoPlanningLine;
     end;
 
     procedure GetLine(var Header: Variant; var Line: Variant)
@@ -63,14 +63,14 @@ codeunit 50218 "Contrato Planning Line - Price" implements "Line With Price"
                     CurrPriceType::Sale:
                         Result :=
                             Result or
-                            not (CalledByFieldNo in [JobPlanningLine.FieldNo(Quantity), JobPlanningLine.FieldNo("Location Code"), JobPlanningLine.FieldNo("Variant Code")]);
+                            not (CalledByFieldNo in [ContratoPlanningLine.FieldNo(Quantity), ContratoPlanningLine.FieldNo("Location Code"), ContratoPlanningLine.FieldNo("Variant Code")]);
                     CurrPriceType::Purchase:
                         Result :=
                             Result or
-                            not ((CalledByFieldNo = JobPlanningLine.FieldNo(Quantity)) or
-                                ((CalledByFieldNo = JobPlanningLine.FieldNo("Variant Code")) and not IsSKU))
+                            not ((CalledByFieldNo = ContratoPlanningLine.FieldNo(Quantity)) or
+                                ((CalledByFieldNo = ContratoPlanningLine.FieldNo("Variant Code")) and not IsSKU))
                 end;
-        OnAfterIsPriceUpdateNeeded(AmountType, FoundPrice, CalledByFieldNo, JobPlanningLine, Result);
+        OnAfterIsPriceUpdateNeeded(AmountType, FoundPrice, CalledByFieldNo, ContratoPlanningLine, Result);
     end;
 
     procedure IsDiscountAllowed() Result: Boolean;
@@ -80,18 +80,18 @@ codeunit 50218 "Contrato Planning Line - Price" implements "Line With Price"
 
     procedure Verify()
     begin
-        JobPlanningLine.TestField("Qty. per Unit of Measure");
-        if JobPlanningLine."Currency Code" <> '' then
-            JobPlanningLine.TestField("Currency Factor");
+        ContratoPlanningLine.TestField("Qty. per Unit of Measure");
+        if ContratoPlanningLine."Currency Code" <> '' then
+            ContratoPlanningLine.TestField("Currency Factor");
     end;
 
     procedure SetAssetSourceForSetup(var DtldPriceCalculationSetup: Record "Dtld. Price Calculation Setup"): Boolean
     begin
         DtldPriceCalculationSetup.Init();
         DtldPriceCalculationSetup.Type := CurrPriceType;
-        DtldPriceCalculationSetup.Method := JobPlanningLine."Price Calculation Method";
+        DtldPriceCalculationSetup.Method := ContratoPlanningLine."Price Calculation Method";
         DtldPriceCalculationSetup."Asset Type" := GetAssetType();
-        DtldPriceCalculationSetup."Asset No." := JobPlanningLine."No.";
+        DtldPriceCalculationSetup."Asset No." := ContratoPlanningLine."No.";
         exit(PriceSourceList.GetSourceGroup(DtldPriceCalculationSetup));
     end;
 
@@ -99,23 +99,23 @@ codeunit 50218 "Contrato Planning Line - Price" implements "Line With Price"
     begin
         PriceCalculationBuffer."Price Type" := CurrPriceType;
         PriceCalculationBuffer."Asset Type" := GetAssetType();
-        PriceCalculationBuffer."Asset No." := JobPlanningLine."No.";
+        PriceCalculationBuffer."Asset No." := ContratoPlanningLine."No.";
         exit((PriceCalculationBuffer."Asset Type" <> PriceCalculationBuffer."Asset Type"::" ") and (PriceCalculationBuffer."Asset No." <> ''));
     end;
 
     procedure GetAssetType() AssetType: Enum "Price Asset Type";
     begin
-        case JobPlanningLine.Type of
-            JobPlanningLine.Type::Item:
+        case ContratoPlanningLine.Type of
+            ContratoPlanningLine.Type::Item:
                 AssetType := AssetType::Item;
-            JobPlanningLine.Type::Resource:
+            ContratoPlanningLine.Type::Resource:
                 AssetType := AssetType::Resource;
-            JobPlanningLine.Type::"G/L Account":
+            ContratoPlanningLine.Type::"G/L Account":
                 AssetType := AssetType::"G/L Account";
             else
                 AssetType := AssetType::" ";
         end;
-        OnAfterGetAssetType(JobPlanningLine, AssetType);
+        OnAfterGetAssetType(ContratoPlanningLine, AssetType);
     end;
 
     procedure CopyToBuffer(var PriceCalculationBufferMgt: Codeunit "Price Calculation Buffer Mgt."): Boolean
@@ -136,49 +136,49 @@ codeunit 50218 "Contrato Planning Line - Price" implements "Line With Price"
         Item: Record Item;
         Resource: Record Resource;
     begin
-        PriceCalculationBuffer."Price Calculation Method" := JobPlanningLine."Price Calculation Method";
-        PriceCalculationBuffer."Cost Calculation Method" := JobPlanningLine."Cost Calculation Method";
-        PriceCalculationBuffer."Location Code" := JobPlanningLine."Location Code";
+        PriceCalculationBuffer."Price Calculation Method" := ContratoPlanningLine."Price Calculation Method";
+        PriceCalculationBuffer."Cost Calculation Method" := ContratoPlanningLine."Cost Calculation Method";
+        PriceCalculationBuffer."Location Code" := ContratoPlanningLine."Location Code";
         case PriceCalculationBuffer."Asset Type" of
             PriceCalculationBuffer."Asset Type"::Item:
                 begin
                     Item.Get(PriceCalculationBuffer."Asset No.");
                     PriceCalculationBuffer."VAT Prod. Posting Group" := Item."VAT Prod. Posting Group";
-                    PriceCalculationBuffer."Variant Code" := JobPlanningLine."Variant Code";
+                    PriceCalculationBuffer."Variant Code" := ContratoPlanningLine."Variant Code";
                     PriceCalculationBuffer."Is SKU" := IsSKU;
                 end;
             PriceCalculationBuffer."Asset Type"::Resource:
                 begin
                     Resource.Get(PriceCalculationBuffer."Asset No.");
                     PriceCalculationBuffer."VAT Prod. Posting Group" := Resource."VAT Prod. Posting Group";
-                    PriceCalculationBuffer."Work Type Code" := JobPlanningLine."Work Type Code";
+                    PriceCalculationBuffer."Work Type Code" := ContratoPlanningLine."Work Type Code";
                 end;
         end;
-        PriceCalculationBuffer."Document Date" := JobPlanningLine."Planning Date";
+        PriceCalculationBuffer."Document Date" := ContratoPlanningLine."Planning Date";
         if PriceCalculationBuffer."Document Date" = 0D then
             PriceCalculationBuffer."Document Date" := WorkDate();
-        PriceCalculationBuffer.Validate("Currency Code", JobPlanningLine."Currency Code");
-        PriceCalculationBuffer."Currency Factor" := JobPlanningLine."Currency Factor";
+        PriceCalculationBuffer.Validate("Currency Code", ContratoPlanningLine."Currency Code");
+        PriceCalculationBuffer."Currency Factor" := ContratoPlanningLine."Currency Factor";
 
         // Tax
         PriceCalculationBuffer."Prices Including Tax" := false;
         // UoM
-        PriceCalculationBuffer.Quantity := Abs(JobPlanningLine.Quantity);
-        PriceCalculationBuffer."Unit of Measure Code" := JobPlanningLine."Unit of Measure Code";
-        PriceCalculationBuffer."Qty. per Unit of Measure" := JobPlanningLine."Qty. per Unit of Measure";
+        PriceCalculationBuffer.Quantity := Abs(ContratoPlanningLine.Quantity);
+        PriceCalculationBuffer."Unit of Measure Code" := ContratoPlanningLine."Unit of Measure Code";
+        PriceCalculationBuffer."Qty. per Unit of Measure" := ContratoPlanningLine."Qty. per Unit of Measure";
         // Discounts
         PriceCalculationBuffer."Allow Line Disc." := IsDiscountAllowed();
         PriceCalculationBuffer."Allow Invoice Disc." := false;
-        OnAfterFillBuffer(PriceCalculationBuffer, JobPlanningLine);
+        OnAfterFillBuffer(PriceCalculationBuffer, ContratoPlanningLine);
     end;
 
     local procedure AddSources()
     var
         Contrato: Record Contrato;
-        JobTask: Record "Contrato Task";
+        ContratoTask: Record "Contrato Task";
         SourceType: Enum "Price Source Type";
     begin
-        Contrato.Get(JobPlanningLine."Contrato No.");
+        Contrato.Get(ContratoPlanningLine."Contrato No.");
         PriceSourceList.Init();
         case CurrPriceType of
             CurrPriceType::Sale:
@@ -188,19 +188,19 @@ codeunit 50218 "Contrato Planning Line - Price" implements "Line With Price"
                         PriceSourceList.Add(SourceType::Customer, Contrato."Bill-to Customer No.");
                         PriceSourceList.Add(SourceType::Contact, Contrato."Bill-to Contact No.");
                     end else begin
-                        JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
-                        PriceSourceList.Add(SourceType::Customer, JobTask."Bill-to Customer No.");
-                        PriceSourceList.Add(SourceType::Contact, JobTask."Bill-to Contact No.");
+                        ContratoTask.Get(ContratoPlanningLine."Contrato No.", ContratoPlanningLine."Contrato Task No.");
+                        PriceSourceList.Add(SourceType::Customer, ContratoTask."Bill-to Customer No.");
+                        PriceSourceList.Add(SourceType::Contact, ContratoTask."Bill-to Contact No.");
                     end;
-                    PriceSourceList.Add(SourceType::"Customer Price Group", JobPlanningLine."Customer Price Group");
+                    PriceSourceList.Add(SourceType::"Customer Price Group", ContratoPlanningLine."Customer Price Group");
                     PriceSourceList.Add(SourceType::"Customer Disc. Group", Contrato."Customer Disc. Group");
                 end;
             CurrPriceType::Purchase:
                 PriceSourceList.Add(SourceType::"All Vendors");
         end;
-        PriceSourceList.AddJobAsSources(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
+        PriceSourceList.AddJobAsSources(ContratoPlanningLine."Contrato No.", ContratoPlanningLine."Contrato Task No.");
 
-        OnAfterAddSources(JobPlanningLine, CurrPriceType, PriceSourceList, Contrato)
+        OnAfterAddSources(ContratoPlanningLine, CurrPriceType, PriceSourceList, Contrato)
     end;
 
     procedure SetPrice(AmountType: enum "Price Amount Type"; PriceListLine: Record "Price List Line")
@@ -208,61 +208,61 @@ codeunit 50218 "Contrato Planning Line - Price" implements "Line With Price"
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeSetPrice(JobPlanningLine, PriceListLine, AmountType, IsHandled, CurrPriceType);
+        OnBeforeSetPrice(ContratoPlanningLine, PriceListLine, AmountType, IsHandled, CurrPriceType);
         if IsHandled then
             exit;
 
         if AmountType = AmountType::Discount then
-            JobPlanningLine."Line Discount %" := PriceListLine."Line Discount %"
+            ContratoPlanningLine."Line Discount %" := PriceListLine."Line Discount %"
         else
             case CurrPriceType of
                 CurrPriceType::Sale:
                     begin
-                        JobPlanningLine."Unit Price" := PriceListLine."Unit Price";
-                        JobPlanningLine."Cost Factor" := PriceListLine."Cost Factor";
+                        ContratoPlanningLine."Unit Price" := PriceListLine."Unit Price";
+                        ContratoPlanningLine."Cost Factor" := PriceListLine."Cost Factor";
                         if PriceListLine.IsRealLine() then
                             DiscountIsAllowed := PriceListLine."Allow Line Disc.";
                         PriceCalculated := true;
                     end;
                 CurrPriceType::Purchase:
-                    case JobPlanningLine.Type of
-                        JobPlanningLine.Type::Item:
-                            JobPlanningLine."Direct Unit Cost (LCY)" := PriceListLine."Direct Unit Cost";
-                        JobPlanningLine.Type::Resource:
+                    case ContratoPlanningLine.Type of
+                        ContratoPlanningLine.Type::Item:
+                            ContratoPlanningLine."Direct Unit Cost (LCY)" := PriceListLine."Direct Unit Cost";
+                        ContratoPlanningLine.Type::Resource:
                             begin
-                                JobPlanningLine."Unit Cost" := PriceListLine."Unit Cost";
-                                JobPlanningLine."Direct Unit Cost (LCY)" := PriceListLine."Direct Unit Cost";
+                                ContratoPlanningLine."Unit Cost" := PriceListLine."Unit Cost";
+                                ContratoPlanningLine."Direct Unit Cost (LCY)" := PriceListLine."Direct Unit Cost";
                             end;
-                        JobPlanningLine.Type::"G/L Account":
+                        ContratoPlanningLine.Type::"G/L Account":
                             if PriceListLine."Unit Cost" <> 0 then
-                                JobPlanningLine."Unit Cost" := PriceListLine."Unit Cost"
+                                ContratoPlanningLine."Unit Cost" := PriceListLine."Unit Cost"
                             else
                                 if PriceListLine."Direct Unit Cost" <> 0 then
-                                    JobPlanningLine."Unit Cost" := PriceListLine."Direct Unit Cost";
+                                    ContratoPlanningLine."Unit Cost" := PriceListLine."Direct Unit Cost";
                     end;
             end;
-        OnAfterSetPrice(JobPlanningLine, PriceListLine, AmountType);
+        OnAfterSetPrice(ContratoPlanningLine, PriceListLine, AmountType);
     end;
 
     procedure ValidatePrice(AmountType: enum "Price Amount Type")
     begin
         if AmountType = AmountType::Discount then
-            JobPlanningLine.Validate("Line Discount %")
+            ContratoPlanningLine.Validate("Line Discount %")
         else
             case CurrPriceType of
                 CurrPriceType::Sale:
-                    JobPlanningLine.Validate("Unit Price");
+                    ContratoPlanningLine.Validate("Unit Price");
                 CurrPriceType::Purchase:
-                    case JobPlanningLine.Type of
-                        JobPlanningLine.Type::Item:
-                            JobPlanningLine.Validate("Direct Unit Cost (LCY)");
-                        JobPlanningLine.Type::Resource:
+                    case ContratoPlanningLine.Type of
+                        ContratoPlanningLine.Type::Item:
+                            ContratoPlanningLine.Validate("Direct Unit Cost (LCY)");
+                        ContratoPlanningLine.Type::Resource:
                             begin
-                                JobPlanningLine.Validate("Direct Unit Cost (LCY)");
-                                JobPlanningLine.Validate("Unit Cost (LCY)");
+                                ContratoPlanningLine.Validate("Direct Unit Cost (LCY)");
+                                ContratoPlanningLine.Validate("Unit Cost (LCY)");
                             end;
-                        JobPlanningLine.Type::"G/L Account":
-                            JobPlanningLine.Validate("Unit Cost");
+                        ContratoPlanningLine.Type::"G/L Account":
+                            ContratoPlanningLine.Validate("Unit Cost");
                     end;
             end;
     end;
@@ -270,36 +270,36 @@ codeunit 50218 "Contrato Planning Line - Price" implements "Line With Price"
     procedure Update(AmountType: enum "Price Amount Type")
     begin
         if not DiscountIsAllowed then
-            JobPlanningLine."Line Discount %" := 0;
+            ContratoPlanningLine."Line Discount %" := 0;
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFillBuffer(var PriceCalculationBuffer: Record "Price Calculation Buffer"; JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterFillBuffer(var PriceCalculationBuffer: Record "Price Calculation Buffer"; ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterGetAssetType(JobPlanningLine: Record "Contrato Planning Line"; var AssetType: Enum "Price Asset Type")
+    local procedure OnAfterGetAssetType(ContratoPlanningLine: Record "Contrato Planning Line"; var AssetType: Enum "Price Asset Type")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterIsPriceUpdateNeeded(AmountType: Enum "Price Amount Type"; FoundPrice: Boolean; CalledByFieldNo: Integer; JobPlanningLine: Record "Contrato Planning Line"; var Result: Boolean)
+    local procedure OnAfterIsPriceUpdateNeeded(AmountType: Enum "Price Amount Type"; FoundPrice: Boolean; CalledByFieldNo: Integer; ContratoPlanningLine: Record "Contrato Planning Line"; var Result: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterSetPrice(var JobPlanningLine: Record "Contrato Planning Line"; PriceListLine: Record "Price List Line"; AmountType: Enum "Price Amount Type")
+    local procedure OnAfterSetPrice(var ContratoPlanningLine: Record "Contrato Planning Line"; PriceListLine: Record "Price List Line"; AmountType: Enum "Price Amount Type")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeSetPrice(var JobPlanningLine: Record "Contrato Planning Line"; PriceListLine: Record "Price List Line"; AmountType: Enum "Price Amount Type"; var IsHandled: Boolean; CurrPriceType: Enum "Price Type")
+    local procedure OnBeforeSetPrice(var ContratoPlanningLine: Record "Contrato Planning Line"; PriceListLine: Record "Price List Line"; AmountType: Enum "Price Amount Type"; var IsHandled: Boolean; CurrPriceType: Enum "Price Type")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterAddSources(var JobPlanningLine: Record "Contrato Planning Line"; CurrPriceType: Enum "Price Type"; var PriceSourceList: Codeunit "Price Source List"; Contrato: Record Contrato)
+    local procedure OnAfterAddSources(var ContratoPlanningLine: Record "Contrato Planning Line"; CurrPriceType: Enum "Price Type"; var PriceSourceList: Codeunit "Price Source List"; Contrato: Record Contrato)
     begin
     end;
 }

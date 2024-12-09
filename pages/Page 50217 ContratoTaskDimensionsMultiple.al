@@ -83,77 +83,77 @@ page 50217 "ContratoTaskDimensionsMultiple"
     end;
 
     var
-        TempJobTaskDim2: Record "Contrato Task Dimension" temporary;
-        TempJobTaskDim3: Record "Contrato Task Dimension" temporary;
-        TempJobTask: Record "Contrato Task" temporary;
+        TempContratoTaskDim2: Record "Contrato Task Dimension" temporary;
+        TempContratoTaskDim3: Record "Contrato Task Dimension" temporary;
+        TempContratoTask: Record "Contrato Task" temporary;
         TotalRecNo: Integer;
         Text000: Label 'You cannot rename a %1.';
         Text001: Label '(Conflict)';
 
-    local procedure SetCommonJobTaskDim()
+    local procedure SetCommonContratoTaskDim()
     var
-        JobTaskDim: Record "Contrato Task Dimension";
+        ContratoTaskDim: Record "Contrato Task Dimension";
     begin
         Rec.SetRange("Multiple Selection Action", Rec."Multiple Selection Action"::Delete);
         if Rec.Find('-') then
             repeat
-                if TempJobTaskDim3.Find('-') then
+                if TempContratoTaskDim3.Find('-') then
                     repeat
-                        if JobTaskDim.Get(TempJobTaskDim3."Contrato No.", TempJobTaskDim3."Contrato Task No.", Rec."Dimension Code")
+                        if ContratoTaskDim.Get(TempContratoTaskDim3."Contrato No.", TempContratoTaskDim3."Contrato Task No.", Rec."Dimension Code")
                         then
-                            JobTaskDim.Delete(true);
-                    until TempJobTaskDim3.Next() = 0;
+                            ContratoTaskDim.Delete(true);
+                    until TempContratoTaskDim3.Next() = 0;
             until Rec.Next() = 0;
         Rec.SetRange("Multiple Selection Action", Rec."Multiple Selection Action"::Change);
         if Rec.Find('-') then
             repeat
-                if TempJobTaskDim3.Find('-') then
+                if TempContratoTaskDim3.Find('-') then
                     repeat
-                        if JobTaskDim.Get(TempJobTaskDim3."Contrato No.", TempJobTaskDim3."Contrato Task No.", Rec."Dimension Code")
+                        if ContratoTaskDim.Get(TempContratoTaskDim3."Contrato No.", TempContratoTaskDim3."Contrato Task No.", Rec."Dimension Code")
                         then begin
-                            JobTaskDim."Dimension Code" := Rec."Dimension Code";
-                            JobTaskDim."Dimension Value Code" := Rec."Dimension Value Code";
-                            JobTaskDim.Modify(true);
+                            ContratoTaskDim."Dimension Code" := Rec."Dimension Code";
+                            ContratoTaskDim."Dimension Value Code" := Rec."Dimension Value Code";
+                            ContratoTaskDim.Modify(true);
                         end else begin
-                            JobTaskDim.Init();
-                            JobTaskDim."Contrato No." := TempJobTaskDim3."Contrato No.";
-                            JobTaskDim."Contrato Task No." := TempJobTaskDim3."Contrato Task No.";
-                            JobTaskDim."Dimension Code" := Rec."Dimension Code";
-                            JobTaskDim."Dimension Value Code" := Rec."Dimension Value Code";
-                            JobTaskDim.Insert(true);
+                            ContratoTaskDim.Init();
+                            ContratoTaskDim."Contrato No." := TempContratoTaskDim3."Contrato No.";
+                            ContratoTaskDim."Contrato Task No." := TempContratoTaskDim3."Contrato Task No.";
+                            ContratoTaskDim."Dimension Code" := Rec."Dimension Code";
+                            ContratoTaskDim."Dimension Value Code" := Rec."Dimension Value Code";
+                            ContratoTaskDim.Insert(true);
                         end;
-                    until TempJobTaskDim3.Next() = 0;
+                    until TempContratoTaskDim3.Next() = 0;
             until Rec.Next() = 0;
     end;
 
-    procedure SetMultiJobTask(var JobTask: Record "Contrato Task")
+    procedure SetMultiContratoTask(var ContratoTask: Record "Contrato Task")
     begin
-        TempJobTaskDim2.DeleteAll();
-        TempJobTask.DeleteAll();
-        if JobTask.Find('-') then
+        TempContratoTaskDim2.DeleteAll();
+        TempContratoTask.DeleteAll();
+        if ContratoTask.Find('-') then
             repeat
-                CopyJobTaskDimToJobTaskDim(JobTask."Contrato No.", JobTask."Contrato Task No.");
-                TempJobTask.TransferFields(JobTask);
-                TempJobTask.Insert();
-            until JobTask.Next() = 0;
+                CopyContratoTaskDimToContratoTaskDim(ContratoTask."Contrato No.", ContratoTask."Contrato Task No.");
+                TempContratoTask.TransferFields(ContratoTask);
+                TempContratoTask.Insert();
+            until ContratoTask.Next() = 0;
     end;
 
-    local procedure CopyJobTaskDimToJobTaskDim(JobNo: Code[20]; JobTaskNo: Code[20])
+    local procedure CopyContratoTaskDimToContratoTaskDim(ContratoNo: Code[20]; ContratoTaskNo: Code[20])
     var
-        JobTaskDim: Record "Contrato Task Dimension";
+        ContratoTaskDim: Record "Contrato Task Dimension";
     begin
         TotalRecNo := TotalRecNo + 1;
-        TempJobTaskDim3."Contrato No." := JobNo;
-        TempJobTaskDim3."Contrato Task No." := JobTaskNo;
-        TempJobTaskDim3.Insert();
+        TempContratoTaskDim3."Contrato No." := ContratoNo;
+        TempContratoTaskDim3."Contrato Task No." := ContratoTaskNo;
+        TempContratoTaskDim3.Insert();
 
-        JobTaskDim.SetRange("Contrato No.", JobNo);
-        JobTaskDim.SetRange("Contrato Task No.", JobTaskNo);
-        if JobTaskDim.Find('-') then
+        ContratoTaskDim.SetRange("Contrato No.", ContratoNo);
+        ContratoTaskDim.SetRange("Contrato Task No.", ContratoTaskNo);
+        if ContratoTaskDim.Find('-') then
             repeat
-                TempJobTaskDim2 := JobTaskDim;
-                TempJobTaskDim2.Insert();
-            until JobTaskDim.Next() = 0;
+                TempContratoTaskDim2 := ContratoTaskDim;
+                TempContratoTaskDim2.Insert();
+            until ContratoTaskDim.Next() = 0;
     end;
 
     local procedure GetDefaultDim()
@@ -166,12 +166,12 @@ page 50217 "ContratoTaskDimensionsMultiple"
         if Dim.Find('-') then
             repeat
                 RecNo := 0;
-                TempJobTaskDim2.SetRange("Dimension Code", Dim.Code);
+                TempContratoTaskDim2.SetRange("Dimension Code", Dim.Code);
                 Rec.SetRange("Dimension Code", Dim.Code);
-                if TempJobTaskDim2.Find('-') then
+                if TempContratoTaskDim2.Find('-') then
                     repeat
                         if Rec.Find('-') then begin
-                            if Rec."Dimension Value Code" <> TempJobTaskDim2."Dimension Value Code" then
+                            if Rec."Dimension Value Code" <> TempContratoTaskDim2."Dimension Value Code" then
                                 if (Rec."Multiple Selection Action" <> 10) and
                                    (Rec."Multiple Selection Action" <> 21)
                                 then begin
@@ -182,11 +182,11 @@ page 50217 "ContratoTaskDimensionsMultiple"
                             Rec.Modify();
                             RecNo := RecNo + 1;
                         end else begin
-                            Rec := TempJobTaskDim2;
+                            Rec := TempContratoTaskDim2;
                             Rec.Insert();
                             RecNo := RecNo + 1;
                         end;
-                    until TempJobTaskDim2.Next() = 0;
+                    until TempContratoTaskDim2.Next() = 0;
 
                 if Rec.Find('-') and (RecNo <> TotalRecNo) then
                     if (Rec."Multiple Selection Action" <> 10) and
@@ -206,7 +206,7 @@ page 50217 "ContratoTaskDimensionsMultiple"
 
     local procedure LookupOKOnPush()
     begin
-        SetCommonJobTaskDim();
+        SetCommonContratoTaskDim();
     end;
 
     local procedure DimensionValueCodeOnFormat(Text: Text[1024])

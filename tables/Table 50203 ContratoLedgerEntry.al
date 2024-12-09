@@ -537,12 +537,12 @@ table 50203 "Contrato Ledger Entry"
         exit(FindRecordManagement.GetLastEntryIntFieldValue(Rec, FieldNo("Entry No.")))
     end;
 
-    procedure CopyTrackingFromJobJnlLine(JobJnlLine: Record "Contrato Journal Line")
+    procedure CopyTrackingFromContratoJnlLine(ContratoJnlLine: Record "Contrato Journal Line")
     begin
-        "Serial No." := JobJnlLine."Serial No.";
-        "Lot No." := JobJnlLine."Lot No.";
+        "Serial No." := ContratoJnlLine."Serial No.";
+        "Lot No." := ContratoJnlLine."Lot No.";
 
-        OnAfterCopyTrackingFromJobJnlLine(Rec, JobJnlLine);
+        OnAfterCopyTrackingFromContratoJnlLine(Rec, ContratoJnlLine);
     end;
 
     procedure ShowDimensions()
@@ -551,7 +551,7 @@ table 50203 "Contrato Ledger Entry"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCopyTrackingFromJobJnlLine(var JobLedgerEntry: Record "Contrato Ledger Entry"; JobJnlLine: Record "Contrato Journal Line")
+    local procedure OnAfterCopyTrackingFromContratoJnlLine(var ContratoLedgerEntry: Record "Contrato Ledger Entry"; ContratoJnlLine: Record "Contrato Journal Line")
     begin
     end;
 }

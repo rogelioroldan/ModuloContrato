@@ -6,26 +6,26 @@ codeunit 50204 "Contrato Jnl.-Post Batch"
 
     trigger OnRun()
     begin
-        JobJnlLine.Copy(Rec);
-        JobJnlLine.SetAutoCalcFields();
+        ContratoJnlLine.Copy(Rec);
+        ContratoJnlLine.SetAutoCalcFields();
         Code();
-        Rec := JobJnlLine;
+        Rec := ContratoJnlLine;
     end;
 
     var
         AccountingPeriod: Record "Accounting Period";
-        JobJnlTemplate: Record "Contrato Journal Template";
-        JobJnlBatch: Record "Contrato Journal Batch";
-        JobJnlLine: Record "Contrato Journal Line";
-        JobJnlLine2: Record "Contrato Journal Line";
-        JobJnlLine3: Record "Contrato Journal Line";
-        JobLedgEntry: Record "Contrato Ledger Entry";
-        JobReg: Record "Contrato Register";
-        JobJnlCheckLine: Codeunit "Contrato Jnl.-Check Line";
-        JobJnlPostLine: Codeunit "Contrato Jnl.-Post Line";
+        ContratoJnlTemplate: Record "Contrato Journal Template";
+        ContratoJnlBatch: Record "Contrato Journal Batch";
+        ContratoJnlLine: Record "Contrato Journal Line";
+        ContratoJnlLine2: Record "Contrato Journal Line";
+        ContratoJnlLine3: Record "Contrato Journal Line";
+        ContratoLedgEntry: Record "Contrato Ledger Entry";
+        ContratoReg: Record "Contrato Register";
+        ContratoJnlCheckLine: Codeunit "Contrato Jnl.-Check Line";
+        ContratoJnlPostLine: Codeunit "Contrato Jnl.-Post Line";
         NoSeriesBatch: Codeunit "No. Series - Batch";
         Window: Dialog;
-        JobRegNo: Integer;
+        ContratoRegNo: Integer;
         StartLineNo: Integer;
         LineCount: Integer;
         NoOfRecords: Integer;
@@ -48,31 +48,31 @@ codeunit 50204 "Contrato Jnl.-Post Batch"
         UpdateItemAnalysisView: Codeunit "Update Item Analysis View";
         IsHandled: Boolean;
     begin
-        OnBeforeCode(JobJnlLine, SuppressCommit);
+        OnBeforeCode(ContratoJnlLine, SuppressCommit);
 
-        JobJnlLine.SetRange("Journal Template Name", JobJnlLine."Journal Template Name");
-        JobJnlLine.SetRange("Journal Batch Name", JobJnlLine."Journal Batch Name");
-        JobJnlLine.SetFilter(Quantity, '<> 0');
-        OnCodeOnAfterFilterJobJnlLine(JobJnlLine);
-        JobJnlLine.LockTable();
+        ContratoJnlLine.SetRange("Journal Template Name", ContratoJnlLine."Journal Template Name");
+        ContratoJnlLine.SetRange("Journal Batch Name", ContratoJnlLine."Journal Batch Name");
+        ContratoJnlLine.SetFilter(Quantity, '<> 0');
+        OnCodeOnAfterFilterContratoJnlLine(ContratoJnlLine);
+        ContratoJnlLine.LockTable();
 
-        JobJnlTemplate.Get(JobJnlLine."Journal Template Name");
-        JobJnlBatch.Get(JobJnlLine."Journal Template Name", JobJnlLine."Journal Batch Name");
+        ContratoJnlTemplate.Get(ContratoJnlLine."Journal Template Name");
+        ContratoJnlBatch.Get(ContratoJnlLine."Journal Template Name", ContratoJnlLine."Journal Batch Name");
 
-        if JobJnlTemplate.Recurring then begin
-            JobJnlLine.SetRange("Posting Date", 0D, WorkDate());
-            JobJnlLine.SetFilter("Expiration Date", '%1 | %2..', 0D, WorkDate());
+        if ContratoJnlTemplate.Recurring then begin
+            ContratoJnlLine.SetRange("Posting Date", 0D, WorkDate());
+            ContratoJnlLine.SetFilter("Expiration Date", '%1 | %2..', 0D, WorkDate());
         end;
 
-        if not JobJnlLine.Find('=><') then begin
-            JobJnlLine."Line No." := 0;
+        if not ContratoJnlLine.Find('=><') then begin
+            ContratoJnlLine."Line No." := 0;
             if not SuppressCommit then
                 Commit();
             exit;
         end;
 
         if GuiAllowed() then begin
-            if JobJnlTemplate.Recurring then
+            if ContratoJnlTemplate.Recurring then
                 Window.Open(
                 Text001 +
                 Text002 +
@@ -83,89 +83,89 @@ codeunit 50204 "Contrato Jnl.-Post Batch"
                 Text001 +
                 Text002 +
                 Text005);
-            Window.Update(1, JobJnlLine."Journal Batch Name");
+            Window.Update(1, ContratoJnlLine."Journal Batch Name");
         end;
 
         // Check lines
-        OnCodeOnBeforeCheckLines(JobJnlLine);
+        OnCodeOnBeforeCheckLines(ContratoJnlLine);
         LineCount := 0;
-        StartLineNo := JobJnlLine."Line No.";
+        StartLineNo := ContratoJnlLine."Line No.";
         repeat
             LineCount := LineCount + 1;
             if GuiAllowed() then
                 Window.Update(2, LineCount);
-            CheckRecurringLine(JobJnlLine);
-            JobJnlCheckLine.RunCheck(JobJnlLine);
-            OnAfterCheckJnlLine(JobJnlLine);
-            if JobJnlLine.Next() = 0 then
-                JobJnlLine.Find('-');
-        until JobJnlLine."Line No." = StartLineNo;
+            CheckRecurringLine(ContratoJnlLine);
+            ContratoJnlCheckLine.RunCheck(ContratoJnlLine);
+            OnAfterCheckJnlLine(ContratoJnlLine);
+            if ContratoJnlLine.Next() = 0 then
+                ContratoJnlLine.Find('-');
+        until ContratoJnlLine."Line No." = StartLineNo;
         NoOfRecords := LineCount;
 
         // Find next register no.
-        JobLedgEntry.LockTable();
-        if JobLedgEntry.FindLast() then;
-        JobReg.LockTable();
-        if JobReg.FindLast() and (JobReg."To Entry No." = 0) then
-            JobRegNo := JobReg."No."
+        ContratoLedgEntry.LockTable();
+        if ContratoLedgEntry.FindLast() then;
+        ContratoReg.LockTable();
+        if ContratoReg.FindLast() and (ContratoReg."To Entry No." = 0) then
+            ContratoRegNo := ContratoReg."No."
         else
-            JobRegNo := JobReg."No." + 1;
+            ContratoRegNo := ContratoReg."No." + 1;
 
         // Post lines
         LineCount := 0;
         LastDocNo := '';
         LastDocNo2 := '';
         LastPostedDocNo := '';
-        JobJnlLine.Find('-');
+        ContratoJnlLine.Find('-');
         repeat
             LineCount := LineCount + 1;
             if GuiAllowed() then begin
                 Window.Update(3, LineCount);
                 Window.Update(4, Round(LineCount / NoOfRecords * 10000, 1));
             end;
-            if not JobJnlLine.EmptyLine() and
-                (JobJnlBatch."No. Series" <> '') and
-                (JobJnlLine."Document No." <> LastDocNo2)
+            if not ContratoJnlLine.EmptyLine() and
+                (ContratoJnlBatch."No. Series" <> '') and
+                (ContratoJnlLine."Document No." <> LastDocNo2)
             then
-                JobJnlLine.TestField("Document No.", NoSeriesBatch.GetNextNo(JobJnlBatch."No. Series", JobJnlLine."Posting Date"));
-            if not JobJnlLine.EmptyLine() then
-                LastDocNo2 := JobJnlLine."Document No.";
-            MakeRecurringTexts(JobJnlLine);
-            if JobJnlLine."Posting No. Series" = '' then begin
-                JobJnlLine."Posting No. Series" := JobJnlBatch."No. Series";
+                ContratoJnlLine.TestField("Document No.", NoSeriesBatch.GetNextNo(ContratoJnlBatch."No. Series", ContratoJnlLine."Posting Date"));
+            if not ContratoJnlLine.EmptyLine() then
+                LastDocNo2 := ContratoJnlLine."Document No.";
+            MakeRecurringTexts(ContratoJnlLine);
+            if ContratoJnlLine."Posting No. Series" = '' then begin
+                ContratoJnlLine."Posting No. Series" := ContratoJnlBatch."No. Series";
                 IsHandled := false;
-                OnBeforeTestDocumentNo(JobJnlLine, IsHandled);
+                OnBeforeTestDocumentNo(ContratoJnlLine, IsHandled);
                 if not IsHandled then
-                    JobJnlLine.TestField("Document No.");
+                    ContratoJnlLine.TestField("Document No.");
             end else
-                if not JobJnlLine.EmptyLine() then
-                    if (JobJnlLine."Document No." = LastDocNo) and (JobJnlLine."Document No." <> '') then
-                        JobJnlLine."Document No." := LastPostedDocNo
+                if not ContratoJnlLine.EmptyLine() then
+                    if (ContratoJnlLine."Document No." = LastDocNo) and (ContratoJnlLine."Document No." <> '') then
+                        ContratoJnlLine."Document No." := LastPostedDocNo
                     else begin
-                        LastDocNo := JobJnlLine."Document No.";
-                        JobJnlLine."Document No." := NoSeriesBatch.GetNextNo(JobJnlLine."Posting No. Series", JobJnlLine."Posting Date");
-                        LastPostedDocNo := JobJnlLine."Document No.";
+                        LastDocNo := ContratoJnlLine."Document No.";
+                        ContratoJnlLine."Document No." := NoSeriesBatch.GetNextNo(ContratoJnlLine."Posting No. Series", ContratoJnlLine."Posting Date");
+                        LastPostedDocNo := ContratoJnlLine."Document No.";
                     end;
-            OnBeforeJobJnlPostLine(JobJnlLine);
-            JobJnlPostLine.RunWithCheck(JobJnlLine);
-            OnAfterJobJnlPostLine(JobJnlLine);
-        until JobJnlLine.Next() = 0;
+            OnBeforeContratoJnlPostLine(ContratoJnlLine);
+            ContratoJnlPostLine.RunWithCheck(ContratoJnlLine);
+            OnAfterContratoJnlPostLine(ContratoJnlLine);
+        until ContratoJnlLine.Next() = 0;
 
         InvtSetup.Get();
         if InvtSetup.AutomaticCostAdjmtRequired() then
             InvtAdjmtHandler.MakeInventoryAdjustment(true, InvtSetup."Automatic Cost Posting");
 
-        OnCodeOnAfterMakeMultiLevelAdjmt(JobJnlLine);
+        OnCodeOnAfterMakeMultiLevelAdjmt(ContratoJnlLine);
 
-        // Copy register no. and current journal batch name to the job journal
-        if not JobReg.FindLast() or (JobReg."No." <> JobRegNo) then
-            JobRegNo := 0;
+        // Copy register no. and current journal batch name to the Contrato journal
+        if not ContratoReg.FindLast() or (ContratoReg."No." <> ContratoRegNo) then
+            ContratoRegNo := 0;
 
-        JobJnlLine.Init();
-        JobJnlLine."Line No." := JobRegNo;
+        ContratoJnlLine.Init();
+        ContratoJnlLine."Line No." := ContratoRegNo;
 
         UpdateAndDeleteLines();
-        OnAfterPostJnlLines(JobJnlBatch, JobJnlLine, JobRegNo);
+        OnAfterPostJnlLines(ContratoJnlBatch, ContratoJnlLine, ContratoRegNo);
 
         if not SuppressCommit then
             Commit();
@@ -176,87 +176,87 @@ codeunit 50204 "Contrato Jnl.-Post Batch"
             Commit();
     end;
 
-    local procedure CheckRecurringLine(var JobJnlLine2: Record "Contrato Journal Line")
+    local procedure CheckRecurringLine(var ContratoJnlLine2: Record "Contrato Journal Line")
     var
         TempDateFormula: DateFormula;
     begin
-        if JobJnlLine2."No." <> '' then
-            if JobJnlTemplate.Recurring then begin
-                JobJnlLine2.TestField("Recurring Method");
-                JobJnlLine2.TestField("Recurring Frequency");
-                if JobJnlLine2."Recurring Method" = JobJnlLine2."Recurring Method"::Variable then
-                    JobJnlLine2.TestField(Quantity);
+        if ContratoJnlLine2."No." <> '' then
+            if ContratoJnlTemplate.Recurring then begin
+                ContratoJnlLine2.TestField("Recurring Method");
+                ContratoJnlLine2.TestField("Recurring Frequency");
+                if ContratoJnlLine2."Recurring Method" = ContratoJnlLine2."Recurring Method"::Variable then
+                    ContratoJnlLine2.TestField(Quantity);
             end else begin
-                JobJnlLine2.TestField("Recurring Method", 0);
-                JobJnlLine2.TestField("Recurring Frequency", TempDateFormula);
+                ContratoJnlLine2.TestField("Recurring Method", 0);
+                ContratoJnlLine2.TestField("Recurring Frequency", TempDateFormula);
             end;
     end;
 
-    local procedure MakeRecurringTexts(var JobJnlLine2: Record "Contrato Journal Line")
+    local procedure MakeRecurringTexts(var ContratoJnlLine2: Record "Contrato Journal Line")
     begin
-        if (JobJnlLine2."No." <> '') and (JobJnlLine2."Recurring Method" <> 0) then
-            AccountingPeriod.MakeRecurringTexts(JobJnlLine2."Posting Date", JobJnlLine2."Document No.", JobJnlLine2.Description);
+        if (ContratoJnlLine2."No." <> '') and (ContratoJnlLine2."Recurring Method" <> 0) then
+            AccountingPeriod.MakeRecurringTexts(ContratoJnlLine2."Posting Date", ContratoJnlLine2."Document No.", ContratoJnlLine2.Description);
     end;
 
     local procedure UpdateAndDeleteLines()
     var
         IsHandled: Boolean;
     begin
-        OnBeforeUpdateAndDeleteLines(JobJnlLine);
+        OnBeforeUpdateAndDeleteLines(ContratoJnlLine);
 
-        if JobRegNo <> 0 then
-            if JobJnlTemplate.Recurring then begin
+        if ContratoRegNo <> 0 then
+            if ContratoJnlTemplate.Recurring then begin
                 // Recurring journal
                 LineCount := 0;
-                JobJnlLine2.CopyFilters(JobJnlLine);
-                JobJnlLine2.Find('-');
+                ContratoJnlLine2.CopyFilters(ContratoJnlLine);
+                ContratoJnlLine2.Find('-');
                 repeat
                     LineCount := LineCount + 1;
                     if GuiAllowed() then begin
                         Window.Update(5, LineCount);
                         Window.Update(6, Round(LineCount / NoOfRecords * 10000, 1));
                     end;
-                    if JobJnlLine2."Posting Date" <> 0D then
-                        JobJnlLine2.Validate("Posting Date", CalcDate(JobJnlLine2."Recurring Frequency", JobJnlLine2."Posting Date"));
-                    if (JobJnlLine2."Recurring Method" = JobJnlLine2."Recurring Method"::Variable) and
-                        (JobJnlLine2."No." <> '')
+                    if ContratoJnlLine2."Posting Date" <> 0D then
+                        ContratoJnlLine2.Validate("Posting Date", CalcDate(ContratoJnlLine2."Recurring Frequency", ContratoJnlLine2."Posting Date"));
+                    if (ContratoJnlLine2."Recurring Method" = ContratoJnlLine2."Recurring Method"::Variable) and
+                        (ContratoJnlLine2."No." <> '')
                     then
-                        JobJnlLine2.DeleteAmounts();
-                    JobJnlLine2.Modify();
-                until JobJnlLine2.Next() = 0;
+                        ContratoJnlLine2.DeleteAmounts();
+                    ContratoJnlLine2.Modify();
+                until ContratoJnlLine2.Next() = 0;
             end else begin
                 // Not a recurring journal
-                JobJnlLine2.CopyFilters(JobJnlLine);
-                JobJnlLine2.SetFilter("No.", '<>%1', '');
-                if JobJnlLine2.Find() then; // Remember the last line
-                JobJnlLine3.Copy(JobJnlLine);
+                ContratoJnlLine2.CopyFilters(ContratoJnlLine);
+                ContratoJnlLine2.SetFilter("No.", '<>%1', '');
+                if ContratoJnlLine2.Find() then; // Remember the last line
+                ContratoJnlLine3.Copy(ContratoJnlLine);
                 IsHandled := false;
-                OnBeforeDeleteNonRecJnlLines(JobJnlLine3, IsHandled, JobJnlLine, JobJnlLine2);
+                OnBeforeDeleteNonRecJnlLines(ContratoJnlLine3, IsHandled, ContratoJnlLine, ContratoJnlLine2);
                 if not IsHandled then begin
-                    JobJnlLine3.DeleteAll();
-                    JobJnlLine3.Reset();
-                    JobJnlLine3.SetRange("Journal Template Name", JobJnlLine."Journal Template Name");
-                    JobJnlLine3.SetRange("Journal Batch Name", JobJnlLine."Journal Batch Name");
-                    if JobJnlTemplate."Increment Batch Name" then
-                        if not JobJnlLine3.FindLast() then
-                            if IncStr(JobJnlLine."Journal Batch Name") <> '' then begin
-                                JobJnlBatch.Delete();
-                                JobJnlBatch.Name := IncStr(JobJnlLine."Journal Batch Name");
-                                if JobJnlBatch.Insert() then;
-                                JobJnlLine."Journal Batch Name" := JobJnlBatch.Name;
+                    ContratoJnlLine3.DeleteAll();
+                    ContratoJnlLine3.Reset();
+                    ContratoJnlLine3.SetRange("Journal Template Name", ContratoJnlLine."Journal Template Name");
+                    ContratoJnlLine3.SetRange("Journal Batch Name", ContratoJnlLine."Journal Batch Name");
+                    if ContratoJnlTemplate."Increment Batch Name" then
+                        if not ContratoJnlLine3.FindLast() then
+                            if IncStr(ContratoJnlLine."Journal Batch Name") <> '' then begin
+                                ContratoJnlBatch.Delete();
+                                ContratoJnlBatch.Name := IncStr(ContratoJnlLine."Journal Batch Name");
+                                if ContratoJnlBatch.Insert() then;
+                                ContratoJnlLine."Journal Batch Name" := ContratoJnlBatch.Name;
                             end;
-                    JobJnlLine3.SetRange("Journal Batch Name", JobJnlLine."Journal Batch Name");
+                    ContratoJnlLine3.SetRange("Journal Batch Name", ContratoJnlLine."Journal Batch Name");
                     IsHandled := false;
-                    OnUpdateAndDeleteLinesOnBeforeSetUpNewLine(JobJnlBatch, JobJnlLine3, IsHandled);
+                    OnUpdateAndDeleteLinesOnBeforeSetUpNewLine(ContratoJnlBatch, ContratoJnlLine3, IsHandled);
                     if not IsHandled then
-                        if (JobJnlBatch."No. Series" = '') and not JobJnlLine3.FindLast() and (JobRegNo = 0) then begin
-                            JobJnlLine3.Init();
-                            JobJnlLine3."Journal Template Name" := JobJnlLine."Journal Template Name";
-                            JobJnlLine3."Journal Batch Name" := JobJnlLine."Journal Batch Name";
-                            JobJnlLine3."Line No." := 10000;
-                            JobJnlLine3.Insert();
-                            JobJnlLine3.SetUpNewLine(JobJnlLine2);
-                            JobJnlLine3.Modify();
+                        if (ContratoJnlBatch."No. Series" = '') and not ContratoJnlLine3.FindLast() and (ContratoRegNo = 0) then begin
+                            ContratoJnlLine3.Init();
+                            ContratoJnlLine3."Journal Template Name" := ContratoJnlLine."Journal Template Name";
+                            ContratoJnlLine3."Journal Batch Name" := ContratoJnlLine."Journal Batch Name";
+                            ContratoJnlLine3."Line No." := 10000;
+                            ContratoJnlLine3.Insert();
+                            ContratoJnlLine3.SetUpNewLine(ContratoJnlLine2);
+                            ContratoJnlLine3.Modify();
                         end;
                 end;
             end;
@@ -270,62 +270,62 @@ codeunit 50204 "Contrato Jnl.-Post Batch"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCheckJnlLine(var JobJournalLine: Record "Contrato Journal Line")
+    local procedure OnAfterCheckJnlLine(var ContratoJournalLine: Record "Contrato Journal Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterJobJnlPostLine(var JobJournalLine: Record "Contrato Journal Line")
+    local procedure OnAfterContratoJnlPostLine(var ContratoJournalLine: Record "Contrato Journal Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterPostJnlLines(var JobJournalBatch: Record "Contrato Journal Batch"; var JobJournalLine: Record "Contrato Journal Line"; JobRegNo: Integer)
+    local procedure OnAfterPostJnlLines(var ContratoJournalBatch: Record "Contrato Journal Batch"; var ContratoJournalLine: Record "Contrato Journal Line"; ContratoRegNo: Integer)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCode(var JobJournalLine: Record "Contrato Journal Line"; var SuppressCommit: Boolean)
+    local procedure OnBeforeCode(var ContratoJournalLine: Record "Contrato Journal Line"; var SuppressCommit: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeJobJnlPostLine(var JobJournalLine: Record "Contrato Journal Line")
+    local procedure OnBeforeContratoJnlPostLine(var ContratoJournalLine: Record "Contrato Journal Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeDeleteNonRecJnlLines(var JobJournalLine: Record "Contrato Journal Line"; var IsHandled: Boolean; var FromJobJournalLine: Record "Contrato Journal Line"; var JobJournalLine2: Record "Contrato Journal Line")
+    local procedure OnBeforeDeleteNonRecJnlLines(var ContratoJournalLine: Record "Contrato Journal Line"; var IsHandled: Boolean; var FromContratoJournalLine: Record "Contrato Journal Line"; var ContratoJournalLine2: Record "Contrato Journal Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeTestDocumentNo(var JobJournalLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
+    local procedure OnBeforeTestDocumentNo(var ContratoJournalLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateAndDeleteLines(var JobJournalLine: Record "Contrato Journal Line")
+    local procedure OnBeforeUpdateAndDeleteLines(var ContratoJournalLine: Record "Contrato Journal Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCodeOnAfterFilterJobJnlLine(var JobJournalLine: Record "Contrato Journal Line");
+    local procedure OnCodeOnAfterFilterContratoJnlLine(var ContratoJournalLine: Record "Contrato Journal Line");
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCodeOnBeforeCheckLines(var JobJournalLine: Record "Contrato Journal Line");
+    local procedure OnCodeOnBeforeCheckLines(var ContratoJournalLine: Record "Contrato Journal Line");
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCodeOnAfterMakeMultiLevelAdjmt(var JobJournalLine: Record "Contrato Journal Line");
+    local procedure OnCodeOnAfterMakeMultiLevelAdjmt(var ContratoJournalLine: Record "Contrato Journal Line");
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnUpdateAndDeleteLinesOnBeforeSetUpNewLine(JobJnlBatch: Record "Contrato Journal Batch"; var JobJnlLine3: Record "Contrato Journal Line"; var IsHandled: Boolean)
+    local procedure OnUpdateAndDeleteLinesOnBeforeSetUpNewLine(ContratoJnlBatch: Record "Contrato Journal Batch"; var ContratoJnlLine3: Record "Contrato Journal Line"; var IsHandled: Boolean)
     begin
     end;
 }

@@ -100,24 +100,24 @@ table 50214 "Contrato Task Dimension"
 
     procedure UpdateGlobalDim(DimensionValue: Code[20])
     var
-        JobTask: Record "Contrato Task";
+        ContratoTask: Record "Contrato Task";
         GLSEtup: Record "General Ledger Setup";
     begin
         GLSEtup.Get();
         if "Dimension Code" = GLSEtup."Global Dimension 1 Code" then begin
-            JobTask.Get("Contrato No.", "Contrato Task No.");
-            JobTask."Global Dimension 1 Code" := DimensionValue;
-            JobTask.Modify(true);
+            ContratoTask.Get("Contrato No.", "Contrato Task No.");
+            ContratoTask."Global Dimension 1 Code" := DimensionValue;
+            ContratoTask.Modify(true);
         end else
             if "Dimension Code" = GLSEtup."Global Dimension 2 Code" then begin
-                JobTask.Get("Contrato No.", "Contrato Task No.");
-                JobTask."Global Dimension 2 Code" := DimensionValue;
-                JobTask.Modify(true);
+                ContratoTask.Get("Contrato No.", "Contrato Task No.");
+                ContratoTask."Global Dimension 2 Code" := DimensionValue;
+                ContratoTask.Modify(true);
             end;
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeOnRename(var JobTaskDimension: Record "Contrato Task Dimension"; var IsHandled: Boolean)
+    local procedure OnBeforeOnRename(var ContratoTaskDimension: Record "Contrato Task Dimension"; var IsHandled: Boolean)
     begin
     end;
 }

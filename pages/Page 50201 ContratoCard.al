@@ -31,7 +31,7 @@ page 50201 "Contrato Card"
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
-                    ToolTip = 'Specifies a short description of the project.';
+                    ToolTip = 'Specifies a short description of the Contrato.';
                 }
                 field("Sell-to Customer No."; Rec."Sell-to Customer No.")
                 {
@@ -193,7 +193,7 @@ page 50201 "Contrato Card"
                 {
                     ApplicationArea = All;
                     Importance = Additional;
-                    ToolTip = 'Specifies an additional description of the project for searching purposes.';
+                    ToolTip = 'Specifies an additional description of the Contrato for searching purposes.';
                 }
                 field("External Document No."; Rec."External Document No.")
                 {
@@ -211,31 +211,31 @@ page 50201 "Contrato Card"
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
-                    ToolTip = 'Specifies the person at your company who is responsible for the project.';
+                    ToolTip = 'Specifies the person at your company who is responsible for the Contrato.';
                 }
-                // field(Blocked; Rec.Blocked)
-                // {
-                //     ApplicationArea = All;
-                //     ToolTip = 'Specifies that the related record is blocked from being posted in transactions, for example a customer that is declared insolvent or an item that is placed in quarantine.';
-                // }
+                field(Blocked; Rec.Blocked)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies that the related record is blocked from being posted in transactions, for example a customer that is declared insolvent or an item that is placed in quarantine.';
+                }
                 field("Last Date Modified"; Rec."Last Date Modified")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies when the project card was last modified.';
+                    ToolTip = 'Specifies when the Contrato card was last modified.';
                 }
                 field("Project Manager"; Rec."Project Manager")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the person who is assigned to manage the project.';
+                    ToolTip = 'Specifies the person who is assigned to manage the Contrato.';
                 }
                 field("No. of Archived Versions"; Rec."No. of Archived Versions")
                 {
                     ApplicationArea = All;
                     Importance = Additional;
-                    ToolTip = 'Specifies the number of archived versions of this project.';
+                    ToolTip = 'Specifies the number of archived versions of this Contrato.';
                 }
             }
-            part(JobTaskLines; "Contrato Task Lines Subform")
+            part(ContratoTaskLines; "Contrato Task Lines Subform")
             {
                 ApplicationArea = All;
                 Caption = 'Planeación';
@@ -243,8 +243,8 @@ page 50201 "Contrato Card"
                 SubPageView = sorting("Contrato Task No.")
                               order(ascending);
                 UpdatePropagation = Both;
-                Editable = JobTaskLinesEditable;
-                Enabled = JobTaskLinesEditable;
+                Editable = ContratoTaskLinesEditable;
+                Enabled = ContratoTaskLinesEditable;
             }
             group(Posting)
             {
@@ -253,12 +253,12 @@ page 50201 "Contrato Card"
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
-                    ToolTip = 'Specifies a current status of the project. You can change the status for the project as it progresses. Final calculations can be made on completed projects.';
+                    ToolTip = 'Specifies a current status of the Contrato. You can change the status for the Contrato as it progresses. Final calculations can be made on completed Contratos.';
 
                     trigger OnValidate()
                     begin
                         if (Rec.Status = Rec.Status::Completed) and Rec.Complete then begin
-                            //Rec.RecalculateJobWIP();
+                            //Rec.RecalculateContratoWIP();
                             CurrPage.Update(false);
                         end;
                     end;
@@ -267,25 +267,25 @@ page 50201 "Contrato Card"
                 // {
                 //     ApplicationArea = All;
                 //     Importance = Promoted;
-                //     ToolTip = 'Specifies the posting group that links transactions made for the project with the appropriate general ledger accounts according to the general posting setup.';
+                //     ToolTip = 'Specifies the posting group that links transactions made for the Contrato with the appropriate general ledger accounts according to the general posting setup.';
                 // }
                 field("Location Code"; Rec."Location Code")
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
-                    ToolTip = 'Specifies the location code of the project.';
+                    ToolTip = 'Specifies the location code of the Contrato.';
                 }
                 field("Bin Code"; Rec."Bin Code")
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
-                    ToolTip = 'Specifies a bin code for specific location of the project.';
+                    ToolTip = 'Specifies a bin code for specific location of the Contrato.';
                 }
                 // field("WIP Method"; Rec."WIP Method")
                 // {
                 //     ApplicationArea = All;
                 //     Importance = Additional;
-                //     ToolTip = 'Specifies the method that is used to calculate the value of work in process for the project.';
+                //     ToolTip = 'Specifies the method that is used to calculate the value of work in process for the Contrato.';
                 // }
                 field("WIP Posting Method"; Rec."WIP Posting Method")
                 {
@@ -298,13 +298,13 @@ page 50201 "Contrato Card"
                     ApplicationArea = All;
                     Caption = 'Allow Budget/Billable Lines';
                     Importance = Additional;
-                    ToolTip = 'Specifies if you can add planning lines of both type Budget and type Billable to the project.';
+                    ToolTip = 'Specifies if you can add planning lines of both type Budget and type Billable to the Contrato.';
                 }
                 field("Apply Usage Link"; Rec."Apply Usage Link")
                 {
                     ApplicationArea = All;
                     Importance = Additional;
-                    ToolTip = 'Specifies whether usage entries, from the project journal or purchase line, for example, are linked to project planning lines. Select this check box if you want to be able to track the quantities and amounts of the remaining work needed to complete a project and to create a relationship between demand planning, usage, and sales. On a project card, you can select this check box if there are no existing project planning lines that include type Budget that have been posted. The usage link only applies to project planning lines that include type Budget.';
+                    ToolTip = 'Specifies whether usage entries, from the Contrato journal or purchase line, for example, are linked to Contrato planning lines. Select this check box if you want to be able to track the quantities and amounts of the remaining work needed to complete a Contrato and to create a relationship between demand planning, usage, and sales. On a Contrato card, you can select this check box if there are no existing Contrato planning lines that include type Budget that have been posted. The usage link only applies to Contrato planning lines that include type Budget.';
                 }
                 field("% Completed"; Rec.PercentCompleted())
                 {
@@ -312,7 +312,7 @@ page 50201 "Contrato Card"
                     Caption = '% Completed';
                     Editable = false;
                     Importance = Promoted;
-                    ToolTip = 'Specifies the percentage of the project''s estimated resource usage that has been posted as used.';
+                    ToolTip = 'Specifies the percentage of the Contrato''s estimated resource usage that has been posted as used.';
                 }
                 field("% Invoiced"; Rec.PercentInvoiced())
                 {
@@ -320,7 +320,7 @@ page 50201 "Contrato Card"
                     Caption = '% Invoiced';
                     Editable = false;
                     Importance = Promoted;
-                    ToolTip = 'Specifies the percentage of the project''s invoice value that has been posted as invoiced.';
+                    ToolTip = 'Specifies the percentage of the Contrato''s invoice value that has been posted as invoiced.';
                 }
                 field("% of Overdue Planning Lines"; Rec.PercentOverdue())
                 {
@@ -328,7 +328,7 @@ page 50201 "Contrato Card"
                     Caption = '% of Overdue Planning Lines';
                     Editable = false;
                     Importance = Additional;
-                    ToolTip = 'Specifies the percentage of the project''s planning lines where the planned delivery date has been exceeded.';
+                    ToolTip = 'Specifies the percentage of the Contrato''s planning lines where the planned delivery date has been exceeded.';
                 }
             }
             group("Invoice and Shipping")
@@ -338,11 +338,11 @@ page 50201 "Contrato Card"
                 field("Task Billing Method"; Rec."Task Billing Method")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specify whether to use the customer specified for the project for all tasks or allow people to specify different customers. One customer lets you invoice only the customer specified for the project. Multiple customers lets you invoice customers specified on each task, which can be different customers.';
+                    ToolTip = 'Specify whether to use the customer specified for the Contrato for all tasks or allow people to specify different customers. One customer lets you invoice only the customer specified for the Contrato. Multiple customers lets you invoice customers specified on each task, which can be different customers.';
 
                     trigger OnValidate()
                     begin
-                        CurrPage.JobTaskLines.Page.SetPerTaskBillingFieldsVisible(Rec."Task Billing Method" = Rec."Task Billing Method"::"Multiple customers");
+                        CurrPage.ContratoTaskLines.Page.SetPerTaskBillingFieldsVisible(Rec."Task Billing Method" = Rec."Task Billing Method"::"Multiple customers");
                         CurrPage.Update(false);
                     end;
                 }
@@ -375,7 +375,7 @@ page 50201 "Contrato Card"
                             ApplicationArea = All;
                             Importance = Promoted;
                             ShowMandatory = true;
-                            ToolTip = 'Specifies the number of the customer who pays for the project.';
+                            ToolTip = 'Specifies the number of the customer who pays for the Contrato.';
                             Visible = false;
 
                             trigger OnValidate()
@@ -388,7 +388,7 @@ page 50201 "Contrato Card"
                             Caption = 'Name';
                             ApplicationArea = All;
                             Importance = Promoted;
-                            ToolTip = 'Specifies the name of the customer who pays for the project.';
+                            ToolTip = 'Specifies the name of the customer who pays for the Contrato.';
                             Editable = ((BillToOptions = BillToOptions::"Another Customer") or ((BillToOptions = BillToOptions::"Custom Address") and not ShouldSearchForCustByName));
                             Enabled = ((BillToOptions = BillToOptions::"Another Customer") or ((BillToOptions = BillToOptions::"Custom Address") and not ShouldSearchForCustByName));
                             NotBlank = true;
@@ -455,7 +455,7 @@ page 50201 "Contrato Card"
                             ApplicationArea = All;
                             Importance = Additional;
                             QuickEntry = false;
-                            ToolTip = 'Specifies the postal code of the customer who pays for the project.';
+                            ToolTip = 'Specifies the postal code of the customer who pays for the Contrato.';
                             Editable = BillToInformationEditable;
                             Enabled = BillToInformationEditable;
                         }
@@ -504,7 +504,7 @@ page 50201 "Contrato Card"
                             Editable = false;
                             Importance = Additional;
                             ExtendedDatatype = PhoneNo;
-                            ToolTip = 'Specifies the telephone number of the customer contact person for the project.';
+                            ToolTip = 'Specifies the telephone number of the customer contact person for the Contrato.';
                         }
                         field(ContactMobilePhoneNo; BillToContact."Mobile Phone No.")
                         {
@@ -513,7 +513,7 @@ page 50201 "Contrato Card"
                             Editable = false;
                             Importance = Additional;
                             ExtendedDatatype = PhoneNo;
-                            ToolTip = 'Specifies the mobile telephone number of the customer contact person for the project.';
+                            ToolTip = 'Specifies the mobile telephone number of the customer contact person for the Contrato.';
                         }
                         field(ContactEmail; BillToContact."E-Mail")
                         {
@@ -522,14 +522,14 @@ page 50201 "Contrato Card"
                             ExtendedDatatype = EMail;
                             Editable = false;
                             Importance = Additional;
-                            ToolTip = 'Specifies the email address of the customer contact person for the project.';
+                            ToolTip = 'Specifies the email address of the customer contact person for the Contrato.';
                         }
                         field("Bill-to Contact"; Rec."Bill-to Contact")
                         {
                             Caption = 'Contact';
                             ApplicationArea = All;
                             Importance = Additional;
-                            ToolTip = 'Specifies the name of the contact person at the customer who pays for the project.';
+                            ToolTip = 'Specifies the name of the contact person at the customer who pays for the Contrato.';
                             Editable = BillToInformationEditable;
                             Enabled = BillToInformationEditable;
                         }
@@ -700,18 +700,18 @@ page 50201 "Contrato Card"
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
-                    ToolTip = 'Specifies the date on which the project actually starts.';
+                    ToolTip = 'Specifies the date on which the Contrato actually starts.';
                 }
                 field("Ending Date"; Rec."Ending Date")
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
-                    ToolTip = 'Specifies the date on which the project is expected to be completed.';
+                    ToolTip = 'Specifies the date on which the Contrato is expected to be completed.';
                 }
                 field("Creation Date"; Rec."Creation Date")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the date on which you set up the project.';
+                    ToolTip = 'Specifies the date on which you set up the Contrato.';
                 }
             }
             group("Foreign Trade")
@@ -721,12 +721,12 @@ page 50201 "Contrato Card"
                 {
                     ApplicationArea = Suite;
                     Importance = Promoted;
-                    ToolTip = 'Specifies the currency code for the project. By default, the currency code is empty. If you enter a foreign currency code, it results in the project being planned and invoiced in that currency.';
+                    ToolTip = 'Specifies the currency code for the Contrato. By default, the currency code is empty. If you enter a foreign currency code, it results in the Contrato being planned and invoiced in that currency.';
                 }
                 field("Invoice Currency Code"; Rec."Invoice Currency Code")
                 {
                     ApplicationArea = Suite;
-                    ToolTip = 'Specifies the currency code you want to apply when creating invoices for a project. By default, the invoice currency code for a project is based on what currency code is defined on the customer card.';
+                    ToolTip = 'Specifies the currency code you want to apply when creating invoices for a Contrato. By default, the invoice currency code for a Contrato is based on what currency code is defined on the customer card.';
                 }
                 field("Price Calculation Method"; Rec."Price Calculation Method")
                 {
@@ -745,17 +745,17 @@ page 50201 "Contrato Card"
                 field("Exch. Calculation (Cost)"; Rec."Exch. Calculation (Cost)")
                 {
                     ApplicationArea = Suite;
-                    ToolTip = 'Specifies how project costs are calculated if you change the Currency Date or the Currency Code fields on a project planning Line or run the Change Contrato Planning Line Dates batch job. Fixed LCY option: The project costs in the local currency are fixed. Any change in the currency exchange rate will change the value of project costs in a foreign currency. Fixed FCY option: The project costs in a foreign currency are fixed. Any change in the currency exchange rate will change the value of project costs in the local currency.';
+                    ToolTip = 'Specifies how Contrato costs are calculated if you change the Currency Date or the Currency Code fields on a Contrato planning Line or run the Change Contrato Planning Line Dates batch Contrato. Fixed LCY option: The Contrato costs in the local currency are fixed. Any change in the currency exchange rate will change the value of Contrato costs in a foreign currency. Fixed FCY option: The Contrato costs in a foreign currency are fixed. Any change in the currency exchange rate will change the value of Contrato costs in the local currency.';
                 }
                 field("Exch. Calculation (Price)"; Rec."Exch. Calculation (Price)")
                 {
                     ApplicationArea = Suite;
-                    ToolTip = 'Specifies how project sales prices are calculated if you change the Currency Date or the Currency Code fields on a project planning Line or run the Change Contrato Planning Line Dates batch job. Fixed LCY option: The project prices in the local currency are fixed. Any change in the currency exchange rate will change the value of project prices in a foreign currency. Fixed FCY option: The project prices in a foreign currency are fixed. Any change in the currency exchange rate will change the value of project prices in the local currency.';
+                    ToolTip = 'Specifies how Contrato sales prices are calculated if you change the Currency Date or the Currency Code fields on a Contrato planning Line or run the Change Contrato Planning Line Dates batch Contrato. Fixed LCY option: The Contrato prices in the local currency are fixed. Any change in the currency exchange rate will change the value of Contrato prices in a foreign currency. Fixed FCY option: The Contrato prices in a foreign currency are fixed. Any change in the currency exchange rate will change the value of Contrato prices in the local currency.';
                 }
                 field("Language Code"; Rec."Language Code")
                 {
                     ApplicationArea = Basic, Suite;
-                    ToolTip = 'Specifies the language to be used on printouts for this project.';
+                    ToolTip = 'Specifies the language to be used on printouts for this Contrato.';
                     Visible = false;
                 }
             }
@@ -768,131 +768,131 @@ page 50201 "Contrato Card"
                     field("WIP Posting Date"; Rec."WIP Posting Date")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the posting date that was entered when the Contrato Calculate WIP batch job was last run.';
+                        ToolTip = 'Specifies the posting date that was entered when the Contrato Calculate WIP batch Contrato was last run.';
                     }
-                    // field("Total WIP Sales Amount"; Rec."Total WIP Sales Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the total WIP sales amount that was last calculated for the project. The WIP sales amount is the value in the WIP Sales Contrato WIP Entries window minus the value of the Recognized Sales Contrato WIP Entries window. For projects with the Cost Value or Cost of Sales WIP methods, the WIP sales amount is normally 0.';
-                    // }
-                    // field("Applied Sales G/L Amount"; Rec."Applied Sales G/L Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the sum of all applied sales in the general ledger that are related to the project.';
-                    //     Visible = false;
-                    // }
-                    // field("Total WIP Cost Amount"; Rec."Total WIP Cost Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the total WIP cost amount that was last calculated for the project. The WIP cost amount is the value in the WIP Cost Contrato WIP Entries window minus the value of the Recognized Cost Contrato WIP Entries window. For projects with Sales Value or Percentage of Completion WIP methods, the WIP cost amount is normally 0.';
-                    // }
-                    // field("Applied Costs G/L Amount"; Rec."Applied Costs G/L Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the sum of all applied costs that is based on to the selected project in the general ledger.';
-                    //     Visible = false;
-                    // }
-                    // field("Recog. Sales Amount"; Rec."Recog. Sales Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the recognized sales amount that was last calculated for the project, which is the sum of the Recognized Sales Contrato WIP Entries.';
-                    // }
-                    // field("Recog. Costs Amount"; Rec."Recog. Costs Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the recognized cost amount that was last calculated for the project. The value is the sum of the entries in the Recognized Cost Contrato WIP Entries window.';
-                    // }
+                    field("Total WIP Sales Amount"; Rec."Total WIP Sales Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the total WIP sales amount that was last calculated for the Contrato. The WIP sales amount is the value in the WIP Sales Contrato WIP Entries window minus the value of the Recognized Sales Contrato WIP Entries window. For Contratos with the Cost Value or Cost of Sales WIP methods, the WIP sales amount is normally 0.';
+                    }
+                    field("Applied Sales G/L Amount"; Rec."Applied Sales G/L Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the sum of all applied sales in the general ledger that are related to the Contrato.';
+                        Visible = false;
+                    }
+                    field("Total WIP Cost Amount"; Rec."Total WIP Cost Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the total WIP cost amount that was last calculated for the Contrato. The WIP cost amount is the value in the WIP Cost Contrato WIP Entries window minus the value of the Recognized Cost Contrato WIP Entries window. For Contratos with Sales Value or Percentage of Completion WIP methods, the WIP cost amount is normally 0.';
+                    }
+                    field("Applied Costs G/L Amount"; Rec."Applied Costs G/L Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the sum of all applied costs that is based on to the selected Contrato in the general ledger.';
+                        Visible = false;
+                    }
+                    field("Recog. Sales Amount"; Rec."Recog. Sales Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the recognized sales amount that was last calculated for the Contrato, which is the sum of the Recognized Sales Contrato WIP Entries.';
+                    }
+                    field("Recog. Costs Amount"; Rec."Recog. Costs Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the recognized cost amount that was last calculated for the Contrato. The value is the sum of the entries in the Recognized Cost Contrato WIP Entries window.';
+                    }
                     field("Recog. Profit Amount"; Rec.CalcRecognizedProfitAmount())
                     {
                         ApplicationArea = All;
                         Caption = 'Recog. Profit Amount';
-                        ToolTip = 'Specifies the recognized profit amount for the project.';
+                        ToolTip = 'Specifies the recognized profit amount for the Contrato.';
                     }
                     field("Recog. Profit %"; Rec.CalcRecognizedProfitPercentage())
                     {
                         ApplicationArea = All;
                         Caption = 'Recog. Profit %';
-                        ToolTip = 'Specifies the recognized profit percentage for the project.';
+                        ToolTip = 'Specifies the recognized profit percentage for the Contrato.';
                     }
                     field("Acc. WIP Costs Amount"; Rec.CalcAccWIPCostsAmount())
                     {
                         ApplicationArea = All;
                         Caption = 'Acc. WIP Costs Amount';
-                        ToolTip = 'Specifies the total WIP costs for the project.';
+                        ToolTip = 'Specifies the total WIP costs for the Contrato.';
                         Visible = false;
                     }
                     field("Acc. WIP Sales Amount"; Rec.CalcAccWIPSalesAmount())
                     {
                         ApplicationArea = All;
                         Caption = 'Acc. WIP Sales Amount';
-                        ToolTip = 'Specifies the total WIP sales for the project.';
+                        ToolTip = 'Specifies the total WIP sales for the Contrato.';
                         Visible = false;
                     }
-                    // field("Calc. Recog. Sales Amount"; Rec."Calc. Recog. Sales Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the sum of the recognized sales amount that is associated with project tasks for the project.';
-                    //     Visible = false;
-                    // }
-                    // field("Calc. Recog. Costs Amount"; Rec."Calc. Recog. Costs Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the sum of the recognized costs amount that is associated with project tasks for the project.';
-                    //     Visible = false;
-                    // }
+                    field("Calc. Recog. Sales Amount"; Rec."Calc. Recog. Sales Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the sum of the recognized sales amount that is associated with Contrato tasks for the Contrato.';
+                        Visible = false;
+                    }
+                    field("Calc. Recog. Costs Amount"; Rec."Calc. Recog. Costs Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the sum of the recognized costs amount that is associated with Contrato tasks for the Contrato.';
+                        Visible = false;
+                    }
                 }
                 group(Posted)
                 {
                     Caption = 'Posted';
-                    // field("WIP G/L Posting Date"; Rec."WIP G/L Posting Date")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the posting date that was entered when the Contrato Post WIP to General Ledger batch job was last run.';
-                    // }
-                    // field("Total WIP Sales G/L Amount"; Rec."Total WIP Sales G/L Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the total WIP sales amount that was last posted to the general ledger for the project. The WIP sales amount is the value in the WIP Sales Contrato WIP G/L Entries window minus the value in the Recognized Sales Contrato WIP G/L Entries window. For projects with the Cost Value or Cost of Sales WIP methods, the WIP sales amount is normally 0.';
-                    // }
-                    // field("Total WIP Cost G/L Amount"; Rec."Total WIP Cost G/L Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the total WIP Cost amount that was last posted to the G/L for the project. The WIP Cost Amount for the project is the value WIP Cost Contrato WIP G/L Entries less the value of the Recognized Cost Contrato WIP G/L Entries. For projects with WIP Methods of Sales Value or Percentage of Completion, the WIP Cost Amount is normally 0.';
-                    // }
-                    // field("Recog. Sales G/L Amount"; Rec."Recog. Sales G/L Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the total recognized sales amount that was last posted to the general ledger for the project. The recognized sales G/L amount for the project is the sum of the entries in the Recognized Sales Contrato WIP G/L Entries window.';
-                    // }
-                    // field("Recog. Costs G/L Amount"; Rec."Recog. Costs G/L Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the total Recognized Cost amount that was last posted to the general ledger for the project. The Recognized Cost G/L amount for the project is the sum of the Recognized Cost Contrato WIP G/L Entries.';
-                    // }
+                    field("WIP G/L Posting Date"; Rec."WIP G/L Posting Date")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the posting date that was entered when the Contrato Post WIP to General Ledger batch Contrato was last run.';
+                    }
+                    field("Total WIP Sales G/L Amount"; Rec."Total WIP Sales G/L Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the total WIP sales amount that was last posted to the general ledger for the Contrato. The WIP sales amount is the value in the WIP Sales Contrato WIP G/L Entries window minus the value in the Recognized Sales Contrato WIP G/L Entries window. For Contratos with the Cost Value or Cost of Sales WIP methods, the WIP sales amount is normally 0.';
+                    }
+                    field("Total WIP Cost G/L Amount"; Rec."Total WIP Cost G/L Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the total WIP Cost amount that was last posted to the G/L for the Contrato. The WIP Cost Amount for the Contrato is the value WIP Cost Contrato WIP G/L Entries less the value of the Recognized Cost Contrato WIP G/L Entries. For Contratos with WIP Methods of Sales Value or Percentage of Completion, the WIP Cost Amount is normally 0.';
+                    }
+                    field("Recog. Sales G/L Amount"; Rec."Recog. Sales G/L Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the total recognized sales amount that was last posted to the general ledger for the Contrato. The recognized sales G/L amount for the Contrato is the sum of the entries in the Recognized Sales Contrato WIP G/L Entries window.';
+                    }
+                    field("Recog. Costs G/L Amount"; Rec."Recog. Costs G/L Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the total Recognized Cost amount that was last posted to the general ledger for the Contrato. The Recognized Cost G/L amount for the Contrato is the sum of the Recognized Cost Contrato WIP G/L Entries.';
+                    }
                     field("Recog. Profit G/L Amount"; Rec.CalcRecognizedProfitGLAmount())
                     {
                         ApplicationArea = All;
                         Caption = 'Recog. Profit G/L Amount';
-                        ToolTip = 'Specifies the profit amount that is recognized with the general ledger for the project.';
+                        ToolTip = 'Specifies the profit amount that is recognized with the general ledger for the Contrato.';
                     }
                     field("Recog. Profit G/L %"; Rec.CalcRecognProfitGLPercentage())
                     {
                         ApplicationArea = All;
                         Caption = 'Recog. Profit G/L %';
-                        ToolTip = 'Specifies the profit percentage that is recognized with the general ledger for the project.';
+                        ToolTip = 'Specifies the profit percentage that is recognized with the general ledger for the Contrato.';
                     }
-                    // field("Calc. Recog. Sales G/L Amount"; Rec."Calc. Recog. Sales G/L Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the sum of the recognized sales general ledger amount that is associated with project tasks for the project.';
-                    //     Visible = false;
-                    // }
-                    // field("Calc. Recog. Costs G/L Amount"; Rec."Calc. Recog. Costs G/L Amount")
-                    // {
-                    //     ApplicationArea = All;
-                    //     ToolTip = 'Specifies the sum of the recognized costs general ledger amount that is associated with project tasks for the project.';
-                    //     Visible = false;
-                    // }
+                    field("Calc. Recog. Sales G/L Amount"; Rec."Calc. Recog. Sales G/L Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the sum of the recognized sales general ledger amount that is associated with Contrato tasks for the Contrato.';
+                        Visible = false;
+                    }
+                    field("Calc. Recog. Costs G/L Amount"; Rec."Calc. Recog. Costs G/L Amount")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the sum of the recognized costs general ledger amount that is associated with Contrato tasks for the Contrato.';
+                        Visible = false;
+                    }
                 }
             }
         }
@@ -911,7 +911,7 @@ page 50201 "Contrato Card"
                 SubPageLink = "Table ID" = const(Database::Contrato),
                               "No." = field("No.");
             }
-            part(Control1902136407; "Job No. of Prices FactBox")
+            part(Control1902136407; "Contrato No. of Prices FactBox")
             {
                 ApplicationArea = Suite;
                 SubPageLink = "No." = field("No."),
@@ -921,7 +921,7 @@ page 50201 "Contrato Card"
                               "Planning Date Filter" = field("Planning Date Filter");
                 Visible = true;
             }
-            part(Control1905650007; "Job WIP/Recognition FactBox")
+            part(Control1905650007; "ContratoWIP/RecognitionFactBox")
             {
                 ApplicationArea = All;
                 SubPageLink = "No." = field("No."),
@@ -958,32 +958,32 @@ page 50201 "Contrato Card"
             {
                 Caption = '&Contrato';
                 Image = Job;
-                action(JobPlanningLines)
+                action(ContratoPlanningLines)
                 {
                     ApplicationArea = All;
                     Caption = 'Contrato &Planning Lines';
                     Image = JobLines;
-                    ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (Budget) or you can specify what you actually agreed with your customer that he should pay for the project (Billable).';
+                    ToolTip = 'View all planning lines for the Contrato. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a Contrato (Budget) or you can specify what you actually agreed with your customer that he should pay for the Contrato (Billable).';
 
                     trigger OnAction()
                     var
-                        JobPlanningLine: Record "Contrato Planning Line";
-                        JobPlanningLines: Page "Contrato Planning Lines";
+                        ContratoPlanningLine: Record "Contrato Planning Line";
+                        ContratoPlanningLines: Page "Contrato Planning Lines";
                         IsHandled: Boolean;
                     begin
                         IsHandled := false;
-                        //OnBeforeJobPlanningLinesAction(Rec, IsHandled);
+                        OnBeforeContratoPlanningLinesAction(Rec, IsHandled);
                         if IsHandled then
                             exit;
 
                         Rec.TestField("No.");
-                        JobPlanningLine.FilterGroup(2);
-                        JobPlanningLine.SetRange("Contrato No.", Rec."No.");
-                        JobPlanningLine.FilterGroup(0);
-                        JobPlanningLines.SetJobTaskNoVisible(true);
-                        JobPlanningLines.SetTableView(JobPlanningLine);
-                        JobPlanningLines.Editable := true;
-                        JobPlanningLines.Run();
+                        ContratoPlanningLine.FilterGroup(2);
+                        ContratoPlanningLine.SetRange("Contrato No.", Rec."No.");
+                        ContratoPlanningLine.FilterGroup(0);
+                        ContratoPlanningLines.SetContratoTaskNoVisible(true);
+                        ContratoPlanningLines.SetTableView(ContratoPlanningLine);
+                        ContratoPlanningLines.Editable := true;
+                        ContratoPlanningLines.Run();
                     end;
                 }
                 action("&Dimensions")
@@ -995,24 +995,24 @@ page 50201 "Contrato Card"
                     RunPageLink = "Table ID" = const(167),
                                   "No." = field("No.");
                     ShortCutKey = 'Alt+D';
-                    ToolTip = 'View or edit dimensions, such as area, project, or department, that you can assign to journal lines to distribute costs and analyze transaction history.';
+                    ToolTip = 'View or edit dimensions, such as area, Contrato, or department, that you can assign to journal lines to distribute costs and analyze transaction history.';
                 }
                 action("&Statistics")
                 {
                     ApplicationArea = All;
                     Caption = '&Statistics';
                     Image = Statistics;
-                    RunObject = Page "Job Statistics";
+                    RunObject = Page "Contrato Statistics";
                     RunPageLink = "No." = field("No.");
                     ShortCutKey = 'F7';
-                    ToolTip = 'View this project''s statistics.';
+                    ToolTip = 'View this Contrato''s statistics.';
                 }
                 action(TimeSheetLines)
                 {
                     ApplicationArea = All;
                     Caption = 'Time Sheet Lines';
                     Image = LinesFromTimesheet;
-                    ToolTip = 'View which time sheet lines are referencing this project.';
+                    ToolTip = 'View which time sheet lines are referencing this Contrato.';
 
                     trigger OnAction()
                     var
@@ -1034,14 +1034,14 @@ page 50201 "Contrato Card"
                     ApplicationArea = All;
                     Caption = 'Sales &Invoices/Credit Memos';
                     Image = GetSourceDoc;
-                    ToolTip = 'View sales invoices or sales credit memos that are related to the selected project.';
+                    ToolTip = 'View sales invoices or sales credit memos that are related to the selected Contrato.';
 
                     trigger OnAction()
                     var
-                        JobInvoices: Page "Contrato Invoices";
+                        ContratoInvoices: Page "Contrato Invoices";
                     begin
-                        //JobInvoices.SetPrJob(Rec);
-                        JobInvoices.RunModal();
+                        //ContratoInvoices.SetPrContrato(Rec);
+                        ContratoInvoices.RunModal();
                     end;
                 }
                 separator(Action64)
@@ -1053,7 +1053,7 @@ page 50201 "Contrato Card"
                     Caption = 'Co&mments';
                     Image = ViewComments;
                     RunObject = Page "Comment Sheet";
-                    RunPageLink = "Table Name" = const(Job),
+                    RunPageLink = "Table Name" = const(Contrato),
                                   "No." = field("No.");
                     ToolTip = 'View or add comments for the record.';
                 }
@@ -1062,7 +1062,7 @@ page 50201 "Contrato Card"
                     ApplicationArea = All;
                     Caption = '&Online Map';
                     Image = Map;
-                    ToolTip = 'View online map for addresses assigned to this project.';
+                    ToolTip = 'View online map for addresses assigned to this Contrato.';
 
                     trigger OnAction()
                     begin
@@ -1092,7 +1092,7 @@ page 50201 "Contrato Card"
                     ApplicationArea = Assembly;
                     Caption = 'Assembly Orders';
                     Image = AssemblyOrder;
-                    ToolTip = 'View ongoing assembly orders related to the project. ';
+                    ToolTip = 'View ongoing assembly orders related to the Contrato. ';
 
                     trigger OnAction()
                     var
@@ -1115,18 +1115,18 @@ page 50201 "Contrato Card"
                     RunPageLink = "Contrato No." = field("No.");
                     RunPageView = sorting("Contrato No.", "Contrato Posting Group", "WIP Posting Date")
                                   order(descending);
-                    ToolTip = 'View entries for the project that are posted as work in process.';
+                    ToolTip = 'View entries for the Contrato that are posted as work in process.';
                 }
                 action("WIP &G/L Entries")
                 {
                     ApplicationArea = All;
                     Caption = 'WIP &G/L Entries';
                     Image = WIPLedger;
-                    RunObject = Page "Job WIP G/L Entries";
-                    RunPageLink = "Job No." = field("No.");
-                    RunPageView = sorting("Job No.")
+                    RunObject = Page "Contrato WIP G/L Entries";
+                    RunPageLink = "Contrato No." = field("No.");
+                    RunPageView = sorting("Contrato No.")
                                   order(descending);
-                    ToolTip = 'View the project''s WIP G/L entries.';
+                    ToolTip = 'View the Contrato''s WIP G/L entries.';
                 }
             }
 #if not CLEAN23
@@ -1144,9 +1144,9 @@ page 50201 "Contrato Card"
                     Caption = '&Resource';
                     Image = Resource;
                     Visible = not ExtendedPriceEnabled;
-                    RunObject = Page "Job Resource Prices";
-                    RunPageLink = "Job No." = field("No.");
-                    ToolTip = 'View this project''s resource prices.';
+                    RunObject = Page "Contrato Resource Prices";
+                    RunPageLink = "Contrato No." = field("No.");
+                    ToolTip = 'View this Contrato''s resource prices.';
                     ObsoleteState = Pending;
                     ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation.';
                     ObsoleteTag = '17.0';
@@ -1157,9 +1157,9 @@ page 50201 "Contrato Card"
                     Caption = '&Item';
                     Image = Item;
                     Visible = not ExtendedPriceEnabled;
-                    RunObject = Page "Job Item Prices";
-                    RunPageLink = "Job No." = field("No.");
-                    ToolTip = 'View this project''s item prices.';
+                    RunObject = Page "Contrato Item Prices";
+                    RunPageLink = "Contrato No." = field("No.");
+                    ToolTip = 'View this Contrato''s item prices.';
                     ObsoleteState = Pending;
                     ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation.';
                     ObsoleteTag = '17.0';
@@ -1170,9 +1170,9 @@ page 50201 "Contrato Card"
                     Caption = '&G/L Account';
                     Image = JobPrice;
                     Visible = not ExtendedPriceEnabled;
-                    RunObject = Page "Job G/L Account Prices";
-                    RunPageLink = "Job No." = field("No.");
-                    ToolTip = 'View this project''s G/L account prices.';
+                    RunObject = Page "Contrato G/L Account Prices";
+                    RunPageLink = "Contrato No." = field("No.");
+                    ToolTip = 'View this Contrato''s G/L account prices.';
                     ObsoleteState = Pending;
                     ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation.';
                     ObsoleteTag = '17.0';
@@ -1343,16 +1343,16 @@ page 50201 "Contrato Card"
                     ApplicationArea = All;
                     Caption = 'Resource &Allocated per Contrato';
                     Image = ViewJob;
-                    RunObject = Page "Resource Allocated per Job";
-                    ToolTip = 'View this project''s resource allocation.';
+                    RunObject = Page "ResourceAllocatedperContrato";
+                    ToolTip = 'View this Contrato''s resource allocation.';
                 }
                 action("Res. Gr. All&ocated per Contrato")
                 {
                     ApplicationArea = All;
                     Caption = 'Res. Gr. All&ocated per Contrato';
                     Image = ResourceGroup;
-                    RunObject = Page "Res. Gr. Allocated per Job";
-                    ToolTip = 'View the project''s resource group allocation.';
+                    RunObject = Page "Res.Gr.AllocatedperContrato";
+                    ToolTip = 'View the Contrato''s resource group allocation.';
                 }
             }
             group(Warehouse_Related)
@@ -1364,7 +1364,7 @@ page 50201 "Contrato Card"
                     ApplicationArea = Warehouse;
                     Caption = 'Put-away/Pick Lines/Movement Lines';
                     Image = PutawayLines;
-                    ToolTip = 'View the list of ongoing inventory put-aways, picks, or movements for the project.';
+                    ToolTip = 'View the list of ongoing inventory put-aways, picks, or movements for the Contrato.';
 
                     trigger OnAction()
                     var
@@ -1395,7 +1395,7 @@ page 50201 "Contrato Card"
                                   "Source Subtype" = const("0"),
                                   "Source No." = field("No.");
                     RunPageView = sorting("Source Type", "Source Subtype", "Source No.", "Source Line No.", "Source Subline No.");
-                    ToolTip = 'View the list of warehouse picks that have been made for the project.';
+                    ToolTip = 'View the list of warehouse picks that have been made for the Contrato.';
                 }
             }
             group(History)
@@ -1421,7 +1421,7 @@ page 50201 "Contrato Card"
                     Image = ItemLedger;
                     RunObject = Page "Item Ledger Entries";
                     RunPageLink = "Job No." = field("No.");
-                    ToolTip = 'View the item ledger entries of items consumed by the project.';
+                    ToolTip = 'View the item ledger entries of items consumed by the Contrato.';
                 }
                 action("Whse. Ledger E&ntries")
                 {
@@ -1431,7 +1431,7 @@ page 50201 "Contrato Card"
                     RunObject = Page "Warehouse Entries";
                     RunPageLink = "Source Type" = filter(210 | 167),
                                     "Source No." = field("No.");
-                    ToolTip = 'View the warehouse entries of items consumed by the project.';
+                    ToolTip = 'View the warehouse entries of items consumed by the Contrato.';
                 }
             }
         }
@@ -1451,10 +1451,10 @@ page 50201 "Contrato Card"
 
                     trigger OnAction()
                     var
-                        CopyJobTasks: Page "Copy Contrato Tasks";
+                        CopyContratoTasks: Page "Copy Contrato Tasks";
                     begin
-                        //CopyJobTasks.SetToJob(Rec);
-                        CopyJobTasks.RunModal();
+                        CopyContratoTasks.SetToContrato(Rec);
+                        CopyContratoTasks.RunModal();
                     end;
                 }
                 action("Copy Contrato Tasks &to...")
@@ -1463,14 +1463,14 @@ page 50201 "Contrato Card"
                     Caption = 'Copy Contrato Tasks &to...';
                     Ellipsis = true;
                     Image = CopyFromTask;
-                    ToolTip = 'Open the Copy Projects To page.';
+                    ToolTip = 'Open the Copy Contratos To page.';
 
                     trigger OnAction()
                     var
-                        CopyJobTasks: Page "Copy Contrato Tasks";
+                        CopyContratoTasks: Page "Copy Contrato Tasks";
                     begin
-                        //CopyJobTasks.SetFromJob(Rec);
-                        CopyJobTasks.RunModal();
+                        CopyContratoTasks.SetFromContrato(Rec);
+                        CopyContratoTasks.RunModal();
                     end;
                 }
             }
@@ -1484,18 +1484,18 @@ page 50201 "Contrato Card"
                     Caption = '&Calculate WIP';
                     Ellipsis = true;
                     Image = CalculateWIP;
-                    ToolTip = 'Run the Contrato Calculate WIP batch job.';
+                    ToolTip = 'Run the Contrato Calculate WIP batch Contrato.';
 
                     trigger OnAction()
                     var
                         Contrato: Record Contrato;
-                        JobCalculateWIP: Report "Job Calculate WIP";
+                        ContratoCalculateWIP: Report "Contrato Calculate WIP";
                     begin
                         Rec.TestField(Rec."No.");
                         Contrato.Copy(Rec);
                         Contrato.SetRange("No.", Rec."No.");
-                        JobCalculateWIP.SetTableView(Contrato);
-                        JobCalculateWIP.Run();
+                        ContratoCalculateWIP.SetTableView(Contrato);
+                        ContratoCalculateWIP.Run();
                     end;
                 }
                 action("<Action83>")
@@ -1505,7 +1505,7 @@ page 50201 "Contrato Card"
                     Ellipsis = true;
                     Image = PostOrder;
                     ShortCutKey = 'F9';
-                    ToolTip = 'Run the Contrato Post WIP to G/L batch job.';
+                    ToolTip = 'Run the Contrato Post WIP to G/L batch Contrato.';
 
                     trigger OnAction()
                     var
@@ -1514,7 +1514,7 @@ page 50201 "Contrato Card"
                         Rec.TestField("No.");
                         Contrato.Copy(Rec);
                         Contrato.SetRange("No.", Rec."No.");
-                        REPORT.RunModal(REPORT::"Job Post WIP to G/L", true, false, Contrato);
+                        REPORT.RunModal(REPORT::"Contrato Post WIP to G/L", true, false, Contrato);
                     end;
                 }
             }
@@ -1527,11 +1527,11 @@ page 50201 "Contrato Card"
                     ApplicationArea = Warehouse;
                     Caption = 'Create Inventory Pick';
                     Image = CreateInventoryPick;
-                    ToolTip = 'Create inventory picks for the item on the project planning lines.';
+                    ToolTip = 'Create inventory picks for the item on the Contrato planning lines.';
 
                     trigger OnAction()
                     begin
-                        FeatureTelemetry.LogUsage('0000GQU', 'Picks on jobs', 'create inventory picks');
+                        FeatureTelemetry.LogUsage('0000GQU', 'Picks on Contratos', 'create inventory picks');
                         Rec.CreateInvtPutAwayPick();
                     end;
                 }
@@ -1541,11 +1541,11 @@ page 50201 "Contrato Card"
                     ApplicationArea = Warehouse;
                     Caption = 'Create Warehouse Pick';
                     Image = CreateWarehousePick;
-                    ToolTip = 'Create warehouse pick documents for the project planning lines.';
+                    ToolTip = 'Create warehouse pick documents for the Contrato planning lines.';
 
                     trigger OnAction()
                     begin
-                        FeatureTelemetry.LogUsage('0000GQV', 'Picks on jobs', 'create warehouse picks');
+                        FeatureTelemetry.LogUsage('0000GQV', 'Picks on Contratos', 'create warehouse picks');
                         Rec.CreateWarehousePick();
                     end;
                 }
@@ -1560,11 +1560,11 @@ page 50201 "Contrato Card"
                     ApplicationArea = All;
                     Caption = 'Archi&ve Contrato';
                     Image = Archive;
-                    ToolTip = 'Send the project to the archive. Later, you can restore the archived project.';
+                    ToolTip = 'Send the Contrato to the archive. Later, you can restore the archived Contrato.';
 
                     trigger OnAction()
                     begin
-                        //JobArchiveManagement.ArchiveJob(Rec);
+                        ContratoArchiveManagement.ArchiveContrato(Rec);
                         CurrPage.Update(false);
                     end;
                 }
@@ -1577,8 +1577,8 @@ page 50201 "Contrato Card"
                 ApplicationArea = Suite;
                 Caption = 'Contrato Actual to Budget';
                 Image = "Report";
-                RunObject = Report "Job Actual To Budget";
-                ToolTip = 'Compare budgeted and usage amounts for selected projects. All lines of the selected project show quantity, total cost, and line amount.';
+                RunObject = Report "Contrato Actual To Budget";
+                ToolTip = 'Compare budgeted and usage amounts for selected Contratos. All lines of the selected Contrato show quantity, total cost, and line amount.';
                 Visible = false;
             }
             action("Contrato Cost Budget")
@@ -1588,49 +1588,49 @@ page 50201 "Contrato Card"
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
-                RunObject = Report "Job Cost Budget";
-                ToolTip = 'View the project cost budgets for specific projects or for all projects. This report lists the step, task, and phase and the description of the activity. For each activity, the report includes the quantity, unit and total cost, and unit and total price.';
+                RunObject = Report "Contrato Cost Budget";
+                ToolTip = 'View the Contrato cost budgets for specific Contratos or for all Contratos. This report lists the step, task, and phase and the description of the activity. For each activity, the report includes the quantity, unit and total cost, and unit and total price.';
             }
             action("Contrato Analysis")
             {
                 ApplicationArea = Suite;
                 Caption = 'Contrato Analysis';
                 Image = "Report";
-                RunObject = Report "Job Analysis";
-                ToolTip = 'Analyze the project, such as the budgeted prices, usage prices, and billable prices, and then compares the three sets of prices.';
+                RunObject = Report "Contrato Analysis";
+                ToolTip = 'Analyze the Contrato, such as the budgeted prices, usage prices, and billable prices, and then compares the three sets of prices.';
             }
             action("Contrato - Planning Lines")
             {
                 ApplicationArea = Suite;
                 Caption = 'Contrato - Planning Lines';
                 Image = "Report";
-                RunObject = Report "Job - Planning Lines";
-                ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (budget) or you can specify what you actually agreed with your customer that he should pay for the project (billable).';
+                RunObject = Report "Contrato - Planning Lines";
+                ToolTip = 'View all planning lines for the Contrato. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a Contrato (budget) or you can specify what you actually agreed with your customer that he should pay for the Contrato (billable).';
             }
             action("Contrato - Suggested Billing")
             {
                 ApplicationArea = Suite;
                 Caption = 'Contrato - Suggested Billing';
                 Image = "Report";
-                RunObject = Report "Job Suggested Billing";
-                ToolTip = 'View a list of all projects, grouped by customer, how much the customer has already been invoiced, and how much remains to be invoiced, that is, the suggested billing.';
+                RunObject = Report "Contrato Suggested Billing";
+                ToolTip = 'View a list of all Contratos, grouped by customer, how much the customer has already been invoiced, and how much remains to be invoiced, that is, the suggested billing.';
                 Visible = false;
             }
-            action("Contrato Cost Transaction Detail")
+            action("ContratoCostTransactionDetail")
             {
                 ApplicationArea = All;
                 Caption = 'Contrato Cost Transaction Detail';
                 Image = "Report";
-                RunObject = Report "Job Cost Transaction Detail";
-                ToolTip = 'List the details of your project transactions. The report includes the project number and description followed by a list of the transactions that occurred in the period you specify.';
+                RunObject = Report "ContratoCostTransactionDetail";
+                ToolTip = 'List the details of your Contrato transactions. The report includes the Contrato number and description followed by a list of the transactions that occurred in the period you specify.';
             }
             action("Contrato Actual to Budget (Cost)")
             {
                 ApplicationArea = All;
                 Caption = 'Contrato Actual to Budget (Cost)';
                 Image = "Report";
-                RunObject = Report "Job Actual to Budget (Cost)";
-                ToolTip = 'Compare the actual cost of your projects to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
+                RunObject = Report "ContratoActualtoBudget(Cost)";
+                ToolTip = 'Compare the actual cost of your Contratos to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
             }
             action("Contrato Actual to Budget (Price)")
             {
@@ -1639,18 +1639,18 @@ page 50201 "Contrato Card"
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
-                RunObject = Report "Job Actual to Budget (Price)";
-                ToolTip = 'Compare the actual price of your projects to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
+                RunObject = Report "ContratoActualtoBudget(Price)";
+                ToolTip = 'Compare the actual price of your Contratos to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
             }
-            action("Open Purchase Invoices by Contrato")
+            action("OpenPurchaseInvoicesbyContrato")
             {
                 ApplicationArea = All;
                 Caption = 'Open Purchase Invoices by Contrato';
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
-                RunObject = Report "Open Purchase Invoices by Job";
-                ToolTip = 'View open purchase invoices by project.';
+                RunObject = Report "OpenPurchaseInvoicesbyContrato";
+                ToolTip = 'View open purchase invoices by Contrato.';
             }
             action("Open Sales Invoices by Contrato")
             {
@@ -1659,16 +1659,16 @@ page 50201 "Contrato Card"
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
-                RunObject = Report "Open Sales Invoices by Job";
-                ToolTip = 'View open sales invoices by project.';
+                RunObject = Report "OpenSalesInvoicesbyContrato";
+                ToolTip = 'View open sales invoices by Contrato.';
             }
             action("Contrato Cost Suggested Billing")
             {
                 ApplicationArea = All;
                 Caption = 'Contrato Cost Suggested Billing';
                 Image = "Report";
-                RunObject = Report "Job Cost Suggested Billing";
-                ToolTip = 'Get suggestions on the amount you should bill a customer for a project. The suggested billing is based on the actual cost of the project less any amount that has already been invoiced to the customer.';
+                RunObject = Report "ContratoCostSuggestedBilling";
+                ToolTip = 'Get suggestions on the amount you should bill a customer for a Contrato. The suggested billing is based on the actual cost of the Contrato less any amount that has already been invoiced to the customer.';
             }
             action("Report Contrato Quote")
             {
@@ -1693,11 +1693,11 @@ page 50201 "Contrato Card"
                 ApplicationArea = Suite;
                 Caption = 'Send Contrato Quote';
                 Image = SendTo;
-                ToolTip = 'Send the project quote to the customer. You can change the way that the document is sent in the window that appears.';
+                ToolTip = 'Send the Contrato quote to the customer. You can change the way that the document is sent in the window that appears.';
 
                 trigger OnAction()
                 begin
-                    CODEUNIT.Run(CODEUNIT::"Jobs-Send", Rec);
+                    CODEUNIT.Run(CODEUNIT::"Contratos-Send", Rec);
                 end;
             }
         }
@@ -1845,7 +1845,7 @@ page 50201 "Contrato Card"
                 {
                 }
 
-                actionref(JobPlanningLines_Promoted; JobPlanningLines)
+                actionref(ContratoPlanningLines_Promoted; ContratoPlanningLines)
                 {
                 }
                 actionref(SalesInvoicesCreditMemos_Promoted; SalesInvoicesCreditMemos)
@@ -1872,7 +1872,7 @@ page 50201 "Contrato Card"
                 actionref("Contrato Cost Suggested Billing_Promoted"; "Contrato Cost Suggested Billing")
                 {
                 }
-                actionref("Contrato Cost Transaction Detail_Promoted"; "Contrato Cost Transaction Detail")
+                actionref("Contrato Cost Transaction Detail_Promoted"; "ContratoCostTransactionDetail")
                 {
                 }
             }
@@ -1902,18 +1902,18 @@ page 50201 "Contrato Card"
         SellToContact.GetOrClear(Rec."Sell-to Contact No.");
         BillToContact.GetOrClear(Rec."Bill-to Contact No.");
         UpdateBillToInformationEditable();
-        JobTaskLinesEditable := Rec.CalcContratoTaskLinesEditable();
-        CurrPage.JobTaskLines.Page.SetPerTaskBillingFieldsVisible(Rec."Task Billing Method" = Rec."Task Billing Method"::"Multiple customers");
+        ContratoTaskLinesEditable := Rec.CalcContratoTaskLinesEditable();
+        CurrPage.ContratoTaskLines.Page.SetPerTaskBillingFieldsVisible(Rec."Task Billing Method" = Rec."Task Billing Method"::"Multiple customers");
         CurrPage.Update(false);
     end;
 
     var
         FormatAddress: Codeunit "Format Address";
         FeatureTelemetry: Codeunit "Feature Telemetry";
-        JobArchiveManagement: Codeunit "Job Archive Management";
+        ContratoArchiveManagement: Codeunit "Contrato Archive Management";
         EmptyShipToCodeErr: Label 'The Code field can only be empty if you select Custom Address in the Ship-to field.';
         NoFieldVisible: Boolean;
-        JobTaskLinesEditable: Boolean;
+        ContratoTaskLinesEditable: Boolean;
         ExtendedPriceEnabled: Boolean;
         IsBillToCountyVisible: Boolean;
         IsSellToCountyVisible: Boolean;
@@ -1979,7 +1979,7 @@ page 50201 "Contrato Card"
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeJobPlanningLinesAction(var Contrato: Record Contrato; var IsHandled: Boolean)
+    local procedure OnBeforeContratoPlanningLinesAction(var Contrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 }

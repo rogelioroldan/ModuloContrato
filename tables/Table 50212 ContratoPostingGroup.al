@@ -22,12 +22,12 @@ table 50212 "Contrato Posting Group"
             Caption = 'WIP Accrued Costs Account';
             TableRelation = "G/L Account";
         }
-        field(4; "Job Costs Applied Account"; Code[20])
+        field(4; "Contrato Costs Applied Account"; Code[20])
         {
             Caption = 'Project Costs Applied Account';
             TableRelation = "G/L Account";
         }
-        field(5; "Job Costs Adjustment Account"; Code[20])
+        field(5; "ContratCostsAdjustmentAccount"; Code[20])
         {
             Caption = 'Project Costs Adjustment Account';
             TableRelation = "G/L Account";
@@ -37,7 +37,7 @@ table 50212 "Contrato Posting Group"
             Caption = 'G/L Expense Acc. (Contract)';
             TableRelation = "G/L Account";
         }
-        field(7; "Job Sales Adjustment Account"; Code[20])
+        field(7; "ContratoSalesAdjustmentAccount"; Code[20])
         {
             Caption = 'Project Sales Adjustment Account';
             TableRelation = "G/L Account";
@@ -52,7 +52,7 @@ table 50212 "Contrato Posting Group"
             Caption = 'WIP Invoiced Sales Account';
             TableRelation = "G/L Account";
         }
-        field(10; "Job Sales Applied Account"; Code[20])
+        field(10; "Contrato Sales Applied Account"; Code[20])
         {
             Caption = 'Project Sales Applied Account';
             TableRelation = "G/L Account";
@@ -114,22 +114,22 @@ table 50212 "Contrato Posting Group"
 
     local procedure CheckGroupUsage()
     var
-        Job: Record Contrato;
-        JobLedgerEntry: Record "Contrato Ledger Entry";
+        Contrato: Record Contrato;
+        ContratoLedgerEntry: Record "Contrato Ledger Entry";
     begin
-        Job.SetRange("Contrato Posting Group", Code);
-        if not Job.IsEmpty() then
+        Contrato.SetRange("Contrato Posting Group", Code);
+        if not Contrato.IsEmpty() then
             Error(YouCannotDeleteErr, Code);
 
-        JobLedgerEntry.SetRange("Contrato Posting Group", Code);
-        if not JobLedgerEntry.IsEmpty() then
+        ContratoLedgerEntry.SetRange("Contrato Posting Group", Code);
+        if not ContratoLedgerEntry.IsEmpty() then
             Error(YouCannotDeleteErr, Code);
     end;
 
     procedure GetWIPCostsAccount(): Code[20]
     begin
         if "WIP Costs Account" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("WIP Costs Account"));
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("WIP Costs Account"));
 
         exit("WIP Costs Account");
     end;
@@ -137,7 +137,7 @@ table 50212 "Contrato Posting Group"
     procedure GetWIPAccruedCostsAccount(): Code[20]
     begin
         if "WIP Accrued Costs Account" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("WIP Accrued Costs Account"));
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("WIP Accrued Costs Account"));
 
         exit("WIP Accrued Costs Account");
     end;
@@ -145,7 +145,7 @@ table 50212 "Contrato Posting Group"
     procedure GetWIPAccruedSalesAccount(): Code[20]
     begin
         if "WIP Accrued Sales Account" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("WIP Accrued Sales Account"));
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("WIP Accrued Sales Account"));
 
         exit("WIP Accrued Sales Account");
     end;
@@ -153,55 +153,55 @@ table 50212 "Contrato Posting Group"
     procedure GetWIPInvoicedSalesAccount(): Code[20]
     begin
         if "WIP Invoiced Sales Account" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("WIP Invoiced Sales Account"));
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("WIP Invoiced Sales Account"));
 
         exit("WIP Invoiced Sales Account");
     end;
 
-    procedure GetJobCostsAppliedAccount(): Code[20]
+    procedure GetContratoCostsAppliedAccount(): Code[20]
     begin
-        if "Job Costs Applied Account" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("Job Costs Applied Account"));
+        if "Contrato Costs Applied Account" = '' then
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("Contrato Costs Applied Account"));
 
-        exit("Job Costs Applied Account");
+        exit("Contrato Costs Applied Account");
     end;
 
-    procedure GetJobCostsAdjustmentAccount(): Code[20]
+    procedure GetContratoCostsAdjustmentAccount(): Code[20]
     begin
-        if "Job Costs Adjustment Account" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("Job Costs Adjustment Account"));
+        if "ContratCostsAdjustmentAccount" = '' then
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("ContratCostsAdjustmentAccount"));
 
-        exit("Job Costs Adjustment Account");
+        exit("ContratCostsAdjustmentAccount");
     end;
 
     procedure GetGLExpenseAccountContract(): Code[20]
     begin
         if "G/L Expense Acc. (Contract)" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("G/L Expense Acc. (Contract)"));
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("G/L Expense Acc. (Contract)"));
 
         exit("G/L Expense Acc. (Contract)");
     end;
 
-    procedure GetJobSalesAdjustmentAccount(): Code[20]
+    procedure GetContratoSalesAdjustmentAccount(): Code[20]
     begin
-        if "Job Sales Adjustment Account" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("Job Sales Adjustment Account"));
+        if "ContratoSalesAdjustmentAccount" = '' then
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("ContratoSalesAdjustmentAccount"));
 
-        exit("Job Sales Adjustment Account");
+        exit("ContratoSalesAdjustmentAccount");
     end;
 
-    procedure GetJobSalesAppliedAccount(): Code[20]
+    procedure GetContratoSalesAppliedAccount(): Code[20]
     begin
-        if "Job Sales Applied Account" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("Job Sales Applied Account"));
+        if "Contrato Sales Applied Account" = '' then
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("Contrato Sales Applied Account"));
 
-        exit("Job Sales Applied Account");
+        exit("Contrato Sales Applied Account");
     end;
 
     procedure GetRecognizedCostsAccount(): Code[20]
     begin
         if "Recognized Costs Account" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("Recognized Costs Account"));
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("Recognized Costs Account"));
 
         exit("Recognized Costs Account");
     end;
@@ -209,7 +209,7 @@ table 50212 "Contrato Posting Group"
     procedure GetRecognizedSalesAccount(): Code[20]
     begin
         if "Recognized Sales Account" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("Recognized Sales Account"));
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("Recognized Sales Account"));
 
         exit("Recognized Sales Account");
     end;
@@ -217,7 +217,7 @@ table 50212 "Contrato Posting Group"
     procedure GetItemCostsAppliedAccount(): Code[20]
     begin
         if "Item Costs Applied Account" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("Item Costs Applied Account"));
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("Item Costs Applied Account"));
 
         exit("Item Costs Applied Account");
     end;
@@ -225,7 +225,7 @@ table 50212 "Contrato Posting Group"
     procedure GetResourceCostsAppliedAccount(): Code[20]
     begin
         if "Resource Costs Applied Account" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("Resource Costs Applied Account"));
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("Resource Costs Applied Account"));
 
         exit("Resource Costs Applied Account");
     end;
@@ -233,7 +233,7 @@ table 50212 "Contrato Posting Group"
     procedure GetGLCostsAppliedAccount(): Code[20]
     begin
         if "G/L Costs Applied Account" = '' then
-            //PostingSetupMgt.LogJobPostingGroupFieldError(Rec, FieldNo("G/L Costs Applied Account"));
+            //PostingSetupMgt.LogContratoPostingGroupFieldError(Rec, FieldNo("G/L Costs Applied Account"));
 
         exit("G/L Costs Applied Account");
     end;

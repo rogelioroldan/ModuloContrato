@@ -12,7 +12,7 @@ page 50208 "Contrato Cost Factbox"
         {
             field("No."; Rec."No.")
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Contrato No.';
                 ToolTip = 'Specifies the project number.';
 
@@ -26,7 +26,7 @@ page 50208 "Contrato Cost Factbox"
                 Caption = 'Budget Cost';
                 field(PlaceHolderLbl; PlaceHolderLbl)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = false;
                     Enabled = false;
                     ToolTip = 'Specifies nothing.';
@@ -34,43 +34,43 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(ScheduleCostLCY; CL[1])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Resource';
                     Editable = false;
                     ToolTip = 'Specifies the total budgeted cost of resources associated with this project.';
 
                     trigger OnDrillDown()
                     begin
-                        JobCalcStatistics.ShowPlanningLine(1, true);
+                        ContratoCalcStatistics.ShowPlanningLine(1, true);
                     end;
                 }
                 field(ScheduleCostLCYItem; CL[2])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Item';
                     Editable = false;
                     ToolTip = 'Specifies the total budgeted cost of items associated with this project.';
 
                     trigger OnDrillDown()
                     begin
-                        JobCalcStatistics.ShowPlanningLine(2, true);
+                        ContratoCalcStatistics.ShowPlanningLine(2, true);
                     end;
                 }
                 field(ScheduleCostLCYGLAcc; CL[3])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'G/L Account';
                     Editable = false;
                     ToolTip = 'Specifies the total budgeted cost of general journal entries associated with this project.';
 
                     trigger OnDrillDown()
                     begin
-                        JobCalcStatistics.ShowPlanningLine(3, true);
+                        ContratoCalcStatistics.ShowPlanningLine(3, true);
                     end;
                 }
                 field(ScheduleCostLCYTotal; CL[4])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Total';
                     Editable = false;
                     Style = Strong;
@@ -79,7 +79,7 @@ page 50208 "Contrato Cost Factbox"
 
                     trigger OnDrillDown()
                     begin
-                        JobCalcStatistics.ShowPlanningLine(0, true);
+                        ContratoCalcStatistics.ShowPlanningLine(0, true);
                     end;
                 }
             }
@@ -88,7 +88,7 @@ page 50208 "Contrato Cost Factbox"
                 Caption = 'Actual Cost';
                 field(Placeholder2; PlaceHolderLbl)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = false;
                     Enabled = false;
                     ToolTip = 'Specifies nothing.';
@@ -96,43 +96,43 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(UsageCostLCY; CL[5])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Resource';
                     Editable = false;
                     ToolTip = 'Specifies the total usage cost of resources associated with this project.';
 
                     trigger OnDrillDown()
                     begin
-                        JobCalcStatistics.ShowLedgEntry(1, true);
+                        ContratoCalcStatistics.ShowLedgEntry(1, true);
                     end;
                 }
                 field(UsageCostLCYItem; CL[6])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Item';
                     Editable = false;
                     ToolTip = 'Specifies the total usage cost of items associated with this project.';
 
                     trigger OnDrillDown()
                     begin
-                        JobCalcStatistics.ShowLedgEntry(2, true);
+                        ContratoCalcStatistics.ShowLedgEntry(2, true);
                     end;
                 }
                 field(UsageCostLCYGLAcc; CL[7])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'G/L Account';
                     Editable = false;
                     ToolTip = 'Specifies the total usage cost of general journal entries associated with this project.';
 
                     trigger OnDrillDown()
                     begin
-                        JobCalcStatistics.ShowLedgEntry(3, true);
+                        ContratoCalcStatistics.ShowLedgEntry(3, true);
                     end;
                 }
                 field(UsageCostLCYTotal; CL[8])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Total';
                     Editable = false;
                     Style = Strong;
@@ -141,7 +141,7 @@ page 50208 "Contrato Cost Factbox"
 
                     trigger OnDrillDown()
                     begin
-                        JobCalcStatistics.ShowLedgEntry(0, true);
+                        ContratoCalcStatistics.ShowLedgEntry(0, true);
                     end;
                 }
             }
@@ -150,7 +150,7 @@ page 50208 "Contrato Cost Factbox"
                 Caption = 'Billable Price';
                 field(Placeholder3; PlaceHolderLbl)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = false;
                     Enabled = false;
                     ToolTip = 'Specifies nothing.';
@@ -158,7 +158,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(BillablePriceLCY; PL[9])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Resource';
                     Editable = false;
                     ToolTip = 'Specifies the total billable price of resources associated with this project.';
@@ -170,12 +170,12 @@ page 50208 "Contrato Cost Factbox"
                         IsHandled := false;
                         OnBeforeOnDrillDownBillablePriceLCY(Rec, IsHandled);
                         if not IsHandled then
-                            JobCalcStatistics.ShowPlanningLine(1, false);
+                            ContratoCalcStatistics.ShowPlanningLine(1, false);
                     end;
                 }
                 field(BillablePriceLCYItem; PL[10])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Item';
                     Editable = false;
                     ToolTip = 'Specifies the total billable price of items associated with this project.';
@@ -187,12 +187,12 @@ page 50208 "Contrato Cost Factbox"
                         IsHandled := false;
                         OnBeforeOnDrillDownBillablePriceLCYItem(Rec, IsHandled);
                         if not IsHandled then
-                            JobCalcStatistics.ShowPlanningLine(2, false);
+                            ContratoCalcStatistics.ShowPlanningLine(2, false);
                     end;
                 }
                 field(BillablePriceLCYGLAcc; PL[11])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'G/L Account';
                     Editable = false;
                     ToolTip = 'Specifies the total billable price for project planning lines of type G/L account.';
@@ -204,12 +204,12 @@ page 50208 "Contrato Cost Factbox"
                         IsHandled := false;
                         OnBeforeOnDrillDownBillablePriceLCYGLAcc(Rec, IsHandled);
                         if not IsHandled then
-                            JobCalcStatistics.ShowPlanningLine(3, false);
+                            ContratoCalcStatistics.ShowPlanningLine(3, false);
                     end;
                 }
                 field(BillablePriceLCYTotal; PL[12])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Total';
                     Editable = false;
                     Style = Strong;
@@ -223,7 +223,7 @@ page 50208 "Contrato Cost Factbox"
                         IsHandled := false;
                         OnBeforeOnDrillDownBillablePriceLCYTotal(Rec, IsHandled);
                         if not IsHandled then
-                            JobCalcStatistics.ShowPlanningLine(0, false);
+                            ContratoCalcStatistics.ShowPlanningLine(0, false);
                     end;
                 }
             }
@@ -232,7 +232,7 @@ page 50208 "Contrato Cost Factbox"
                 Caption = 'Invoiced Price';
                 field(Placeholder4; PlaceHolderLbl)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = false;
                     Enabled = false;
                     ToolTip = 'Specifies nothing.';
@@ -240,7 +240,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(InvoicedPriceLCY; PL[13])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Resource';
                     Editable = false;
                     ToolTip = 'Specifies the total invoiced price of resources associated with this project.';
@@ -252,12 +252,12 @@ page 50208 "Contrato Cost Factbox"
                         IsHandled := false;
                         OnBeforeOnDrillDownInvoicedPriceLCY(Rec, IsHandled);
                         if not IsHandled then
-                            JobCalcStatistics.ShowLedgEntry(1, false);
+                            ContratoCalcStatistics.ShowLedgEntry(1, false);
                     end;
                 }
                 field(InvoicedPriceLCYItem; PL[14])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Item';
                     Editable = false;
                     ToolTip = 'Specifies the total invoiced price of items associated with this project.';
@@ -269,12 +269,12 @@ page 50208 "Contrato Cost Factbox"
                         IsHandled := false;
                         OnBeforeOnDrillDownInvoicedPriceLCYItem(Rec, IsHandled);
                         if not IsHandled then
-                            JobCalcStatistics.ShowLedgEntry(2, false);
+                            ContratoCalcStatistics.ShowLedgEntry(2, false);
                     end;
                 }
                 field(InvoicedPriceLCYGLAcc; PL[15])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'G/L Account';
                     Editable = false;
                     ToolTip = 'Specifies the total invoiced price of general journal entries associated with this project.';
@@ -286,12 +286,12 @@ page 50208 "Contrato Cost Factbox"
                         IsHandled := false;
                         OnBeforeOnDrillDownInvoicedPriceLCYGLAcc(Rec, IsHandled);
                         if not IsHandled then
-                            JobCalcStatistics.ShowLedgEntry(3, false);
+                            ContratoCalcStatistics.ShowLedgEntry(3, false);
                     end;
                 }
                 field(InvoicedPriceLCYTotal; PL[16])
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Total';
                     Editable = false;
                     Style = Strong;
@@ -305,7 +305,7 @@ page 50208 "Contrato Cost Factbox"
                         IsHandled := false;
                         OnBeforeOnDrillDownInvoicedPriceLCYTotal(Rec, IsHandled);
                         if not IsHandled then
-                            JobCalcStatistics.ShowLedgEntry(0, false);
+                            ContratoCalcStatistics.ShowLedgEntry(0, false);
                     end;
                 }
             }
@@ -318,15 +318,15 @@ page 50208 "Contrato Cost Factbox"
 
     trigger OnAfterGetCurrRecord()
     begin
-        Clear(JobCalcStatistics);
-        JobCalcStatistics.ContratoCalculateCommonFilters(Rec);
-        JobCalcStatistics.CalculateAmounts();
-        JobCalcStatistics.GetLCYCostAmounts(CL);
-        JobCalcStatistics.GetLCYPriceAmounts(PL);
+        Clear(ContratoCalcStatistics);
+        ContratoCalcStatistics.ContratoCalculateCommonFilters(Rec);
+        ContratoCalcStatistics.CalculateAmounts();
+        ContratoCalcStatistics.GetLCYCostAmounts(CL);
+        ContratoCalcStatistics.GetLCYPriceAmounts(PL);
     end;
 
     var
-        JobCalcStatistics: Codeunit "Contrato Calculate Statistics";
+        ContratoCalcStatistics: Codeunit "Contrato Calculate Statistics";
         PlaceHolderLbl: Label 'Placeholder';
         CL: array[16] of Decimal;
         PL: array[16] of Decimal;

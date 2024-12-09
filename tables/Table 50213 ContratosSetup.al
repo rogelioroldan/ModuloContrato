@@ -61,7 +61,7 @@ table 50213 "Contratos Setup"
             Caption = 'Project WIP Nos.';
             TableRelation = "No. Series";
         }
-        field(50; "Archive Jobs"; Option)
+        field(50; "Archive Contratos"; Option)
         {
             Caption = 'Archive Projects';
             OptionCaption = 'Never,Question,Always';

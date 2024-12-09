@@ -4,11 +4,11 @@ codeunit 50205 "Contrato Reg.-Show Ledger"
 
     trigger OnRun()
     begin
-        JobLedgEntry.SetRange("Entry No.", Rec."From Entry No.", Rec."To Entry No.");
-        PAGE.Run(PAGE::"Contrato Ledger Entries", JobLedgEntry);
+        ContratoLedgEntry.SetRange("Entry No.", Rec."From Entry No.", Rec."To Entry No.");
+        PAGE.Run(PAGE::"Contrato Ledger Entries", ContratoLedgEntry);
     end;
 
     var
-        JobLedgEntry: Record "Contrato Ledger Entry";
+        ContratoLedgEntry: Record "Contrato Ledger Entry";
 }
 

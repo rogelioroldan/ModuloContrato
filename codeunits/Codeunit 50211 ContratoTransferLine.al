@@ -11,563 +11,563 @@ codeunit 50211 "Contrato Transfer Line"
         LCYCurrency: Record Currency;
         CurrencyRoundingRead: Boolean;
         Text001: Label '%1 %2 does not exist.';
-        JobPlanningLineNotFoundErr: Label 'Could not find any lines on the %1 page that are related to the %2 where the value in the %3 field is %4, and value in the %5 field is %6.', Comment = '%1=page caption, %2=table caption, %3,%5=field caption, %4,%6=field value';
-        DuplicateJobplanningLinesErr: Label 'We found more than one %1s where the value in the %2 field is %3. The value in the %2 field must be unique.', Comment = '%1=table caption, %2=field caption, %3=field value';
+        ContratoPlanningLineNotFoundErr: Label 'Could not find any lines on the %1 page that are related to the %2 where the value in the %3 field is %4, and value in the %5 field is %6.', Comment = '%1=page caption, %2=table caption, %3,%5=field caption, %4,%6=field value';
+        DuplicateContratoplanningLinesErr: Label 'We found more than one %1s where the value in the %2 field is %3. The value in the %2 field must be unique.', Comment = '%1=table caption, %2=field caption, %3=field value';
 
-    procedure FromJnlLineToLedgEntry(JobJnlLine2: Record "Contrato Journal Line"; var JobLedgEntry: Record "Contrato Ledger Entry")
+    procedure FromJnlLineToLedgEntry(ContratoJnlLine2: Record "Contrato Journal Line"; var ContratoLedgEntry: Record "Contrato Ledger Entry")
     begin
-        JobLedgEntry."Contrato No." := JobJnlLine2."Contrato No.";
-        JobLedgEntry."Contrato Task No." := JobJnlLine2."Contrato Task No.";
-        JobLedgEntry."Contrato Posting Group" := JobJnlLine2."Posting Group";
-        JobLedgEntry."Posting Date" := JobJnlLine2."Posting Date";
-        JobLedgEntry."Document Date" := JobJnlLine2."Document Date";
-        JobLedgEntry."Document No." := JobJnlLine2."Document No.";
-        JobLedgEntry."External Document No." := JobJnlLine2."External Document No.";
-        JobLedgEntry.Type := JobJnlLine2.Type;
-        JobLedgEntry."No." := JobJnlLine2."No.";
-        JobLedgEntry.Description := JobJnlLine2.Description;
-        JobLedgEntry."Resource Group No." := JobJnlLine2."Resource Group No.";
-        JobLedgEntry."Unit of Measure Code" := JobJnlLine2."Unit of Measure Code";
-        JobLedgEntry."Location Code" := JobJnlLine2."Location Code";
-        JobLedgEntry."Global Dimension 1 Code" := JobJnlLine2."Shortcut Dimension 1 Code";
-        JobLedgEntry."Global Dimension 2 Code" := JobJnlLine2."Shortcut Dimension 2 Code";
-        JobLedgEntry."Dimension Set ID" := JobJnlLine2."Dimension Set ID";
-        JobLedgEntry."Work Type Code" := JobJnlLine2."Work Type Code";
-        JobLedgEntry."Source Code" := JobJnlLine2."Source Code";
-        JobLedgEntry."Entry Type" := JobJnlLine2."Entry Type";
-        JobLedgEntry."Gen. Bus. Posting Group" := JobJnlLine2."Gen. Bus. Posting Group";
-        JobLedgEntry."Gen. Prod. Posting Group" := JobJnlLine2."Gen. Prod. Posting Group";
-        JobLedgEntry."Journal Batch Name" := JobJnlLine2."Journal Batch Name";
-        JobLedgEntry."Reason Code" := JobJnlLine2."Reason Code";
-        JobLedgEntry."Variant Code" := JobJnlLine2."Variant Code";
-        JobLedgEntry."Bin Code" := JobJnlLine2."Bin Code";
-        JobLedgEntry."Line Type" := JobJnlLine2."Line Type";
-        JobLedgEntry."Currency Code" := JobJnlLine2."Currency Code";
-        JobLedgEntry."Description 2" := JobJnlLine2."Description 2";
-        if JobJnlLine2."Currency Code" = '' then
-            JobLedgEntry."Currency Factor" := 1
+        ContratoLedgEntry."Contrato No." := ContratoJnlLine2."Contrato No.";
+        ContratoLedgEntry."Contrato Task No." := ContratoJnlLine2."Contrato Task No.";
+        ContratoLedgEntry."Contrato Posting Group" := ContratoJnlLine2."Posting Group";
+        ContratoLedgEntry."Posting Date" := ContratoJnlLine2."Posting Date";
+        ContratoLedgEntry."Document Date" := ContratoJnlLine2."Document Date";
+        ContratoLedgEntry."Document No." := ContratoJnlLine2."Document No.";
+        ContratoLedgEntry."External Document No." := ContratoJnlLine2."External Document No.";
+        ContratoLedgEntry.Type := ContratoJnlLine2.Type;
+        ContratoLedgEntry."No." := ContratoJnlLine2."No.";
+        ContratoLedgEntry.Description := ContratoJnlLine2.Description;
+        ContratoLedgEntry."Resource Group No." := ContratoJnlLine2."Resource Group No.";
+        ContratoLedgEntry."Unit of Measure Code" := ContratoJnlLine2."Unit of Measure Code";
+        ContratoLedgEntry."Location Code" := ContratoJnlLine2."Location Code";
+        ContratoLedgEntry."Global Dimension 1 Code" := ContratoJnlLine2."Shortcut Dimension 1 Code";
+        ContratoLedgEntry."Global Dimension 2 Code" := ContratoJnlLine2."Shortcut Dimension 2 Code";
+        ContratoLedgEntry."Dimension Set ID" := ContratoJnlLine2."Dimension Set ID";
+        ContratoLedgEntry."Work Type Code" := ContratoJnlLine2."Work Type Code";
+        ContratoLedgEntry."Source Code" := ContratoJnlLine2."Source Code";
+        ContratoLedgEntry."Entry Type" := ContratoJnlLine2."Entry Type";
+        ContratoLedgEntry."Gen. Bus. Posting Group" := ContratoJnlLine2."Gen. Bus. Posting Group";
+        ContratoLedgEntry."Gen. Prod. Posting Group" := ContratoJnlLine2."Gen. Prod. Posting Group";
+        ContratoLedgEntry."Journal Batch Name" := ContratoJnlLine2."Journal Batch Name";
+        ContratoLedgEntry."Reason Code" := ContratoJnlLine2."Reason Code";
+        ContratoLedgEntry."Variant Code" := ContratoJnlLine2."Variant Code";
+        ContratoLedgEntry."Bin Code" := ContratoJnlLine2."Bin Code";
+        ContratoLedgEntry."Line Type" := ContratoJnlLine2."Line Type";
+        ContratoLedgEntry."Currency Code" := ContratoJnlLine2."Currency Code";
+        ContratoLedgEntry."Description 2" := ContratoJnlLine2."Description 2";
+        if ContratoJnlLine2."Currency Code" = '' then
+            ContratoLedgEntry."Currency Factor" := 1
         else
-            JobLedgEntry."Currency Factor" := JobJnlLine2."Currency Factor";
-        JobLedgEntry."User ID" := CopyStr(UserId(), 1, MaxStrLen(JobLedgEntry."User ID"));
-        JobLedgEntry."Customer Price Group" := JobJnlLine2."Customer Price Group";
+            ContratoLedgEntry."Currency Factor" := ContratoJnlLine2."Currency Factor";
+        ContratoLedgEntry."User ID" := CopyStr(UserId(), 1, MaxStrLen(ContratoLedgEntry."User ID"));
+        ContratoLedgEntry."Customer Price Group" := ContratoJnlLine2."Customer Price Group";
 
-        JobLedgEntry."Transport Method" := JobJnlLine2."Transport Method";
-        JobLedgEntry."Transaction Type" := JobJnlLine2."Transaction Type";
-        JobLedgEntry."Transaction Specification" := JobJnlLine2."Transaction Specification";
-        JobLedgEntry."Entry/Exit Point" := JobJnlLine2."Entry/Exit Point";
-        JobLedgEntry.Area := JobJnlLine2.Area;
-        JobLedgEntry."Country/Region Code" := JobJnlLine2."Country/Region Code";
-        JobLedgEntry."Shpt. Method Code" := JobJnlLine2."Shpt. Method Code";
+        ContratoLedgEntry."Transport Method" := ContratoJnlLine2."Transport Method";
+        ContratoLedgEntry."Transaction Type" := ContratoJnlLine2."Transaction Type";
+        ContratoLedgEntry."Transaction Specification" := ContratoJnlLine2."Transaction Specification";
+        ContratoLedgEntry."Entry/Exit Point" := ContratoJnlLine2."Entry/Exit Point";
+        ContratoLedgEntry.Area := ContratoJnlLine2.Area;
+        ContratoLedgEntry."Country/Region Code" := ContratoJnlLine2."Country/Region Code";
+        ContratoLedgEntry."Shpt. Method Code" := ContratoJnlLine2."Shpt. Method Code";
 
-        JobLedgEntry."Unit Price (LCY)" := JobJnlLine2."Unit Price (LCY)";
-        JobLedgEntry."Additional-Currency Total Cost" :=
-          -JobJnlLine2."Source Currency Total Cost";
-        JobLedgEntry."Add.-Currency Total Price" :=
-          -JobJnlLine2."Source Currency Total Price";
-        JobLedgEntry."Add.-Currency Line Amount" :=
-          -JobJnlLine2."Source Currency Line Amount";
+        ContratoLedgEntry."Unit Price (LCY)" := ContratoJnlLine2."Unit Price (LCY)";
+        ContratoLedgEntry."Additional-Currency Total Cost" :=
+          -ContratoJnlLine2."Source Currency Total Cost";
+        ContratoLedgEntry."Add.-Currency Total Price" :=
+          -ContratoJnlLine2."Source Currency Total Price";
+        ContratoLedgEntry."Add.-Currency Line Amount" :=
+          -ContratoJnlLine2."Source Currency Line Amount";
 
-        JobLedgEntry."Service Order No." := JobJnlLine2."Service Order No.";
-        JobLedgEntry."Posted Service Shipment No." := JobJnlLine2."Posted Service Shipment No.";
+        ContratoLedgEntry."Service Order No." := ContratoJnlLine2."Service Order No.";
+        ContratoLedgEntry."Posted Service Shipment No." := ContratoJnlLine2."Posted Service Shipment No.";
 
         // Amounts
-        JobLedgEntry."Qty. per Unit of Measure" := JobJnlLine2."Qty. per Unit of Measure";
+        ContratoLedgEntry."Qty. per Unit of Measure" := ContratoJnlLine2."Qty. per Unit of Measure";
 
-        JobLedgEntry."Direct Unit Cost (LCY)" := JobJnlLine2."Direct Unit Cost (LCY)";
-        JobLedgEntry."Unit Cost (LCY)" := JobJnlLine2."Unit Cost (LCY)";
-        JobLedgEntry."Unit Cost" := JobJnlLine2."Unit Cost";
-        JobLedgEntry."Unit Price" := JobJnlLine2."Unit Price";
+        ContratoLedgEntry."Direct Unit Cost (LCY)" := ContratoJnlLine2."Direct Unit Cost (LCY)";
+        ContratoLedgEntry."Unit Cost (LCY)" := ContratoJnlLine2."Unit Cost (LCY)";
+        ContratoLedgEntry."Unit Cost" := ContratoJnlLine2."Unit Cost";
+        ContratoLedgEntry."Unit Price" := ContratoJnlLine2."Unit Price";
 
-        JobLedgEntry."Line Discount %" := JobJnlLine2."Line Discount %";
+        ContratoLedgEntry."Line Discount %" := ContratoJnlLine2."Line Discount %";
 
-        OnAfterFromJnlLineToLedgEntry(JobLedgEntry, JobJnlLine2);
+        OnAfterFromJnlLineToLedgEntry(ContratoLedgEntry, ContratoJnlLine2);
     end;
 
-    procedure FromJnlToPlanningLine(JobJnlLine: Record "Contrato Journal Line"; var JobPlanningLine: Record "Contrato Planning Line")
+    procedure FromJnlToPlanningLine(ContratoJnlLine: Record "Contrato Journal Line"; var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
-        JobPlanningLine."Contrato No." := JobJnlLine."Contrato No.";
-        JobPlanningLine."Contrato Task No." := JobJnlLine."Contrato Task No.";
-        JobPlanningLine."Planning Date" := JobJnlLine."Posting Date";
-        JobPlanningLine."Currency Date" := JobJnlLine."Posting Date";
-        JobPlanningLine.Type := JobJnlLine.Type;
-        JobPlanningLine."No." := JobJnlLine."No.";
-        JobPlanningLine."Document No." := JobJnlLine."Document No.";
-        JobPlanningLine.Description := JobJnlLine.Description;
-        JobPlanningLine."Description 2" := JobJnlLine."Description 2";
-        JobPlanningLine."Unit of Measure Code" := JobJnlLine."Unit of Measure Code";
-        JobPlanningLine.Validate("Line Type", JobPlanningLine.ConvertFromJobLineType(JobJnlLine."Line Type"));
-        JobPlanningLine."Currency Code" := JobJnlLine."Currency Code";
-        JobPlanningLine."Currency Factor" := JobJnlLine."Currency Factor";
-        JobPlanningLine."Resource Group No." := JobJnlLine."Resource Group No.";
-        JobPlanningLine."Location Code" := JobJnlLine."Location Code";
-        JobPlanningLine."Work Type Code" := JobJnlLine."Work Type Code";
-        JobPlanningLine."Customer Price Group" := JobJnlLine."Customer Price Group";
-        JobPlanningLine."Country/Region Code" := JobJnlLine."Country/Region Code";
-        JobPlanningLine."Gen. Bus. Posting Group" := JobJnlLine."Gen. Bus. Posting Group";
-        JobPlanningLine."Gen. Prod. Posting Group" := JobJnlLine."Gen. Prod. Posting Group";
-        JobPlanningLine."Document Date" := JobJnlLine."Document Date";
-        JobPlanningLine."Variant Code" := JobJnlLine."Variant Code";
-        JobPlanningLine."Bin Code" := JobJnlLine."Bin Code";
-        JobPlanningLine.CopyTrackingFromJobJnlLine(JobJnlLine);
-        JobPlanningLine."Service Order No." := JobJnlLine."Service Order No.";
-        JobPlanningLine."Ledger Entry Type" := JobJnlLine."Ledger Entry Type";
-        JobPlanningLine."Ledger Entry No." := JobJnlLine."Ledger Entry No.";
-        JobPlanningLine."System-Created Entry" := true;
+        ContratoPlanningLine."Contrato No." := ContratoJnlLine."Contrato No.";
+        ContratoPlanningLine."Contrato Task No." := ContratoJnlLine."Contrato Task No.";
+        ContratoPlanningLine."Planning Date" := ContratoJnlLine."Posting Date";
+        ContratoPlanningLine."Currency Date" := ContratoJnlLine."Posting Date";
+        ContratoPlanningLine.Type := ContratoJnlLine.Type;
+        ContratoPlanningLine."No." := ContratoJnlLine."No.";
+        ContratoPlanningLine."Document No." := ContratoJnlLine."Document No.";
+        ContratoPlanningLine.Description := ContratoJnlLine.Description;
+        ContratoPlanningLine."Description 2" := ContratoJnlLine."Description 2";
+        ContratoPlanningLine."Unit of Measure Code" := ContratoJnlLine."Unit of Measure Code";
+        ContratoPlanningLine.Validate("Line Type", ContratoPlanningLine.ConvertFromContratoLineType(ContratoJnlLine."Line Type"));
+        ContratoPlanningLine."Currency Code" := ContratoJnlLine."Currency Code";
+        ContratoPlanningLine."Currency Factor" := ContratoJnlLine."Currency Factor";
+        ContratoPlanningLine."Resource Group No." := ContratoJnlLine."Resource Group No.";
+        ContratoPlanningLine."Location Code" := ContratoJnlLine."Location Code";
+        ContratoPlanningLine."Work Type Code" := ContratoJnlLine."Work Type Code";
+        ContratoPlanningLine."Customer Price Group" := ContratoJnlLine."Customer Price Group";
+        ContratoPlanningLine."Country/Region Code" := ContratoJnlLine."Country/Region Code";
+        ContratoPlanningLine."Gen. Bus. Posting Group" := ContratoJnlLine."Gen. Bus. Posting Group";
+        ContratoPlanningLine."Gen. Prod. Posting Group" := ContratoJnlLine."Gen. Prod. Posting Group";
+        ContratoPlanningLine."Document Date" := ContratoJnlLine."Document Date";
+        ContratoPlanningLine."Variant Code" := ContratoJnlLine."Variant Code";
+        ContratoPlanningLine."Bin Code" := ContratoJnlLine."Bin Code";
+        ContratoPlanningLine.CopyTrackingFromContratoJnlLine(ContratoJnlLine);
+        ContratoPlanningLine."Service Order No." := ContratoJnlLine."Service Order No.";
+        ContratoPlanningLine."Ledger Entry Type" := ContratoJnlLine."Ledger Entry Type";
+        ContratoPlanningLine."Ledger Entry No." := ContratoJnlLine."Ledger Entry No.";
+        ContratoPlanningLine."System-Created Entry" := true;
 
         // Amounts
-        JobPlanningLine.Quantity := JobJnlLine.Quantity;
-        JobPlanningLine."Quantity (Base)" := JobJnlLine."Quantity (Base)";
-        if JobPlanningLine."Usage Link" then begin
-            JobPlanningLine."Remaining Qty." := JobJnlLine.Quantity;
-            JobPlanningLine."Remaining Qty. (Base)" := JobJnlLine."Quantity (Base)";
+        ContratoPlanningLine.Quantity := ContratoJnlLine.Quantity;
+        ContratoPlanningLine."Quantity (Base)" := ContratoJnlLine."Quantity (Base)";
+        if ContratoPlanningLine."Usage Link" then begin
+            ContratoPlanningLine."Remaining Qty." := ContratoJnlLine.Quantity;
+            ContratoPlanningLine."Remaining Qty. (Base)" := ContratoJnlLine."Quantity (Base)";
         end;
-        JobPlanningLine."Qty. per Unit of Measure" := JobJnlLine."Qty. per Unit of Measure";
+        ContratoPlanningLine."Qty. per Unit of Measure" := ContratoJnlLine."Qty. per Unit of Measure";
 
-        JobPlanningLine."Direct Unit Cost (LCY)" := JobJnlLine."Direct Unit Cost (LCY)";
-        JobPlanningLine."Unit Cost (LCY)" := JobJnlLine."Unit Cost (LCY)";
-        JobPlanningLine."Unit Cost" := JobJnlLine."Unit Cost";
+        ContratoPlanningLine."Direct Unit Cost (LCY)" := ContratoJnlLine."Direct Unit Cost (LCY)";
+        ContratoPlanningLine."Unit Cost (LCY)" := ContratoJnlLine."Unit Cost (LCY)";
+        ContratoPlanningLine."Unit Cost" := ContratoJnlLine."Unit Cost";
 
-        JobPlanningLine."Total Cost (LCY)" := JobJnlLine."Total Cost (LCY)";
-        JobPlanningLine."Total Cost" := JobJnlLine."Total Cost";
+        ContratoPlanningLine."Total Cost (LCY)" := ContratoJnlLine."Total Cost (LCY)";
+        ContratoPlanningLine."Total Cost" := ContratoJnlLine."Total Cost";
 
-        JobPlanningLine."Unit Price (LCY)" := JobJnlLine."Unit Price (LCY)";
-        JobPlanningLine."Unit Price" := JobJnlLine."Unit Price";
+        ContratoPlanningLine."Unit Price (LCY)" := ContratoJnlLine."Unit Price (LCY)";
+        ContratoPlanningLine."Unit Price" := ContratoJnlLine."Unit Price";
 
-        JobPlanningLine."Total Price (LCY)" := JobJnlLine."Total Price (LCY)";
-        JobPlanningLine."Total Price" := JobJnlLine."Total Price";
+        ContratoPlanningLine."Total Price (LCY)" := ContratoJnlLine."Total Price (LCY)";
+        ContratoPlanningLine."Total Price" := ContratoJnlLine."Total Price";
 
-        JobPlanningLine."Line Amount (LCY)" := JobJnlLine."Line Amount (LCY)";
-        JobPlanningLine."Line Amount" := JobJnlLine."Line Amount";
+        ContratoPlanningLine."Line Amount (LCY)" := ContratoJnlLine."Line Amount (LCY)";
+        ContratoPlanningLine."Line Amount" := ContratoJnlLine."Line Amount";
 
-        JobPlanningLine."Line Discount %" := JobJnlLine."Line Discount %";
+        ContratoPlanningLine."Line Discount %" := ContratoJnlLine."Line Discount %";
 
-        JobPlanningLine."Line Discount Amount (LCY)" := JobJnlLine."Line Discount Amount (LCY)";
-        JobPlanningLine."Line Discount Amount" := JobJnlLine."Line Discount Amount";
+        ContratoPlanningLine."Line Discount Amount (LCY)" := ContratoJnlLine."Line Discount Amount (LCY)";
+        ContratoPlanningLine."Line Discount Amount" := ContratoJnlLine."Line Discount Amount";
 
-        OnAfterFromJnlToPlanningLine(JobPlanningLine, JobJnlLine);
+        OnAfterFromJnlToPlanningLine(ContratoPlanningLine, ContratoJnlLine);
     end;
 
-    procedure FromPlanningSalesLineToJnlLine(JobPlanningLine: Record "Contrato Planning Line"; SalesHeader: Record "Sales Header"; SalesLine: Record "Sales Line"; var JobJnlLine: Record "Contrato Journal Line"; EntryType: Enum ContratoJournalLineEntryType)
+    procedure FromPlanningSalesLineToJnlLine(ContratoPlanningLine: Record "Contrato Planning Line"; SalesHeader: Record "Sales Header"; SalesLine: Record "Sales Line"; var ContratoJnlLine: Record "Contrato Journal Line"; EntryType: Enum ContratoJournalLineEntryType)
     var
         SourceCodeSetup: Record "Source Code Setup";
-        JobTask: Record "Contrato Task";
+        ContratoTask: Record "Contrato Task";
     begin
-        OnBeforeFromPlanningSalesLineToJnlLine(JobPlanningLine, SalesHeader, SalesLine, JobJnlLine, EntryType);
+        OnBeforeFromPlanningSalesLineToJnlLine(ContratoPlanningLine, SalesHeader, SalesLine, ContratoJnlLine, EntryType);
 
-        JobJnlLine."Line No." := SalesLine."Line No.";
-        JobJnlLine."Contrato No." := JobPlanningLine."Contrato No.";
-        JobJnlLine."Contrato Task No." := JobPlanningLine."Contrato Task No.";
-        JobJnlLine.Type := JobPlanningLine.Type;
-        JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
-        JobJnlLine."Posting Date" := SalesHeader."Posting Date";
-        JobJnlLine."Document Date" := SalesHeader."Document Date";
-        JobJnlLine."Document No." := SalesLine."Document No.";
-        JobJnlLine."Entry Type" := EntryType;
-        JobJnlLine."Posting Group" := SalesLine."Posting Group";
-        JobJnlLine."Gen. Bus. Posting Group" := SalesLine."Gen. Bus. Posting Group";
-        JobJnlLine."Gen. Prod. Posting Group" := SalesLine."Gen. Prod. Posting Group";
-        JobJnlLine.CopyTrackingFromJobPlanningLine(JobPlanningLine);
-        JobJnlLine."No." := JobPlanningLine."No.";
-        JobJnlLine.Description := SalesLine.Description;
-        JobJnlLine."Description 2" := SalesLine."Description 2";
-        JobJnlLine."Unit of Measure Code" := JobPlanningLine."Unit of Measure Code";
-        JobJnlLine.Validate("Qty. per Unit of Measure", SalesLine."Qty. per Unit of Measure");
-        JobJnlLine."Work Type Code" := JobPlanningLine."Work Type Code";
-        JobJnlLine."Variant Code" := JobPlanningLine."Variant Code";
-        JobJnlLine."Line Type" := JobPlanningLine.ConvertToJobLineType();
-        JobJnlLine."Currency Code" := JobPlanningLine."Currency Code";
-        JobJnlLine."Currency Factor" := JobPlanningLine."Currency Factor";
-        JobJnlLine."Resource Group No." := JobPlanningLine."Resource Group No.";
-        JobJnlLine."Customer Price Group" := JobPlanningLine."Customer Price Group";
-        JobJnlLine."Location Code" := SalesLine."Location Code";
-        JobJnlLine."Bin Code" := SalesLine."Bin Code";
-        JobJnlLine."Service Order No." := JobPlanningLine."Service Order No.";
+        ContratoJnlLine."Line No." := SalesLine."Line No.";
+        ContratoJnlLine."Contrato No." := ContratoPlanningLine."Contrato No.";
+        ContratoJnlLine."Contrato Task No." := ContratoPlanningLine."Contrato Task No.";
+        ContratoJnlLine.Type := ContratoPlanningLine.Type;
+        ContratoTask.Get(ContratoPlanningLine."Contrato No.", ContratoPlanningLine."Contrato Task No.");
+        ContratoJnlLine."Posting Date" := SalesHeader."Posting Date";
+        ContratoJnlLine."Document Date" := SalesHeader."Document Date";
+        ContratoJnlLine."Document No." := SalesLine."Document No.";
+        ContratoJnlLine."Entry Type" := EntryType;
+        ContratoJnlLine."Posting Group" := SalesLine."Posting Group";
+        ContratoJnlLine."Gen. Bus. Posting Group" := SalesLine."Gen. Bus. Posting Group";
+        ContratoJnlLine."Gen. Prod. Posting Group" := SalesLine."Gen. Prod. Posting Group";
+        ContratoJnlLine.CopyTrackingFromContratoPlanningLine(ContratoPlanningLine);
+        ContratoJnlLine."No." := ContratoPlanningLine."No.";
+        ContratoJnlLine.Description := SalesLine.Description;
+        ContratoJnlLine."Description 2" := SalesLine."Description 2";
+        ContratoJnlLine."Unit of Measure Code" := ContratoPlanningLine."Unit of Measure Code";
+        ContratoJnlLine.Validate("Qty. per Unit of Measure", SalesLine."Qty. per Unit of Measure");
+        ContratoJnlLine."Work Type Code" := ContratoPlanningLine."Work Type Code";
+        ContratoJnlLine."Variant Code" := ContratoPlanningLine."Variant Code";
+        ContratoJnlLine."Line Type" := ContratoPlanningLine.ConvertToContratoLineType();
+        ContratoJnlLine."Currency Code" := ContratoPlanningLine."Currency Code";
+        ContratoJnlLine."Currency Factor" := ContratoPlanningLine."Currency Factor";
+        ContratoJnlLine."Resource Group No." := ContratoPlanningLine."Resource Group No.";
+        ContratoJnlLine."Customer Price Group" := ContratoPlanningLine."Customer Price Group";
+        ContratoJnlLine."Location Code" := SalesLine."Location Code";
+        ContratoJnlLine."Bin Code" := SalesLine."Bin Code";
+        ContratoJnlLine."Service Order No." := ContratoPlanningLine."Service Order No.";
         SourceCodeSetup.Get();
-        JobJnlLine."Source Code" := SourceCodeSetup.Sales;
-        JobJnlLine."Reason Code" := SalesHeader."Reason Code";
-        JobJnlLine."External Document No." := SalesHeader."External Document No.";
+        ContratoJnlLine."Source Code" := SourceCodeSetup.Sales;
+        ContratoJnlLine."Reason Code" := SalesHeader."Reason Code";
+        ContratoJnlLine."External Document No." := SalesHeader."External Document No.";
 
-        JobJnlLine."Transport Method" := SalesLine."Transport Method";
-        JobJnlLine."Transaction Type" := SalesLine."Transaction Type";
-        JobJnlLine."Transaction Specification" := SalesLine."Transaction Specification";
-        JobJnlLine."Entry/Exit Point" := SalesLine."Exit Point";
-        JobJnlLine.Area := SalesLine.Area;
-        JobJnlLine."Country/Region Code" := JobPlanningLine."Country/Region Code";
+        ContratoJnlLine."Transport Method" := SalesLine."Transport Method";
+        ContratoJnlLine."Transaction Type" := SalesLine."Transaction Type";
+        ContratoJnlLine."Transaction Specification" := SalesLine."Transaction Specification";
+        ContratoJnlLine."Entry/Exit Point" := SalesLine."Exit Point";
+        ContratoJnlLine.Area := SalesLine.Area;
+        ContratoJnlLine."Country/Region Code" := ContratoPlanningLine."Country/Region Code";
 
-        JobJnlLine."Shortcut Dimension 1 Code" := SalesLine."Shortcut Dimension 1 Code";
-        JobJnlLine."Shortcut Dimension 2 Code" := SalesLine."Shortcut Dimension 2 Code";
-        JobJnlLine."Dimension Set ID" := SalesLine."Dimension Set ID";
+        ContratoJnlLine."Shortcut Dimension 1 Code" := SalesLine."Shortcut Dimension 1 Code";
+        ContratoJnlLine."Shortcut Dimension 2 Code" := SalesLine."Shortcut Dimension 2 Code";
+        ContratoJnlLine."Dimension Set ID" := SalesLine."Dimension Set ID";
 
         case SalesHeader."Document Type" of
             SalesHeader."Document Type"::Invoice:
-                JobJnlLine.Validate(Quantity, SalesLine.Quantity);
+                ContratoJnlLine.Validate(Quantity, SalesLine.Quantity);
             SalesHeader."Document Type"::"Credit Memo":
-                JobJnlLine.Validate(Quantity, -SalesLine.Quantity);
+                ContratoJnlLine.Validate(Quantity, -SalesLine.Quantity);
         end;
 
-        OnFromPlanningSalesLineToJnlLineOnBeforeInitAmounts(JobJnlLine, SalesLine, SalesHeader);
+        OnFromPlanningSalesLineToJnlLineOnBeforeInitAmounts(ContratoJnlLine, SalesLine, SalesHeader);
 
-        JobJnlLine."Direct Unit Cost (LCY)" := JobPlanningLine."Direct Unit Cost (LCY)";
-        if (JobPlanningLine."Currency Code" = '') and (SalesHeader."Currency Factor" <> 0) then begin
+        ContratoJnlLine."Direct Unit Cost (LCY)" := ContratoPlanningLine."Direct Unit Cost (LCY)";
+        if (ContratoPlanningLine."Currency Code" = '') and (SalesHeader."Currency Factor" <> 0) then begin
             GetCurrencyRounding(SalesHeader."Currency Code");
             ValidateUnitCostAndPrice(
-              JobJnlLine, SalesLine, SalesLine."Unit Cost (LCY)",
-              JobPlanningLine."Unit Price");
+              ContratoJnlLine, SalesLine, SalesLine."Unit Cost (LCY)",
+              ContratoPlanningLine."Unit Price");
         end else
-            ValidateUnitCostAndPrice(JobJnlLine, SalesLine, SalesLine."Unit Cost", JobPlanningLine."Unit Price");
-        JobJnlLine.Validate("Line Discount %", SalesLine."Line Discount %");
+            ValidateUnitCostAndPrice(ContratoJnlLine, SalesLine, SalesLine."Unit Cost", ContratoPlanningLine."Unit Price");
+        ContratoJnlLine.Validate("Line Discount %", SalesLine."Line Discount %");
 
-        OnAfterFromPlanningSalesLineToJnlLine(JobJnlLine, JobPlanningLine, SalesHeader, SalesLine, EntryType);
+        OnAfterFromPlanningSalesLineToJnlLine(ContratoJnlLine, ContratoPlanningLine, SalesHeader, SalesLine, EntryType);
     end;
 
-    procedure FromPlanningLineToJnlLine(JobPlanningLine: Record "Contrato Planning Line"; PostingDate: Date; JobJournalTemplateName: Code[10]; JobJournalBatchName: Code[10]; var JobJnlLine: Record "Contrato Journal Line")
+    procedure FromPlanningLineToJnlLine(ContratoPlanningLine: Record "Contrato Planning Line"; PostingDate: Date; ContratoJournalTemplateName: Code[10]; ContratoJournalBatchName: Code[10]; var ContratoJnlLine: Record "Contrato Journal Line")
     var
-        JobTask: Record "Contrato Task";
-        JobJnlLine2: Record "Contrato Journal Line";
-        JobJournalTemplate: Record "Contrato Journal Template";
-        JobJournalBatch: Record "Contrato Journal Batch";
-        JobSetup: Record "Contratos Setup";
+        ContratoTask: Record "Contrato Task";
+        ContratoJnlLine2: Record "Contrato Journal Line";
+        ContratoJournalTemplate: Record "Contrato Journal Template";
+        ContratoJournalBatch: Record "Contrato Journal Batch";
+        ContratoSetup: Record "Contratos Setup";
         NoSeries: Codeunit "No. Series";
         ItemTrackingMgt: Codeunit "Item Tracking Management";
         IsHandled: Boolean;
     begin
-        JobPlanningLine.TestField("Qty. to Transfer to Journal");
+        ContratoPlanningLine.TestField("Qty. to Transfer to Journal");
 
-        if not JobJournalTemplate.Get(JobJournalTemplateName) then
-            Error(Text001, JobJournalTemplate.TableCaption(), JobJournalTemplateName);
-        if not JobJournalBatch.Get(JobJournalTemplateName, JobJournalBatchName) then
-            Error(Text001, JobJournalBatch.TableCaption(), JobJournalBatchName);
+        if not ContratoJournalTemplate.Get(ContratoJournalTemplateName) then
+            Error(Text001, ContratoJournalTemplate.TableCaption(), ContratoJournalTemplateName);
+        if not ContratoJournalBatch.Get(ContratoJournalTemplateName, ContratoJournalBatchName) then
+            Error(Text001, ContratoJournalBatch.TableCaption(), ContratoJournalBatchName);
         if PostingDate = 0D then
             PostingDate := WorkDate();
 
-        JobJnlLine.Init();
-        JobJnlLine.Validate("Journal Template Name", JobJournalTemplate.Name);
-        JobJnlLine.Validate("Journal Batch Name", JobJournalBatch.Name);
-        JobJnlLine2.SetRange("Journal Template Name", JobJournalTemplate.Name);
-        JobJnlLine2.SetRange("Journal Batch Name", JobJournalBatch.Name);
-        if JobJnlLine2.FindLast() then
-            JobJnlLine.Validate("Line No.", JobJnlLine2."Line No." + 10000)
+        ContratoJnlLine.Init();
+        ContratoJnlLine.Validate("Journal Template Name", ContratoJournalTemplate.Name);
+        ContratoJnlLine.Validate("Journal Batch Name", ContratoJournalBatch.Name);
+        ContratoJnlLine2.SetRange("Journal Template Name", ContratoJournalTemplate.Name);
+        ContratoJnlLine2.SetRange("Journal Batch Name", ContratoJournalBatch.Name);
+        if ContratoJnlLine2.FindLast() then
+            ContratoJnlLine.Validate("Line No.", ContratoJnlLine2."Line No." + 10000)
         else
-            JobJnlLine.Validate("Line No.", 10000);
+            ContratoJnlLine.Validate("Line No.", 10000);
 
-        JobJnlLine."Contrato No." := JobPlanningLine."Contrato No.";
-        JobJnlLine."Contrato Task No." := JobPlanningLine."Contrato Task No.";
+        ContratoJnlLine."Contrato No." := ContratoPlanningLine."Contrato No.";
+        ContratoJnlLine."Contrato Task No." := ContratoPlanningLine."Contrato Task No.";
 
-        if JobPlanningLine."Usage Link" then begin
-            JobJnlLine."Contrato Planning Line No." := JobPlanningLine."Line No.";
-            JobJnlLine."Line Type" := JobPlanningLine.ConvertToJobLineType();
+        if ContratoPlanningLine."Usage Link" then begin
+            ContratoJnlLine."Contrato Planning Line No." := ContratoPlanningLine."Line No.";
+            ContratoJnlLine."Line Type" := ContratoPlanningLine.ConvertToContratoLineType();
         end;
 
-        JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
-        JobJnlLine."Posting Group" := JobTask."Contrato Posting Group";
-        JobJnlLine."Posting Date" := PostingDate;
-        JobJnlLine."Document Date" := PostingDate;
-        JobSetup.Get();
-        if JobJournalBatch."No. Series" <> '' then
-            JobJnlLine."Document No." := NoSeries.PeekNextNo(JobJournalBatch."No. Series", PostingDate)
+        ContratoTask.Get(ContratoPlanningLine."Contrato No.", ContratoPlanningLine."Contrato Task No.");
+        ContratoJnlLine."Posting Group" := ContratoTask."Contrato Posting Group";
+        ContratoJnlLine."Posting Date" := PostingDate;
+        ContratoJnlLine."Document Date" := PostingDate;
+        ContratoSetup.Get();
+        if ContratoJournalBatch."No. Series" <> '' then
+            ContratoJnlLine."Document No." := NoSeries.PeekNextNo(ContratoJournalBatch."No. Series", PostingDate)
         else
-            if JobSetup."Document No. Is Contrato No." then
-                JobJnlLine."Document No." := JobPlanningLine."Contrato No."
+            if ContratoSetup."Document No. Is Contrato No." then
+                ContratoJnlLine."Document No." := ContratoPlanningLine."Contrato No."
             else
-                JobJnlLine."Document No." := JobPlanningLine."Document No.";
+                ContratoJnlLine."Document No." := ContratoPlanningLine."Document No.";
 
-        JobJnlLine.Type := JobPlanningLine.Type;
-        JobJnlLine."No." := JobPlanningLine."No.";
-        JobJnlLine."Entry Type" := JobJnlLine."Entry Type"::Usage;
-        JobJnlLine."Gen. Bus. Posting Group" := JobPlanningLine."Gen. Bus. Posting Group";
-        JobJnlLine."Gen. Prod. Posting Group" := JobPlanningLine."Gen. Prod. Posting Group";
-        JobJnlLine.CopyTrackingFromJobPlanningLine(JobPlanningLine);
-        JobJnlLine.Description := JobPlanningLine.Description;
-        JobJnlLine."Description 2" := JobPlanningLine."Description 2";
-        JobJnlLine.Validate("Unit of Measure Code", JobPlanningLine."Unit of Measure Code");
-        JobJnlLine."Currency Code" := JobPlanningLine."Currency Code";
-        JobJnlLine."Currency Factor" := JobPlanningLine."Currency Factor";
-        JobJnlLine."Resource Group No." := JobPlanningLine."Resource Group No.";
-        JobJnlLine."Location Code" := JobPlanningLine."Location Code";
-        JobJnlLine."Work Type Code" := JobPlanningLine."Work Type Code";
-        JobJnlLine."Customer Price Group" := JobPlanningLine."Customer Price Group";
-        JobJnlLine."Variant Code" := JobPlanningLine."Variant Code";
-        JobJnlLine."Bin Code" := JobPlanningLine."Bin Code";
-        JobJnlLine."Service Order No." := JobPlanningLine."Service Order No.";
-        JobJnlLine."Country/Region Code" := JobPlanningLine."Country/Region Code";
-        JobJnlLine."Source Code" := JobJournalTemplate."Source Code";
+        ContratoJnlLine.Type := ContratoPlanningLine.Type;
+        ContratoJnlLine."No." := ContratoPlanningLine."No.";
+        ContratoJnlLine."Entry Type" := ContratoJnlLine."Entry Type"::Usage;
+        ContratoJnlLine."Gen. Bus. Posting Group" := ContratoPlanningLine."Gen. Bus. Posting Group";
+        ContratoJnlLine."Gen. Prod. Posting Group" := ContratoPlanningLine."Gen. Prod. Posting Group";
+        ContratoJnlLine.CopyTrackingFromContratoPlanningLine(ContratoPlanningLine);
+        ContratoJnlLine.Description := ContratoPlanningLine.Description;
+        ContratoJnlLine."Description 2" := ContratoPlanningLine."Description 2";
+        ContratoJnlLine.Validate("Unit of Measure Code", ContratoPlanningLine."Unit of Measure Code");
+        ContratoJnlLine."Currency Code" := ContratoPlanningLine."Currency Code";
+        ContratoJnlLine."Currency Factor" := ContratoPlanningLine."Currency Factor";
+        ContratoJnlLine."Resource Group No." := ContratoPlanningLine."Resource Group No.";
+        ContratoJnlLine."Location Code" := ContratoPlanningLine."Location Code";
+        ContratoJnlLine."Work Type Code" := ContratoPlanningLine."Work Type Code";
+        ContratoJnlLine."Customer Price Group" := ContratoPlanningLine."Customer Price Group";
+        ContratoJnlLine."Variant Code" := ContratoPlanningLine."Variant Code";
+        ContratoJnlLine."Bin Code" := ContratoPlanningLine."Bin Code";
+        ContratoJnlLine."Service Order No." := ContratoPlanningLine."Service Order No.";
+        ContratoJnlLine."Country/Region Code" := ContratoPlanningLine."Country/Region Code";
+        ContratoJnlLine."Source Code" := ContratoJournalTemplate."Source Code";
 
         IsHandled := false;
-        OnFromPlanningLineToJnlLineOnBeforeCopyItemTracking(JobJnlLine, JobPlanningLine, IsHandled);
+        OnFromPlanningLineToJnlLineOnBeforeCopyItemTracking(ContratoJnlLine, ContratoPlanningLine, IsHandled);
         if not IsHandled then
-            ItemTrackingMgt.CopyItemTracking(JobPlanningLine.RowID1(), JobJnlLine.RowID1(), false);
+            ItemTrackingMgt.CopyItemTracking(ContratoPlanningLine.RowID1(), ContratoJnlLine.RowID1(), false);
 
-        JobJnlLine.Validate(Quantity, JobPlanningLine."Qty. to Transfer to Journal");
-        JobJnlLine.Validate("Qty. per Unit of Measure", JobPlanningLine."Qty. per Unit of Measure");
-        JobJnlLine."Direct Unit Cost (LCY)" := JobPlanningLine."Direct Unit Cost (LCY)";
-        JobJnlLine.Validate("Unit Cost", JobPlanningLine."Unit Cost");
-        JobJnlLine.Validate("Unit Price", JobPlanningLine."Unit Price");
-        JobJnlLine.Validate("Line Discount %", JobPlanningLine."Line Discount %");
-        JobJnlLine."Assemble to Order" := JobPlanningLine."Assemble to Order";
+        ContratoJnlLine.Validate(Quantity, ContratoPlanningLine."Qty. to Transfer to Journal");
+        ContratoJnlLine.Validate("Qty. per Unit of Measure", ContratoPlanningLine."Qty. per Unit of Measure");
+        ContratoJnlLine."Direct Unit Cost (LCY)" := ContratoPlanningLine."Direct Unit Cost (LCY)";
+        ContratoJnlLine.Validate("Unit Cost", ContratoPlanningLine."Unit Cost");
+        ContratoJnlLine.Validate("Unit Price", ContratoPlanningLine."Unit Price");
+        ContratoJnlLine.Validate("Line Discount %", ContratoPlanningLine."Line Discount %");
+        ContratoJnlLine."Assemble to Order" := ContratoPlanningLine."Assemble to Order";
 
-        OnAfterFromPlanningLineToJnlLine(JobJnlLine, JobPlanningLine);
+        OnAfterFromPlanningLineToJnlLine(ContratoJnlLine, ContratoPlanningLine);
 
-        JobJnlLine.UpdateDimensions();
-        JobJnlLine.Insert(true);
+        ContratoJnlLine.UpdateDimensions();
+        ContratoJnlLine.Insert(true);
     end;
 
     // Create 'Contrato Journal Line' from 'Warehouse Activity Line'
-    procedure FromWarehouseActivityLineToJnlLine(WarehouseActivityLine: Record "Warehouse Activity Line"; PostingDate: Date; JobJournalTemplateName: Code[10]; JobJournalBatchName: Code[10]; var JobJnlLine: Record "Contrato Journal Line")
+    procedure FromWarehouseActivityLineToJnlLine(WarehouseActivityLine: Record "Warehouse Activity Line"; PostingDate: Date; ContratoJournalTemplateName: Code[10]; ContratoJournalBatchName: Code[10]; var ContratoJnlLine: Record "Contrato Journal Line")
     var
-        JobTask: Record "Contrato Task";
-        JobJnlLine2: Record "Contrato Journal Line";
-        JobPlanningLine: Record "Contrato Planning Line";
-        JobJournalTemplate: Record "Contrato Journal Template";
-        JobJournalBatch: Record "Contrato Journal Batch";
+        ContratoTask: Record "Contrato Task";
+        ContratoJnlLine2: Record "Contrato Journal Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
+        ContratoJournalTemplate: Record "Contrato Journal Template";
+        ContratoJournalBatch: Record "Contrato Journal Batch";
         ItemTrackingMgt: Codeunit "Item Tracking Management";
-        JobPlanningLines: Page "Contrato Planning Lines";
+        ContratoPlanningLines: Page "Contrato Planning Lines";
     begin
         WarehouseActivityLine.TestField("Qty. to Handle");
 
-        if JobJournalTemplateName <> '' then begin
-            if not JobJournalTemplate.Get(JobJournalTemplateName) then
-                Error(Text001, JobJournalTemplate.TableCaption(), JobJournalTemplateName);
-            if not JobJournalBatch.Get(JobJournalTemplateName, JobJournalBatchName) then
-                Error(Text001, JobJournalBatch.TableCaption(), JobJournalBatchName);
+        if ContratoJournalTemplateName <> '' then begin
+            if not ContratoJournalTemplate.Get(ContratoJournalTemplateName) then
+                Error(Text001, ContratoJournalTemplate.TableCaption(), ContratoJournalTemplateName);
+            if not ContratoJournalBatch.Get(ContratoJournalTemplateName, ContratoJournalBatchName) then
+                Error(Text001, ContratoJournalBatch.TableCaption(), ContratoJournalBatchName);
         end;
         if PostingDate = 0D then
             PostingDate := WorkDate();
 
-        JobPlanningLine.SetLoadFields(
+        ContratoPlanningLine.SetLoadFields(
             "Contrato No.", "Contrato Task No.", "Usage Link", "Line No.", "Line Type", Type, "No.", "Gen. Bus. Posting Group", "Gen. Prod. Posting Group",
             "Serial No.", "Lot No.", Description, "Description 2", "Unit of Measure Code", "Currency Code", "Currency Factor", "Resource Group No.",
             "Location Code", "Work Type Code", "Customer Price Group", "Variant Code", "Bin Code", "Service Order No.", "Country/Region Code",
             "Qty. per Unit of Measure", "Direct Unit Cost (LCY)", "Unit Cost", "Unit Price", "Line Discount %", "Document No.", "Assemble to Order");
-        JobPlanningLine.SetRange("Contrato No.", WarehouseActivityLine."Source No.");
-        JobPlanningLine.SetRange("Contrato Contract Entry No.", WarehouseActivityLine."Source Line No.");
+        ContratoPlanningLine.SetRange("Contrato No.", WarehouseActivityLine."Source No.");
+        ContratoPlanningLine.SetRange("Contrato Contract Entry No.", WarehouseActivityLine."Source Line No.");
 
-        if JobPlanningLine.IsEmpty() then
-            Error(JobPlanningLineNotFoundErr, JobPlanningLines.Caption(), WarehouseActivityLine.TableCaption(), WarehouseActivityLine.FieldCaption("Source No."),
+        if ContratoPlanningLine.IsEmpty() then
+            Error(ContratoPlanningLineNotFoundErr, ContratoPlanningLines.Caption(), WarehouseActivityLine.TableCaption(), WarehouseActivityLine.FieldCaption("Source No."),
                     WarehouseActivityLine."Source No.", WarehouseActivityLine.FieldCaption("Source Line No."), WarehouseActivityLine."Source Line No.");
 
-        if JobPlanningLine.Count() > 1 then
-            Error(DuplicateJobplanningLinesErr, JobPlanningLine.TableCaption(), JobPlanningLine.FieldCaption("Contrato Contract Entry No."), JobPlanningLine."Contrato Contract Entry No.");
+        if ContratoPlanningLine.Count() > 1 then
+            Error(DuplicateContratoplanningLinesErr, ContratoPlanningLine.TableCaption(), ContratoPlanningLine.FieldCaption("Contrato Contract Entry No."), ContratoPlanningLine."Contrato Contract Entry No.");
 
-        JobPlanningLine.FindFirst();
+        ContratoPlanningLine.FindFirst();
 
-        JobJnlLine.Init();
-        JobJnlLine.Validate("Journal Template Name", JobJournalTemplate.Name);
-        JobJnlLine.Validate("Journal Batch Name", JobJournalBatch.Name);
+        ContratoJnlLine.Init();
+        ContratoJnlLine.Validate("Journal Template Name", ContratoJournalTemplate.Name);
+        ContratoJnlLine.Validate("Journal Batch Name", ContratoJournalBatch.Name);
 
-        JobJnlLine2.SetLoadFields("Line No.");
-        JobJnlLine2.SetRange("Journal Template Name", JobJournalTemplate.Name);
-        JobJnlLine2.SetRange("Journal Batch Name", JobJournalBatch.Name);
-        if JobJnlLine2.FindLast() then
-            JobJnlLine.Validate("Line No.", JobJnlLine2."Line No." + 10000)
+        ContratoJnlLine2.SetLoadFields("Line No.");
+        ContratoJnlLine2.SetRange("Journal Template Name", ContratoJournalTemplate.Name);
+        ContratoJnlLine2.SetRange("Journal Batch Name", ContratoJournalBatch.Name);
+        if ContratoJnlLine2.FindLast() then
+            ContratoJnlLine.Validate("Line No.", ContratoJnlLine2."Line No." + 10000)
         else
-            JobJnlLine.Validate("Line No.", 10000);
+            ContratoJnlLine.Validate("Line No.", 10000);
 
-        JobJnlLine."Contrato No." := JobPlanningLine."Contrato No.";
-        JobJnlLine."Contrato Task No." := JobPlanningLine."Contrato Task No.";
+        ContratoJnlLine."Contrato No." := ContratoPlanningLine."Contrato No.";
+        ContratoJnlLine."Contrato Task No." := ContratoPlanningLine."Contrato Task No.";
 
-        if JobPlanningLine."Usage Link" then begin
-            JobJnlLine."Contrato Planning Line No." := JobPlanningLine."Line No.";
-            JobJnlLine."Line Type" := JobPlanningLine.ConvertToJobLineType();
+        if ContratoPlanningLine."Usage Link" then begin
+            ContratoJnlLine."Contrato Planning Line No." := ContratoPlanningLine."Line No.";
+            ContratoJnlLine."Line Type" := ContratoPlanningLine.ConvertToContratoLineType();
         end;
 
-        JobTask.Get(JobPlanningLine."Contrato No.", JobPlanningLine."Contrato Task No.");
-        JobJnlLine."Posting Group" := JobTask."Contrato Posting Group";
-        JobJnlLine."Posting Date" := PostingDate;
-        JobJnlLine."Document Date" := PostingDate;
+        ContratoTask.Get(ContratoPlanningLine."Contrato No.", ContratoPlanningLine."Contrato Task No.");
+        ContratoJnlLine."Posting Group" := ContratoTask."Contrato Posting Group";
+        ContratoJnlLine."Posting Date" := PostingDate;
+        ContratoJnlLine."Document Date" := PostingDate;
 
-        JobJnlLine."Document No." := JobPlanningLine."Contrato No.";
-        if JobPlanningLine."Document No." <> '' then
-            JobJnlLine."Document No." := JobPlanningLine."Document No.";
+        ContratoJnlLine."Document No." := ContratoPlanningLine."Contrato No.";
+        if ContratoPlanningLine."Document No." <> '' then
+            ContratoJnlLine."Document No." := ContratoPlanningLine."Document No.";
 
-        JobJnlLine.Type := JobPlanningLine.Type;
-        JobJnlLine."No." := JobPlanningLine."No.";
-        JobJnlLine."Entry Type" := JobJnlLine."Entry Type"::Usage;
-        JobJnlLine."Gen. Bus. Posting Group" := JobPlanningLine."Gen. Bus. Posting Group";
-        JobJnlLine."Gen. Prod. Posting Group" := JobPlanningLine."Gen. Prod. Posting Group";
-        JobJnlLine.CopyTrackingFromJobPlanningLine(JobPlanningLine);
-        JobJnlLine.Description := WarehouseActivityLine.Description;
-        JobJnlLine."Description 2" := WarehouseActivityLine."Description 2";
-        JobJnlLine.Validate("Unit of Measure Code", WarehouseActivityLine."Unit of Measure Code");
-        JobJnlLine."Currency Code" := JobPlanningLine."Currency Code";
-        JobJnlLine."Currency Factor" := JobPlanningLine."Currency Factor";
-        JobJnlLine."Resource Group No." := JobPlanningLine."Resource Group No.";
-        JobJnlLine."Location Code" := WarehouseActivityLine."Location Code";
-        JobJnlLine."Work Type Code" := JobPlanningLine."Work Type Code";
-        JobJnlLine."Customer Price Group" := JobPlanningLine."Customer Price Group";
-        JobJnlLine."Variant Code" := WarehouseActivityLine."Variant Code";
-        JobJnlLine."Bin Code" := WarehouseActivityLine."Bin Code";
-        JobJnlLine."Service Order No." := JobPlanningLine."Service Order No.";
-        JobJnlLine."Country/Region Code" := JobPlanningLine."Country/Region Code";
-        JobJnlLine."Source Code" := JobJournalTemplate."Source Code";
-        JobJnlLine."Serial No." := WarehouseActivityLine."Serial No.";
-        JobJnlLine."Lot No." := WarehouseActivityLine."Lot No.";
-        JobJnlLine."Package No." := WarehouseActivityLine."Package No.";
-        JobJnlLine."Assemble to Order" := JobPlanningLine."Assemble to Order";
+        ContratoJnlLine.Type := ContratoPlanningLine.Type;
+        ContratoJnlLine."No." := ContratoPlanningLine."No.";
+        ContratoJnlLine."Entry Type" := ContratoJnlLine."Entry Type"::Usage;
+        ContratoJnlLine."Gen. Bus. Posting Group" := ContratoPlanningLine."Gen. Bus. Posting Group";
+        ContratoJnlLine."Gen. Prod. Posting Group" := ContratoPlanningLine."Gen. Prod. Posting Group";
+        ContratoJnlLine.CopyTrackingFromContratoPlanningLine(ContratoPlanningLine);
+        ContratoJnlLine.Description := WarehouseActivityLine.Description;
+        ContratoJnlLine."Description 2" := WarehouseActivityLine."Description 2";
+        ContratoJnlLine.Validate("Unit of Measure Code", WarehouseActivityLine."Unit of Measure Code");
+        ContratoJnlLine."Currency Code" := ContratoPlanningLine."Currency Code";
+        ContratoJnlLine."Currency Factor" := ContratoPlanningLine."Currency Factor";
+        ContratoJnlLine."Resource Group No." := ContratoPlanningLine."Resource Group No.";
+        ContratoJnlLine."Location Code" := WarehouseActivityLine."Location Code";
+        ContratoJnlLine."Work Type Code" := ContratoPlanningLine."Work Type Code";
+        ContratoJnlLine."Customer Price Group" := ContratoPlanningLine."Customer Price Group";
+        ContratoJnlLine."Variant Code" := WarehouseActivityLine."Variant Code";
+        ContratoJnlLine."Bin Code" := WarehouseActivityLine."Bin Code";
+        ContratoJnlLine."Service Order No." := ContratoPlanningLine."Service Order No.";
+        ContratoJnlLine."Country/Region Code" := ContratoPlanningLine."Country/Region Code";
+        ContratoJnlLine."Source Code" := ContratoJournalTemplate."Source Code";
+        ContratoJnlLine."Serial No." := WarehouseActivityLine."Serial No.";
+        ContratoJnlLine."Lot No." := WarehouseActivityLine."Lot No.";
+        ContratoJnlLine."Package No." := WarehouseActivityLine."Package No.";
+        ContratoJnlLine."Assemble to Order" := ContratoPlanningLine."Assemble to Order";
 
-        JobJnlLine.Validate(Quantity, WarehouseActivityLine."Qty. to Handle");
-        JobJnlLine.Validate("Qty. per Unit of Measure", WarehouseActivityLine."Qty. per Unit of Measure");
-        JobJnlLine."Direct Unit Cost (LCY)" := JobPlanningLine."Direct Unit Cost (LCY)";
-        JobJnlLine.Validate("Unit Cost", JobPlanningLine."Unit Cost");
-        JobJnlLine.Validate("Unit Price", JobPlanningLine."Unit Price");
-        JobJnlLine.Validate("Line Discount %", JobPlanningLine."Line Discount %");
+        ContratoJnlLine.Validate(Quantity, WarehouseActivityLine."Qty. to Handle");
+        ContratoJnlLine.Validate("Qty. per Unit of Measure", WarehouseActivityLine."Qty. per Unit of Measure");
+        ContratoJnlLine."Direct Unit Cost (LCY)" := ContratoPlanningLine."Direct Unit Cost (LCY)";
+        ContratoJnlLine.Validate("Unit Cost", ContratoPlanningLine."Unit Cost");
+        ContratoJnlLine.Validate("Unit Price", ContratoPlanningLine."Unit Price");
+        ContratoJnlLine.Validate("Line Discount %", ContratoPlanningLine."Line Discount %");
 
-        JobJnlLine.UpdateDimensions();
-        ItemTrackingMgt.CopyItemTracking(JobPlanningLine.RowID1(), JobJnlLine.RowID1(), false);
+        ContratoJnlLine.UpdateDimensions();
+        ItemTrackingMgt.CopyItemTracking(ContratoPlanningLine.RowID1(), ContratoJnlLine.RowID1(), false);
 
-        OnFromWarehouseActivityLineToJnlLineOnBeforeJobJnlLineInsert(JobJnlLine, JobPlanningLine, WarehouseActivityLine);
-        JobJnlLine.Insert(true);
-        OnFromWarehouseActivityLineToJnlLineOnAfterJobJnlLineInsert(JobJnlLine, JobPlanningLine, WarehouseActivityLine);
+        OnFromWarehouseActivityLineToJnlLineOnBeforeContratoJnlLineInsert(ContratoJnlLine, ContratoPlanningLine, WarehouseActivityLine);
+        ContratoJnlLine.Insert(true);
+        OnFromWarehouseActivityLineToJnlLineOnAfterContratoJnlLineInsert(ContratoJnlLine, ContratoPlanningLine, WarehouseActivityLine);
     end;
 
-    procedure FromGenJnlLineToJnlLine(GenJnlLine: Record "Gen. Journal Line"; var JobJnlLine: Record "Contrato Journal Line")
+    procedure FromGenJnlLineToJnlLine(GenJnlLine: Record "Gen. Journal Line"; var ContratoJnlLine: Record "Contrato Journal Line")
     var
         Contrato: Record Contrato;
-        JobTask: Record "Contrato Task";
+        ContratoTask: Record "Contrato Task";
     begin
-        OnBeforeFromGenJnlLineToJnlLine(JobJnlLine, GenJnlLine);
+        OnBeforeFromGenJnlLineToJnlLine(ContratoJnlLine, GenJnlLine);
 
-        JobJnlLine."Contrato No." := GenJnlLine."Job No.";
-        JobJnlLine."Contrato Task No." := GenJnlLine."Job Task No.";
-        JobTask.Get(GenJnlLine."Job No.", GenJnlLine."Job Task No.");
+        ContratoJnlLine."Contrato No." := GenJnlLine."Job No.";
+        ContratoJnlLine."Contrato Task No." := GenJnlLine."Job Task No.";
+        ContratoTask.Get(GenJnlLine."Job No.", GenJnlLine."Job Task No.");
 
-        JobJnlLine."Posting Date" := GenJnlLine."Posting Date";
-        JobJnlLine."Document Date" := GenJnlLine."Document Date";
-        JobJnlLine."Document No." := GenJnlLine."Document No.";
+        ContratoJnlLine."Posting Date" := GenJnlLine."Posting Date";
+        ContratoJnlLine."Document Date" := GenJnlLine."Document Date";
+        ContratoJnlLine."Document No." := GenJnlLine."Document No.";
 
-        JobJnlLine."Currency Code" := GenJnlLine."Job Currency Code";
-        JobJnlLine."Currency Factor" := GenJnlLine."Job Currency Factor";
-        JobJnlLine."Entry Type" := JobJnlLine."Entry Type"::Usage;
-        JobJnlLine."Line Type" := GenJnlLine."Job Line Type";
-        JobJnlLine.Type := JobJnlLine.Type::"G/L Account";
-        JobJnlLine."No." := GenJnlLine."Account No.";
-        JobJnlLine.Description := GenJnlLine.Description;
-        JobJnlLine."Unit of Measure Code" := GenJnlLine."Job Unit Of Measure Code";
-        JobJnlLine."Gen. Bus. Posting Group" := GenJnlLine."Gen. Bus. Posting Group";
-        JobJnlLine."Gen. Prod. Posting Group" := GenJnlLine."Gen. Prod. Posting Group";
-        JobJnlLine."Source Code" := GenJnlLine."Source Code";
-        JobJnlLine."Reason Code" := GenJnlLine."Reason Code";
-        Contrato.Get(JobJnlLine."Contrato No.");
-        JobJnlLine."Customer Price Group" := Contrato."Customer Price Group";
-        JobJnlLine."External Document No." := GenJnlLine."External Document No.";
-        JobJnlLine."Journal Batch Name" := GenJnlLine."Journal Batch Name";
-        JobJnlLine."Shortcut Dimension 1 Code" := GenJnlLine."Shortcut Dimension 1 Code";
-        JobJnlLine."Shortcut Dimension 2 Code" := GenJnlLine."Shortcut Dimension 2 Code";
-        JobJnlLine."Dimension Set ID" := GenJnlLine."Dimension Set ID";
+        ContratoJnlLine."Currency Code" := GenJnlLine."Job Currency Code";
+        ContratoJnlLine."Currency Factor" := GenJnlLine."Job Currency Factor";
+        ContratoJnlLine."Entry Type" := ContratoJnlLine."Entry Type"::Usage;
+        ContratoJnlLine."Line Type" := GenJnlLine."Job Line Type";
+        ContratoJnlLine.Type := ContratoJnlLine.Type::"G/L Account";
+        ContratoJnlLine."No." := GenJnlLine."Account No.";
+        ContratoJnlLine.Description := GenJnlLine.Description;
+        ContratoJnlLine."Unit of Measure Code" := GenJnlLine."Job Unit Of Measure Code";
+        ContratoJnlLine."Gen. Bus. Posting Group" := GenJnlLine."Gen. Bus. Posting Group";
+        ContratoJnlLine."Gen. Prod. Posting Group" := GenJnlLine."Gen. Prod. Posting Group";
+        ContratoJnlLine."Source Code" := GenJnlLine."Source Code";
+        ContratoJnlLine."Reason Code" := GenJnlLine."Reason Code";
+        Contrato.Get(ContratoJnlLine."Contrato No.");
+        ContratoJnlLine."Customer Price Group" := Contrato."Customer Price Group";
+        ContratoJnlLine."External Document No." := GenJnlLine."External Document No.";
+        ContratoJnlLine."Journal Batch Name" := GenJnlLine."Journal Batch Name";
+        ContratoJnlLine."Shortcut Dimension 1 Code" := GenJnlLine."Shortcut Dimension 1 Code";
+        ContratoJnlLine."Shortcut Dimension 2 Code" := GenJnlLine."Shortcut Dimension 2 Code";
+        ContratoJnlLine."Dimension Set ID" := GenJnlLine."Dimension Set ID";
 
-        JobJnlLine.Quantity := GenJnlLine."Job Quantity";
-        JobJnlLine."Quantity (Base)" := GenJnlLine."Job Quantity";
-        JobJnlLine."Qty. per Unit of Measure" := 1; // MP ??
-        JobJnlLine."Contrato Planning Line No." := GenJnlLine."Job Planning Line No.";
-        JobJnlLine."Remaining Qty." := GenJnlLine."Job Remaining Qty.";
-        JobJnlLine."Remaining Qty. (Base)" := GenJnlLine."Job Remaining Qty.";
+        ContratoJnlLine.Quantity := GenJnlLine."Job Quantity";
+        ContratoJnlLine."Quantity (Base)" := GenJnlLine."Job Quantity";
+        ContratoJnlLine."Qty. per Unit of Measure" := 1; // MP ??
+        ContratoJnlLine."Contrato Planning Line No." := GenJnlLine."Job Planning Line No.";
+        ContratoJnlLine."Remaining Qty." := GenJnlLine."Job Remaining Qty.";
+        ContratoJnlLine."Remaining Qty. (Base)" := GenJnlLine."Job Remaining Qty.";
 
-        JobJnlLine."Direct Unit Cost (LCY)" := GenJnlLine."Job Unit Cost (LCY)";
-        JobJnlLine."Unit Cost (LCY)" := GenJnlLine."Job Unit Cost (LCY)";
-        JobJnlLine."Unit Cost" := GenJnlLine."Job Unit Cost";
+        ContratoJnlLine."Direct Unit Cost (LCY)" := GenJnlLine."Job Unit Cost (LCY)";
+        ContratoJnlLine."Unit Cost (LCY)" := GenJnlLine."Job Unit Cost (LCY)";
+        ContratoJnlLine."Unit Cost" := GenJnlLine."Job Unit Cost";
 
-        JobJnlLine."Total Cost (LCY)" := GenJnlLine."Job Total Cost (LCY)";
-        JobJnlLine."Total Cost" := GenJnlLine."Job Total Cost";
+        ContratoJnlLine."Total Cost (LCY)" := GenJnlLine."Job Total Cost (LCY)";
+        ContratoJnlLine."Total Cost" := GenJnlLine."Job Total Cost";
 
-        JobJnlLine."Unit Price (LCY)" := GenJnlLine."Job Unit Price (LCY)";
-        JobJnlLine."Unit Price" := GenJnlLine."Job Unit Price";
+        ContratoJnlLine."Unit Price (LCY)" := GenJnlLine."Job Unit Price (LCY)";
+        ContratoJnlLine."Unit Price" := GenJnlLine."Job Unit Price";
 
-        JobJnlLine."Total Price (LCY)" := GenJnlLine."Job Total Price (LCY)";
-        JobJnlLine."Total Price" := GenJnlLine."Job Total Price";
+        ContratoJnlLine."Total Price (LCY)" := GenJnlLine."Job Total Price (LCY)";
+        ContratoJnlLine."Total Price" := GenJnlLine."Job Total Price";
 
-        JobJnlLine."Line Amount (LCY)" := GenJnlLine."Job Line Amount (LCY)";
-        JobJnlLine."Line Amount" := GenJnlLine."Job Line Amount";
+        ContratoJnlLine."Line Amount (LCY)" := GenJnlLine."Job Line Amount (LCY)";
+        ContratoJnlLine."Line Amount" := GenJnlLine."Job Line Amount";
 
-        JobJnlLine."Line Discount Amount (LCY)" := GenJnlLine."Job Line Disc. Amount (LCY)";
-        JobJnlLine."Line Discount Amount" := GenJnlLine."Job Line Discount Amount";
+        ContratoJnlLine."Line Discount Amount (LCY)" := GenJnlLine."Job Line Disc. Amount (LCY)";
+        ContratoJnlLine."Line Discount Amount" := GenJnlLine."Job Line Discount Amount";
 
-        JobJnlLine."Line Discount %" := GenJnlLine."Job Line Discount %";
+        ContratoJnlLine."Line Discount %" := GenJnlLine."Job Line Discount %";
 
-        OnAfterFromGenJnlLineToJnlLine(JobJnlLine, GenJnlLine);
+        OnAfterFromGenJnlLineToJnlLine(ContratoJnlLine, GenJnlLine);
     end;
 
-    procedure FromJobLedgEntryToPlanningLine(JobLedgEntry: Record "Contrato Ledger Entry"; var JobPlanningLine: Record "Contrato Planning Line")
+    procedure FromContratoLedgEntryToPlanningLine(ContratoLedgEntry: Record "Contrato Ledger Entry"; var ContratoPlanningLine: Record "Contrato Planning Line")
     var
         PriceType: Enum "Price Type";
     begin
-        JobPlanningLine."Contrato No." := JobLedgEntry."Contrato No.";
-        JobPlanningLine."Contrato Task No." := JobLedgEntry."Contrato Task No.";
-        JobPlanningLine."Planning Date" := JobLedgEntry."Posting Date";
-        JobPlanningLine."Currency Date" := JobLedgEntry."Posting Date";
-        JobPlanningLine."Document Date" := JobLedgEntry."Document Date";
-        JobPlanningLine."Document No." := JobLedgEntry."Document No.";
-        JobPlanningLine.Description := JobLedgEntry.Description;
-        JobPlanningLine.Type := JobLedgEntry.Type;
-        JobPlanningLine."No." := JobLedgEntry."No.";
-        JobPlanningLine."Unit of Measure Code" := JobLedgEntry."Unit of Measure Code";
-        JobPlanningLine.Validate("Line Type", JobPlanningLine.ConvertFromJobLineType(JobLedgEntry."Line Type"));
-        JobPlanningLine."Currency Code" := JobLedgEntry."Currency Code";
-        if JobLedgEntry."Currency Code" = '' then
-            JobPlanningLine."Currency Factor" := 0
+        ContratoPlanningLine."Contrato No." := ContratoLedgEntry."Contrato No.";
+        ContratoPlanningLine."Contrato Task No." := ContratoLedgEntry."Contrato Task No.";
+        ContratoPlanningLine."Planning Date" := ContratoLedgEntry."Posting Date";
+        ContratoPlanningLine."Currency Date" := ContratoLedgEntry."Posting Date";
+        ContratoPlanningLine."Document Date" := ContratoLedgEntry."Document Date";
+        ContratoPlanningLine."Document No." := ContratoLedgEntry."Document No.";
+        ContratoPlanningLine.Description := ContratoLedgEntry.Description;
+        ContratoPlanningLine.Type := ContratoLedgEntry.Type;
+        ContratoPlanningLine."No." := ContratoLedgEntry."No.";
+        ContratoPlanningLine."Unit of Measure Code" := ContratoLedgEntry."Unit of Measure Code";
+        ContratoPlanningLine.Validate("Line Type", ContratoPlanningLine.ConvertFromContratoLineType(ContratoLedgEntry."Line Type"));
+        ContratoPlanningLine."Currency Code" := ContratoLedgEntry."Currency Code";
+        if ContratoLedgEntry."Currency Code" = '' then
+            ContratoPlanningLine."Currency Factor" := 0
         else
-            JobPlanningLine."Currency Factor" := JobLedgEntry."Currency Factor";
-        JobPlanningLine."Resource Group No." := JobLedgEntry."Resource Group No.";
-        JobPlanningLine."Location Code" := JobLedgEntry."Location Code";
-        JobPlanningLine."Work Type Code" := JobLedgEntry."Work Type Code";
-        JobPlanningLine."Gen. Bus. Posting Group" := JobLedgEntry."Gen. Bus. Posting Group";
-        JobPlanningLine."Gen. Prod. Posting Group" := JobLedgEntry."Gen. Prod. Posting Group";
-        JobPlanningLine."Variant Code" := JobLedgEntry."Variant Code";
-        JobPlanningLine."Bin Code" := JobLedgEntry."Bin Code";
-        JobPlanningLine."Customer Price Group" := JobLedgEntry."Customer Price Group";
-        JobPlanningLine."Country/Region Code" := JobLedgEntry."Country/Region Code";
-        JobPlanningLine."Description 2" := JobLedgEntry."Description 2";
-        JobPlanningLine.CopyTrackingFromJobLedgEntry(JobLedgEntry);
-        JobPlanningLine."Service Order No." := JobLedgEntry."Service Order No.";
-        JobPlanningLine."Contrato Ledger Entry No." := JobLedgEntry."Entry No.";
-        JobPlanningLine."Ledger Entry Type" := JobLedgEntry."Ledger Entry Type";
-        JobPlanningLine."Ledger Entry No." := JobLedgEntry."Ledger Entry No.";
-        JobPlanningLine."System-Created Entry" := true;
+            ContratoPlanningLine."Currency Factor" := ContratoLedgEntry."Currency Factor";
+        ContratoPlanningLine."Resource Group No." := ContratoLedgEntry."Resource Group No.";
+        ContratoPlanningLine."Location Code" := ContratoLedgEntry."Location Code";
+        ContratoPlanningLine."Work Type Code" := ContratoLedgEntry."Work Type Code";
+        ContratoPlanningLine."Gen. Bus. Posting Group" := ContratoLedgEntry."Gen. Bus. Posting Group";
+        ContratoPlanningLine."Gen. Prod. Posting Group" := ContratoLedgEntry."Gen. Prod. Posting Group";
+        ContratoPlanningLine."Variant Code" := ContratoLedgEntry."Variant Code";
+        ContratoPlanningLine."Bin Code" := ContratoLedgEntry."Bin Code";
+        ContratoPlanningLine."Customer Price Group" := ContratoLedgEntry."Customer Price Group";
+        ContratoPlanningLine."Country/Region Code" := ContratoLedgEntry."Country/Region Code";
+        ContratoPlanningLine."Description 2" := ContratoLedgEntry."Description 2";
+        ContratoPlanningLine.CopyTrackingFromContratoLedgEntry(ContratoLedgEntry);
+        ContratoPlanningLine."Service Order No." := ContratoLedgEntry."Service Order No.";
+        ContratoPlanningLine."Contrato Ledger Entry No." := ContratoLedgEntry."Entry No.";
+        ContratoPlanningLine."Ledger Entry Type" := ContratoLedgEntry."Ledger Entry Type";
+        ContratoPlanningLine."Ledger Entry No." := ContratoLedgEntry."Ledger Entry No.";
+        ContratoPlanningLine."System-Created Entry" := true;
 
         // Function call to retrieve cost factor. Prices will be overwritten.
-        JobPlanningLine.ApplyPrice(PriceType::Sale, JobTransferMarkerFieldNo());
+        ContratoPlanningLine.ApplyPrice(PriceType::Sale, ContratoTransferMarkerFieldNo());
 
         // Amounts
-        JobPlanningLine.Quantity := JobLedgEntry.Quantity;
-        JobPlanningLine."Quantity (Base)" := JobLedgEntry."Quantity (Base)";
-        if JobPlanningLine."Usage Link" then begin
-            JobPlanningLine."Remaining Qty." := JobLedgEntry.Quantity;
-            JobPlanningLine."Remaining Qty. (Base)" := JobLedgEntry."Quantity (Base)";
+        ContratoPlanningLine.Quantity := ContratoLedgEntry.Quantity;
+        ContratoPlanningLine."Quantity (Base)" := ContratoLedgEntry."Quantity (Base)";
+        if ContratoPlanningLine."Usage Link" then begin
+            ContratoPlanningLine."Remaining Qty." := ContratoLedgEntry.Quantity;
+            ContratoPlanningLine."Remaining Qty. (Base)" := ContratoLedgEntry."Quantity (Base)";
         end;
-        JobPlanningLine."Qty. per Unit of Measure" := JobLedgEntry."Qty. per Unit of Measure";
+        ContratoPlanningLine."Qty. per Unit of Measure" := ContratoLedgEntry."Qty. per Unit of Measure";
 
-        JobPlanningLine."Direct Unit Cost (LCY)" := JobLedgEntry."Direct Unit Cost (LCY)";
-        JobPlanningLine."Unit Cost (LCY)" := JobLedgEntry."Unit Cost (LCY)";
-        JobPlanningLine."Unit Cost" := JobLedgEntry."Unit Cost";
+        ContratoPlanningLine."Direct Unit Cost (LCY)" := ContratoLedgEntry."Direct Unit Cost (LCY)";
+        ContratoPlanningLine."Unit Cost (LCY)" := ContratoLedgEntry."Unit Cost (LCY)";
+        ContratoPlanningLine."Unit Cost" := ContratoLedgEntry."Unit Cost";
 
-        JobPlanningLine."Total Cost (LCY)" := JobLedgEntry."Total Cost (LCY)";
-        JobPlanningLine."Total Cost" := JobLedgEntry."Total Cost";
+        ContratoPlanningLine."Total Cost (LCY)" := ContratoLedgEntry."Total Cost (LCY)";
+        ContratoPlanningLine."Total Cost" := ContratoLedgEntry."Total Cost";
 
-        JobPlanningLine."Unit Price (LCY)" := JobLedgEntry."Unit Price (LCY)";
-        JobPlanningLine."Unit Price" := JobLedgEntry."Unit Price";
+        ContratoPlanningLine."Unit Price (LCY)" := ContratoLedgEntry."Unit Price (LCY)";
+        ContratoPlanningLine."Unit Price" := ContratoLedgEntry."Unit Price";
 
-        JobPlanningLine."Total Price (LCY)" := JobLedgEntry."Total Price (LCY)";
-        JobPlanningLine."Total Price" := JobLedgEntry."Total Price";
+        ContratoPlanningLine."Total Price (LCY)" := ContratoLedgEntry."Total Price (LCY)";
+        ContratoPlanningLine."Total Price" := ContratoLedgEntry."Total Price";
 
-        JobPlanningLine."Line Amount (LCY)" := JobLedgEntry."Line Amount (LCY)";
-        JobPlanningLine."Line Amount" := JobLedgEntry."Line Amount";
+        ContratoPlanningLine."Line Amount (LCY)" := ContratoLedgEntry."Line Amount (LCY)";
+        ContratoPlanningLine."Line Amount" := ContratoLedgEntry."Line Amount";
 
-        JobPlanningLine."Line Discount %" := JobLedgEntry."Line Discount %";
+        ContratoPlanningLine."Line Discount %" := ContratoLedgEntry."Line Discount %";
 
-        JobPlanningLine."Line Discount Amount (LCY)" := JobLedgEntry."Line Discount Amount (LCY)";
-        JobPlanningLine."Line Discount Amount" := JobLedgEntry."Line Discount Amount";
+        ContratoPlanningLine."Line Discount Amount (LCY)" := ContratoLedgEntry."Line Discount Amount (LCY)";
+        ContratoPlanningLine."Line Discount Amount" := ContratoLedgEntry."Line Discount Amount";
 
-        OnAfterFromJobLedgEntryToPlanningLine(JobPlanningLine, JobLedgEntry);
+        OnAfterFromContratoLedgEntryToPlanningLine(ContratoPlanningLine, ContratoLedgEntry);
     end;
 
-    procedure JobTransferMarkerFieldNo(): Integer;
+    procedure ContratoTransferMarkerFieldNo(): Integer;
     begin
-        // returns a negative integer (non existing field number) - a marker of job transfer price calculation
+        // returns a negative integer (non existing field number) - a marker of Contrato transfer price calculation
         exit(-Database::"Contrato Ledger Entry")
     end;
 
-    procedure FromPurchaseLineToJnlLine(PurchHeader: Record "Purchase Header"; PurchInvHeader: Record "Purch. Inv. Header"; PurchCrMemoHeader: Record "Purch. Cr. Memo Hdr."; PurchLine: Record "Purchase Line"; SourceCode: Code[10]; var JobJnlLine: Record "Contrato Journal Line")
+    procedure FromPurchaseLineToJnlLine(PurchHeader: Record "Purchase Header"; PurchInvHeader: Record "Purch. Inv. Header"; PurchCrMemoHeader: Record "Purch. Cr. Memo Hdr."; PurchLine: Record "Purchase Line"; SourceCode: Code[10]; var ContratoJnlLine: Record "Contrato Journal Line")
     var
         Item: Record Item;
-        JobTask: Record "Contrato Task";
+        ContratoTask: Record "Contrato Task";
         PurchLineCurrency: Record "Currency";
         UOMMgt: Codeunit "Unit of Measure Management";
         NonDeductibleVAT: Codeunit "Non-Deductible VAT";
@@ -582,220 +582,220 @@ codeunit 50211 "Contrato Transfer Line"
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeFromPurchaseLineToJnlLine(PurchHeader, PurchInvHeader, PurchCrMemoHeader, PurchLine, SourceCode, JobJnlLine, IsHandled);
+        OnBeforeFromPurchaseLineToJnlLine(PurchHeader, PurchInvHeader, PurchCrMemoHeader, PurchLine, SourceCode, ContratoJnlLine, IsHandled);
         if IsHandled then
             exit;
 
         PurchLine.Validate("Job Planning Line No.");
 
-        JobJnlLine.DontCheckStdCost();
-        JobJnlLine.Validate("Contrato No.", PurchLine."Job No.");
-        JobJnlLine.Validate("Contrato Task No.", PurchLine."Job Task No.");
-        JobTask.Get(PurchLine."Job No.", PurchLine."Job Task No.");
-        JobJnlLine.Validate("Posting Date", PurchHeader."Posting Date");
-        JobJournalLineValidateType(JobJnlLine, PurchLine);
-        OnFromPurchaseLineToJnlLineOnBeforeValidateNo(JobJnlLine, PurchLine);
-        JobJnlLine.Validate("No.", PurchLine."No.");
-        JobJnlLine.Validate("Variant Code", PurchLine."Variant Code");
+        ContratoJnlLine.DontCheckStdCost();
+        ContratoJnlLine.Validate("Contrato No.", PurchLine."Job No.");
+        ContratoJnlLine.Validate("Contrato Task No.", PurchLine."Job Task No.");
+        ContratoTask.Get(PurchLine."Job No.", PurchLine."Job Task No.");
+        ContratoJnlLine.Validate("Posting Date", PurchHeader."Posting Date");
+        ContratoJournalLineValidateType(ContratoJnlLine, PurchLine);
+        OnFromPurchaseLineToJnlLineOnBeforeValidateNo(ContratoJnlLine, PurchLine);
+        ContratoJnlLine.Validate("No.", PurchLine."No.");
+        ContratoJnlLine.Validate("Variant Code", PurchLine."Variant Code");
         if UpdateBaseQtyForPurchLine(Item, PurchLine) then begin
-            JobJnlLine.Validate("Unit of Measure Code", Item."Base Unit of Measure");
-            JobJnlLine.Validate(
+            ContratoJnlLine.Validate("Unit of Measure Code", Item."Base Unit of Measure");
+            ContratoJnlLine.Validate(
                 Quantity,
                 UOMMgt.CalcBaseQty(
                 PurchLine."No.", PurchLine."Variant Code", PurchLine."Unit of Measure Code", PurchLine."Qty. to Invoice", PurchLine."Qty. per Unit of Measure"));
         end else begin
-            JobJnlLine.Validate("Unit of Measure Code", PurchLine."Unit of Measure Code");
-            JobJnlLine."Qty. per Unit of Measure" := PurchLine."Qty. per Unit of Measure";
-            JobJnlLine.Validate(Quantity, PurchLine."Qty. to Invoice");
+            ContratoJnlLine.Validate("Unit of Measure Code", PurchLine."Unit of Measure Code");
+            ContratoJnlLine."Qty. per Unit of Measure" := PurchLine."Qty. per Unit of Measure";
+            ContratoJnlLine.Validate(Quantity, PurchLine."Qty. to Invoice");
         end;
 
         if PurchHeader."Document Type" in [PurchHeader."Document Type"::"Return Order",
                                             PurchHeader."Document Type"::"Credit Memo"]
         then begin
-            JobJnlLine."Document No." := PurchCrMemoHeader."No.";
-            JobJnlLine."External Document No." := PurchCrMemoHeader."Vendor Cr. Memo No.";
+            ContratoJnlLine."Document No." := PurchCrMemoHeader."No.";
+            ContratoJnlLine."External Document No." := PurchCrMemoHeader."Vendor Cr. Memo No.";
         end else begin
-            JobJnlLine."Document No." := PurchInvHeader."No.";
-            JobJnlLine."External Document No." := PurchHeader."Vendor Invoice No.";
+            ContratoJnlLine."Document No." := PurchInvHeader."No.";
+            ContratoJnlLine."External Document No." := PurchHeader."Vendor Invoice No.";
         end;
 
         NonDeductibleVAT.Calculate(NonDeductibleBaseAmount, NonDeductibleVATAmount, NonDeductibleVATAmtPerUnit, NonDeductibleVATAmtPerUnitLCY, NDVATAmountRounding, NDVATBaseRounding, PurchHeader, PurchLine);
-        GetCurrencyRounding(JobJnlLine."Currency Code");
+        GetCurrencyRounding(ContratoJnlLine."Currency Code");
 
-        JobJnlLine."Unit Cost (LCY)" := PurchLine."Unit Cost (LCY)" / PurchLine."Qty. per Unit of Measure";
-        JobJnlLine."Unit Cost" := PurchLine."Unit Cost" / PurchLine."Qty. per Unit of Measure";
+        ContratoJnlLine."Unit Cost (LCY)" := PurchLine."Unit Cost (LCY)" / PurchLine."Qty. per Unit of Measure";
+        ContratoJnlLine."Unit Cost" := PurchLine."Unit Cost" / PurchLine."Qty. per Unit of Measure";
 
         if NonDeductibleVAT.UseNonDeductibleVATAmountForJobCost() then begin
-            JobJnlLine."Unit Cost (LCY)" += Abs(NonDeductibleVATAmtPerUnitLCY);
-            JobJnlLine."Unit Cost" += Abs(NonDeductibleVATAmtPerUnit);
+            ContratoJnlLine."Unit Cost (LCY)" += Abs(NonDeductibleVATAmtPerUnitLCY);
+            ContratoJnlLine."Unit Cost" += Abs(NonDeductibleVATAmtPerUnit);
         end;
 
-        OnFromPurchaseLineToJnlLineOnAfterCalcUnitCostLCY(JobJnlLine, PurchLine);
+        OnFromPurchaseLineToJnlLineOnAfterCalcUnitCostLCY(ContratoJnlLine, PurchLine);
 
         TaxToBeExpensedLCY := 0;
         if PurchLine.Type = PurchLine.Type::Item then begin
             if Item."Inventory Value Zero" then begin
-                JobJnlLine."Unit Cost (LCY)" := 0;
-                JobJnlLine."Unit Cost" := 0;
+                ContratoJnlLine."Unit Cost (LCY)" := 0;
+                ContratoJnlLine."Unit Cost" := 0;
             end else
                 if Item."Costing Method" = Item."Costing Method"::Standard then begin
-                    JobJnlLine."Unit Cost (LCY)" := Item."Standard Cost";
-                    JobJnlLine."Unit Cost" := Item."Standard Cost";
+                    ContratoJnlLine."Unit Cost (LCY)" := Item."Standard Cost";
+                    ContratoJnlLine."Unit Cost" := Item."Standard Cost";
                     if NonDeductibleVAT.UseNonDeductibleVATAmountForJobCost() then begin
-                        JobJnlLine."Unit Cost (LCY)" += NonDeductibleVATAmtPerUnitLCY;
-                        JobJnlLine."Unit Cost" += NonDeductibleVATAmtPerUnit;
+                        ContratoJnlLine."Unit Cost (LCY)" += NonDeductibleVATAmtPerUnitLCY;
+                        ContratoJnlLine."Unit Cost" += NonDeductibleVATAmtPerUnit;
                     end;
                 end;
         end else begin
             TaxToBeExpensedLCY := PurchLine."Tax To Be Expensed";
-            if (JobJnlLine.Quantity <> 0) and (TaxToBeExpensedLCY <> 0) then begin
-                JobJnlLine.Validate("Unit Cost (LCY)", PurchLine."Unit Cost (LCY)" + TaxToBeExpensedLCY / JobJnlLine.Quantity);
-                JobJnlLine."Unit Cost" := PurchLine."Unit Cost" + TaxToBeExpensedLCY * PurchHeader."Currency Factor" / JobJnlLine.Quantity;
+            if (ContratoJnlLine.Quantity <> 0) and (TaxToBeExpensedLCY <> 0) then begin
+                ContratoJnlLine.Validate("Unit Cost (LCY)", PurchLine."Unit Cost (LCY)" + TaxToBeExpensedLCY / ContratoJnlLine.Quantity);
+                ContratoJnlLine."Unit Cost" := PurchLine."Unit Cost" + TaxToBeExpensedLCY * PurchHeader."Currency Factor" / ContratoJnlLine.Quantity;
             end;
         end;
 
-        JobJnlLine."Unit Cost (LCY)" := Round(JobJnlLine."Unit Cost (LCY)", LCYCurrency."Unit-Amount Rounding Precision");
+        ContratoJnlLine."Unit Cost (LCY)" := Round(ContratoJnlLine."Unit Cost (LCY)", LCYCurrency."Unit-Amount Rounding Precision");
 
-        if (JobJnlLine."Currency Code" = '') and (PurchLine."Currency Code" <> '') then begin
+        if (ContratoJnlLine."Currency Code" = '') and (PurchLine."Currency Code" <> '') then begin
             PurchLineCurrency.Get(PurchLine."Currency Code");
-            JobJnlLine."Total Cost" :=
+            ContratoJnlLine."Total Cost" :=
                 Round(
                     CurrencyExchRate.ExchangeAmtFCYToLCY(
                         PurchHeader."Posting Date",
                         PurchLine."Currency Code",
-                        Round(JobJnlLine."Unit Cost" * JobJnlLine.Quantity, PurchLineCurrency."Amount Rounding Precision"),
+                        Round(ContratoJnlLine."Unit Cost" * ContratoJnlLine.Quantity, PurchLineCurrency."Amount Rounding Precision"),
                         PurchHeader."Currency Factor"),
                     Currency."Amount Rounding Precision");
-            JobJnlLine."Total Cost (LCY)" := JobJnlLine."Total Cost";
+            ContratoJnlLine."Total Cost (LCY)" := ContratoJnlLine."Total Cost";
         end;
 
-        case JobJnlLine."Currency Code" of
+        case ContratoJnlLine."Currency Code" of
             '':
-                JobJnlLine."Unit Cost" := JobJnlLine."Unit Cost (LCY)";
+                ContratoJnlLine."Unit Cost" := ContratoJnlLine."Unit Cost (LCY)";
             PurchLine."Currency Code":
                 if TaxToBeExpensedLCY <> 0 then
-                    JobJnlLine."Unit Cost" :=
+                    ContratoJnlLine."Unit Cost" :=
                         Round(
                             CurrencyExchRate.ExchangeAmtLCYToFCY(
                                 PurchHeader."Posting Date",
-                                JobJnlLine."Currency Code",
-                                JobJnlLine."Unit Cost (LCY)",
-                                JobJnlLine."Currency Factor"),
+                                ContratoJnlLine."Currency Code",
+                                ContratoJnlLine."Unit Cost (LCY)",
+                                ContratoJnlLine."Currency Factor"),
                             Currency."Unit-Amount Rounding Precision")
                 else
-                    JobJnlLine."Unit Cost" := PurchLine."Unit Cost";
+                    ContratoJnlLine."Unit Cost" := PurchLine."Unit Cost";
             else
-                JobJnlLine."Unit Cost" :=
+                ContratoJnlLine."Unit Cost" :=
                     Round(
                     CurrencyExchRate.ExchangeAmtLCYToFCY(
                         PurchHeader."Posting Date",
-                        JobJnlLine."Currency Code",
-                        JobJnlLine."Unit Cost (LCY)",
-                        JobJnlLine."Currency Factor"), Currency."Unit-Amount Rounding Precision");
+                        ContratoJnlLine."Currency Code",
+                        ContratoJnlLine."Unit Cost (LCY)",
+                        ContratoJnlLine."Currency Factor"), Currency."Unit-Amount Rounding Precision");
         end;
 
-        if not ((JobJnlLine."Currency Code" = '') and (PurchLine."Currency Code" <> '')) then
-            JobJnlLine."Total Cost" := Round(JobJnlLine."Unit Cost" * JobJnlLine.Quantity, Currency."Amount Rounding Precision");
+        if not ((ContratoJnlLine."Currency Code" = '') and (PurchLine."Currency Code" <> '')) then
+            ContratoJnlLine."Total Cost" := Round(ContratoJnlLine."Unit Cost" * ContratoJnlLine.Quantity, Currency."Amount Rounding Precision");
 
         if (PurchLine.Type = PurchLine.Type::Item) and Item."Inventory Value Zero" then
-            JobJnlLine."Total Cost (LCY)" := 0
+            ContratoJnlLine."Total Cost (LCY)" := 0
         else
-            if not ((JobJnlLine."Currency Code" = '') and (PurchLine."Currency Code" <> '')) then
-                JobJnlLine."Total Cost (LCY)" :=
-                    Round(JobJnlLine."Unit Cost (LCY)" * JobJnlLine.Quantity, LCYCurrency."Amount Rounding Precision");
+            if not ((ContratoJnlLine."Currency Code" = '') and (PurchLine."Currency Code" <> '')) then
+                ContratoJnlLine."Total Cost (LCY)" :=
+                    Round(ContratoJnlLine."Unit Cost (LCY)" * ContratoJnlLine.Quantity, LCYCurrency."Amount Rounding Precision");
 
         if PurchLine."Currency Code" = '' then
-            JobJnlLine."Direct Unit Cost (LCY)" := PurchLine."Direct Unit Cost"
+            ContratoJnlLine."Direct Unit Cost (LCY)" := PurchLine."Direct Unit Cost"
         else
-            JobJnlLine."Direct Unit Cost (LCY)" :=
+            ContratoJnlLine."Direct Unit Cost (LCY)" :=
                 CurrencyExchRate.ExchangeAmtFCYToLCY(
                 PurchHeader."Posting Date",
                 PurchLine."Currency Code",
                 PurchLine."Direct Unit Cost",
                 PurchHeader."Currency Factor");
 
-        JobJnlLine."Unit Price (LCY)" :=
+        ContratoJnlLine."Unit Price (LCY)" :=
             Round(PurchLine."Job Unit Price (LCY)" / PurchLine."Qty. per Unit of Measure", LCYCurrency."Unit-Amount Rounding Precision");
-        JobJnlLine."Unit Price" :=
+        ContratoJnlLine."Unit Price" :=
             Round(PurchLine."Job Unit Price" / PurchLine."Qty. per Unit of Measure", Currency."Unit-Amount Rounding Precision");
-        JobJnlLine."Line Discount %" := PurchLine."Job Line Discount %";
+        ContratoJnlLine."Line Discount %" := PurchLine."Job Line Discount %";
 
         if PurchLine.Quantity <> 0 then begin
             GetCurrencyRounding(PurchHeader."Currency Code");
 
             Factor := PurchLine."Qty. to Invoice" / PurchLine.Quantity;
-            JobJnlLine."Total Price (LCY)" :=
+            ContratoJnlLine."Total Price (LCY)" :=
                 Round(PurchLine."Job Total Price (LCY)" * Factor, LCYCurrency."Amount Rounding Precision");
-            JobJnlLine."Total Price" :=
+            ContratoJnlLine."Total Price" :=
                 Round(PurchLine."Job Total Price" * Factor, Currency."Amount Rounding Precision");
-            JobJnlLine."Line Amount (LCY)" :=
+            ContratoJnlLine."Line Amount (LCY)" :=
                 Round(PurchLine."Job Line Amount (LCY)" * Factor, LCYCurrency."Amount Rounding Precision");
-            JobJnlLine."Line Amount" :=
+            ContratoJnlLine."Line Amount" :=
                 Round(PurchLine."Job Line Amount" * Factor, Currency."Amount Rounding Precision");
-            JobJnlLine."Line Discount Amount (LCY)" :=
+            ContratoJnlLine."Line Discount Amount (LCY)" :=
                 Round(PurchLine."Job Line Disc. Amount (LCY)" * Factor, LCYCurrency."Amount Rounding Precision");
-            JobJnlLine."Line Discount Amount" :=
+            ContratoJnlLine."Line Discount Amount" :=
                 Round(PurchLine."Job Line Discount Amount" * Factor, Currency."Amount Rounding Precision");
         end;
 
-        JobJnlLine."Contrato Planning Line No." := PurchLine."Job Planning Line No.";
-        JobJnlLine."Remaining Qty." := PurchLine."Job Remaining Qty.";
-        JobJnlLine."Remaining Qty. (Base)" := PurchLine."Job Remaining Qty. (Base)";
-        JobJnlLine."Location Code" := PurchLine."Location Code";
-        JobJnlLine."Bin Code" := PurchLine."Bin Code";
-        JobJnlLine."Line Type" := PurchLine."Job Line Type";
-        JobJnlLine."Entry Type" := JobJnlLine."Entry Type"::Usage;
-        JobJnlLine.Description := PurchLine.Description;
-        JobJnlLine."Description 2" := PurchLine."Description 2";
-        JobJnlLine."Gen. Bus. Posting Group" := PurchLine."Gen. Bus. Posting Group";
-        JobJnlLine."Gen. Prod. Posting Group" := PurchLine."Gen. Prod. Posting Group";
-        JobJnlLine."Source Code" := SourceCode;
-        JobJnlLine."Reason Code" := PurchHeader."Reason Code";
-        JobJnlLine."Document Date" := PurchHeader."Document Date";
-        JobJnlLine."Shortcut Dimension 1 Code" := PurchLine."Shortcut Dimension 1 Code";
-        JobJnlLine."Shortcut Dimension 2 Code" := PurchLine."Shortcut Dimension 2 Code";
-        JobJnlLine."Dimension Set ID" := PurchLine."Dimension Set ID";
+        ContratoJnlLine."Contrato Planning Line No." := PurchLine."Job Planning Line No.";
+        ContratoJnlLine."Remaining Qty." := PurchLine."Job Remaining Qty.";
+        ContratoJnlLine."Remaining Qty. (Base)" := PurchLine."Job Remaining Qty. (Base)";
+        ContratoJnlLine."Location Code" := PurchLine."Location Code";
+        ContratoJnlLine."Bin Code" := PurchLine."Bin Code";
+        ContratoJnlLine."Line Type" := PurchLine."Job Line Type";
+        ContratoJnlLine."Entry Type" := ContratoJnlLine."Entry Type"::Usage;
+        ContratoJnlLine.Description := PurchLine.Description;
+        ContratoJnlLine."Description 2" := PurchLine."Description 2";
+        ContratoJnlLine."Gen. Bus. Posting Group" := PurchLine."Gen. Bus. Posting Group";
+        ContratoJnlLine."Gen. Prod. Posting Group" := PurchLine."Gen. Prod. Posting Group";
+        ContratoJnlLine."Source Code" := SourceCode;
+        ContratoJnlLine."Reason Code" := PurchHeader."Reason Code";
+        ContratoJnlLine."Document Date" := PurchHeader."Document Date";
+        ContratoJnlLine."Shortcut Dimension 1 Code" := PurchLine."Shortcut Dimension 1 Code";
+        ContratoJnlLine."Shortcut Dimension 2 Code" := PurchLine."Shortcut Dimension 2 Code";
+        ContratoJnlLine."Dimension Set ID" := PurchLine."Dimension Set ID";
 
-        OnAfterFromPurchaseLineToJnlLine(JobJnlLine, PurchHeader, PurchInvHeader, PurchCrMemoHeader, PurchLine, SourceCode);
+        OnAfterFromPurchaseLineToJnlLine(ContratoJnlLine, PurchHeader, PurchInvHeader, PurchCrMemoHeader, PurchLine, SourceCode);
     end;
 
-    local procedure JobJournalLineValidateType(var JobJournalLine: Record "Contrato Journal Line"; PurchaseLine: Record "Purchase Line")
+    local procedure ContratoJournalLineValidateType(var ContratoJournalLine: Record "Contrato Journal Line"; PurchaseLine: Record "Purchase Line")
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeJobJournalLineValidateType(JobJournalLine, PurchaseLine, IsHandled);
+        OnBeforeContratoJournalLineValidateType(ContratoJournalLine, PurchaseLine, IsHandled);
         if IsHandled then
             exit;
 
         if PurchaseLine.Type = PurchaseLine.Type::"G/L Account" then
-            JobJournalLine.Validate(Type, JobJournalLine.Type::"G/L Account")
+            ContratoJournalLine.Validate(Type, ContratoJournalLine.Type::"G/L Account")
         else
-            JobJournalLine.Validate(Type, JobJournalLine.Type::Item);
+            ContratoJournalLine.Validate(Type, ContratoJournalLine.Type::Item);
     end;
 
     procedure FromSalesHeaderToPlanningLine(SalesLine: Record "Sales Line"; CurrencyFactor: Decimal)
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.SetCurrentKey("Contrato Contract Entry No.");
-        JobPlanningLine.SetRange("Contrato Contract Entry No.", SalesLine."Job Contract Entry No.");
-        if JobPlanningLine.FindFirst() then begin
+        ContratoPlanningLine.SetCurrentKey("Contrato Contract Entry No.");
+        ContratoPlanningLine.SetRange("Contrato Contract Entry No.", SalesLine."Job Contract Entry No.");
+        if ContratoPlanningLine.FindFirst() then begin
             // Update Prices
-            if JobPlanningLine."Currency Code" <> '' then begin
-                JobPlanningLine."Unit Price (LCY)" := SalesLine."Unit Price" / CurrencyFactor;
-                JobPlanningLine."Total Price (LCY)" := JobPlanningLine."Unit Price (LCY)" * JobPlanningLine.Quantity;
-                JobPlanningLine."Line Amount (LCY)" := JobPlanningLine."Total Price (LCY)";
-                JobPlanningLine."Unit Price" := JobPlanningLine."Unit Price (LCY)";
-                JobPlanningLine."Total Price" := JobPlanningLine."Total Price (LCY)";
-                JobPlanningLine."Line Amount" := JobPlanningLine."Total Price (LCY)";
+            if ContratoPlanningLine."Currency Code" <> '' then begin
+                ContratoPlanningLine."Unit Price (LCY)" := SalesLine."Unit Price" / CurrencyFactor;
+                ContratoPlanningLine."Total Price (LCY)" := ContratoPlanningLine."Unit Price (LCY)" * ContratoPlanningLine.Quantity;
+                ContratoPlanningLine."Line Amount (LCY)" := ContratoPlanningLine."Total Price (LCY)";
+                ContratoPlanningLine."Unit Price" := ContratoPlanningLine."Unit Price (LCY)";
+                ContratoPlanningLine."Total Price" := ContratoPlanningLine."Total Price (LCY)";
+                ContratoPlanningLine."Line Amount" := ContratoPlanningLine."Total Price (LCY)";
             end else begin
-                JobPlanningLine."Unit Price (LCY)" := SalesLine."Unit Price" / CurrencyFactor;
-                JobPlanningLine."Total Price (LCY)" := JobPlanningLine."Unit Price (LCY)" * JobPlanningLine.Quantity;
-                JobPlanningLine."Line Amount (LCY)" := JobPlanningLine."Total Price (LCY)";
+                ContratoPlanningLine."Unit Price (LCY)" := SalesLine."Unit Price" / CurrencyFactor;
+                ContratoPlanningLine."Total Price (LCY)" := ContratoPlanningLine."Unit Price (LCY)" * ContratoPlanningLine.Quantity;
+                ContratoPlanningLine."Line Amount (LCY)" := ContratoPlanningLine."Total Price (LCY)";
             end;
-            OnAfterFromSalesHeaderToPlanningLine(JobPlanningLine, SalesLine, CurrencyFactor);
-            JobPlanningLine.Modify();
+            OnAfterFromSalesHeaderToPlanningLine(ContratoPlanningLine, SalesLine, CurrencyFactor);
+            ContratoPlanningLine.Modify();
         end;
     end;
 
@@ -819,26 +819,26 @@ codeunit 50211 "Contrato Transfer Line"
     begin
         if SalesLine.Type = SalesLine.Type::Item then begin
             Item.Get(SalesLine."No.");
-            if (Item."Costing Method" = Item."Costing Method"::Standard) and not IsCreatedFromJob(SalesLine) then
-                exit(false); // Do not update Unit Cost in Job Journal Line, it is correct.
+            if (Item."Costing Method" = Item."Costing Method"::Standard) and not IsCreatedFromContrato(SalesLine) then
+                exit(false); // Do not update Unit Cost in Contrato Journal Line, it is correct.
         end;
 
         exit(true);
     end;
 
-    local procedure IsCreatedFromJob(var SalesLine: Record "Sales Line") Result: Boolean
+    local procedure IsCreatedFromContrato(var SalesLine: Record "Sales Line") Result: Boolean
     begin
         Result := (SalesLine."Job No." <> '') and (SalesLine."Job Task No." <> '') and (SalesLine."Job Contract Entry No." <> 0);
-        OnAfterIsCreatedFromJob(SalesLine, Result);
+        OnAfterIsCreatedFromContrato(SalesLine, Result);
     end;
 
-    procedure ValidateUnitCostAndPrice(var JobJournalLine: Record "Contrato Journal Line"; SalesLine: Record "Sales Line"; UnitCost: Decimal; UnitPrice: Decimal)
+    procedure ValidateUnitCostAndPrice(var ContratoJournalLine: Record "Contrato Journal Line"; SalesLine: Record "Sales Line"; UnitCost: Decimal; UnitPrice: Decimal)
     begin
         if DoUpdateUnitCost(SalesLine) then begin
-            JobJournalLine.DontCheckStdCost();
-            JobJournalLine.Validate("Unit Cost", UnitCost);
+            ContratoJournalLine.DontCheckStdCost();
+            ContratoJournalLine.Validate("Unit Cost", UnitCost);
         end;
-        JobJournalLine.Validate("Unit Price", UnitPrice);
+        ContratoJournalLine.Validate("Unit Price", UnitPrice);
     end;
 
     local procedure UpdateBaseQtyForPurchLine(var Item: Record Item; PurchLine: Record "Purchase Line"): Boolean
@@ -852,97 +852,97 @@ codeunit 50211 "Contrato Transfer Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterIsCreatedFromJob(var SalesLine: Record "Sales Line"; var Result: Boolean)
+    local procedure OnAfterIsCreatedFromContrato(var SalesLine: Record "Sales Line"; var Result: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFromJnlLineToLedgEntry(var JobLedgerEntry: Record "Contrato Ledger Entry"; JobJournalLine: Record "Contrato Journal Line")
+    local procedure OnAfterFromJnlLineToLedgEntry(var ContratoLedgerEntry: Record "Contrato Ledger Entry"; ContratoJournalLine: Record "Contrato Journal Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFromJnlToPlanningLine(var JobPlanningLine: Record "Contrato Planning Line"; JobJournalLine: Record "Contrato Journal Line")
+    local procedure OnAfterFromJnlToPlanningLine(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoJournalLine: Record "Contrato Journal Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFromPlanningSalesLineToJnlLine(var JobJnlLine: Record "Contrato Journal Line"; JobPlanningLine: Record "Contrato Planning Line"; SalesHeader: Record "Sales Header"; SalesLine: Record "Sales Line"; EntryType: Enum ContratoJournalLineEntryType)
+    local procedure OnAfterFromPlanningSalesLineToJnlLine(var ContratoJnlLine: Record "Contrato Journal Line"; ContratoPlanningLine: Record "Contrato Planning Line"; SalesHeader: Record "Sales Header"; SalesLine: Record "Sales Line"; EntryType: Enum ContratoJournalLineEntryType)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFromPlanningLineToJnlLine(var JobJournalLine: Record "Contrato Journal Line"; JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterFromPlanningLineToJnlLine(var ContratoJournalLine: Record "Contrato Journal Line"; ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFromGenJnlLineToJnlLine(var JobJnlLine: Record "Contrato Journal Line"; GenJnlLine: Record "Gen. Journal Line")
+    local procedure OnAfterFromGenJnlLineToJnlLine(var ContratoJnlLine: Record "Contrato Journal Line"; GenJnlLine: Record "Gen. Journal Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFromJobLedgEntryToPlanningLine(var JobPlanningLine: Record "Contrato Planning Line"; JobLedgEntry: Record "Contrato Ledger Entry")
+    local procedure OnAfterFromContratoLedgEntryToPlanningLine(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoLedgEntry: Record "Contrato Ledger Entry")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFromPurchaseLineToJnlLine(var JobJnlLine: Record "Contrato Journal Line"; PurchHeader: Record "Purchase Header"; PurchInvHeader: Record "Purch. Inv. Header"; PurchCrMemoHeader: Record "Purch. Cr. Memo Hdr."; PurchLine: Record "Purchase Line"; SourceCode: Code[10])
+    local procedure OnAfterFromPurchaseLineToJnlLine(var ContratoJnlLine: Record "Contrato Journal Line"; PurchHeader: Record "Purchase Header"; PurchInvHeader: Record "Purch. Inv. Header"; PurchCrMemoHeader: Record "Purch. Cr. Memo Hdr."; PurchLine: Record "Purchase Line"; SourceCode: Code[10])
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFromSalesHeaderToPlanningLine(var JobPlanningLine: Record "Contrato Planning Line"; SalesLine: Record "Sales Line"; CurrencyFactor: Decimal)
+    local procedure OnAfterFromSalesHeaderToPlanningLine(var ContratoPlanningLine: Record "Contrato Planning Line"; SalesLine: Record "Sales Line"; CurrencyFactor: Decimal)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeFromPlanningSalesLineToJnlLine(var JobPlanningLine: Record "Contrato Planning Line"; var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var JobJnlLine: Record "Contrato Journal Line"; var EntryType: Enum ContratoJournalLineEntryType)
+    local procedure OnBeforeFromPlanningSalesLineToJnlLine(var ContratoPlanningLine: Record "Contrato Planning Line"; var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var ContratoJnlLine: Record "Contrato Journal Line"; var EntryType: Enum ContratoJournalLineEntryType)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeFromPurchaseLineToJnlLine(PurchHeader: Record "Purchase Header"; PurchInvHeader: Record "Purch. Inv. Header"; PurchCrMemoHeader: Record "Purch. Cr. Memo Hdr."; PurchLine: Record "Purchase Line"; SourceCode: Code[10]; var JobJnlLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
+    local procedure OnBeforeFromPurchaseLineToJnlLine(PurchHeader: Record "Purchase Header"; PurchInvHeader: Record "Purch. Inv. Header"; PurchCrMemoHeader: Record "Purch. Cr. Memo Hdr."; PurchLine: Record "Purchase Line"; SourceCode: Code[10]; var ContratoJnlLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeJobJournalLineValidateType(var JobJournalLine: Record "Contrato Journal Line"; PurchaseLine: Record "Purchase Line"; var IsHandled: Boolean)
+    local procedure OnBeforeContratoJournalLineValidateType(var ContratoJournalLine: Record "Contrato Journal Line"; PurchaseLine: Record "Purchase Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnFromPurchaseLineToJnlLineOnBeforeValidateNo(var JobJnlLine: Record "Contrato Journal Line"; var PurchLine: Record "Purchase Line")
+    local procedure OnFromPurchaseLineToJnlLineOnBeforeValidateNo(var ContratoJnlLine: Record "Contrato Journal Line"; var PurchLine: Record "Purchase Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnFromPurchaseLineToJnlLineOnAfterCalcUnitCostLCY(var JobJnlLine: Record "Contrato Journal Line"; var PurchLine: Record "Purchase Line")
+    local procedure OnFromPurchaseLineToJnlLineOnAfterCalcUnitCostLCY(var ContratoJnlLine: Record "Contrato Journal Line"; var PurchLine: Record "Purchase Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnFromPlanningLineToJnlLineOnBeforeCopyItemTracking(var JobJournalLine: Record "Contrato Journal Line"; var JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnFromPlanningLineToJnlLineOnBeforeCopyItemTracking(var ContratoJournalLine: Record "Contrato Journal Line"; var ContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnFromWarehouseActivityLineToJnlLineOnAfterJobJnlLineInsert(var JobJournalLine: Record "Contrato Journal Line"; var JobPlanningLine: Record "Contrato Planning Line"; var WarehouseActivityLine: Record "Warehouse Activity Line")
+    local procedure OnFromWarehouseActivityLineToJnlLineOnAfterContratoJnlLineInsert(var ContratoJournalLine: Record "Contrato Journal Line"; var ContratoPlanningLine: Record "Contrato Planning Line"; var WarehouseActivityLine: Record "Warehouse Activity Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnFromWarehouseActivityLineToJnlLineOnBeforeJobJnlLineInsert(var JobJournalLine: Record "Contrato Journal Line"; var JobPlanningLine: Record "Contrato Planning Line"; var WarehouseActivityLine: Record "Warehouse Activity Line")
+    local procedure OnFromWarehouseActivityLineToJnlLineOnBeforeContratoJnlLineInsert(var ContratoJournalLine: Record "Contrato Journal Line"; var ContratoPlanningLine: Record "Contrato Planning Line"; var WarehouseActivityLine: Record "Warehouse Activity Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnFromPlanningSalesLineToJnlLineOnBeforeInitAmounts(var JobJournalLine: Record "Contrato Journal Line"; var SalesLine: Record "Sales Line"; var SalesHeader: Record "Sales Header")
+    local procedure OnFromPlanningSalesLineToJnlLineOnBeforeInitAmounts(var ContratoJournalLine: Record "Contrato Journal Line"; var SalesLine: Record "Sales Line"; var SalesHeader: Record "Sales Header")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeFromGenJnlLineToJnlLine(var JobJnlLine: Record "Contrato Journal Line"; GenJnlLine: Record "Gen. Journal Line")
+    local procedure OnBeforeFromGenJnlLineToJnlLine(var ContratoJnlLine: Record "Contrato Journal Line"; GenJnlLine: Record "Gen. Journal Line")
     begin
     end;
 }

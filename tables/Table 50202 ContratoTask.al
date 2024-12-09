@@ -26,7 +26,7 @@ table 50202 "Contrato Task"
                 IsHandled: Boolean;
             begin
                 IsHandled := false;
-                OnBeforeValidateJobTaskNo(Rec, xRec, CurrFieldNo, IsHandled);
+                OnBeforeValidateContratoTaskNo(Rec, xRec, CurrFieldNo, IsHandled);
                 if IsHandled then
                     exit;
 
@@ -51,7 +51,7 @@ table 50202 "Contrato Task"
                 if (xRec."Contrato Task Type" = "Contrato Task Type"::Posting) and
                    ("Contrato Task Type" <> "Contrato Task Type"::Posting)
                 then begin
-                    if JobLedgEntriesExist() or JobPlanningLinesExist() then
+                    if ContratoLedgEntriesExist() or ContratoPlanningLinesExist() then
                         Error(CannotChangeAssociatedEntriesErr, FieldCaption("Contrato Task Type"), TableCaption);
                     ClearCustomerData();
                 end;
@@ -104,7 +104,7 @@ table 50202 "Contrato Task"
                 IsHandled: Boolean;
             begin
                 IsHandled := false;
-                OnBeforeValidateJobPostingGroup(Rec, xRec, CurrFieldNo, IsHandled);
+                OnBeforeValidateContratoPostingGroup(Rec, xRec, CurrFieldNo, IsHandled);
                 if IsHandled then
                     exit;
 
@@ -284,7 +284,7 @@ table 50202 "Contrato Task"
             trigger OnValidate()
             begin
                 if ("Location Code" <> xRec."Location Code") then
-                    MessageIfJobPlanningLineExist(FieldCaption("Location Code"));
+                    MessageIfContratoPlanningLineExist(FieldCaption("Location Code"));
 
                 SetDefaultBin();
             end;
@@ -298,7 +298,7 @@ table 50202 "Contrato Task"
             trigger OnValidate()
             begin
                 if ("Bin Code" <> xRec."Bin Code") then
-                    MessageIfJobPlanningLineExist(FieldCaption("Bin Code"));
+                    MessageIfContratoPlanningLineExist(FieldCaption("Bin Code"));
             end;
         }
         field(34; "Recognized Sales Amount"; Decimal)
@@ -915,26 +915,26 @@ table 50202 "Contrato Task"
 
     trigger OnDelete()
     var
-        JobPlanningLine: Record "Contrato Planning Line";
-        JobWIPTotal: Record "Contrato WIP Total";
-        JobTaskDim: Record "Contrato Task Dimension";
+        ContratoPlanningLine: Record "Contrato Planning Line";
+        ContratoWIPTotal: Record "Contrato WIP Total";
+        ContratoTaskDim: Record "Contrato Task Dimension";
     begin
-        if JobLedgEntriesExist() then
+        if ContratoLedgEntriesExist() then
             Error(CannotDeleteAssociatedEntriesErr, TableCaption);
 
-        JobPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
-        JobPlanningLine.SetRange("Contrato No.", "Contrato No.");
-        JobPlanningLine.SetRange("Contrato Task No.", "Contrato Task No.");
+        ContratoPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
+        ContratoPlanningLine.SetRange("Contrato No.", "Contrato No.");
+        ContratoPlanningLine.SetRange("Contrato Task No.", "Contrato Task No.");
         if CalledFromHeader then
-            JobPlanningLine.SuspendDeletionCheck(true);
-        JobPlanningLine.DeleteAll(true);
+            ContratoPlanningLine.SuspendDeletionCheck(true);
+        ContratoPlanningLine.DeleteAll(true);
 
-        //JobWIPTotal.DeleteEntriesForJobTask(Rec);
+        //ContratoWIPTotal.DeleteEntriesForContratoTask(Rec);
 
-        JobTaskDim.SetRange("Contrato No.", "Contrato No.");
-        JobTaskDim.SetRange("Contrato Task No.", "Contrato Task No.");
-        if not JobTaskDim.IsEmpty() then
-            JobTaskDim.DeleteAll();
+        ContratoTaskDim.SetRange("Contrato No.", "Contrato No.");
+        ContratoTaskDim.SetRange("Contrato Task No.", "Contrato Task No.");
+        if not ContratoTaskDim.IsEmpty() then
+            ContratoTaskDim.DeleteAll();
 
         CalcFields("Schedule (Total Cost)", "Usage (Total Cost)");
         Contrato.UpdateOverBudgetValue("Contrato No.", true, "Usage (Total Cost)");
@@ -1000,9 +1000,9 @@ table 50202 "Contrato Task"
         CannotChangeAssociatedEntriesErr: Label 'You cannot change %1 because one or more entries are associated with this %2.', Comment = '%1 = The field name you are trying to change; %2 = The project task table name.';
         PlanningLinesNotUpdatedMsg: Label 'You have changed %1 on the project task, but it has not been changed on the existing project planning lines.', Comment = '%1 = a Field Caption like Location Code';
         AssociatedEntriesExistErr: Label 'You cannot change %1 because one or more entries are associated with this %2.', Comment = '%1 = Name of field used in the error; %2 = The name of the Project Task table';
-        ContactBusRelErr: Label 'Contact %1 %2 is not related to customer %3.', Comment = '%1 = The contact number; %2 = The contact''s name; %3 = The Bill-To Customer Number associated with this job task';
+        ContactBusRelErr: Label 'Contact %1 %2 is not related to customer %3.', Comment = '%1 = The contact number; %2 = The contact''s name; %3 = The Bill-To Customer Number associated with this Contrato task';
         ContactBusRelMissingErr: Label 'Contact %1 %2 is not related to a customer.', Comment = '%1 = The contact number; %2 = The contact''s name';
-        ContactBusRelDiffCompErr: Label 'Contact %1 %2 is related to a different company than customer %3.', Comment = '%1 = The contact number; %2 = The contact''s name; %3 = The Bill-To Customer Number associated with this job task';
+        ContactBusRelDiffCompErr: Label 'Contact %1 %2 is related to a different company than customer %3.', Comment = '%1 = The contact number; %2 = The contact''s name; %3 = The Bill-To Customer Number associated with this Contrato task';
         UpdatePlanningLinesManuallyMsg: Label 'You must update the existing project planning lines manually.';
         SplitMessageTxt: Label '%1\%2', Comment = 'Some message text 1.\Some message text 2.', Locked = true;
         ConfirmChangeQst: Label 'Do you want to change %1?', Comment = '%1 = a Field Caption like Currency Code';
@@ -1034,25 +1034,25 @@ table 50202 "Contrato Task"
         exit(0);
     end;
 
-    local procedure JobLedgEntriesExist(): Boolean
+    local procedure ContratoLedgEntriesExist(): Boolean
     var
-        JobLedgEntry: Record "Contrato Ledger Entry";
+        ContratoLedgEntry: Record "Contrato Ledger Entry";
     begin
-        JobLedgEntry.SetCurrentKey("Contrato No.", "Contrato Task No.");
-        JobLedgEntry.SetRange("Contrato No.", "Contrato No.");
-        JobLedgEntry.SetRange("Contrato Task No.", "Contrato Task No.");
-        //OnJobLedgEntriesExistOnAfterSetFilter(Rec, JobLedgEntry);
-        exit(JobLedgEntry.FindFirst());
+        ContratoLedgEntry.SetCurrentKey("Contrato No.", "Contrato Task No.");
+        ContratoLedgEntry.SetRange("Contrato No.", "Contrato No.");
+        ContratoLedgEntry.SetRange("Contrato Task No.", "Contrato Task No.");
+        //OnContratoLedgEntriesExistOnAfterSetFilter(Rec, ContratoLedgEntry);
+        exit(ContratoLedgEntry.FindFirst());
     end;
 
-    local procedure JobPlanningLinesExist(): Boolean
+    local procedure ContratoPlanningLinesExist(): Boolean
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
-        JobPlanningLine.SetRange("Contrato No.", "Contrato No.");
-        JobPlanningLine.SetRange("Contrato Task No.", "Contrato Task No.");
-        exit(JobPlanningLine.FindFirst());
+        ContratoPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
+        ContratoPlanningLine.SetRange("Contrato No.", "Contrato No.");
+        ContratoPlanningLine.SetRange("Contrato Task No.", "Contrato Task No.");
+        exit(ContratoPlanningLine.FindFirst());
     end;
 
     procedure Caption(): Text
@@ -1078,17 +1078,17 @@ table 50202 "Contrato Task"
 
     procedure InitWIPFields()
     var
-        JobWIPTotal: Record "Contrato WIP Total";
+        ContratoWIPTotal: Record "Contrato WIP Total";
     begin
-        JobWIPTotal.SetRange("Contrato No.", "Contrato No.");
-        JobWIPTotal.SetRange("Contrato Task No.", "Contrato Task No.");
-        JobWIPTotal.SetRange("Posted to G/L", false);
-        JobWIPTotal.DeleteAll(true);
+        ContratoWIPTotal.SetRange("Contrato No.", "Contrato No.");
+        ContratoWIPTotal.SetRange("Contrato Task No.", "Contrato Task No.");
+        ContratoWIPTotal.SetRange("Posted to G/L", false);
+        ContratoWIPTotal.DeleteAll(true);
 
         "Recognized Sales Amount" := 0;
         "Recognized Costs Amount" := 0;
 
-        //OnInitWIPFieldsOnBeforeModify(Rec);
+        OnInitWIPFieldsOnBeforeModify(Rec);
         Modify();
     end;
 
@@ -1103,18 +1103,18 @@ table 50202 "Contrato Task"
 
     procedure ValidateShortcutDimCode(FieldNumber: Integer; var ShortcutDimCode: Code[20])
     var
-        JobTask2: Record "Contrato Task";
+        ContratoTask2: Record "Contrato Task";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeValidateShortcutDimCode(Rec, xRec, FieldNumber, ShortcutDimCode, JobTask2, IsHandled);
+        OnBeforeValidateShortcutDimCode(Rec, xRec, FieldNumber, ShortcutDimCode, ContratoTask2, IsHandled);
         if not IsHandled then begin
             DimMgt.ValidateDimValueCode(FieldNumber, ShortcutDimCode);
-            if JobTask2.Get("Contrato No.", "Contrato Task No.") then begin
+            if ContratoTask2.Get("Contrato No.", "Contrato Task No.") then begin
                 DimMgt.SaveJobTaskDim("Contrato No.", "Contrato Task No.", FieldNumber, ShortcutDimCode);
                 Modify();
-            end else
-                DimMgt.SaveJobTaskTempDim(FieldNumber, ShortcutDimCode);
+            end;// else
+                //DimMgt.SaveJobTaskDim(FieldNumber, ShortcutDimCode);
         end;
 
         OnAfterValidateShortcutDimCode(Rec, xRec, FieldNumber, ShortcutDimCode);
@@ -1125,15 +1125,15 @@ table 50202 "Contrato Task"
         DimMgt.DeleteJobTaskTempDim();
     end;
 
-    procedure ApplyPurchaseLineFilters(var PurchLine: Record "Purchase Line"; JobNo: Code[20]; JobTaskNo: Code[20])
+    procedure ApplyPurchaseLineFilters(var PurchLine: Record "Purchase Line"; ContratoNo: Code[20]; ContratoTaskNo: Code[20])
     begin
         PurchLine.SetCurrentKey("Document Type", "Job No.", "Job Task No.");
         PurchLine.SetRange("Document Type", PurchLine."Document Type"::Order);
-        PurchLine.SetRange("Job No.", JobNo);
+        PurchLine.SetRange("Job No.", ContratoNo);
         if "Contrato Task Type" in ["Contrato Task Type"::Total, "Contrato Task Type"::"End-Total"] then
             PurchLine.SetFilter("Job Task No.", Totaling)
         else
-            PurchLine.SetRange("Job Task No.", JobTaskNo);
+            PurchLine.SetRange("Job Task No.", ContratoTaskNo);
         OnAfterApplyPurchaseLineFilters(Rec, PurchLine);
     end;
 
@@ -1158,36 +1158,36 @@ table 50202 "Contrato Task"
             Location.Get(LocationCode);
     end;
 
-    local procedure MessageIfJobPlanningLineExist(ChangedFieldName: Text[100])
+    local procedure MessageIfContratoPlanningLineExist(ChangedFieldName: Text[100])
     var
         MessageText: Text;
     begin
-        if JobPlanningLineExist() then begin
+        if ContratoPlanningLineExist() then begin
             MessageText := StrSubstNo(PlanningLinesNotUpdatedMsg, ChangedFieldName);
             MessageText := StrSubstNo(SplitMessageTxt, MessageText, UpdatePlanningLinesManuallyMsg);
             Message(MessageText);
         end;
     end;
 
-    procedure JobPlanningLineExist(): Boolean
+    procedure ContratoPlanningLineExist(): Boolean
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.SetRange("Contrato No.", "Contrato No.");
-        JobPlanningLine.SetRange("Contrato Task No.", "Contrato Task No.");
-        JobPlanningLine.SetRange(Type, JobPlanningLine.Type::Item);
-        exit(not JobPlanningLine.IsEmpty());
+        ContratoPlanningLine.SetRange("Contrato No.", "Contrato No.");
+        ContratoPlanningLine.SetRange("Contrato Task No.", "Contrato Task No.");
+        ContratoPlanningLine.SetRange(Type, ContratoPlanningLine.Type::Item);
+        exit(not ContratoPlanningLine.IsEmpty());
     end;
 
-    procedure SalesJobLedgEntryExist() Result: Boolean
+    procedure SalesContratoLedgEntryExist() Result: Boolean
     var
-        JobLedgEntry: Record "Contrato Ledger Entry";
+        ContratoLedgEntry: Record "Contrato Ledger Entry";
     begin
-        JobLedgEntry.SetCurrentKey("Contrato No.", "Contrato Task No.", "Entry Type", "Posting Date");
-        JobLedgEntry.SetRange("Contrato No.", "Contrato No.");
-        JobLedgEntry.SetRange("Contrato Task No.", "Contrato Task No.");
-        JobLedgEntry.SetRange("Entry Type", JobLedgEntry."Entry Type"::Sale);
-        Result := not JobLedgEntry.IsEmpty();
+        ContratoLedgEntry.SetCurrentKey("Contrato No.", "Contrato Task No.", "Entry Type", "Posting Date");
+        ContratoLedgEntry.SetRange("Contrato No.", "Contrato No.");
+        ContratoLedgEntry.SetRange("Contrato Task No.", "Contrato Task No.");
+        ContratoLedgEntry.SetRange("Entry Type", ContratoLedgEntry."Entry Type"::Sale);
+        Result := not ContratoLedgEntry.IsEmpty();
     end;
 
     procedure SalesLineExist() Result: Boolean
@@ -1242,35 +1242,35 @@ table 50202 "Contrato Task"
             Validate("Bill-to Customer No.", '');
     end;
 
-    local procedure BillToCustomerNoUpdated(var JobTask: Record "Contrato Task"; var xJobTask: Record "Contrato Task")
+    local procedure BillToCustomerNoUpdated(var ContratoTask: Record "Contrato Task"; var xContratoTask: Record "Contrato Task")
     var
         BillToCustomer: Record Customer;
     begin
-        CheckBillToCustomerAssosEntriesExist(JobTask, xJobTask);
+        CheckBillToCustomerAssosEntriesExist(ContratoTask, xContratoTask);
 
-        if (xJobTask."Bill-to Customer No." <> '') and (not GetHideValidationDialog()) and GuiAllowed() then
+        if (xContratoTask."Bill-to Customer No." <> '') and (not GetHideValidationDialog()) and GuiAllowed() then
             if not Confirm(ConfirmChangeQst, false, BillToCustomerTxt) then begin
-                JobTask."Bill-to Customer No." := xJobTask."Bill-to Customer No.";
-                JobTask."Bill-to Name" := xJobTask."Bill-to Name";
+                ContratoTask."Bill-to Customer No." := xContratoTask."Bill-to Customer No.";
+                ContratoTask."Bill-to Name" := xContratoTask."Bill-to Name";
                 exit;
             end;
 
         // Set sell-to first if it hasn't been set yet.
-        if (JobTask."Sell-to Customer No." = '') and (JobTask."Bill-to Customer No." <> '') then
-            Validate("Sell-to Customer No.", JobTask."Bill-to Customer No.");
+        if (ContratoTask."Sell-to Customer No." = '') and (ContratoTask."Bill-to Customer No." <> '') then
+            Validate("Sell-to Customer No.", ContratoTask."Bill-to Customer No.");
 
-        if JobTask."Bill-to Customer No." <> '' then begin
-            BillToCustomer.Get(JobTask."Bill-to Customer No.");
-            JobTask."Bill-to Name" := BillToCustomer.Name;
-            JobTask."Bill-to Name 2" := BillToCustomer."Name 2";
-            JobTask."Bill-to Address" := BillToCustomer.Address;
-            JobTask."Bill-to Address 2" := BillToCustomer."Address 2";
-            JobTask."Bill-to City" := BillToCustomer.City;
-            JobTask."Bill-to Post Code" := BillToCustomer."Post Code";
-            JobTask."Bill-to County" := BillToCustomer.County;
-            JobTask."Bill-to Country/Region Code" := BillToCustomer."Country/Region Code";
-            JobTask."Payment Method Code" := BillToCustomer."Payment Method Code";
-            JobTask."Payment Terms Code" := BillToCustomer."Payment Terms Code";
+        if ContratoTask."Bill-to Customer No." <> '' then begin
+            BillToCustomer.Get(ContratoTask."Bill-to Customer No.");
+            ContratoTask."Bill-to Name" := BillToCustomer.Name;
+            ContratoTask."Bill-to Name 2" := BillToCustomer."Name 2";
+            ContratoTask."Bill-to Address" := BillToCustomer.Address;
+            ContratoTask."Bill-to Address 2" := BillToCustomer."Address 2";
+            ContratoTask."Bill-to City" := BillToCustomer.City;
+            ContratoTask."Bill-to Post Code" := BillToCustomer."Post Code";
+            ContratoTask."Bill-to County" := BillToCustomer.County;
+            ContratoTask."Bill-to Country/Region Code" := BillToCustomer."Country/Region Code";
+            ContratoTask."Payment Method Code" := BillToCustomer."Payment Method Code";
+            ContratoTask."Payment Terms Code" := BillToCustomer."Payment Terms Code";
 
             Contrato.Get("Contrato No.");
             if Contrato."Bill-to Customer No." = BillToCustomer."No." then
@@ -1278,82 +1278,82 @@ table 50202 "Contrato Task"
             else
                 "Invoice Currency Code" := BillToCustomer."Currency Code";
 
-            JobTask."Language Code" := BillToCustomer."Language Code";
-            GetCustomerContact(JobTask."Bill-to Customer No.", JobTask."Bill-to Contact No.", JobTask."Bill-to Contact");
-            CreateDefaultJobTaskDimensionsFromCustomer(JobTask."Bill-to Customer No.");
+            ContratoTask."Language Code" := BillToCustomer."Language Code";
+            GetCustomerContact(ContratoTask."Bill-to Customer No.", ContratoTask."Bill-to Contact No.", ContratoTask."Bill-to Contact");
+            CreateDefaultContratoTaskDimensionsFromCustomer(ContratoTask."Bill-to Customer No.");
         end else begin
-            JobTask."Bill-to Name" := '';
-            JobTask."Bill-to Name 2" := '';
-            JobTask."Bill-to Address" := '';
-            JobTask."Bill-to Address 2" := '';
-            JobTask."Bill-to City" := '';
-            JobTask."Bill-to Post Code" := '';
-            JobTask."Bill-to County" := '';
-            JobTask."Bill-to Country/Region Code" := '';
-            JobTask."Language Code" := '';
-            JobTask."Bill-to Contact" := '';
-            JobTask."Bill-to Contact No." := '';
-            JobTask."Payment Method Code" := '';
-            JobTask."Payment Terms Code" := '';
+            ContratoTask."Bill-to Name" := '';
+            ContratoTask."Bill-to Name 2" := '';
+            ContratoTask."Bill-to Address" := '';
+            ContratoTask."Bill-to Address 2" := '';
+            ContratoTask."Bill-to City" := '';
+            ContratoTask."Bill-to Post Code" := '';
+            ContratoTask."Bill-to County" := '';
+            ContratoTask."Bill-to Country/Region Code" := '';
+            ContratoTask."Language Code" := '';
+            ContratoTask."Bill-to Contact" := '';
+            ContratoTask."Bill-to Contact No." := '';
+            ContratoTask."Payment Method Code" := '';
+            ContratoTask."Payment Terms Code" := '';
         end;
 
-        if (xJobTask."Bill-to Customer No." <> '') and (JobTask."Bill-to Customer No." <> xJobTask."Bill-to Customer No.") then
-            UpdateCostPricesOnRelatedJobPlanningLines(JobTask);
+        if (xContratoTask."Bill-to Customer No." <> '') and (ContratoTask."Bill-to Customer No." <> xContratoTask."Bill-to Customer No.") then
+            UpdateCostPricesOnRelatedContratoPlanningLines(ContratoTask);
     end;
 
-    local procedure UpdateCostPricesOnRelatedJobPlanningLines(var JobTask: Record "Contrato Task")
+    local procedure UpdateCostPricesOnRelatedContratoPlanningLines(var ContratoTask: Record "Contrato Task")
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         ConfirmManagement: Codeunit "Confirm Management";
         ConfirmResult: Boolean;
         IsHandled: Boolean;
     begin
-        JobPlanningLine.SetRange("Contrato No.", JobTask."Contrato No.");
-        JobPlanningLine.SetRange("Contrato Task No.", JobTask."Contrato Task No.");
-        JobPlanningLine.SetFilter(Type, '<>%1', JobPlanningLine.Type::Text);
-        JobPlanningLine.SetFilter("No.", '<>%1', '');
-        if JobPlanningLine.IsEmpty() then
+        ContratoPlanningLine.SetRange("Contrato No.", ContratoTask."Contrato No.");
+        ContratoPlanningLine.SetRange("Contrato Task No.", ContratoTask."Contrato Task No.");
+        ContratoPlanningLine.SetFilter(Type, '<>%1', ContratoPlanningLine.Type::Text);
+        ContratoPlanningLine.SetFilter("No.", '<>%1', '');
+        if ContratoPlanningLine.IsEmpty() then
             exit;
 
         IsHandled := false;
-        OnUpdateCostPricesOnRelatedJobPlanningLinesOnBeforeConfirmUpdate(JobTask, ConfirmResult, IsHandled);
+        OnUpdateCostPricesOnRelatedContratoPlanningLinesOnBeforeConfirmUpdate(ContratoTask, ConfirmResult, IsHandled);
         if not IsHandled then
             ConfirmResult := ConfirmManagement.GetResponseOrDefault(UpdateCostPricesOnRelatedLinesQst, true);
         if not ConfirmResult then
             exit;
 
-        JobTask.Modify(true);
-        JobPlanningLine.FindSet(true);
+        ContratoTask.Modify(true);
+        ContratoPlanningLine.FindSet(true);
         repeat
-            JobPlanningLine."Line Amount" := 0;
-            JobPlanningLine.UpdateAllAmounts();
-            JobPlanningLine.Modify(true);
-        until JobPlanningLine.Next() = 0;
+            ContratoPlanningLine."Line Amount" := 0;
+            ContratoPlanningLine.UpdateAllAmounts();
+            ContratoPlanningLine.Modify(true);
+        until ContratoPlanningLine.Next() = 0;
     end;
 
-    local procedure CreateDefaultJobTaskDimensionsFromCustomer(BillToCustomerNo: Code[20])
+    local procedure CreateDefaultContratoTaskDimensionsFromCustomer(BillToCustomerNo: Code[20])
     var
-        JobTaskDim: Record "Contrato Task Dimension";
+        ContratoTaskDim: Record "Contrato Task Dimension";
         CustDefaultDimension: Record "Default Dimension";
-        TempJobDefaultDimension: Record "Default Dimension" temporary;
+        TempContratoDefaultDimension: Record "Default Dimension" temporary;
     begin
-        JobTaskDim.SetRange("Contrato No.", "Contrato No.");
-        JobTaskDim.SetRange("Contrato Task No.", "Contrato Task No.");
-        if not JobTaskDim.IsEmpty() then
-            JobTaskDim.DeleteAll();
+        ContratoTaskDim.SetRange("Contrato No.", "Contrato No.");
+        ContratoTaskDim.SetRange("Contrato Task No.", "Contrato Task No.");
+        if not ContratoTaskDim.IsEmpty() then
+            ContratoTaskDim.DeleteAll();
 
         CustDefaultDimension.SetRange("Table ID", DATABASE::Customer);
         CustDefaultDimension.SetRange("No.", BillToCustomerNo);
         if CustDefaultDimension.FindSet() then
             repeat
-                TempJobDefaultDimension.Init();
-                TempJobDefaultDimension.TransferFields(CustDefaultDimension);
-                TempJobDefaultDimension."Table ID" := Database::"Contrato Task";
-                TempJobDefaultDimension."No." := "Contrato Task No.";
-                TempJobDefaultDimension.Insert();
+                TempContratoDefaultDimension.Init();
+                TempContratoDefaultDimension.TransferFields(CustDefaultDimension);
+                TempContratoDefaultDimension."Table ID" := Database::"Contrato Task";
+                TempContratoDefaultDimension."No." := "Contrato Task No.";
+                TempContratoDefaultDimension.Insert();
             until CustDefaultDimension.Next() = 0;
 
-        DimMgt.InsertJobTaskDim(TempJobDefaultDimension, "Contrato No.", "Contrato Task No.", "Global Dimension 1 Code", "Global Dimension 2 Code");
+        DimMgt.InsertJobTaskDim(TempContratoDefaultDimension, "Contrato No.", "Contrato Task No.", "Global Dimension 1 Code", "Global Dimension 2 Code");
     end;
 
     procedure ShouldSearchForCustomerByName(CustomerNo: Code[20]): Boolean
@@ -1369,58 +1369,58 @@ table 50202 "Contrato Task"
         exit(not Customer."Disable Search by Name");
     end;
 
-    local procedure SellToCustomerNoUpdated(var JobTask: Record "Contrato Task"; var xJobTask: Record "Contrato Task")
+    local procedure SellToCustomerNoUpdated(var ContratoTask: Record "Contrato Task"; var xContratoTask: Record "Contrato Task")
     var
         SellToCustomer: Record Customer;
     begin
-        if JobTask."Sell-to Customer No." <> '' then begin
-            SellToCustomer.Get(JobTask."Sell-to Customer No.");
+        if ContratoTask."Sell-to Customer No." <> '' then begin
+            SellToCustomer.Get(ContratoTask."Sell-to Customer No.");
             SellToCustomer.CheckBlockedCustOnDocs(SellToCustomer, Enum::"Sales Document Type"::Order, false, false);
         end;
 
-        CheckSellToCustomerAssosEntriesExist(JobTask, xJobTask);
+        CheckSellToCustomerAssosEntriesExist(ContratoTask, xContratoTask);
 
-        if (xJobTask."Sell-to Customer No." <> '') and (not GetHideValidationDialog()) and GuiAllowed() then
+        if (xContratoTask."Sell-to Customer No." <> '') and (not GetHideValidationDialog()) and GuiAllowed() then
             if not Confirm(ConfirmChangeQst, false, SellToCustomerTxt) then begin
-                JobTask."Sell-to Customer No." := xJobTask."Sell-to Customer No.";
-                JobTask."Sell-to Customer Name" := xJobTask."Sell-to Customer Name";
+                ContratoTask."Sell-to Customer No." := xContratoTask."Sell-to Customer No.";
+                ContratoTask."Sell-to Customer Name" := xContratoTask."Sell-to Customer Name";
                 exit;
             end;
 
-        if JobTask."Sell-to Customer No." <> '' then begin
-            SellToCustomer.Get(JobTask."Sell-to Customer No.");
-            JobTask."Sell-to Customer Name" := SellToCustomer.Name;
-            JobTask."Sell-to Customer Name 2" := SellToCustomer."Name 2";
-            JobTask."Sell-to Address" := SellToCustomer.Address;
-            JobTask."Sell-to Address 2" := SellToCustomer."Address 2";
-            JobTask."Sell-to City" := SellToCustomer.City;
-            JobTask."Sell-to Post Code" := SellToCustomer."Post Code";
-            JobTask."Sell-to County" := SellToCustomer.County;
-            JobTask."Sell-to Country/Region Code" := SellToCustomer."Country/Region Code";
-            UpdateSellToContact(JobTask."Sell-to Customer No.");
+        if ContratoTask."Sell-to Customer No." <> '' then begin
+            SellToCustomer.Get(ContratoTask."Sell-to Customer No.");
+            ContratoTask."Sell-to Customer Name" := SellToCustomer.Name;
+            ContratoTask."Sell-to Customer Name 2" := SellToCustomer."Name 2";
+            ContratoTask."Sell-to Address" := SellToCustomer.Address;
+            ContratoTask."Sell-to Address 2" := SellToCustomer."Address 2";
+            ContratoTask."Sell-to City" := SellToCustomer.City;
+            ContratoTask."Sell-to Post Code" := SellToCustomer."Post Code";
+            ContratoTask."Sell-to County" := SellToCustomer.County;
+            ContratoTask."Sell-to Country/Region Code" := SellToCustomer."Country/Region Code";
+            UpdateSellToContact(ContratoTask."Sell-to Customer No.");
         end else begin
-            JobTask."Sell-to Customer Name" := '';
-            JobTask."Sell-to Customer Name 2" := '';
-            JobTask."Sell-to Address" := '';
-            JobTask."Sell-to Address 2" := '';
-            JobTask."Sell-to City" := '';
-            JobTask."Sell-to Post Code" := '';
-            JobTask."Sell-to County" := '';
-            JobTask."Sell-to Country/Region Code" := '';
-            JobTask."Sell-to Contact" := '';
-            JobTask."Sell-to Contact No." := '';
+            ContratoTask."Sell-to Customer Name" := '';
+            ContratoTask."Sell-to Customer Name 2" := '';
+            ContratoTask."Sell-to Address" := '';
+            ContratoTask."Sell-to Address 2" := '';
+            ContratoTask."Sell-to City" := '';
+            ContratoTask."Sell-to Post Code" := '';
+            ContratoTask."Sell-to County" := '';
+            ContratoTask."Sell-to Country/Region Code" := '';
+            ContratoTask."Sell-to Contact" := '';
+            ContratoTask."Sell-to Contact No." := '';
         end;
 
         if SellToCustomer."Bill-to Customer No." <> '' then
-            JobTask.Validate("Bill-to Customer No.", SellToCustomer."Bill-to Customer No.")
+            ContratoTask.Validate("Bill-to Customer No.", SellToCustomer."Bill-to Customer No.")
         else
-            JobTask.Validate("Bill-to Customer No.", Rec."Sell-to Customer No.");
+            ContratoTask.Validate("Bill-to Customer No.", Rec."Sell-to Customer No.");
 
         if
-            (xJobTask.ShipToNameEqualsSellToName() and xJobTask.ShipToAddressEqualsSellToAddress()) or
-            ((xJobTask."Ship-to Code" <> '') and (xJobTask."Sell-to Customer No." <> JobTask."Sell-to Customer No."))
+            (xContratoTask.ShipToNameEqualsSellToName() and xContratoTask.ShipToAddressEqualsSellToAddress()) or
+            ((xContratoTask."Ship-to Code" <> '') and (xContratoTask."Sell-to Customer No." <> ContratoTask."Sell-to Customer No."))
         then
-            JobTask.SyncShipToWithSellTo();
+            ContratoTask.SyncShipToWithSellTo();
     end;
 
     protected procedure UpdateSellToContact(CustomerNo: Code[20])
@@ -1447,21 +1447,21 @@ table 50202 "Contrato Task"
         end;
     end;
 
-    local procedure CheckBillToCustomerAssosEntriesExist(var JobTask: Record "Contrato Task"; var xJobTask: Record "Contrato Task")
+    local procedure CheckBillToCustomerAssosEntriesExist(var ContratoTask: Record "Contrato Task"; var xContratoTask: Record "Contrato Task")
     begin
-        if (JobTask."Bill-to Customer No." = '') or (JobTask."Bill-to Customer No." <> xJobTask."Bill-to Customer No.") then begin
-            if JobTask.SalesJobLedgEntryExist() then
-                Error(AssociatedEntriesExistErr, JobTask.FieldCaption("Bill-to Customer No."), JobTask.TableCaption);
-            if JobTask.SalesLineExist() then
-                Error(AssociatedEntriesExistErr, JobTask.FieldCaption("Bill-to Customer No."), JobTask.TableCaption);
+        if (ContratoTask."Bill-to Customer No." = '') or (ContratoTask."Bill-to Customer No." <> xContratoTask."Bill-to Customer No.") then begin
+            if ContratoTask.SalesContratoLedgEntryExist() then
+                Error(AssociatedEntriesExistErr, ContratoTask.FieldCaption("Bill-to Customer No."), ContratoTask.TableCaption);
+            if ContratoTask.SalesLineExist() then
+                Error(AssociatedEntriesExistErr, ContratoTask.FieldCaption("Bill-to Customer No."), ContratoTask.TableCaption);
         end;
     end;
 
-    local procedure CheckSellToCustomerAssosEntriesExist(var JobTask: Record "Contrato Task"; var xJobTask: Record "Contrato Task")
+    local procedure CheckSellToCustomerAssosEntriesExist(var ContratoTask: Record "Contrato Task"; var xContratoTask: Record "Contrato Task")
     begin
-        if (JobTask."Sell-to Customer No." = '') or (JobTask."Sell-to Customer No." <> xJobTask."Sell-to Customer No.") then
-            if JobTask.SalesJobLedgEntryExist() then
-                Error(AssociatedEntriesExistErr, JobTask.FieldCaption("Sell-to Customer No."), JobTask.TableCaption);
+        if (ContratoTask."Sell-to Customer No." = '') or (ContratoTask."Sell-to Customer No." <> xContratoTask."Sell-to Customer No.") then
+            if ContratoTask.SalesContratoLedgEntryExist() then
+                Error(AssociatedEntriesExistErr, ContratoTask.FieldCaption("Sell-to Customer No."), ContratoTask.TableCaption);
     end;
 
     procedure BilltoContactLookup(): Boolean
@@ -1515,11 +1515,11 @@ table 50202 "Contrato Task"
         end;
     end;
 
-    procedure SelltoCustomerNoOnAfterValidate(var JobTask: Record "Contrato Task"; var xJobTask: Record "Contrato Task")
+    procedure SelltoCustomerNoOnAfterValidate(var ContratoTask: Record "Contrato Task"; var xContratoTask: Record "Contrato Task")
     begin
-        if JobTask.GetFilter("Sell-to Customer No.") = xJobTask."Sell-to Customer No." then
-            if JobTask."Sell-to Customer No." <> xJobTask."Sell-to Customer No." then
-                JobTask.SetRange("Sell-to Customer No.");
+        if ContratoTask.GetFilter("Sell-to Customer No.") = xContratoTask."Sell-to Customer No." then
+            if ContratoTask."Sell-to Customer No." <> xContratoTask."Sell-to Customer No." then
+                ContratoTask.SetRange("Sell-to Customer No.");
     end;
 
     local procedure UpdateBillToCust(ContactNo: Code[20])
@@ -1689,24 +1689,24 @@ table 50202 "Contrato Task"
         // OnAfterSyncShipToWithSellTo(Rec);
     end;
 
-    procedure JobLedgEntryExist() Result: Boolean
+    procedure ContratoLedgEntryExist() Result: Boolean
     var
-        JobLedgEntry: Record "Contrato Ledger Entry";
+        ContratoLedgEntry: Record "Contrato Ledger Entry";
     begin
-        JobLedgEntry.SetCurrentKey("Contrato No.");
-        JobLedgEntry.SetRange("Contrato No.", "Contrato No.");
-        JobLedgEntry.SetRange("Contrato Task No.", "Contrato Task No.");
-        Result := not JobLedgEntry.IsEmpty();
+        ContratoLedgEntry.SetCurrentKey("Contrato No.");
+        ContratoLedgEntry.SetRange("Contrato No.", "Contrato No.");
+        ContratoLedgEntry.SetRange("Contrato Task No.", "Contrato Task No.");
+        Result := not ContratoLedgEntry.IsEmpty();
     end;
 
-    procedure JobPlanLineExist() Result: Boolean
+    procedure ContratoPlanLineExist() Result: Boolean
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.Init();
-        JobPlanningLine.SetRange("Contrato No.", "Contrato No.");
-        JobPlanningLine.SetRange("Contrato Task No.", "Contrato Task No.");
-        Result := not JobPlanningLine.IsEmpty();
+        ContratoPlanningLine.Init();
+        ContratoPlanningLine.SetRange("Contrato No.", "Contrato No.");
+        ContratoPlanningLine.SetRange("Contrato Task No.", "Contrato Task No.");
+        Result := not ContratoPlanningLine.IsEmpty();
     end;
 
     procedure SendProfile(var DocumentSendingProfile: Record "Document Sending Profile")
@@ -1735,73 +1735,73 @@ table 50202 "Contrato Task"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterApplyPurchaseLineFilters(var JobTask: Record "Contrato Task"; var PurchaseLine: Record "Purchase Line")
+    local procedure OnAfterApplyPurchaseLineFilters(var ContratoTask: Record "Contrato Task"; var PurchaseLine: Record "Purchase Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterValidateShortcutDimCode(var JobTask: Record "Contrato Task"; var xJobTask: Record "Contrato Task"; FieldNumber: Integer; var ShortcutDimCode: Code[20])
+    local procedure OnAfterValidateShortcutDimCode(var ContratoTask: Record "Contrato Task"; var xContratoTask: Record "Contrato Task"; FieldNumber: Integer; var ShortcutDimCode: Code[20])
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterOnInsert(var JobTask: Record "Contrato Task"; var xJobTask: Record "Contrato Task")
+    local procedure OnAfterOnInsert(var ContratoTask: Record "Contrato Task"; var xContratoTask: Record "Contrato Task")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeOnInsert(var JobTask: Record "Contrato Task"; var IsHandled: Boolean)
+    local procedure OnBeforeOnInsert(var ContratoTask: Record "Contrato Task"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeOnModify(var JobTask: Record "Contrato Task"; xJobTask: Record "Contrato Task"; var IsHandled: Boolean)
+    local procedure OnBeforeOnModify(var ContratoTask: Record "Contrato Task"; xContratoTask: Record "Contrato Task"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateJobTaskNo(var JobTask: Record "Contrato Task"; var xJobTask: Record "Contrato Task"; FieldNumber: Integer; var IsHandled: Boolean)
+    local procedure OnBeforeValidateContratoTaskNo(var ContratoTask: Record "Contrato Task"; var xContratoTask: Record "Contrato Task"; FieldNumber: Integer; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateJobPostingGroup(var JobTask: Record "Contrato Task"; xJobTask: Record "Contrato Task"; CallingFieldNo: Integer; var IsHandled: Boolean)
+    local procedure OnBeforeValidateContratoPostingGroup(var ContratoTask: Record "Contrato Task"; xContratoTask: Record "Contrato Task"; CallingFieldNo: Integer; var IsHandled: Boolean)
     begin
     end;
 
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateShortcutDimCode(var JobTask: Record "Contrato Task"; var xJobTask: Record "Contrato Task"; FieldNumber: Integer; var ShortcutDimCode: Code[20]; JobTask2: Record "Contrato Task"; var IsHandled: Boolean)
+    local procedure OnBeforeValidateShortcutDimCode(var ContratoTask: Record "Contrato Task"; var xContratoTask: Record "Contrato Task"; FieldNumber: Integer; var ShortcutDimCode: Code[20]; ContratoTask2: Record "Contrato Task"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnInitWIPFieldsOnBeforeModify(var JobTask: Record "Contrato Task")
+    local procedure OnInitWIPFieldsOnBeforeModify(var ContratoTask: Record "Contrato Task")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnJobLedgEntriesExistOnAfterSetFilter(var JobTask: Record "Contrato Task"; var JobLedgerEntry: Record "Contrato Ledger Entry")
+    local procedure OnContratoLedgEntriesExistOnAfterSetFilter(var ContratoTask: Record "Contrato Task"; var ContratoLedgerEntry: Record "Contrato Ledger Entry")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCaption(JobTask: Record "Contrato Task"; var IsHandled: Boolean; var Result: Text)
+    local procedure OnBeforeCaption(ContratoTask: Record "Contrato Task"; var IsHandled: Boolean; var Result: Text)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterShipToAddressEqualsSellToAddress(var JobTask: Record "Contrato Task"; var Result: Boolean)
+    local procedure OnAfterShipToAddressEqualsSellToAddress(var ContratoTask: Record "Contrato Task"; var Result: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterSyncShipToWithSellTo(var JobTask: Record "Contrato Task")
+    local procedure OnAfterSyncShipToWithSellTo(var ContratoTask: Record "Contrato Task")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnUpdateCostPricesOnRelatedJobPlanningLinesOnBeforeConfirmUpdate(var JobTask: Record "Contrato Task"; var ConfirmResult: Boolean; var IsHandled: Boolean)
+    local procedure OnUpdateCostPricesOnRelatedContratoPlanningLinesOnBeforeConfirmUpdate(var ContratoTask: Record "Contrato Task"; var ConfirmResult: Boolean; var IsHandled: Boolean)
     begin
     end;
 }

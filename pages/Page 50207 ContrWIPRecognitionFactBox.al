@@ -22,75 +22,75 @@ page 50207 "Contr WIP/Recognition FactBox"
             field("WIP Posting Date"; Rec."WIP Posting Date")
             {
                 ApplicationArea = All;
-                ToolTip = 'Specifies the posting date that was entered when the Contrato Calculate WIP batch job was last run.';
+                ToolTip = 'Specifies the posting date that was entered when the Contrato Calculate WIP batch Contrato was last run.';
             }
             // field("Total WIP Cost Amount"; Rec."Total WIP Cost Amount")
             // {
-            //     ApplicationArea = Jobs;
+            //     ApplicationArea = Contratos;
             //     ToolTip = 'Specifies the total WIP cost amount that was last calculated for the project. The WIP Cost Amount for the project is the value WIP Cost Contrato WIP Entries less the value of the Recognized Cost Contrato WIP Entries. For projects with WIP Methods of Sales Value or Percentage of Completion, the WIP Cost Amount is normally 0.';
             // }
             // field("Applied Costs G/L Amount"; Rec."Applied Costs G/L Amount")
             // {
-            //     ApplicationArea = Jobs;
+            //     ApplicationArea = Contratos;
             //     ToolTip = 'Specifies the sum of all applied costs of the selected project.';
             //     Visible = false;
             // }
             // field("Total WIP Sales Amount"; Rec."Total WIP Sales Amount")
             // {
-            //     ApplicationArea = Jobs;
+            //     ApplicationArea = Contratos;
             //     ToolTip = 'Specifies the total WIP Sales amount that was last calculated for the project. The WIP Sales Amount for the project is the value WIP Sales Contrato WIP Entries less the value of the Recognized Sales Contrato WIP Entries. For projects with WIP Methods of Cost Value or Cost of Sales, the WIP Sales Amount is normally 0.';
             // }
             // field("Applied Sales G/L Amount"; Rec."Applied Sales G/L Amount")
             // {
-            //     ApplicationArea = Jobs;
+            //     ApplicationArea = Contratos;
             //     ToolTip = 'Specifies the sum of all applied costs of the selected project.';
             //     Visible = false;
             // }
             // field("Recog. Costs Amount"; Rec."Recog. Costs Amount")
             // {
-            //     ApplicationArea = Jobs;
+            //     ApplicationArea = Contratos;
             //     ToolTip = 'Specifies the Recognized Cost amount that was last calculated for the project. The Recognized Cost Amount for the project is the sum of the Recognized Cost Contrato WIP Entries.';
             // }
             // field("Recog. Sales Amount"; Rec."Recog. Sales Amount")
             // {
-            //     ApplicationArea = Jobs;
+            //     ApplicationArea = Contratos;
             //     ToolTip = 'Specifies the recognized sales amount that was last calculated for the project, which is the sum of the Recognized Sales Contrato WIP Entries.';
             // }
             field("Recog. Profit Amount"; Rec.CalcRecognizedProfitAmount())
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Recog. Profit Amount';
                 ToolTip = 'Specifies the recognized profit amount for the project.';
             }
             field("Recog. Profit %"; Rec.CalcRecognizedProfitPercentage())
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Recog. Profit %';
                 ToolTip = 'Specifies the recognized profit percentage for the project.';
             }
             field("Acc. WIP Costs Amount"; Rec.CalcAccWIPCostsAmount())
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Acc. WIP Costs Amount';
                 ToolTip = 'Specifies the total WIP costs for the project.';
                 Visible = false;
             }
             field("Acc. WIP Sales Amount"; Rec.CalcAccWIPSalesAmount())
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Acc. WIP Sales Amount';
                 ToolTip = 'Specifies the total WIP sales for the project.';
                 Visible = false;
             }
             // field("Calc. Recog. Sales Amount"; Rec."Calc. Recog. Sales Amount")
             // {
-            //     ApplicationArea = Jobs;
+            //     ApplicationArea = Contratos;
             //     ToolTip = 'Specifies the sum of the recognized costs of the involved project tasks.';
             //     Visible = false;
             // }
             // field("Calc. Recog. Costs Amount"; Rec."Calc. Recog. Costs Amount")
             // {
-            //     ApplicationArea = Jobs;
+            //     ApplicationArea = Contratos;
             //     ToolTip = 'Specifies the sum of the recognized costs of the involved project tasks.';
             //     Visible = false;
             // }

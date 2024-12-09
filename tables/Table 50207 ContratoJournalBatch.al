@@ -30,9 +30,9 @@ table 50207 "Contrato Journal Batch"
             trigger OnValidate()
             begin
                 if "Reason Code" <> xRec."Reason Code" then begin
-                    JobJnlLine.SetRange("Journal Template Name", "Journal Template Name");
-                    JobJnlLine.SetRange("Journal Batch Name", Name);
-                    JobJnlLine.ModifyAll("Reason Code", "Reason Code");
+                    ContratoJnlLine.SetRange("Journal Template Name", "Journal Template Name");
+                    ContratoJnlLine.SetRange("Journal Batch Name", Name);
+                    ContratoJnlLine.ModifyAll("Reason Code", "Reason Code");
                     Modify();
                 end;
             end;
@@ -45,8 +45,8 @@ table 50207 "Contrato Journal Batch"
             trigger OnValidate()
             begin
                 if "No. Series" <> '' then begin
-                    JobJnlTemplate.Get("Journal Template Name");
-                    if JobJnlTemplate.Recurring then
+                    ContratoJnlTemplate.Get("Journal Template Name");
+                    if ContratoJnlTemplate.Recurring then
                         Error(
                           Text000,
                           FieldCaption("Posting No. Series"));
@@ -64,9 +64,9 @@ table 50207 "Contrato Journal Batch"
             begin
                 if ("Posting No. Series" = "No. Series") and ("Posting No. Series" <> '') then
                     FieldError("Posting No. Series", StrSubstNo(Text001, "Posting No. Series"));
-                JobJnlLine.SetRange("Journal Template Name", "Journal Template Name");
-                JobJnlLine.SetRange("Journal Batch Name", Name);
-                JobJnlLine.ModifyAll("Posting No. Series", "Posting No. Series");
+                ContratoJnlLine.SetRange("Journal Template Name", "Journal Template Name");
+                ContratoJnlLine.SetRange("Journal Batch Name", Name);
+                ContratoJnlLine.ModifyAll("Posting No. Series", "Posting No. Series");
                 Modify();
             end;
         }
@@ -93,37 +93,37 @@ table 50207 "Contrato Journal Batch"
 
     trigger OnDelete()
     begin
-        JobJnlLine.SetRange("Journal Template Name", "Journal Template Name");
-        JobJnlLine.SetRange("Journal Batch Name", Name);
-        JobJnlLine.DeleteAll(true);
+        ContratoJnlLine.SetRange("Journal Template Name", "Journal Template Name");
+        ContratoJnlLine.SetRange("Journal Batch Name", Name);
+        ContratoJnlLine.DeleteAll(true);
     end;
 
     trigger OnInsert()
     begin
         LockTable();
-        JobJnlTemplate.Get("Journal Template Name");
+        ContratoJnlTemplate.Get("Journal Template Name");
     end;
 
     trigger OnRename()
     begin
-        JobJnlLine.SetRange("Journal Template Name", xRec."Journal Template Name");
-        JobJnlLine.SetRange("Journal Batch Name", xRec.Name);
-        while JobJnlLine.FindFirst() do
-            JobJnlLine.Rename("Journal Template Name", Name, JobJnlLine."Line No.");
+        ContratoJnlLine.SetRange("Journal Template Name", xRec."Journal Template Name");
+        ContratoJnlLine.SetRange("Journal Batch Name", xRec.Name);
+        while ContratoJnlLine.FindFirst() do
+            ContratoJnlLine.Rename("Journal Template Name", Name, ContratoJnlLine."Line No.");
     end;
 
     var
-        JobJnlTemplate: Record "Contrato Journal Template";
-        JobJnlLine: Record "Contrato Journal Line";
+        ContratoJnlTemplate: Record "Contrato Journal Template";
+        ContratoJnlLine: Record "Contrato Journal Line";
 
         Text000: Label 'Only the %1 field can be filled in on recurring journals.';
         Text001: Label 'must not be %1';
 
     procedure SetupNewBatch()
     begin
-        JobJnlTemplate.Get("Journal Template Name");
-        "No. Series" := JobJnlTemplate."No. Series";
-        "Posting No. Series" := JobJnlTemplate."Posting No. Series";
-        "Reason Code" := JobJnlTemplate."Reason Code";
+        ContratoJnlTemplate.Get("Journal Template Name");
+        "No. Series" := ContratoJnlTemplate."No. Series";
+        "Posting No. Series" := ContratoJnlTemplate."Posting No. Series";
+        "Reason Code" := ContratoJnlTemplate."Reason Code";
     end;
 }

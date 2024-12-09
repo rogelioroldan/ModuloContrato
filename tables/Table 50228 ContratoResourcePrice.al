@@ -2,15 +2,15 @@ table 50228 "Contrato Resource Price"
 {
     Caption = 'Contrato Resource Price';
 #if not CLEAN23
-    DrillDownPageID = "Job Resource Prices";
+    DrillDownPageID = "Contrato Resource Prices";
     LookupPageID = "Contrato Resource Prices";
-    ObsoleteState = Pending;
-    ObsoleteTag = '16.0';
+    //ObsoleteState = Pending;
+    //ObsoleteTag = '16.0';
 #else
     ObsoleteState = Removed;
     ObsoleteTag = '26.0';
 #endif    
-    ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation: table Price List Line';
+    //ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation: table Price List Line';
     DataClassification = CustomerContent;
 
     fields
@@ -23,7 +23,7 @@ table 50228 "Contrato Resource Price"
 
             trigger OnValidate()
             begin
-                GetJob();
+                GetContrato();
                 "Currency Code" := Contrato."Currency Code";
             end;
         }
@@ -184,7 +184,7 @@ table 50228 "Contrato Resource Price"
 
         Text000: Label '%1 cannot be specified when %2 is %3.';
 
-    local procedure GetJob()
+    local procedure GetContrato()
     begin
         TestField("Contrato No.");
         Contrato.Get("Contrato No.");

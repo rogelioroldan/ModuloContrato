@@ -20,33 +20,33 @@ codeunit 50206 "Contrato Jnl.-Check Line"
         Text004: Label 'You must post more usage of %1 %2 in %3 %4 before you can post project journal %5 %6 = %7.', Comment = '%1=Item;%2=ProjectJnlline."No.";%3=Project;%4=ProjectJnlline."Project No.";%5=ProjectJnlline."Journal Batch Name";%6="Line No";%7=ProjectJnlline."Line No."';
         WhseRemainQtyPickedErr: Label 'You cannot post usage for project number %1 with project planning line %2 because a quantity of %3 remains to be picked.', Comment = '%1 = 12345, %2 = 1000, %3 = 5';
 
-    procedure RunCheck(var JobJnlLine: Record "Contrato Journal Line")
+    procedure RunCheck(var ContratoJnlLine: Record "Contrato Journal Line")
     begin
-        OnBeforeRunCheck(JobJnlLine);
+        OnBeforeRunCheck(ContratoJnlLine);
 
-        if JobJnlLine.EmptyLine() then
+        if ContratoJnlLine.EmptyLine() then
             exit;
 
-        TestJobJnlLine(JobJnlLine);
+        TestContratoJnlLine(ContratoJnlLine);
 
-        TestJobStatusOpen(JobJnlLine);
+        TestContratoStatusOpen(ContratoJnlLine);
 
-        CheckPostingDate(JobJnlLine);
+        CheckPostingDate(ContratoJnlLine);
 
-        CheckDocumentDate(JobJnlLine);
+        CheckDocumentDate(ContratoJnlLine);
 
-        // if JobJnlLine."Time Sheet No." <> '' then
-        //     TimeSheetMgt.CheckJobJnlLine(JobJnlLine);
+        // if ContratoJnlLine."Time Sheet No." <> '' then
+        //     TimeSheetMgt.CheckContratoJnlLine(ContratoJnlLine);
 
-        CheckDim(JobJnlLine);
+        CheckDim(ContratoJnlLine);
 
-        CheckItemQuantityAndBinCode(JobJnlLine);
+        CheckItemQuantityAndBinCode(ContratoJnlLine);
 
-        TestJobJnlLineChargeable(JobJnlLine);
+        TestContratoJnlLineChargeable(ContratoJnlLine);
 
-        CheckWhseQtyPicked(JobJnlLine);
+        CheckWhseQtyPicked(ContratoJnlLine);
 
-        OnAfterRunCheck(JobJnlLine);
+        OnAfterRunCheck(ContratoJnlLine);
     end;
 
     internal procedure SetCalledFromInvtPutawayPick(NewCalledFromInvtPutawayPick: Boolean)
@@ -54,82 +54,82 @@ codeunit 50206 "Contrato Jnl.-Check Line"
         CalledFromInvtPutawayPick := NewCalledFromInvtPutawayPick;
     end;
 
-    local procedure CheckItemQuantityAndBinCode(var JobJournalLine: Record "Contrato Journal Line")
+    local procedure CheckItemQuantityAndBinCode(var ContratoJournalLine: Record "Contrato Journal Line")
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckItemQuantityAndBinCode(JobJournalLine, IsHandled);
+        OnBeforeCheckItemQuantityAndBinCode(ContratoJournalLine, IsHandled);
         if IsHandled then
             exit;
 
-        if JobJournalLine.Type <> JobJournalLine.Type::Item then
+        if ContratoJournalLine.Type <> ContratoJournalLine.Type::Item then
             exit;
 
-        if (JobJournalLine."Quantity (Base)" < 0) and (JobJournalLine."Entry Type" = JobJournalLine."Entry Type"::Usage) then
-            CheckItemQuantityJobJnl(JobJournalLine);
-        GetLocation(JobJournalLine."Location Code");
+        if (ContratoJournalLine."Quantity (Base)" < 0) and (ContratoJournalLine."Entry Type" = ContratoJournalLine."Entry Type"::Usage) then
+            CheckItemQuantityContratoJnl(ContratoJournalLine);
+        GetLocation(ContratoJournalLine."Location Code");
         if Location."Directed Put-away and Pick" then
-            JobJournalLine.TestField("Bin Code", '', ErrorInfo.Create())
+            ContratoJournalLine.TestField("Bin Code", '', ErrorInfo.Create())
         else
-            if Location."Bin Mandatory" and JobJournalLine.IsInventoriableItem() then
-                JobJournalLine.TestField("Bin Code", ErrorInfo.Create());
+            if Location."Bin Mandatory" and ContratoJournalLine.IsInventoriableItem() then
+                ContratoJournalLine.TestField("Bin Code", ErrorInfo.Create());
     end;
 
-    local procedure TestJobStatusOpen(var JobJnlLine: Record "Contrato Journal Line")
+    local procedure TestContratoStatusOpen(var ContratoJnlLine: Record "Contrato Journal Line")
     var
         Contrato: Record Contrato;
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnRunCheckOnBeforeTestFieldJobStatus(IsHandled, JobJnlLine);
+        OnRunCheckOnBeforeTestFieldContratoStatus(IsHandled, ContratoJnlLine);
         if IsHandled then
             exit;
 
-        Contrato.Get(JobJnlLine."Contrato No.");
+        Contrato.Get(ContratoJnlLine."Contrato No.");
         Contrato.TestField(Status, Contrato.Status::Open, ErrorInfo.Create());
     end;
 
-    local procedure TestJobJnlLineChargeable(JobJnlLine: Record "Contrato Journal Line")
+    local procedure TestContratoJnlLineChargeable(ContratoJnlLine: Record "Contrato Journal Line")
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeTestChargeable(JobJnlLine, IsHandled);
+        OnBeforeTestChargeable(ContratoJnlLine, IsHandled);
         if IsHandled then
             exit;
 
-        if JobJnlLine."Line Type" in [JobJnlLine."Line Type"::Billable, JobJnlLine."Line Type"::"Both Budget and Billable"] then
-            JobJnlLine.TestField(Chargeable, true, ErrorInfo.Create());
+        if ContratoJnlLine."Line Type" in [ContratoJnlLine."Line Type"::Billable, ContratoJnlLine."Line Type"::"Both Budget and Billable"] then
+            ContratoJnlLine.TestField(Chargeable, true, ErrorInfo.Create());
     end;
 
-    local procedure CheckDocumentDate(JobJnlLine: Record "Contrato Journal Line")
+    local procedure CheckDocumentDate(ContratoJnlLine: Record "Contrato Journal Line")
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckDocumentDate(JobJnlLine, IsHandled);
+        OnBeforeCheckDocumentDate(ContratoJnlLine, IsHandled);
         if IsHandled then
             exit;
 
-        if (JobJnlLine."Document Date" <> 0D) and (JobJnlLine."Document Date" <> NormalDate(JobJnlLine."Document Date")) then
-            JobJnlLine.FieldError("Document Date", ErrorInfo.Create(Text000, true));
+        if (ContratoJnlLine."Document Date" <> 0D) and (ContratoJnlLine."Document Date" <> NormalDate(ContratoJnlLine."Document Date")) then
+            ContratoJnlLine.FieldError("Document Date", ErrorInfo.Create(Text000, true));
     end;
 
-    local procedure CheckPostingDate(JobJnlLine: Record "Contrato Journal Line")
+    local procedure CheckPostingDate(ContratoJnlLine: Record "Contrato Journal Line")
     var
         UserSetupManagement: Codeunit "User Setup Management";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckPostingDate(JobJnlLine, IsHandled);
+        OnBeforeCheckPostingDate(ContratoJnlLine, IsHandled);
         if IsHandled then
             exit;
 
-        if NormalDate(JobJnlLine."Posting Date") <> JobJnlLine."Posting Date" then
-            JobJnlLine.FieldError("Posting Date", ErrorInfo.Create(Text000, true));
-        if not UserSetupManagement.IsPostingDateValid(JobJnlLine."Posting Date") then
-            JobJnlLine.FieldError("Posting Date", ErrorInfo.Create(Text001, true));
+        if NormalDate(ContratoJnlLine."Posting Date") <> ContratoJnlLine."Posting Date" then
+            ContratoJnlLine.FieldError("Posting Date", ErrorInfo.Create(Text000, true));
+        if not UserSetupManagement.IsPostingDateValid(ContratoJnlLine."Posting Date") then
+            ContratoJnlLine.FieldError("Posting Date", ErrorInfo.Create(Text001, true));
     end;
 
     local procedure GetLocation(LocationCode: Code[10])
@@ -141,163 +141,163 @@ codeunit 50206 "Contrato Jnl.-Check Line"
                 Location.Get(LocationCode);
     end;
 
-    local procedure CheckDim(JobJnlLine: Record "Contrato Journal Line")
+    local procedure CheckDim(ContratoJnlLine: Record "Contrato Journal Line")
     var
         TableID: array[10] of Integer;
         No: array[10] of Code[20];
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckDim(JobJnlLine, IsHandled);
+        OnBeforeCheckDim(ContratoJnlLine, IsHandled);
         if IsHandled then
             exit;
 
-        if not DimMgt.CheckDimIDComb(JobJnlLine."Dimension Set ID") then
+        if not DimMgt.CheckDimIDComb(ContratoJnlLine."Dimension Set ID") then
             Error(
                 CombinationBlockedErr,
-                JobJnlLine.TableCaption(), JobJnlLine."Journal Template Name", JobJnlLine."Journal Batch Name", JobJnlLine."Line No.",
+                ContratoJnlLine.TableCaption(), ContratoJnlLine."Journal Template Name", ContratoJnlLine."Journal Batch Name", ContratoJnlLine."Line No.",
                 DimMgt.GetDimCombErr());
 
         TableID[1] := DATABASE::Contrato;
-        No[1] := JobJnlLine."Contrato No.";
-        TableID[2] := DimMgt.TypeToTableID2(JobJnlLine.Type.AsInteger());
-        No[2] := JobJnlLine."No.";
+        No[1] := ContratoJnlLine."Contrato No.";
+        TableID[2] := DimMgt.TypeToTableID2(ContratoJnlLine.Type.AsInteger());
+        No[2] := ContratoJnlLine."No.";
         TableID[3] := DATABASE::"Resource Group";
-        No[3] := JobJnlLine."Resource Group No.";
+        No[3] := ContratoJnlLine."Resource Group No.";
         TableID[4] := Database::Location;
-        No[4] := JobJnlLine."Location Code";
-        OnCheckDimOnAfterCreateDimTableID(JobJnlLine, TableID, No);
+        No[4] := ContratoJnlLine."Location Code";
+        OnCheckDimOnAfterCreateDimTableID(ContratoJnlLine, TableID, No);
 
-        if not DimMgt.CheckDimValuePosting(TableID, No, JobJnlLine."Dimension Set ID") then begin
-            if JobJnlLine."Line No." <> 0 then
+        if not DimMgt.CheckDimValuePosting(TableID, No, ContratoJnlLine."Dimension Set ID") then begin
+            if ContratoJnlLine."Line No." <> 0 then
                 Error(
                     ErrorInfo.Create(
                         StrSubstNo(
                             DimensionCausedErr,
-                            JobJnlLine.TableCaption(), JobJnlLine."Journal Template Name", JobJnlLine."Journal Batch Name", JobJnlLine."Line No.",
+                            ContratoJnlLine.TableCaption(), ContratoJnlLine."Journal Template Name", ContratoJnlLine."Journal Batch Name", ContratoJnlLine."Line No.",
                             DimMgt.GetDimValuePostingErr()),
                         true));
             Error(ErrorInfo.Create(DimMgt.GetDimValuePostingErr(), true));
         end;
     end;
 
-    local procedure CheckItemQuantityJobJnl(var JobJnlline: Record "Contrato Journal Line")
+    local procedure CheckItemQuantityContratoJnl(var ContratoJnlline: Record "Contrato Journal Line")
     var
         Item: Record Item;
         Contrato: Record Contrato;
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckItemQuantityJobJnl(JobJnlline, IsHandled);
+        OnBeforeCheckItemQuantityContratoJnl(ContratoJnlline, IsHandled);
         if IsHandled then
             exit;
 
-        if JobJnlline.IsNonInventoriableItem() then
+        if ContratoJnlline.IsNonInventoriableItem() then
             exit;
 
-        Contrato.Get(JobJnlline."Contrato No.");
-        if (Contrato.GetQuantityAvailable(JobJnlline."No.", JobJnlline."Location Code", JobJnlline."Variant Code", 0, 2) +
-            JobJnlline."Quantity (Base)") < 0
+        Contrato.Get(ContratoJnlline."Contrato No.");
+        if (Contrato.GetQuantityAvailable(ContratoJnlline."No.", ContratoJnlline."Location Code", ContratoJnlline."Variant Code", 0, 2) +
+            ContratoJnlline."Quantity (Base)") < 0
         then
             Error(
                 ErrorInfo.Create(
                     StrSubstNo(
-                        Text004, Item.TableCaption(), JobJnlline."No.", Contrato.TableCaption(),
-                        JobJnlline."Contrato No.", JobJnlline."Journal Batch Name",
-                        JobJnlline.FieldCaption("Line No."), JobJnlline."Line No."),
+                        Text004, Item.TableCaption(), ContratoJnlline."No.", Contrato.TableCaption(),
+                        ContratoJnlline."Contrato No.", ContratoJnlline."Journal Batch Name",
+                        ContratoJnlline.FieldCaption("Line No."), ContratoJnlline."Line No."),
                     true));
     end;
 
-    local procedure CheckWhseQtyPicked(var JobJournalLine: Record "Contrato Journal Line")
+    local procedure CheckWhseQtyPicked(var ContratoJournalLine: Record "Contrato Journal Line")
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         WhseValidateSourceLine: Codeunit "Whse. Validate Source Line";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckWhseQtyPicked(JobJournalLine, IsHandled);
+        OnBeforeCheckWhseQtyPicked(ContratoJournalLine, IsHandled);
         if IsHandled then
             exit;
 
-        // if WhseValidateSourceLine.IsWhsePickRequiredForJobJnlLine(JobJournalLine) or WhseValidateSourceLine.IsInventoryPickRequiredForJobJnlLine(JobJournalLine) then
+        // if WhseValidateSourceLine.IsWhsePickRequiredForContratoJnlLine(ContratoJournalLine) or WhseValidateSourceLine.IsInventoryPickRequiredForContratoJnlLine(ContratoJournalLine) then
         //     if not CalledFromInvtPutawayPick then
-        //         if JobPlanningLine.Get(JobJournalLine."Contrato No.", JobJournalLine."Contrato Task No.", JobJournalLine."Contrato Planning Line No.") and (JobPlanningLine."Qty. Picked" - JobPlanningLine."Qty. Posted" < JobJournalLine.Quantity - JobPlanningLine."Qty. to Assemble") then
-        //             JobPlanningLine.FieldError("Qty. Picked", ErrorInfo.Create(StrSubstNo(WhseRemainQtyPickedErr, JobPlanningLine."Contrato No.", JobPlanningLine."Line No.", JobJournalLine.Quantity + JobPlanningLine."Qty. Posted" - JobPlanningLine."Qty. Picked" - JobPlanningLine."Qty. to Assemble"), true));
+        //         if ContratoPlanningLine.Get(ContratoJournalLine."Contrato No.", ContratoJournalLine."Contrato Task No.", ContratoJournalLine."Contrato Planning Line No.") and (ContratoPlanningLine."Qty. Picked" - ContratoPlanningLine."Qty. Posted" < ContratoJournalLine.Quantity - ContratoPlanningLine."Qty. to Assemble") then
+        //             ContratoPlanningLine.FieldError("Qty. Picked", ErrorInfo.Create(StrSubstNo(WhseRemainQtyPickedErr, ContratoPlanningLine."Contrato No.", ContratoPlanningLine."Line No.", ContratoJournalLine.Quantity + ContratoPlanningLine."Qty. Posted" - ContratoPlanningLine."Qty. Picked" - ContratoPlanningLine."Qty. to Assemble"), true));
     end;
 
-    local procedure TestJobJnlLine(JobJournalLine: Record "Contrato Journal Line")
+    local procedure TestContratoJnlLine(ContratoJournalLine: Record "Contrato Journal Line")
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeTestJobJnlLine(JobJournalLine, IsHandled);
+        OnBeforeTestContratoJnlLine(ContratoJournalLine, IsHandled);
         if IsHandled then
             exit;
 
-        JobJournalLine.TestField("Contrato No.", ErrorInfo.Create());
-        JobJournalLine.TestField("Contrato Task No.", ErrorInfo.Create());
-        JobJournalLine.TestField("No.", ErrorInfo.Create());
-        JobJournalLine.TestField("Posting Date", ErrorInfo.Create());
-        JobJournalLine.TestField(Quantity, ErrorInfo.Create());
+        ContratoJournalLine.TestField("Contrato No.", ErrorInfo.Create());
+        ContratoJournalLine.TestField("Contrato Task No.", ErrorInfo.Create());
+        ContratoJournalLine.TestField("No.", ErrorInfo.Create());
+        ContratoJournalLine.TestField("Posting Date", ErrorInfo.Create());
+        ContratoJournalLine.TestField(Quantity, ErrorInfo.Create());
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterRunCheck(var JobJnlLine: Record "Contrato Journal Line")
+    local procedure OnAfterRunCheck(var ContratoJnlLine: Record "Contrato Journal Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckDocumentDate(var JobJnlLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
+    local procedure OnBeforeCheckDocumentDate(var ContratoJnlLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckPostingDate(var JobJnlLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
+    local procedure OnBeforeCheckPostingDate(var ContratoJnlLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckWhseQtyPicked(var JobJournalLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
+    local procedure OnBeforeCheckWhseQtyPicked(var ContratoJournalLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeRunCheck(var JobJnlLine: Record "Contrato Journal Line")
+    local procedure OnBeforeRunCheck(var ContratoJnlLine: Record "Contrato Journal Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckDim(var JobJnlLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
+    local procedure OnBeforeCheckDim(var ContratoJnlLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckItemQuantityAndBinCode(JobJournalLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
+    local procedure OnBeforeCheckItemQuantityAndBinCode(ContratoJournalLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckItemQuantityJobJnl(var JobJnlLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
+    local procedure OnBeforeCheckItemQuantityContratoJnl(var ContratoJnlLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeTestJobJnlLine(JobJournalLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
+    local procedure OnBeforeTestContratoJnlLine(ContratoJournalLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeTestChargeable(JobJournalLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
+    local procedure OnBeforeTestChargeable(ContratoJournalLine: Record "Contrato Journal Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCheckDimOnAfterCreateDimTableID(JobJournalLine: Record "Contrato Journal Line"; var TableID: array[10] of Integer; var No: array[10] of Code[20])
+    local procedure OnCheckDimOnAfterCreateDimTableID(ContratoJournalLine: Record "Contrato Journal Line"; var TableID: array[10] of Integer; var No: array[10] of Code[20])
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnRunCheckOnBeforeTestFieldJobStatus(var IsHandled: Boolean; var JobJnlLine: Record "Contrato Journal Line")
+    local procedure OnRunCheckOnBeforeTestFieldContratoStatus(var IsHandled: Boolean; var ContratoJnlLine: Record "Contrato Journal Line")
     begin
     end;
 }

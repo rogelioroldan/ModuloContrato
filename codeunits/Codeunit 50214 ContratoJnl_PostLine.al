@@ -16,193 +16,193 @@ codeunit 50214 "Contrato Jnl. Line-Reserve"
         Text002: Label 'must be filled in when a quantity is reserved.';
         Text004: Label 'must not be changed when a quantity is reserved.';
 
-    local procedure FindReservEntry(JobJnlLine: Record "Contrato Journal Line"; var ReservEntry: Record "Reservation Entry"): Boolean
+    local procedure FindReservEntry(ContratoJnlLine: Record "Contrato Journal Line"; var ReservEntry: Record "Reservation Entry"): Boolean
     begin
         ReservEntry.InitSortingAndFilters(false);
-        JobJnlLine.SetReservationFilters(ReservEntry);
+        ContratoJnlLine.SetReservationFilters(ReservEntry);
         exit(ReservEntry.Find('+'));
     end;
 
-    procedure VerifyChange(var NewJobJnlLine: Record "Contrato Journal Line"; var OldJobJnlLine: Record "Contrato Journal Line")
+    procedure VerifyChange(var NewContratoJnlLine: Record "Contrato Journal Line"; var OldContratoJnlLine: Record "Contrato Journal Line")
     var
-        JobJnlLine: Record "Contrato Journal Line";
+        ContratoJnlLine: Record "Contrato Journal Line";
         TempReservEntry: Record "Reservation Entry";
         ShowError: Boolean;
         HasError: Boolean;
         PointerChanged: Boolean;
     begin
-        if NewJobJnlLine."Line No." = 0 then
-            if not JobJnlLine.Get(
-                 NewJobJnlLine."Journal Template Name",
-                 NewJobJnlLine."Journal Batch Name",
-                 NewJobJnlLine."Line No.")
+        if NewContratoJnlLine."Line No." = 0 then
+            if not ContratoJnlLine.Get(
+                 NewContratoJnlLine."Journal Template Name",
+                 NewContratoJnlLine."Journal Batch Name",
+                 NewContratoJnlLine."Line No.")
             then
                 exit;
 
-        NewJobJnlLine.CalcFields("Reserved Qty. (Base)");
-        ShowError := NewJobJnlLine."Reserved Qty. (Base)" <> 0;
+        NewContratoJnlLine.CalcFields("Reserved Qty. (Base)");
+        ShowError := NewContratoJnlLine."Reserved Qty. (Base)" <> 0;
 
-        if NewJobJnlLine."Posting Date" = 0D then
+        if NewContratoJnlLine."Posting Date" = 0D then
             if not ShowError then
                 HasError := true
             else
-                NewJobJnlLine.FieldError("Posting Date", Text002);
+                NewContratoJnlLine.FieldError("Posting Date", Text002);
 
-        if NewJobJnlLine."Contrato No." <> OldJobJnlLine."Contrato No." then
+        if NewContratoJnlLine."Contrato No." <> OldContratoJnlLine."Contrato No." then
             if not ShowError then
                 HasError := true
             else
-                NewJobJnlLine.FieldError("Contrato No.", Text004);
+                NewContratoJnlLine.FieldError("Contrato No.", Text004);
 
-        if NewJobJnlLine."Entry Type" <> OldJobJnlLine."Entry Type" then
+        if NewContratoJnlLine."Entry Type" <> OldContratoJnlLine."Entry Type" then
             if not ShowError then
                 HasError := true
             else
-                NewJobJnlLine.FieldError("Entry Type", Text004);
+                NewContratoJnlLine.FieldError("Entry Type", Text004);
 
-        if NewJobJnlLine."Location Code" <> OldJobJnlLine."Location Code" then
+        if NewContratoJnlLine."Location Code" <> OldContratoJnlLine."Location Code" then
             if not ShowError then
                 HasError := true
             else
-                NewJobJnlLine.FieldError("Location Code", Text004);
+                NewContratoJnlLine.FieldError("Location Code", Text004);
 
-        if (NewJobJnlLine.Type = NewJobJnlLine.Type::Item) and (OldJobJnlLine.Type = OldJobJnlLine.Type::Item) then
-            if (NewJobJnlLine."Bin Code" <> OldJobJnlLine."Bin Code") and
+        if (NewContratoJnlLine.Type = NewContratoJnlLine.Type::Item) and (OldContratoJnlLine.Type = OldContratoJnlLine.Type::Item) then
+            if (NewContratoJnlLine."Bin Code" <> OldContratoJnlLine."Bin Code") and
                (not ReservMgt.CalcIsAvailTrackedQtyInBin(
-                  NewJobJnlLine."No.", NewJobJnlLine."Bin Code",
-                  NewJobJnlLine."Location Code", NewJobJnlLine."Variant Code",
-                  DATABASE::"Contrato Journal Line", NewJobJnlLine."Entry Type".AsInteger(),
-                  NewJobJnlLine."Journal Template Name", NewJobJnlLine."Journal Batch Name", 0, NewJobJnlLine."Line No."))
+                  NewContratoJnlLine."No.", NewContratoJnlLine."Bin Code",
+                  NewContratoJnlLine."Location Code", NewContratoJnlLine."Variant Code",
+                  DATABASE::"Contrato Journal Line", NewContratoJnlLine."Entry Type".AsInteger(),
+                  NewContratoJnlLine."Journal Template Name", NewContratoJnlLine."Journal Batch Name", 0, NewContratoJnlLine."Line No."))
             then begin
                 if ShowError then
-                    NewJobJnlLine.FieldError("Bin Code", Text004);
+                    NewContratoJnlLine.FieldError("Bin Code", Text004);
                 HasError := true;
             end;
 
-        if NewJobJnlLine."Variant Code" <> OldJobJnlLine."Variant Code" then
+        if NewContratoJnlLine."Variant Code" <> OldContratoJnlLine."Variant Code" then
             if not ShowError then
                 HasError := true
             else
-                NewJobJnlLine.FieldError("Variant Code", Text004);
+                NewContratoJnlLine.FieldError("Variant Code", Text004);
 
-        if NewJobJnlLine."Line No." <> OldJobJnlLine."Line No." then
+        if NewContratoJnlLine."Line No." <> OldContratoJnlLine."Line No." then
             HasError := true;
 
-        if NewJobJnlLine."No." <> OldJobJnlLine."No." then
+        if NewContratoJnlLine."No." <> OldContratoJnlLine."No." then
             HasError := true;
 
-        OnVerifyChangeOnBeforeHasError(NewJobJnlLine, OldJobJnlLine, HasError, ShowError);
+        OnVerifyChangeOnBeforeHasError(NewContratoJnlLine, OldContratoJnlLine, HasError, ShowError);
 
         if HasError then begin
-            FindReservEntry(NewJobJnlLine, TempReservEntry);
+            FindReservEntry(NewContratoJnlLine, TempReservEntry);
             TempReservEntry.ClearTrackingFilter();
 
-            PointerChanged := (NewJobJnlLine."Contrato No." <> OldJobJnlLine."Contrato No.") or
-              (NewJobJnlLine."Entry Type" <> OldJobJnlLine."Entry Type") or
-              (NewJobJnlLine."No." <> OldJobJnlLine."No.");
+            PointerChanged := (NewContratoJnlLine."Contrato No." <> OldContratoJnlLine."Contrato No.") or
+              (NewContratoJnlLine."Entry Type" <> OldContratoJnlLine."Entry Type") or
+              (NewContratoJnlLine."No." <> OldContratoJnlLine."No.");
 
             if PointerChanged or
                (not TempReservEntry.IsEmpty)
             then begin
                 if PointerChanged then begin
-                    ReservMgt.SetReservSource(OldJobJnlLine);
+                    ReservMgt.SetReservSource(OldContratoJnlLine);
                     ReservMgt.DeleteReservEntries(true, 0);
-                    ReservMgt.SetReservSource(NewJobJnlLine);
+                    ReservMgt.SetReservSource(NewContratoJnlLine);
                 end else begin
-                    ReservMgt.SetReservSource(NewJobJnlLine);
+                    ReservMgt.SetReservSource(NewContratoJnlLine);
                     ReservMgt.DeleteReservEntries(true, 0);
                 end;
-                ReservMgt.AutoTrack(NewJobJnlLine."Quantity (Base)");
+                ReservMgt.AutoTrack(NewContratoJnlLine."Quantity (Base)");
             end;
         end;
     end;
 
-    procedure VerifyQuantity(var NewJobJnlLine: Record "Contrato Journal Line"; var OldJobJnlLine: Record "Contrato Journal Line")
+    procedure VerifyQuantity(var NewContratoJnlLine: Record "Contrato Journal Line"; var OldContratoJnlLine: Record "Contrato Journal Line")
     var
-        JobJnlLine: Record "Contrato Journal Line";
+        ContratoJnlLine: Record "Contrato Journal Line";
     begin
-        if NewJobJnlLine."Line No." = OldJobJnlLine."Line No." then
-            if NewJobJnlLine."Quantity (Base)" = OldJobJnlLine."Quantity (Base)" then
+        if NewContratoJnlLine."Line No." = OldContratoJnlLine."Line No." then
+            if NewContratoJnlLine."Quantity (Base)" = OldContratoJnlLine."Quantity (Base)" then
                 exit;
-        if NewJobJnlLine."Line No." = 0 then
-            if not JobJnlLine.Get(NewJobJnlLine."Journal Template Name", NewJobJnlLine."Journal Batch Name", NewJobJnlLine."Line No.") then
+        if NewContratoJnlLine."Line No." = 0 then
+            if not ContratoJnlLine.Get(NewContratoJnlLine."Journal Template Name", NewContratoJnlLine."Journal Batch Name", NewContratoJnlLine."Line No.") then
                 exit;
-        ReservMgt.SetReservSource(NewJobJnlLine);
-        if NewJobJnlLine."Qty. per Unit of Measure" <> OldJobJnlLine."Qty. per Unit of Measure" then
+        ReservMgt.SetReservSource(NewContratoJnlLine);
+        if NewContratoJnlLine."Qty. per Unit of Measure" <> OldContratoJnlLine."Qty. per Unit of Measure" then
             ReservMgt.ModifyUnitOfMeasure();
-        if NewJobJnlLine."Quantity (Base)" * OldJobJnlLine."Quantity (Base)" < 0 then
+        if NewContratoJnlLine."Quantity (Base)" * OldContratoJnlLine."Quantity (Base)" < 0 then
             ReservMgt.DeleteReservEntries(true, 0)
         else
-            ReservMgt.DeleteReservEntries(false, NewJobJnlLine."Quantity (Base)");
+            ReservMgt.DeleteReservEntries(false, NewContratoJnlLine."Quantity (Base)");
     end;
 
-    procedure RenameLine(var NewJobJnlLine: Record "Contrato Journal Line"; var OldJobJnlLine: Record "Contrato Journal Line")
+    procedure RenameLine(var NewContratoJnlLine: Record "Contrato Journal Line"; var OldContratoJnlLine: Record "Contrato Journal Line")
     begin
         ReservEngineMgt.RenamePointer(DATABASE::"Contrato Journal Line",
-          OldJobJnlLine."Entry Type".AsInteger(),
-          OldJobJnlLine."Journal Template Name",
-          OldJobJnlLine."Journal Batch Name",
+          OldContratoJnlLine."Entry Type".AsInteger(),
+          OldContratoJnlLine."Journal Template Name",
+          OldContratoJnlLine."Journal Batch Name",
           0,
-          OldJobJnlLine."Line No.",
-          NewJobJnlLine."Entry Type".AsInteger(),
-          NewJobJnlLine."Journal Template Name",
-          NewJobJnlLine."Journal Batch Name",
+          OldContratoJnlLine."Line No.",
+          NewContratoJnlLine."Entry Type".AsInteger(),
+          NewContratoJnlLine."Journal Template Name",
+          NewContratoJnlLine."Journal Batch Name",
           0,
-          NewJobJnlLine."Line No.");
+          NewContratoJnlLine."Line No.");
     end;
 
-    procedure DeleteLineConfirm(var JobJnlLine: Record "Contrato Journal Line"): Boolean
+    procedure DeleteLineConfirm(var ContratoJnlLine: Record "Contrato Journal Line"): Boolean
     begin
-        if not JobJnlLine.ReservEntryExist() then
+        if not ContratoJnlLine.ReservEntryExist() then
             exit(true);
 
-        ReservMgt.SetReservSource(JobJnlLine);
+        ReservMgt.SetReservSource(ContratoJnlLine);
         if ReservMgt.DeleteItemTrackingConfirm() then
             DeleteItemTracking := true;
 
         exit(DeleteItemTracking);
     end;
 
-    procedure DeleteLine(var JobJnlLine: Record "Contrato Journal Line")
+    procedure DeleteLine(var ContratoJnlLine: Record "Contrato Journal Line")
     begin
-        if JobJnlLine.Type = JobJnlLine.Type::Item then begin
-            ReservMgt.SetReservSource(JobJnlLine);
+        if ContratoJnlLine.Type = ContratoJnlLine.Type::Item then begin
+            ReservMgt.SetReservSource(ContratoJnlLine);
             if DeleteItemTracking then
                 ReservMgt.SetItemTrackingHandling(1); // Allow Deletion
             ReservMgt.DeleteReservEntries(true, 0);
         end;
     end;
 
-    procedure CallItemTracking(var JobJnlLine: Record "Contrato Journal Line"; IsReclass: Boolean)
+    procedure CallItemTracking(var ContratoJnlLine: Record "Contrato Journal Line"; IsReclass: Boolean)
     var
         TrackingSpecification: Record "Tracking Specification";
         ItemTrackingLines: Page "Item Tracking Lines";
     begin
-        //TrackingSpecification.InitFromJobJnlLine(JobJnlLine);
+        //TrackingSpecification.InitFromContratoJnlLine(ContratoJnlLine);
         if IsReclass then
             ItemTrackingLines.SetRunMode(Enum::"Item Tracking Run Mode"::Reclass);
-        ItemTrackingLines.SetSourceSpec(TrackingSpecification, JobJnlLine."Posting Date");
-        ItemTrackingLines.SetInbound(JobJnlLine.IsInbound());
+        ItemTrackingLines.SetSourceSpec(TrackingSpecification, ContratoJnlLine."Posting Date");
+        ItemTrackingLines.SetInbound(ContratoJnlLine.IsInbound());
         ItemTrackingLines.RunModal();
     end;
 
-    internal procedure TransJobJnlLineToItemJnlLine(var JobJnlLine: Record "Contrato Journal Line"; var ItemJnlLine: Record "Item Journal Line"; TransferQty: Decimal; CalledFromInvtPutawayPickVal: Boolean): Decimal
+    internal procedure TransContratoJnlLineToItemJnlLine(var ContratoJnlLine: Record "Contrato Journal Line"; var ItemJnlLine: Record "Item Journal Line"; TransferQty: Decimal; CalledFromInvtPutawayPickVal: Boolean): Decimal
     begin
         CalledFromInvtPutawayPick := CalledFromInvtPutawayPickVal;
-        exit(TransJobJnlLineToItemJnlLine(JobJnlLine, ItemJnlLine, TransferQty));
+        exit(TransContratoJnlLineToItemJnlLine(ContratoJnlLine, ItemJnlLine, TransferQty));
     end;
 
-    procedure TransJobJnlLineToItemJnlLine(var JobJnlLine: Record "Contrato Journal Line"; var ItemJnlLine: Record "Item Journal Line"; TransferQty: Decimal): Decimal
+    procedure TransContratoJnlLineToItemJnlLine(var ContratoJnlLine: Record "Contrato Journal Line"; var ItemJnlLine: Record "Item Journal Line"; TransferQty: Decimal): Decimal
     var
         OldReservEntry: Record "Reservation Entry";
     begin
-        if not FindReservEntry(JobJnlLine, OldReservEntry) then
+        if not FindReservEntry(ContratoJnlLine, OldReservEntry) then
             exit(TransferQty);
         OldReservEntry.Lock();
         // Handle Item Tracking on drop shipment:
         Clear(CreateReservEntry);
 
-        ItemJnlLine.TestItemFields(JobJnlLine."No.", JobJnlLine."Variant Code", JobJnlLine."Location Code");
+        ItemJnlLine.TestItemFields(ContratoJnlLine."No.", ContratoJnlLine."Variant Code", ContratoJnlLine."Location Code");
 
         if TransferQty = 0 then
             exit;
@@ -212,7 +212,7 @@ codeunit 50214 "Contrato Jnl. Line-Reserve"
 
         if ReservEngineMgt.InitRecordSet(OldReservEntry) then
             repeat
-                OldReservEntry.TestItemFields(JobJnlLine."No.", JobJnlLine."Variant Code", JobJnlLine."Location Code");
+                OldReservEntry.TestItemFields(ContratoJnlLine."No.", ContratoJnlLine."Variant Code", ContratoJnlLine."Location Code");
 
                 TransferQty := CreateReservEntry.TransferReservEntry(DATABASE::"Item Journal Line",
                     ItemJnlLine."Entry Type".AsInteger(), ItemJnlLine."Journal Template Name",
@@ -231,15 +231,15 @@ codeunit 50214 "Contrato Jnl. Line-Reserve"
 
     local procedure GetSourceValue(ReservEntry: Record "Reservation Entry"; var SourceRecRef: RecordRef; ReturnOption: Option "Net Qty. (Base)","Gross Qty. (Base)"): Decimal
     var
-        JobJnlLine: Record "Contrato Journal Line";
+        ContratoJnlLine: Record "Contrato Journal Line";
     begin
-        JobJnlLine.Get(ReservEntry."Source ID", ReservEntry."Source Batch Name", ReservEntry."Source Ref. No.");
-        SourceRecRef.GetTable(JobJnlLine);
+        ContratoJnlLine.Get(ReservEntry."Source ID", ReservEntry."Source Batch Name", ReservEntry."Source Ref. No.");
+        SourceRecRef.GetTable(ContratoJnlLine);
         case ReturnOption of
             ReturnOption::"Net Qty. (Base)":
-                exit(JobJnlLine."Quantity (Base)");
+                exit(ContratoJnlLine."Quantity (Base)");
             ReturnOption::"Gross Qty. (Base)":
-                exit(JobJnlLine."Quantity (Base)");
+                exit(ContratoJnlLine."Quantity (Base)");
         end;
     end;
 
@@ -251,7 +251,7 @@ codeunit 50214 "Contrato Jnl. Line-Reserve"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnVerifyChangeOnBeforeHasError(NewJobJnlLine: Record "Contrato Journal Line"; OldJobJnlLine: Record "Contrato Journal Line"; var HasError: Boolean; var ShowError: Boolean)
+    local procedure OnVerifyChangeOnBeforeHasError(NewContratoJnlLine: Record "Contrato Journal Line"; OldContratoJnlLine: Record "Contrato Journal Line"; var HasError: Boolean; var ShowError: Boolean)
     begin
     end;
 }

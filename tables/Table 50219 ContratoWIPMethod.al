@@ -1,8 +1,8 @@
 table 50219 "Contrato WIP Method"
 {
     Caption = 'Contrato WIP Method';
-    DrillDownPageID = "Job WIP Methods";
-    LookupPageID = "Job WIP Methods";
+    DrillDownPageID = "Contrato WIP Methods";
+    LookupPageID = "Contrato WIP Methods";
     DataClassification = CustomerContent;
 
     fields
@@ -50,7 +50,7 @@ table 50219 "Contrato WIP Method"
                     Error(Text003, FieldCaption("Recognized Sales"), "Recognized Sales");
             end;
         }
-        field(5; "Recognized Costs"; Enum "Job WIP Recognized Costs Type")
+        field(5; "Recognized Costs"; Enum "ContratoWIPRecognizedCostsType")
         {
             Caption = 'Recognized Costs';
 
@@ -61,7 +61,7 @@ table 50219 "Contrato WIP Method"
                     "WIP Cost" := true;
             end;
         }
-        field(6; "Recognized Sales"; Enum "Job WIP Recognized Sales Type")
+        field(6; "Recognized Sales"; Enum "ContratWIPRecognizedSalesType")
         {
             Caption = 'Recognized Sales';
 
@@ -79,11 +79,11 @@ table 50219 "Contrato WIP Method"
 
             trigger OnValidate()
             var
-                JobsSetup: Record "Jobs Setup";
+                ContratosSetup: Record "Contratos Setup";
             begin
-                JobsSetup.SetRange("Default WIP Method", Code);
-                if not JobsSetup.IsEmpty() then
-                    Error(Text007, JobsSetup.FieldCaption("Default WIP Method"));
+                ContratosSetup.SetRange("Default WIP Method", Code);
+                if not ContratosSetup.IsEmpty() then
+                    Error(Text007, ContratosSetup.FieldCaption("Default WIP Method"));
             end;
         }
         field(8; "System Defined"; Boolean)
@@ -116,20 +116,20 @@ table 50219 "Contrato WIP Method"
 
     trigger OnDelete()
     var
-        JobWIPEntry: Record "Job WIP Entry";
-        JobWIPGLEntry: Record "Job WIP G/L Entry";
-        JobsSetup: Record "Jobs Setup";
+        ContratoWIPEntry: Record "Contrato WIP Entry";
+        ContratoWIPGLEntry: Record "Contrato WIP G/L Entry";
+        ContratosSetup: Record "Contratos Setup";
     begin
         if "System Defined" then
             Error(Text001, FieldCaption("System Defined"));
 
-        JobWIPEntry.SetRange("WIP Method Used", Code);
-        JobWIPGLEntry.SetRange("WIP Method Used", Code);
-        if not (JobWIPEntry.IsEmpty() and JobWIPGLEntry.IsEmpty) then
-            Error(Text004, JobWIPEntry.TableCaption(), JobWIPGLEntry.TableCaption());
+        ContratoWIPEntry.SetRange("WIP Method Used", Code);
+        ContratoWIPGLEntry.SetRange("WIP Method Used", Code);
+        if not (ContratoWIPEntry.IsEmpty() and ContratoWIPGLEntry.IsEmpty) then
+            Error(Text004, ContratoWIPEntry.TableCaption(), ContratoWIPGLEntry.TableCaption());
 
-        JobsSetup.SetRange("Default WIP Method", Code);
-        if not JobsSetup.IsEmpty() then
+        ContratosSetup.SetRange("Default WIP Method", Code);
+        if not ContratosSetup.IsEmpty() then
             Error(Text006);
     end;
 
@@ -144,15 +144,15 @@ table 50219 "Contrato WIP Method"
 
     local procedure ValidateModification()
     var
-        JobWIPEntry: Record "Job WIP Entry";
-        JobWIPGLEntry: Record "Job WIP G/L Entry";
+        ContratoWIPEntry: Record "Contrato WIP Entry";
+        ContratoWIPGLEntry: Record "Contrato WIP G/L Entry";
     begin
         if "System Defined" then
             Error(Text002, FieldCaption("System Defined"));
-        JobWIPEntry.SetRange("WIP Method Used", Code);
-        JobWIPGLEntry.SetRange("WIP Method Used", Code);
-        if not (JobWIPEntry.IsEmpty() and JobWIPGLEntry.IsEmpty) then
-            Error(Text005, JobWIPEntry.TableCaption(), JobWIPGLEntry.TableCaption());
+        ContratoWIPEntry.SetRange("WIP Method Used", Code);
+        ContratoWIPGLEntry.SetRange("WIP Method Used", Code);
+        if not (ContratoWIPEntry.IsEmpty() and ContratoWIPGLEntry.IsEmpty) then
+            Error(Text005, ContratoWIPEntry.TableCaption(), ContratoWIPGLEntry.TableCaption());
     end;
 }
 

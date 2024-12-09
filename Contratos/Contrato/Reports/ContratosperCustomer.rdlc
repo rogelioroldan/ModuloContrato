@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="Desc_ContratoCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>Desc_ContratoCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Desc_ContratoCaption</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="TodayFormatted">
+          <DataField>TodayFormatted</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="CustCustFilter">
+          <DataField>CustCustFilter</DataField>
+        </Field>
+        <Field Name="CustFilter">
+          <DataField>CustFilter</DataField>
+        </Field>
+        <Field Name="ContratoFilterCaptn_Cust">
+          <DataField>ContratoFilterCaptn_Cust</DataField>
+        </Field>
+        <Field Name="ContratoFilter_Cust">
+          <DataField>ContratoFilter_Cust</DataField>
+        </Field>
+        <Field Name="No_Cust">
+          <DataField>No_Cust</DataField>
+        </Field>
+        <Field Name="Name_Cust">
+          <DataField>Name_Cust</DataField>
+        </Field>
+        <Field Name="Amt6">
+          <DataField>Amt6</DataField>
+        </Field>
+        <Field Name="Amt6Format">
+          <DataField>Amt6Format</DataField>
+        </Field>
+        <Field Name="Amt4">
+          <DataField>Amt4</DataField>
+        </Field>
+        <Field Name="Amt4Format">
+          <DataField>Amt4Format</DataField>
+        </Field>
+        <Field Name="Amt3">
+          <DataField>Amt3</DataField>
+        </Field>
+        <Field Name="Amt3Format">
+          <DataField>Amt3Format</DataField>
+        </Field>
+        <Field Name="Amt5">
+          <DataField>Amt5</DataField>
+        </Field>
+        <Field Name="Amt5Format">
+          <DataField>Amt5Format</DataField>
+        </Field>
+        <Field Name="Amt2">
+          <DataField>Amt2</DataField>
+        </Field>
+        <Field Name="Amt2Format">
+          <DataField>Amt2Format</DataField>
+        </Field>
+        <Field Name="Amt1">
+          <DataField>Amt1</DataField>
+        </Field>
+        <Field Name="Amt1Format">
+          <DataField>Amt1Format</DataField>
+        </Field>
+        <Field Name="ContratosperCustCaption">
+          <DataField>ContratosperCustCaption</DataField>
+        </Field>
+        <Field Name="PageCaption">
+          <DataField>PageCaption</DataField>
+        </Field>
+        <Field Name="AllAmtAreInLCYCaption">
+          <DataField>AllAmtAreInLCYCaption</DataField>
+        </Field>
+        <Field Name="ContratoNoCaption">
+          <DataField>ContratoNoCaption</DataField>
+        </Field>
+        <Field Name="EndingDateCaption">
+          <DataField>EndingDateCaption</DataField>
+        </Field>
+        <Field Name="ScheduleLineAmtCaption">
+          <DataField>ScheduleLineAmtCaption</DataField>
+        </Field>
+        <Field Name="UsageLineAmtCaption">
+          <DataField>UsageLineAmtCaption</DataField>
+        </Field>
+        <Field Name="CompletionCaption">
+          <DataField>CompletionCaption</DataField>
+        </Field>
+        <Field Name="ContractInvLineAmtCaption">
+          <DataField>ContractInvLineAmtCaption</DataField>
+        </Field>
+        <Field Name="ContractLineAmtCaption">
+          <DataField>ContractLineAmtCaption</DataField>
+        </Field>
+        <Field Name="InvoicingCaption">
+          <DataField>InvoicingCaption</DataField>
+        </Field>
+        <Field Name="TotalCaption">
+          <DataField>TotalCaption</DataField>
+        </Field>
+        <Field Name="Endingdate_Contrato">
+          <DataField>Endingdate_Contrato</DataField>
+        </Field>
+        <Field Name="No_Contrato">
+          <DataField>No_Contrato</DataField>
+        </Field>
+        <Field Name="Desc_Contrato">
+          <DataField>Desc_Contrato</DataField>
+        </Field>
+        <Field Name="TableCaptnCustNo">
+          <DataField>TableCaptnCustNo</DataField>
+        </Field>
+        <Field Name="BilltoCustomerNo_Contrato">
+          <DataField>BilltoCustomerNo_Contrato</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

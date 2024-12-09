@@ -10,7 +10,7 @@ page 50238 "Contrato No. of Prices FactBox"
         {
             field("No."; Rec."No.")
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Project No.';
                 ToolTip = 'Specifies the project number.';
 
@@ -22,7 +22,7 @@ page 50238 "Contrato No. of Prices FactBox"
 #if not CLEAN23
             field(NoOfResourcePrices; NoOfResourcePrices)
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Resource';
                 Visible = not ExtendedPriceEnabled;
                 ToolTip = 'Specifies prices for the resource.';
@@ -32,16 +32,16 @@ page 50238 "Contrato No. of Prices FactBox"
 
                 trigger OnDrillDown()
                 var
-                    JobResPrice: Record "Job Resource Price";
+                    ContratoResPrice: Record "Contrato Resource Price";
                 begin
-                    JobResPrice.SetRange("Job No.", Rec."No.");
+                    ContratoResPrice.SetRange("Contrato No.", Rec."No.");
 
-                    PAGE.Run(PAGE::"Contrato Resource Prices", JobResPrice);
+                    PAGE.Run(PAGE::"Contrato Resource Prices", ContratoResPrice);
                 end;
             }
             field(NoOfItemPrices; NoOfItemPrices)
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Item';
                 Visible = not ExtendedPriceEnabled;
                 ToolTip = 'Specifies the total usage cost of items associated with this project.';
@@ -51,16 +51,16 @@ page 50238 "Contrato No. of Prices FactBox"
 
                 trigger OnDrillDown()
                 var
-                    JobItPrice: Record "Contrato Item Price";
+                    ContratoItPrice: Record "Contrato Item Price";
                 begin
-                    JobItPrice.SetRange("Contrato No.", Rec."No.");
+                    ContratoItPrice.SetRange("Contrato No.", Rec."No.");
 
-                    PAGE.Run(PAGE::"Contrato Item Prices", JobItPrice);
+                    PAGE.Run(PAGE::"Contrato Item Prices", ContratoItPrice);
                 end;
             }
             field(NoOfAccountPrices; NoOfAccountPrices)
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'G/L Account';
                 Visible = not ExtendedPriceEnabled;
                 ToolTip = 'Specifies the sum of values in the Project G/L Account Prices window.';
@@ -70,17 +70,17 @@ page 50238 "Contrato No. of Prices FactBox"
 
                 trigger OnDrillDown()
                 var
-                    JobAccPrice: Record "Job G/L Account Price";
+                    ContratoAccPrice: Record "Contrato G/L Account Price";
                 begin
-                    JobAccPrice.SetRange("Job No.", Rec."No.");
+                    ContratoAccPrice.SetRange("Contrato No.", Rec."No.");
 
-                    PAGE.Run(PAGE::"Job G/L Account Prices", JobAccPrice);
+                    PAGE.Run(PAGE::"Contrato G/L Account Prices", ContratoAccPrice);
                 end;
             }
 #endif
             field(NoOfResPrices; NoOfResourcePrices)
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Resource';
                 Visible = ExtendedPriceEnabled;
                 ToolTip = 'Specifies prices for the resource.';
@@ -92,7 +92,7 @@ page 50238 "Contrato No. of Prices FactBox"
             }
             field(NoOfItemsPrices; NoOfItemPrices)
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Item';
                 Visible = ExtendedPriceEnabled;
                 ToolTip = 'Specifies the total usage cost of items associated with this project.';
@@ -104,7 +104,7 @@ page 50238 "Contrato No. of Prices FactBox"
             }
             field(NoOfAccPrices; NoOfAccountPrices)
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'G/L Account';
                 Visible = ExtendedPriceEnabled;
                 ToolTip = 'Specifies the sum of values in the Project G/L Account Prices window.';
@@ -178,24 +178,24 @@ page 50238 "Contrato No. of Prices FactBox"
 #if not CLEAN23
     local procedure CalcOldNoOfRecords(): Boolean;
     var
-        JobResourcePrice: Record "Contrato Resource Price";
-        JobItemPrice: Record "Contrato Item Price";
-        JobAccountPrice: Record "Job G/L Account Price";
+        ContratoResourcePrice: Record "Contrato Resource Price";
+        ContratoItemPrice: Record "Contrato Item Price";
+        ContratoAccountPrice: Record "Contrato G/L Account Price";
     begin
         if PriceCalculationMgt.IsExtendedPriceCalculationEnabled() then
             exit(false);
 
-        JobResourcePrice.Reset();
-        JobResourcePrice.SetRange("Contrato No.", Rec."No.");
-        NoOfResourcePrices := JobResourcePrice.Count();
+        ContratoResourcePrice.Reset();
+        ContratoResourcePrice.SetRange("Contrato No.", Rec."No.");
+        NoOfResourcePrices := ContratoResourcePrice.Count();
 
-        JobItemPrice.Reset();
-        JobItemPrice.SetRange("Contrato No.", Rec."No.");
-        NoOfItemPrices := JobItemPrice.Count();
+        ContratoItemPrice.Reset();
+        ContratoItemPrice.SetRange("Contrato No.", Rec."No.");
+        NoOfItemPrices := ContratoItemPrice.Count();
 
-        JobAccountPrice.Reset();
-        JobAccountPrice.SetRange("Job No.", Rec."No.");
-        NoOfAccountPrices := JobAccountPrice.Count();
+        ContratoAccountPrice.Reset();
+        ContratoAccountPrice.SetRange("Contrato No.", Rec."No.");
+        NoOfAccountPrices := ContratoAccountPrice.Count();
         exit(true);
     end;
 #endif

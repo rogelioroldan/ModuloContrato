@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="TodayFormatted">
+          <DataField>TodayFormatted</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="ContratoTableCaptionContratoFilter">
+          <DataField>ContratoTableCaptionContratoFilter</DataField>
+        </Field>
+        <Field Name="ContratoFilter">
+          <DataField>ContratoFilter</DataField>
+        </Field>
+        <Field Name="TableCaptionContratoTaskFilter">
+          <DataField>TableCaptionContratoTaskFilter</DataField>
+        </Field>
+        <Field Name="ContratoTaskFilter">
+          <DataField>ContratoTaskFilter</DataField>
+        </Field>
+        <Field Name="EmptyString">
+          <DataField>EmptyString</DataField>
+        </Field>
+        <Field Name="ContratoNo">
+          <DataField>ContratoNo</DataField>
+        </Field>
+        <Field Name="CurrReportPageNoCaption">
+          <DataField>CurrReportPageNoCaption</DataField>
+        </Field>
+        <Field Name="ContratoSuggestedBillCaption">
+          <DataField>ContratoSuggestedBillCaption</DataField>
+        </Field>
+        <Field Name="ContratoTaskNoCaption">
+          <DataField>ContratoTaskNoCaption</DataField>
+        </Field>
+        <Field Name="TotalContractCaption">
+          <DataField>TotalContractCaption</DataField>
+        </Field>
+        <Field Name="CostCaption">
+          <DataField>CostCaption</DataField>
+        </Field>
+        <Field Name="SalesCaption">
+          <DataField>SalesCaption</DataField>
+        </Field>
+        <Field Name="ContractInvoicedCaption">
+          <DataField>ContractInvoicedCaption</DataField>
+        </Field>
+        <Field Name="SuggestedBillingCaption">
+          <DataField>SuggestedBillingCaption</DataField>
+        </Field>
+        <Field Name="CurrencyCodeCaption">
+          <DataField>CurrencyCodeCaption</DataField>
+        </Field>
+        <Field Name="ContratoDescription">
+          <DataField>ContratoDescription</DataField>
+        </Field>
+        <Field Name="CustTableCaption">
+          <DataField>CustTableCaption</DataField>
+        </Field>
+        <Field Name="Cust2Name">
+          <DataField>Cust2Name</DataField>
+        </Field>
+        <Field Name="Cust2No">
+          <DataField>Cust2No</DataField>
+        </Field>
+        <Field Name="ContratoTableCaption">
+          <DataField>ContratoTableCaption</DataField>
+        </Field>
+        <Field Name="ContratoTaskContratoTaskNo">
+          <DataField>ContratoTaskContratoTaskNo</DataField>
+        </Field>
+        <Field Name="ContratoTaskContratoTaskDescription">
+          <DataField>ContratoTaskContratoTaskDescription</DataField>
+        </Field>
+        <Field Name="Amt1">
+          <DataField>Amt1</DataField>
+        </Field>
+        <Field Name="Amt1Format">
+          <DataField>Amt1Format</DataField>
+        </Field>
+        <Field Name="Amt2">
+          <DataField>Amt2</DataField>
+        </Field>
+        <Field Name="Amt2Format">
+          <DataField>Amt2Format</DataField>
+        </Field>
+        <Field Name="Amt3">
+          <DataField>Amt3</DataField>
+        </Field>
+        <Field Name="Amt3Format">
+          <DataField>Amt3Format</DataField>
+        </Field>
+        <Field Name="Amt4">
+          <DataField>Amt4</DataField>
+        </Field>
+        <Field Name="Amt4Format">
+          <DataField>Amt4Format</DataField>
+        </Field>
+        <Field Name="Amt5">
+          <DataField>Amt5</DataField>
+        </Field>
+        <Field Name="Amt5Format">
+          <DataField>Amt5Format</DataField>
+        </Field>
+        <Field Name="Amt6">
+          <DataField>Amt6</DataField>
+        </Field>
+        <Field Name="Amt6Format">
+          <DataField>Amt6Format</DataField>
+        </Field>
+        <Field Name="ContratoTableCaptionContratoNo">
+          <DataField>ContratoTableCaptionContratoNo</DataField>
+        </Field>
+        <Field Name="TotalAmt4">
+          <DataField>TotalAmt4</DataField>
+        </Field>
+        <Field Name="TotalAmt4Format">
+          <DataField>TotalAmt4Format</DataField>
+        </Field>
+        <Field Name="TotalAmt5">
+          <DataField>TotalAmt5</DataField>
+        </Field>
+        <Field Name="TotalAmt5Format">
+          <DataField>TotalAmt5Format</DataField>
+        </Field>
+        <Field Name="TotalAmt6">
+          <DataField>TotalAmt6</DataField>
+        </Field>
+        <Field Name="TotalAmt6Format">
+          <DataField>TotalAmt6Format</DataField>
+        </Field>
+        <Field Name="TotalAmt1">
+          <DataField>TotalAmt1</DataField>
+        </Field>
+        <Field Name="TotalAmt1Format">
+          <DataField>TotalAmt1Format</DataField>
+        </Field>
+        <Field Name="TotalAmt2">
+          <DataField>TotalAmt2</DataField>
+        </Field>
+        <Field Name="TotalAmt2Format">
+          <DataField>TotalAmt2Format</DataField>
+        </Field>
+        <Field Name="TotalAmt3">
+          <DataField>TotalAmt3</DataField>
+        </Field>
+        <Field Name="TotalAmt3Format">
+          <DataField>TotalAmt3Format</DataField>
+        </Field>
+        <Field Name="CurrencyCode">
+          <DataField>CurrencyCode</DataField>
+        </Field>
+        <Field Name="TotalForCustTableCaption">
+          <DataField>TotalForCustTableCaption</DataField>
+        </Field>
+        <Field Name="DescriptionCaption">
+          <DataField>DescriptionCaption</DataField>
+        </Field>
+        <Field Name="CustomerNoCaption">
+          <DataField>CustomerNoCaption</DataField>
+        </Field>
+        <Field Name="CustTotalAmt1">
+          <DataField>CustTotalAmt1</DataField>
+        </Field>
+        <Field Name="CustTotalAmt1Format">
+          <DataField>CustTotalAmt1Format</DataField>
+        </Field>
+        <Field Name="CustTotalAmt2">
+          <DataField>CustTotalAmt2</DataField>
+        </Field>
+        <Field Name="CustTotalAmt2Format">
+          <DataField>CustTotalAmt2Format</DataField>
+        </Field>
+        <Field Name="CustTotalAmt3">
+          <DataField>CustTotalAmt3</DataField>
+        </Field>
+        <Field Name="CustTotalAmt3Format">
+          <DataField>CustTotalAmt3Format</DataField>
+        </Field>
+        <Field Name="CustTotalAmt4">
+          <DataField>CustTotalAmt4</DataField>
+        </Field>
+        <Field Name="CustTotalAmt4Format">
+          <DataField>CustTotalAmt4Format</DataField>
+        </Field>
+        <Field Name="CustTotalAmt5">
+          <DataField>CustTotalAmt5</DataField>
+        </Field>
+        <Field Name="CustTotalAmt5Format">
+          <DataField>CustTotalAmt5Format</DataField>
+        </Field>
+        <Field Name="CustTotalAmt6">
+          <DataField>CustTotalAmt6</DataField>
+        </Field>
+        <Field Name="CustTotalAmt6Format">
+          <DataField>CustTotalAmt6Format</DataField>
+        </Field>
+        <Field Name="CustName">
+          <DataField>CustName</DataField>
+        </Field>
+        <Field Name="CustNo">
+          <DataField>CustNo</DataField>
+        </Field>
+        <Field Name="CurrencyCode1">
+          <DataField>CurrencyCode1</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

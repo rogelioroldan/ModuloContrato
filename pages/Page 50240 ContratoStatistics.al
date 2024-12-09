@@ -6,17 +6,17 @@ codeunit 50240 "Contrato Statistics"
     end;
 
     var
-        JobLedgEntry: Record "Contrato Ledger Entry";
-        JobLedgEntry2: Record "Contrato Ledger Entry";
-        JobPlanningLine: Record "Contrato Planning Line";
-        JobPlanningLine2: Record "Contrato Planning Line";
+        ContratoLedgEntry: Record "Contrato Ledger Entry";
+        ContratoLedgEntry2: Record "Contrato Ledger Entry";
+        ContratoPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine2: Record "Contrato Planning Line";
         AmountType: Option TotalCostLCY,LineAmountLCY,TotalCost,LineAmount;
         PlanLineType: Option Schedule,Contract;
-        JobLedgAmounts: array[10, 4, 4] of Decimal;
-        JobPlanAmounts: array[10, 4, 4] of Decimal;
+        ContratoLedgAmounts: array[10, 4, 4] of Decimal;
+        ContratoPlanAmounts: array[10, 4, 4] of Decimal;
         HeadlineTxt: Label 'Budget Price,Usage Price,Billable Price,Invoiced Price,Budget Cost,Usage Cost,Billable Cost,Invoiced Cost,Budget Profit,Usage Profit,Billable Profit,Invoiced Profit';
 
-    procedure ReportAnalysis(var Job2: Record Contrato; var JT: Record "Contrato Task"; var Amt: array[8] of Decimal; AmountField: array[8] of Option " ",SchPrice,UsagePrice,ContractPrice,InvoicedPrice,SchCost,UsageCost,ContractCost,InvoicedCost,SchProfit,UsageProfit,ContractProfit,InvoicedProfit; CurrencyField: array[8] of Option LCY,FCY; JobLevel: Boolean)
+    procedure ReportAnalysis(var Contrato2: Record Contrato; var JT: Record "Contrato Task"; var Amt: array[8] of Decimal; AmountField: array[8] of Option " ",SchPrice,UsagePrice,ContractPrice,InvoicedPrice,SchCost,UsageCost,ContractCost,InvoicedCost,SchProfit,UsageProfit,ContractProfit,InvoicedProfit; CurrencyField: array[8] of Option LCY,FCY; ContratoLevel: Boolean)
     var
         PL: array[16] of Decimal;
         CL: array[16] of Decimal;
@@ -24,10 +24,10 @@ codeunit 50240 "Contrato Statistics"
         C: array[16] of Decimal;
         I: Integer;
     begin
-        if JobLevel then
-            ContratoCalculateCommonFilters(Job2)
+        if ContratoLevel then
+            ContratoCalculateCommonFilters(Contrato2)
         else
-            JTCalculateCommonFilters(JT, Job2, true);
+            JTCalculateCommonFilters(JT, Contrato2, true);
         CalculateAmounts();
         GetLCYCostAmounts(CL);
         GetCostAmounts(C);
@@ -105,7 +105,7 @@ codeunit 50240 "Contrato Statistics"
         OnAfterReportAnalysis(AmountField, CurrencyField, Amt);
     end;
 
-    procedure ReportSuggBilling(var Job2: Record Contrato; var JT: Record "Contrato Task"; var Amt: array[8] of Decimal; CurrencyField: array[8] of Option LCY,FCY)
+    procedure ReportSuggBilling(var Contrato2: Record Contrato; var JT: Record "Contrato Task"; var Amt: array[8] of Decimal; CurrencyField: array[8] of Option LCY,FCY)
     var
         AmountField: array[8] of Option " ",SchPrice,UsagePrice,ContractPrice,InvoicedPrice,SchCost,UsageCost,ContractCost,InvoicedCost,SchProfit,UsageProfit,ContractProfit,InvoicedProfit;
     begin
@@ -113,25 +113,25 @@ codeunit 50240 "Contrato Statistics"
         AmountField[2] := AmountField[2] ::ContractPrice;
         AmountField[3] := AmountField[3] ::InvoicedCost;
         AmountField[4] := AmountField[4] ::InvoicedPrice;
-        ReportAnalysis(Job2, JT, Amt, AmountField, CurrencyField, false);
+        ReportAnalysis(Contrato2, JT, Amt, AmountField, CurrencyField, false);
         Amt[5] := Amt[1] - Amt[3];
         Amt[6] := Amt[2] - Amt[4];
     end;
 
-    procedure RepJobCustomer(var Job2: Record Contrato; var Amt: array[8] of Decimal)
+    procedure RepContratoCustomer(var Contrato2: Record Contrato; var Amt: array[8] of Decimal)
     var
         JT: Record "Contrato Task";
         AmountField: array[8] of Option " ",SchPrice,UsagePrice,ContractPrice,InvoicedPrice,SchCost,UsageCost,ContractCost,InvoicedCost,SchProfit,UsageProfit,ContractProfit,InvoicedProfit;
         CurrencyField: array[8] of Option LCY,FCY;
     begin
         Clear(Amt);
-        if Job2."No." = '' then
+        if Contrato2."No." = '' then
             exit;
         AmountField[1] := AmountField[1] ::SchPrice;
         AmountField[2] := AmountField[2] ::UsagePrice;
         AmountField[3] := AmountField[3] ::InvoicedPrice;
         AmountField[4] := AmountField[4] ::ContractPrice;
-        ReportAnalysis(Job2, JT, Amt, AmountField, CurrencyField, true);
+        ReportAnalysis(Contrato2, JT, Amt, AmountField, CurrencyField, true);
         Amt[5] := 0;
         Amt[6] := 0;
         if Amt[1] <> 0 then
@@ -143,96 +143,96 @@ codeunit 50240 "Contrato Statistics"
     procedure ContratoCalculateCommonFilters(var Contrato: Record Contrato)
     begin
         ClearAll();
-        JobPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
-        JobLedgEntry.SetCurrentKey("Contrato No.", "Contrato Task No.", "Entry Type");
-        JobPlanningLine.FilterGroup(2);
-        JobLedgEntry.SetRange("Contrato No.", Contrato."No.");
-        JobPlanningLine.SetRange("Contrato No.", Contrato."No.");
-        JobPlanningLine.FilterGroup(0);
-        JobLedgEntry.SetFilter("Posting Date", Contrato.GetFilter("Posting Date Filter"));
-        JobPlanningLine.SetFilter("Planning Date", Contrato.GetFilter("Planning Date Filter"));
+        ContratoPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
+        ContratoLedgEntry.SetCurrentKey("Contrato No.", "Contrato Task No.", "Entry Type");
+        ContratoPlanningLine.FilterGroup(2);
+        ContratoLedgEntry.SetRange("Contrato No.", Contrato."No.");
+        ContratoPlanningLine.SetRange("Contrato No.", Contrato."No.");
+        ContratoPlanningLine.FilterGroup(0);
+        ContratoLedgEntry.SetFilter("Posting Date", Contrato.GetFilter("Posting Date Filter"));
+        ContratoPlanningLine.SetFilter("Planning Date", Contrato.GetFilter("Planning Date Filter"));
 
-        OnAfterJobCalculateCommonFilters(Contrato, JobLedgEntry, JobPlanningLine);
+        OnAfterContratoCalculateCommonFilters(Contrato, ContratoLedgEntry, ContratoPlanningLine);
     end;
 
-    procedure JTCalculateCommonFilters(var JT2: Record "Contrato Task"; var Job2: Record Contrato; UseJobFilter: Boolean)
+    procedure JTCalculateCommonFilters(var JT2: Record "Contrato Task"; var Contrato2: Record Contrato; UseContratoFilter: Boolean)
     var
         JT: Record "Contrato Task";
     begin
         ClearAll();
         JT := JT2;
-        JobPlanningLine.FilterGroup(2);
-        JobPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
-        JobLedgEntry.SetCurrentKey("Contrato No.", "Contrato Task No.", "Entry Type");
-        JobLedgEntry.SetRange("Contrato No.", JT."Contrato No.");
-        JobPlanningLine.SetRange("Contrato No.", JT."Contrato No.");
-        JobPlanningLine.FilterGroup(0);
+        ContratoPlanningLine.FilterGroup(2);
+        ContratoPlanningLine.SetCurrentKey("Contrato No.", "Contrato Task No.");
+        ContratoLedgEntry.SetCurrentKey("Contrato No.", "Contrato Task No.", "Entry Type");
+        ContratoLedgEntry.SetRange("Contrato No.", JT."Contrato No.");
+        ContratoPlanningLine.SetRange("Contrato No.", JT."Contrato No.");
+        ContratoPlanningLine.FilterGroup(0);
         if JT."Contrato Task No." <> '' then
             if JT.Totaling <> '' then begin
-                JobLedgEntry.SetFilter("Contrato Task No.", JT.Totaling);
-                JobPlanningLine.SetFilter("Contrato Task No.", JT.Totaling);
+                ContratoLedgEntry.SetFilter("Contrato Task No.", JT.Totaling);
+                ContratoPlanningLine.SetFilter("Contrato Task No.", JT.Totaling);
             end else begin
-                JobLedgEntry.SetRange("Contrato Task No.", JT."Contrato Task No.");
-                JobPlanningLine.SetRange("Contrato Task No.", JT."Contrato Task No.");
+                ContratoLedgEntry.SetRange("Contrato Task No.", JT."Contrato Task No.");
+                ContratoPlanningLine.SetRange("Contrato Task No.", JT."Contrato Task No.");
             end;
 
-        if not UseJobFilter then begin
-            JobLedgEntry.SetFilter("Posting Date", JT2.GetFilter("Posting Date Filter"));
-            JobPlanningLine.SetFilter("Planning Date", JT2.GetFilter("Planning Date Filter"));
+        if not UseContratoFilter then begin
+            ContratoLedgEntry.SetFilter("Posting Date", JT2.GetFilter("Posting Date Filter"));
+            ContratoPlanningLine.SetFilter("Planning Date", JT2.GetFilter("Planning Date Filter"));
         end else begin
-            JobLedgEntry.SetFilter("Posting Date", Job2.GetFilter("Posting Date Filter"));
-            JobPlanningLine.SetFilter("Planning Date", Job2.GetFilter("Planning Date Filter"));
+            ContratoLedgEntry.SetFilter("Posting Date", Contrato2.GetFilter("Posting Date Filter"));
+            ContratoPlanningLine.SetFilter("Planning Date", Contrato2.GetFilter("Planning Date Filter"));
         end;
 
-        OnAfterJTCalculateCommonFilters(JT, JT2, Job2, UseJobFilter, JobLedgEntry, JobPlanningLine);
+        OnAfterJTCalculateCommonFilters(JT, JT2, Contrato2, UseContratoFilter, ContratoLedgEntry, ContratoPlanningLine);
     end;
 
     procedure CalculateAmounts()
     begin
-        CalcJobLedgAmounts(JobLedgEntry."Entry Type"::Usage, JobLedgEntry.Type::Resource);
-        CalcJobLedgAmounts(JobLedgEntry."Entry Type"::Usage, JobLedgEntry.Type::Item);
-        CalcJobLedgAmounts(JobLedgEntry."Entry Type"::Usage, JobLedgEntry.Type::"G/L Account");
-        CalcJobLedgAmounts(JobLedgEntry."Entry Type"::Sale, JobLedgEntry.Type::Resource);
-        CalcJobLedgAmounts(JobLedgEntry."Entry Type"::Sale, JobLedgEntry.Type::Item);
-        CalcJobLedgAmounts(JobLedgEntry."Entry Type"::Sale, JobLedgEntry.Type::"G/L Account");
+        CalcContratoLedgAmounts(ContratoLedgEntry."Entry Type"::Usage, ContratoLedgEntry.Type::Resource);
+        CalcContratoLedgAmounts(ContratoLedgEntry."Entry Type"::Usage, ContratoLedgEntry.Type::Item);
+        CalcContratoLedgAmounts(ContratoLedgEntry."Entry Type"::Usage, ContratoLedgEntry.Type::"G/L Account");
+        CalcContratoLedgAmounts(ContratoLedgEntry."Entry Type"::Sale, ContratoLedgEntry.Type::Resource);
+        CalcContratoLedgAmounts(ContratoLedgEntry."Entry Type"::Sale, ContratoLedgEntry.Type::Item);
+        CalcContratoLedgAmounts(ContratoLedgEntry."Entry Type"::Sale, ContratoLedgEntry.Type::"G/L Account");
 
-        CalcJobPlanAmounts(PlanLineType::Contract, JobPlanningLine.Type::Resource);
-        CalcJobPlanAmounts(PlanLineType::Contract, JobPlanningLine.Type::Item);
-        CalcJobPlanAmounts(PlanLineType::Contract, JobPlanningLine.Type::"G/L Account");
-        CalcJobPlanAmounts(PlanLineType::Schedule, JobPlanningLine.Type::Resource);
-        CalcJobPlanAmounts(PlanLineType::Schedule, JobPlanningLine.Type::Item);
-        CalcJobPlanAmounts(PlanLineType::Schedule, JobPlanningLine.Type::"G/L Account");
+        CalcContratoPlanAmounts(PlanLineType::Contract, ContratoPlanningLine.Type::Resource);
+        CalcContratoPlanAmounts(PlanLineType::Contract, ContratoPlanningLine.Type::Item);
+        CalcContratoPlanAmounts(PlanLineType::Contract, ContratoPlanningLine.Type::"G/L Account");
+        CalcContratoPlanAmounts(PlanLineType::Schedule, ContratoPlanningLine.Type::Resource);
+        CalcContratoPlanAmounts(PlanLineType::Schedule, ContratoPlanningLine.Type::Item);
+        CalcContratoPlanAmounts(PlanLineType::Schedule, ContratoPlanningLine.Type::"G/L Account");
     end;
 
-    local procedure CalcJobLedgAmounts(EntryType: Enum ContratoJournalLineEntryType; TypeParm: Enum "Contrato Planning Line Type")
+    local procedure CalcContratoLedgAmounts(EntryType: Enum ContratoJournalLineEntryType; TypeParm: Enum "Contrato Planning Line Type")
     begin
-        JobLedgEntry2.Copy(JobLedgEntry);
-        JobLedgEntry2.SetRange("Entry Type", EntryType);
-        JobLedgEntry2.SetRange(Type, TypeParm);
-        JobLedgEntry2.CalcSums("Total Cost (LCY)", "Line Amount (LCY)", "Total Cost", "Line Amount");
-        JobLedgAmounts[1 + EntryType.AsInteger(), 1 + TypeParm.AsInteger(), 1 + AmountType::TotalCostLCY] := JobLedgEntry2."Total Cost (LCY)";
-        JobLedgAmounts[1 + EntryType.AsInteger(), 1 + TypeParm.AsInteger(), 1 + AmountType::LineAmountLCY] := JobLedgEntry2."Line Amount (LCY)";
-        JobLedgAmounts[1 + EntryType.AsInteger(), 1 + TypeParm.AsInteger(), 1 + AmountType::TotalCost] := JobLedgEntry2."Total Cost";
-        JobLedgAmounts[1 + EntryType.AsInteger(), 1 + TypeParm.AsInteger(), 1 + AmountType::LineAmount] := JobLedgEntry2."Line Amount";
+        ContratoLedgEntry2.Copy(ContratoLedgEntry);
+        ContratoLedgEntry2.SetRange("Entry Type", EntryType);
+        ContratoLedgEntry2.SetRange(Type, TypeParm);
+        ContratoLedgEntry2.CalcSums("Total Cost (LCY)", "Line Amount (LCY)", "Total Cost", "Line Amount");
+        ContratoLedgAmounts[1 + EntryType.AsInteger(), 1 + TypeParm.AsInteger(), 1 + AmountType::TotalCostLCY] := ContratoLedgEntry2."Total Cost (LCY)";
+        ContratoLedgAmounts[1 + EntryType.AsInteger(), 1 + TypeParm.AsInteger(), 1 + AmountType::LineAmountLCY] := ContratoLedgEntry2."Line Amount (LCY)";
+        ContratoLedgAmounts[1 + EntryType.AsInteger(), 1 + TypeParm.AsInteger(), 1 + AmountType::TotalCost] := ContratoLedgEntry2."Total Cost";
+        ContratoLedgAmounts[1 + EntryType.AsInteger(), 1 + TypeParm.AsInteger(), 1 + AmountType::LineAmount] := ContratoLedgEntry2."Line Amount";
     end;
 
-    local procedure CalcJobPlanAmounts(PlanLineTypeParm: Option; TypeParm: Enum "Contrato Planning Line Type")
+    local procedure CalcContratoPlanAmounts(PlanLineTypeParm: Option; TypeParm: Enum "Contrato Planning Line Type")
     begin
-        JobPlanningLine2.Copy(JobPlanningLine);
-        JobPlanningLine2.SetRange("Schedule Line");
-        JobPlanningLine2.SetRange("Contract Line");
+        ContratoPlanningLine2.Copy(ContratoPlanningLine);
+        ContratoPlanningLine2.SetRange("Schedule Line");
+        ContratoPlanningLine2.SetRange("Contract Line");
         if PlanLineTypeParm = PlanLineType::Schedule then
-            JobPlanningLine2.SetRange("Schedule Line", true)
+            ContratoPlanningLine2.SetRange("Schedule Line", true)
         else
-            JobPlanningLine2.SetRange("Contract Line", true);
-        JobPlanningLine2.SetRange(Type, TypeParm);
-        OnCalcJobPlanAmountsOnAfterJobPlanningLineSetFilters(JobPlanningLine2);
+            ContratoPlanningLine2.SetRange("Contract Line", true);
+        ContratoPlanningLine2.SetRange(Type, TypeParm);
+        OnCalcContratoPlanAmountsOnAfterContratoPlanningLineSetFilters(ContratoPlanningLine2);
 
-        JobPlanningLine2.CalcSums("Total Cost (LCY)", "Line Amount (LCY)", "Total Cost", "Line Amount");
-        JobPlanAmounts[1 + PlanLineTypeParm, 1 + TypeParm.AsInteger(), 1 + AmountType::TotalCostLCY] := JobPlanningLine2."Total Cost (LCY)";
-        JobPlanAmounts[1 + PlanLineTypeParm, 1 + TypeParm.AsInteger(), 1 + AmountType::LineAmountLCY] := JobPlanningLine2."Line Amount (LCY)";
-        JobPlanAmounts[1 + PlanLineTypeParm, 1 + TypeParm.AsInteger(), 1 + AmountType::TotalCost] := JobPlanningLine2."Total Cost";
-        JobPlanAmounts[1 + PlanLineTypeParm, 1 + TypeParm.AsInteger(), 1 + AmountType::LineAmount] := JobPlanningLine2."Line Amount";
+        ContratoPlanningLine2.CalcSums("Total Cost (LCY)", "Line Amount (LCY)", "Total Cost", "Line Amount");
+        ContratoPlanAmounts[1 + PlanLineTypeParm, 1 + TypeParm.AsInteger(), 1 + AmountType::TotalCostLCY] := ContratoPlanningLine2."Total Cost (LCY)";
+        ContratoPlanAmounts[1 + PlanLineTypeParm, 1 + TypeParm.AsInteger(), 1 + AmountType::LineAmountLCY] := ContratoPlanningLine2."Line Amount (LCY)";
+        ContratoPlanAmounts[1 + PlanLineTypeParm, 1 + TypeParm.AsInteger(), 1 + AmountType::TotalCost] := ContratoPlanningLine2."Total Cost";
+        ContratoPlanAmounts[1 + PlanLineTypeParm, 1 + TypeParm.AsInteger(), 1 + AmountType::LineAmount] := ContratoPlanningLine2."Line Amount";
     end;
 
     procedure GetLCYCostAmounts(var Amt: array[16] of Decimal)
@@ -257,55 +257,55 @@ codeunit 50240 "Contrato Statistics"
 
     local procedure GetArrayAmounts(var Amt: array[16] of Decimal; AmountTypeParm: Option)
     begin
-        Amt[1] := JobPlanAmounts[1 + PlanLineType::Schedule, 1 + JobPlanningLine.Type::Resource.AsInteger(), 1 + AmountTypeParm];
-        Amt[2] := JobPlanAmounts[1 + PlanLineType::Schedule, 1 + JobPlanningLine.Type::Item.AsInteger(), 1 + AmountTypeParm];
-        Amt[3] := JobPlanAmounts[1 + PlanLineType::Schedule, 1 + JobPlanningLine.Type::"G/L Account".AsInteger(), 1 + AmountTypeParm];
+        Amt[1] := ContratoPlanAmounts[1 + PlanLineType::Schedule, 1 + ContratoPlanningLine.Type::Resource.AsInteger(), 1 + AmountTypeParm];
+        Amt[2] := ContratoPlanAmounts[1 + PlanLineType::Schedule, 1 + ContratoPlanningLine.Type::Item.AsInteger(), 1 + AmountTypeParm];
+        Amt[3] := ContratoPlanAmounts[1 + PlanLineType::Schedule, 1 + ContratoPlanningLine.Type::"G/L Account".AsInteger(), 1 + AmountTypeParm];
         Amt[4] := Amt[1] + Amt[2] + Amt[3];
-        Amt[5] := JobLedgAmounts[1 + JobLedgEntry."Entry Type"::Usage.AsInteger(), 1 + JobLedgEntry.Type::Resource.AsInteger(), 1 + AmountTypeParm];
-        Amt[6] := JobLedgAmounts[1 + JobLedgEntry."Entry Type"::Usage.AsInteger(), 1 + JobLedgEntry.Type::Item.AsInteger(), 1 + AmountTypeParm];
-        Amt[7] := JobLedgAmounts[1 + JobLedgEntry."Entry Type"::Usage.AsInteger(), 1 + JobLedgEntry.Type::"G/L Account".AsInteger(), 1 + AmountTypeParm];
+        Amt[5] := ContratoLedgAmounts[1 + ContratoLedgEntry."Entry Type"::Usage.AsInteger(), 1 + ContratoLedgEntry.Type::Resource.AsInteger(), 1 + AmountTypeParm];
+        Amt[6] := ContratoLedgAmounts[1 + ContratoLedgEntry."Entry Type"::Usage.AsInteger(), 1 + ContratoLedgEntry.Type::Item.AsInteger(), 1 + AmountTypeParm];
+        Amt[7] := ContratoLedgAmounts[1 + ContratoLedgEntry."Entry Type"::Usage.AsInteger(), 1 + ContratoLedgEntry.Type::"G/L Account".AsInteger(), 1 + AmountTypeParm];
         Amt[8] := Amt[5] + Amt[6] + Amt[7];
-        Amt[9] := JobPlanAmounts[1 + PlanLineType::Contract, 1 + JobPlanningLine.Type::Resource.AsInteger(), 1 + AmountTypeParm];
-        Amt[10] := JobPlanAmounts[1 + PlanLineType::Contract, 1 + JobPlanningLine.Type::Item.AsInteger(), 1 + AmountTypeParm];
-        Amt[11] := JobPlanAmounts[1 + PlanLineType::Contract, 1 + JobPlanningLine.Type::"G/L Account".AsInteger(), 1 + AmountTypeParm];
+        Amt[9] := ContratoPlanAmounts[1 + PlanLineType::Contract, 1 + ContratoPlanningLine.Type::Resource.AsInteger(), 1 + AmountTypeParm];
+        Amt[10] := ContratoPlanAmounts[1 + PlanLineType::Contract, 1 + ContratoPlanningLine.Type::Item.AsInteger(), 1 + AmountTypeParm];
+        Amt[11] := ContratoPlanAmounts[1 + PlanLineType::Contract, 1 + ContratoPlanningLine.Type::"G/L Account".AsInteger(), 1 + AmountTypeParm];
         Amt[12] := Amt[9] + Amt[10] + Amt[11];
-        Amt[13] := -JobLedgAmounts[1 + JobLedgEntry."Entry Type"::Sale.AsInteger(), 1 + JobLedgEntry.Type::Resource.AsInteger(), 1 + AmountTypeParm];
-        Amt[14] := -JobLedgAmounts[1 + JobLedgEntry."Entry Type"::Sale.AsInteger(), 1 + JobLedgEntry.Type::Item.AsInteger(), 1 + AmountTypeParm];
-        Amt[15] := -JobLedgAmounts[1 + JobLedgEntry."Entry Type"::Sale.AsInteger(), 1 + JobLedgEntry.Type::"G/L Account".AsInteger(), 1 + AmountTypeParm];
+        Amt[13] := -ContratoLedgAmounts[1 + ContratoLedgEntry."Entry Type"::Sale.AsInteger(), 1 + ContratoLedgEntry.Type::Resource.AsInteger(), 1 + AmountTypeParm];
+        Amt[14] := -ContratoLedgAmounts[1 + ContratoLedgEntry."Entry Type"::Sale.AsInteger(), 1 + ContratoLedgEntry.Type::Item.AsInteger(), 1 + AmountTypeParm];
+        Amt[15] := -ContratoLedgAmounts[1 + ContratoLedgEntry."Entry Type"::Sale.AsInteger(), 1 + ContratoLedgEntry.Type::"G/L Account".AsInteger(), 1 + AmountTypeParm];
         Amt[16] := Amt[13] + Amt[14] + Amt[15];
     end;
 
-    procedure ShowPlanningLine(JobType: Option " ",Resource,Item,GL; Schedule: Boolean)
+    procedure ShowPlanningLine(ContratoType: Option " ",Resource,Item,GL; Schedule: Boolean)
     begin
-        JobPlanningLine.FilterGroup(2);
-        JobPlanningLine.SetRange("Contract Line");
-        JobPlanningLine.SetRange("Schedule Line");
-        JobPlanningLine.SetRange(Type);
-        if JobType > 0 then
-            JobPlanningLine.SetRange(Type, JobType - 1);
+        ContratoPlanningLine.FilterGroup(2);
+        ContratoPlanningLine.SetRange("Contract Line");
+        ContratoPlanningLine.SetRange("Schedule Line");
+        ContratoPlanningLine.SetRange(Type);
+        if ContratoType > 0 then
+            ContratoPlanningLine.SetRange(Type, ContratoType - 1);
         if Schedule then
-            JobPlanningLine.SetRange("Schedule Line", true)
+            ContratoPlanningLine.SetRange("Schedule Line", true)
         else
-            JobPlanningLine.SetRange("Contract Line", true);
-        JobPlanningLine.FilterGroup(0);
-        OnShowPlanningLineOnAfterJobPlanningLineSetFilters(JobPlanningLine);
-        PAGE.Run(PAGE::"Contrato Planning Lines", JobPlanningLine);
+            ContratoPlanningLine.SetRange("Contract Line", true);
+        ContratoPlanningLine.FilterGroup(0);
+        OnShowPlanningLineOnAfterContratoPlanningLineSetFilters(ContratoPlanningLine);
+        PAGE.Run(PAGE::"Contrato Planning Lines", ContratoPlanningLine);
     end;
 
-    procedure ShowLedgEntry(JobType: Option " ",Resource,Item,GL; Usage: Boolean)
+    procedure ShowLedgEntry(ContratoType: Option " ",Resource,Item,GL; Usage: Boolean)
     var
-        JobLedgerEntries: Page "Contrato Ledger Entries";
+        ContratoLedgerEntries: Page "Contrato Ledger Entries";
     begin
-        JobLedgEntry.SetRange(Type);
+        ContratoLedgEntry.SetRange(Type);
         if Usage then
-            JobLedgEntry.SetRange("Entry Type", JobLedgEntry."Entry Type"::Usage)
+            ContratoLedgEntry.SetRange("Entry Type", ContratoLedgEntry."Entry Type"::Usage)
         else
-            JobLedgEntry.SetRange("Entry Type", JobLedgEntry."Entry Type"::Sale);
-        if JobType > 0 then
-            JobLedgEntry.SetRange(Type, JobType - 1);
-        Clear(JobLedgerEntries);
-        JobLedgerEntries.SetTableView(JobLedgEntry);
-        JobLedgerEntries.Run();
+            ContratoLedgEntry.SetRange("Entry Type", ContratoLedgEntry."Entry Type"::Sale);
+        if ContratoType > 0 then
+            ContratoLedgEntry.SetRange(Type, ContratoType - 1);
+        Clear(ContratoLedgerEntries);
+        ContratoLedgerEntries.SetTableView(ContratoLedgEntry);
+        ContratoLedgerEntries.Run();
     end;
 
     procedure GetHeadLineText(AmountField: array[8] of Option " ",SchPrice,UsagePrice,BillablePrice,InvoicedPrice,SchCost,UsageCost,BillableCost,InvoicedCost,SchProfit,UsageProfit,BillableProfit,InvoicedProfit; CurrencyField: array[8] of Option LCY,FCY; var HeadLineText: array[8] of Text[50]; Contrato: Record Contrato)
@@ -329,12 +329,12 @@ codeunit 50240 "Contrato Statistics"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterJobCalculateCommonFilters(var Contrato: Record Contrato; var JobLedgerEntry: Record "Contrato Ledger Entry"; var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterContratoCalculateCommonFilters(var Contrato: Record Contrato; var ContratoLedgerEntry: Record "Contrato Ledger Entry"; var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterJTCalculateCommonFilters(JobTask: Record "Contrato Task"; var JobTask2: Record "Contrato Task"; var Job2: Record Contrato; UseJobFilter: Boolean; var JobLedgerEntry: Record "Contrato Ledger Entry"; var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterJTCalculateCommonFilters(ContratoTask: Record "Contrato Task"; var ContratoTask2: Record "Contrato Task"; var Contrato2: Record Contrato; UseContratoFilter: Boolean; var ContratoLedgerEntry: Record "Contrato Ledger Entry"; var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
@@ -344,7 +344,7 @@ codeunit 50240 "Contrato Statistics"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCalcJobPlanAmountsOnAfterJobPlanningLineSetFilters(var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnCalcContratoPlanAmountsOnAfterContratoPlanningLineSetFilters(var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
@@ -354,7 +354,7 @@ codeunit 50240 "Contrato Statistics"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnShowPlanningLineOnAfterJobPlanningLineSetFilters(var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnShowPlanningLineOnAfterContratoPlanningLineSetFilters(var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 }

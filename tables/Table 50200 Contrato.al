@@ -130,7 +130,7 @@ table 50200 Contrato
                         repeat
                             if ShouldDeleteReservationEntries then
                                 ContratoPlanningLineReserve.DeleteLineInternal(ContratoPlanningLine, false);
-                            ATOLink.MakeAsmOrderLinkedToJobPlanningOrderLine(ContratoPlanningLine);
+                            ATOLink.MakeAsmOrderLinkedToContratoPlanningOrderLine(ContratoPlanningLine);
                             ContratoPlanningLine.Validate(Status, Status);
                             ContratoPlanningLine.Modify();
                         until ContratoPlanningLine.Next() = 0;
@@ -138,7 +138,7 @@ table 50200 Contrato
                         if UndidCompleteStatus then
                             ContratoPlanningLine.CreateWarehouseRequest();
                     end;
-                    //ContratoArchiveManagement.AutoArchiveJob(Rec);
+                    //ContratoArchiveManagement.AutoArchiveContrato(Rec);
                 end;
             end;
         }
@@ -1229,7 +1229,7 @@ table 50200 Contrato
     begin
         ConfirmDeletion();
 
-        //MoveEntries.MoveJobEntries(Rec);
+        //MoveEntries.MoveContratoEntries(Rec);
 
         //ContratoArchiveManagement.AutoArchiveContrato(Rec);
 
@@ -1762,7 +1762,7 @@ table 50200 Contrato
     local procedure ChangeContratoCompletionStatus()
     var
         WhseRequest: Record "Warehouse Request";
-        ContratoCalcWIP: Codeunit "Job Calculate WIP";
+        ContratoCalcWIP: Codeunit "Contrato Calculate WIP";
         IsHandled: Boolean;
     begin
         IsHandled := false;
@@ -1777,9 +1777,9 @@ table 50200 Contrato
             WhseRequest.DeleteRequest(Database::Contrato, 0, "No.");
             DeleteWhsePickRelation();
         end else begin
-            ContratoCalcWIP.ReOpenJob("No.");
+            ContratoCalcWIP.ReOpenContrato("No.");
             "WIP Posting Date" := 0D;
-            Message(ReverseCompletionEntriesMsg, GetReportCaption(REPORT::"Job Post WIP to G/L"));
+            Message(ReverseCompletionEntriesMsg, GetReportCaption(REPORT::"Contrato Post WIP to G/L"));
         end;
 
         OnAfterChangeContratoCompletionStatus(Rec, xRec);
@@ -2190,7 +2190,7 @@ table 50200 Contrato
     begin
         TempContratoDifferenceBuffer.Init();
         TempContratoDifferenceBuffer."Contrato No." := ContratoNo;
-        TempContratoDifferenceBuffer."Job Task No." := ContratoTaskNo;
+        TempContratoDifferenceBuffer."Contrato Task No." := ContratoTaskNo;
         if ContratoTaskType = ContratoTaskType::Posting then begin
             TempContratoDifferenceBuffer.Type := "Contrato Planning Line Type".FromInteger(Type);
             TempContratoDifferenceBuffer."No." := No;
@@ -2247,7 +2247,7 @@ table 50200 Contrato
     var
         Contrato: Record Contrato;
         ConfirmManagement: Codeunit "Confirm Management";
-        ContratoCalculateWIP: Report "Job Calculate WIP";
+        ContratoCalculateWIP: Report "Contrato Calculate WIP";
         Confirmed: Boolean;
         IsHandled: Boolean;
     begin
@@ -2721,7 +2721,7 @@ table 50200 Contrato
     var
         CreatePickFromWhseSource: Report "Whse.-Source - Create Document";
     begin
-        //CreatePickFromWhseSource.SetJob(Rec);
+        //CreatePickFromWhseSource.SetContrato(Rec);
         CreatePickFromWhseSource.SetHideValidationDialog(false);
         CreatePickFromWhseSource.UseRequestPage(true);
         CreatePickFromWhseSource.RunModal();

@@ -16,13 +16,13 @@ page 50244 "ResourceAllocperContratoMatrix"
                 ShowCaption = false;
                 field("No."; Rec."No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Editable = false;
                     ToolTip = 'Specifies the number of the involved entry or record, according to the specified number series.';
                 }
                 field("Bill-to Name"; Rec."Bill-to Name")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the name of the customer that you send or sent the invoice or credit memo to.';
                 }
                 field(Col1; MatrixCellData[1])
@@ -554,22 +554,22 @@ page 50244 "ResourceAllocperContratoMatrix"
 
     local procedure MatrixOnDrillDown(Column: Integer)
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         IsHandled: Boolean;
     begin
-        JobPlanningLine.SetFilter("No.", Rec.GetRangeMin("Resource Filter"), Rec.GetRangeMax("Resource Filter"));
-        JobPlanningLine.SetRange(
+        ContratoPlanningLine.SetFilter("No.", Rec.GetRangeMin("Resource Filter"), Rec.GetRangeMax("Resource Filter"));
+        ContratoPlanningLine.SetRange(
           "Planning Date", GetStartDate(MatrixColumnDateFilters[Column]."Period Start"),
           MatrixColumnDateFilters[Column]."Period End");
-        JobPlanningLine.SetRange("Contrato No.", Rec."No.");
-        JobPlanningLine.SetRange(Type, JobPlanningLine.Type::Resource);
-        JobPlanningLine.SetRange("Schedule Line", true);
+        ContratoPlanningLine.SetRange("Contrato No.", Rec."No.");
+        ContratoPlanningLine.SetRange(Type, ContratoPlanningLine.Type::Resource);
+        ContratoPlanningLine.SetRange("Schedule Line", true);
         IsHandled := false;
-        OnAfterMatrixOnDrillDown(JobPlanningLine, IsHandled);
+        OnAfterMatrixOnDrillDown(ContratoPlanningLine, IsHandled);
         if IsHandled then
             exit;
 
-        PAGE.RunModal(PAGE::"Contrato Planning Lines", JobPlanningLine);
+        PAGE.RunModal(PAGE::"Contrato Planning Lines", ContratoPlanningLine);
     end;
 
     procedure SetVisible()
@@ -619,12 +619,12 @@ page 50244 "ResourceAllocperContratoMatrix"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterMatrixOnDrillDown(var JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnAfterMatrixOnDrillDown(var ContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnMatrixOnAfterGetRecordOnBeforeMatrixRecLoop(var JobPlanningLine: Record "Contrato Planning Line"; var MatrixCellQuantity: Decimal)
+    local procedure OnMatrixOnAfterGetRecordOnBeforeMatrixRecLoop(var ContratoPlanningLine: Record "Contrato Planning Line"; var MatrixCellQuantity: Decimal)
     begin
     end;
 }

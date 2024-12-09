@@ -11,7 +11,7 @@ codeunit 50225 "Contrato Calculate WIP"
     end;
 
     var
-        TempJobWIPBuffer: array[2] of Record "Contrato WIP Buffer" temporary;
+        TempContratoWIPBuffer: array[2] of Record "Contrato WIP Buffer" temporary;
         GLSetup: Record "General Ledger Setup";
         GenJnlBatch: Record "Gen. Journal Batch";
         GenJnPostLine: Codeunit "Gen. Jnl.-Post Line";
@@ -24,40 +24,40 @@ codeunit 50225 "Contrato Calculate WIP"
         Text001: Label 'WIP %1', Comment = 'WIP GUILDFORD, 10 CR';
         Text002: Label 'Recognition %1', Comment = 'Recognition GUILDFORD, 10 CR';
         Text003: Label 'Completion %1', Comment = 'Completion GUILDFORD, 10 CR';
-        JobComplete: Boolean;
+        ContratoComplete: Boolean;
         Text004: Label 'WIP G/L entries posted for Project %1 cannot be reversed at an earlier date than %2.';
         Text005: Label '..%1';
         HasGotGLSetup: Boolean;
-        JobWIPTotalChanged: Boolean;
+        ContratoWIPTotalChanged: Boolean;
         WIPAmount: Decimal;
         RecognizedAllocationPercentage: Decimal;
         CannotModifyAssociatedEntriesErr: Label 'The %1 cannot be modified because the project has associated project WIP entries.', Comment = '%1=The project task table name.';
 
-    procedure JobCalcWIP(var Contrato: Record Contrato; WIPPostingDate2: Date; DocNo2: Code[20])
+    procedure ContratoCalcWIP(var Contrato: Record Contrato; WIPPostingDate2: Date; DocNo2: Code[20])
     var
-        JobTask: Record "Contrato Task";
-        JobLedgEntry: Record "Contrato Ledger Entry";
-        JobLedgerEntry2: Record "Contrato Ledger Entry";
-        JobPlanningLine: Record "Contrato Planning Line";
-        JobWIPEntry: Record "Contrato WIP Entry";
-        JobWIPGLEntry: Record "Contrato WIP G/L Entry";
-        FromJobTask: Code[20];
+        ContratoTask: Record "Contrato Task";
+        ContratoLedgEntry: Record "Contrato Ledger Entry";
+        ContratoLedgerEntry2: Record "Contrato Ledger Entry";
+        ContratoPlanningLine: Record "Contrato Planning Line";
+        ContratoWIPEntry: Record "Contrato WIP Entry";
+        ContratoWIPGLEntry: Record "Contrato WIP G/L Entry";
+        FromContratoTask: Code[20];
         First: Boolean;
     begin
         ClearAll();
-        TempJobWIPBuffer[1].DeleteAll();
+        TempContratoWIPBuffer[1].DeleteAll();
 
-        JobPlanningLine.LockTable();
-        JobLedgEntry.LockTable();
-        JobWIPEntry.LockTable();
-        JobTask.LockTable();
+        ContratoPlanningLine.LockTable();
+        ContratoLedgEntry.LockTable();
+        ContratoWIPEntry.LockTable();
+        ContratoTask.LockTable();
         Contrato.LockTable();
 
-        JobWIPGLEntry.SetCurrentKey("Contrato No.", Reversed, "Contrato Complete");
-        JobWIPGLEntry.SetRange("Contrato No.", Contrato."No.");
-        JobWIPGLEntry.SetRange("Contrato Complete", true);
-        if JobWIPGLEntry.FindFirst() then begin
-            JobWIPEntry.DeleteEntriesForJob(Contrato);
+        ContratoWIPGLEntry.SetCurrentKey("Contrato No.", Reversed, "Contrato Complete");
+        ContratoWIPGLEntry.SetRange("Contrato No.", Contrato."No.");
+        ContratoWIPGLEntry.SetRange("Contrato Complete", true);
+        if ContratoWIPGLEntry.FindFirst() then begin
+            ContratoWIPEntry.DeleteEntriesForContrato(Contrato);
             exit;
         end;
 
@@ -74,38 +74,38 @@ codeunit 50225 "Contrato Calculate WIP"
         Contrato."WIP Posting Date" := WIPPostingDate;
         if (Contrato."Ending Date" = 0D) and Contrato.Complete then
             Contrato.Validate("Ending Date", WIPPostingDate);
-        JobComplete := Contrato.Complete and (WIPPostingDate >= Contrato."Ending Date");
-        OnJobCalcWIPOnBeforeJobModify(Contrato, JobComplete);
+        ContratoComplete := Contrato.Complete and (WIPPostingDate >= Contrato."Ending Date");
+        OnContratoCalcWIPOnBeforeContratoModify(Contrato, ContratoComplete);
         Contrato.Modify();
 
         DeleteWIP(Contrato);
-        AssignWIPTotalAndMethodToJobTask(JobTask, Contrato);
+        AssignWIPTotalAndMethodToContratoTask(ContratoTask, Contrato);
         First := true;
-        if JobTask.Find('-') then
+        if ContratoTask.Find('-') then
             repeat
                 if First then
-                    FromJobTask := JobTask."Contrato Task No.";
+                    FromContratoTask := ContratoTask."Contrato Task No.";
                 First := false;
-                if JobTask."WIP-Total" = JobTask."WIP-Total"::Total then begin
-                    JobTaskCalcWIP(Contrato, FromJobTask, JobTask."Contrato Task No.");
+                if ContratoTask."WIP-Total" = ContratoTask."WIP-Total"::Total then begin
+                    ContratoTaskCalcWIP(Contrato, FromContratoTask, ContratoTask."Contrato Task No.");
                     First := true;
-                    AssignWIPTotalAndMethodToRemainingJobTask(JobTask, Contrato);
-                    // Balance job ledger entry when used quantity on a task is returned
-                    if (JobTask."Recognized Sales Amount" = 0) and (JobTask."Recognized Sales G/L Amount" <> 0) then begin
-                        JobLedgerEntry2.SetRange("Contrato No.", JobTask."Contrato No.");
-                        JobLedgerEntry2.SetRange("Contrato Task No.", JobTask."Contrato Task No.");
-                        JobLedgerEntry2.SetRange("Entry Type", JobLedgerEntry2."Entry Type"::Sale);
-                        JobLedgerEntry2.SetLoadFields("Line Amount (LCY)", "Amt. to Post to G/L", "Amt. Posted to G/L");
-                        if JobLedgerEntry2.FindSet(true) then
+                    AssignWIPTotalAndMethodToRemainingContratoTask(ContratoTask, Contrato);
+                    // Balance Contrato ledger entry when used quantity on a task is returned
+                    if (ContratoTask."Recognized Sales Amount" = 0) and (ContratoTask."Recognized Sales G/L Amount" <> 0) then begin
+                        ContratoLedgerEntry2.SetRange("Contrato No.", ContratoTask."Contrato No.");
+                        ContratoLedgerEntry2.SetRange("Contrato Task No.", ContratoTask."Contrato Task No.");
+                        ContratoLedgerEntry2.SetRange("Entry Type", ContratoLedgerEntry2."Entry Type"::Sale);
+                        ContratoLedgerEntry2.SetLoadFields("Line Amount (LCY)", "Amt. to Post to G/L", "Amt. Posted to G/L");
+                        if ContratoLedgerEntry2.FindSet(true) then
                             repeat
-                                if (JobLedgerEntry2."Line Amount (LCY)" <> 0) and (JobLedgerEntry2."Amt. to Post to G/L" = 0) and (JobLedgerEntry2."Amt. Posted to G/L" = 0) then begin
-                                    JobLedgerEntry2.Validate("Amt. to Post to G/L", JobLedgerEntry2."Line Amount (LCY)");
-                                    JobLedgerEntry2.Modify(true);
+                                if (ContratoLedgerEntry2."Line Amount (LCY)" <> 0) and (ContratoLedgerEntry2."Amt. to Post to G/L" = 0) and (ContratoLedgerEntry2."Amt. Posted to G/L" = 0) then begin
+                                    ContratoLedgerEntry2.Validate("Amt. to Post to G/L", ContratoLedgerEntry2."Line Amount (LCY)");
+                                    ContratoLedgerEntry2.Modify(true);
                                 end;
-                            until JobLedgerEntry2.Next() = 0;
+                            until ContratoLedgerEntry2.Next() = 0;
                     end;
                 end;
-            until JobTask.Next() = 0;
+            until ContratoTask.Next() = 0;
         CreateWIPEntries(Contrato."No.");
 
         if ErrorMessageHandler.HasErrors() then
@@ -130,29 +130,29 @@ codeunit 50225 "Contrato Calculate WIP"
 
     procedure DeleteWIP(Contrato: Record Contrato)
     var
-        JobTask: Record "Contrato Task";
-        JobWIPEntry: Record "Contrato WIP Entry";
-        JobLedgerEntry: Record "Contrato Ledger Entry";
+        ContratoTask: Record "Contrato Task";
+        ContratoWIPEntry: Record "Contrato WIP Entry";
+        ContratoLedgerEntry: Record "Contrato Ledger Entry";
     begin
-        JobTask.SetRange("Contrato No.", Contrato."No.");
-        if JobTask.Find('-') then
+        ContratoTask.SetRange("Contrato No.", Contrato."No.");
+        if ContratoTask.Find('-') then
             repeat
-                JobTask.InitWIPFields();
-            until JobTask.Next() = 0;
+                ContratoTask.InitWIPFields();
+            until ContratoTask.Next() = 0;
 
-        JobWIPEntry.DeleteEntriesForJob(Contrato);
+        ContratoWIPEntry.DeleteEntriesForContrato(Contrato);
 
-        JobLedgerEntry.SetRange("Contrato No.", Contrato."No.");
-        JobLedgerEntry.ModifyAll("Amt. to Post to G/L", 0);
+        ContratoLedgerEntry.SetRange("Contrato No.", Contrato."No.");
+        ContratoLedgerEntry.ModifyAll("Amt. to Post to G/L", 0);
     end;
 
-    local procedure JobTaskCalcWIP(var Contrato: Record Contrato; FromJobTask: Code[20]; ToJobTask: Code[20])
+    local procedure ContratoTaskCalcWIP(var Contrato: Record Contrato; FromContratoTask: Code[20]; ToContratoTask: Code[20])
     var
-        AccruedCostsJobTask: Record "Contrato Task";
-        AccruedCostsJobWIPTotal: Record "Contrato WIP Total";
-        JobTask: Record "Contrato Task";
-        JobWIPTotal: Record "Contrato WIP Total";
-        JobWIPWarning: Record "Contrato WIP Warning";
+        AccruedCostsContratoTask: Record "Contrato Task";
+        AccruedCostsContratoWIPTotal: Record "Contrato WIP Total";
+        ContratoTask: Record "Contrato Task";
+        ContratoWIPTotal: Record "Contrato WIP Total";
+        ContratoWIPWarning: Record "Contrato WIP Warning";
         RecognizedCostAmount: Decimal;
         UsageTotalCost: Decimal;
         IsHandled: Boolean;
@@ -160,23 +160,23 @@ codeunit 50225 "Contrato Calculate WIP"
         RecognizedCostAmount := 0;
         UsageTotalCost := 0;
 
-        JobTask.SetRange("Contrato No.", Contrato."No.");
-        JobTask.SetRange("Contrato Task No.", FromJobTask, ToJobTask);
-        JobTask.SetFilter("WIP-Total", '<> %1', JobTask."WIP-Total"::Excluded);
+        ContratoTask.SetRange("Contrato No.", Contrato."No.");
+        ContratoTask.SetRange("Contrato Task No.", FromContratoTask, ToContratoTask);
+        ContratoTask.SetFilter("WIP-Total", '<> %1', ContratoTask."WIP-Total"::Excluded);
 
         if Contrato.GetFilter("Posting Date Filter") <> '' then
-            JobTask.SetFilter("Posting Date Filter", Contrato.GetFilter("Posting Date Filter"))
+            ContratoTask.SetFilter("Posting Date Filter", Contrato.GetFilter("Posting Date Filter"))
         else
-            JobTask.SetFilter("Posting Date Filter", StrSubstNo(Text005, WIPPostingDate));
+            ContratoTask.SetFilter("Posting Date Filter", StrSubstNo(Text005, WIPPostingDate));
 
-        JobTask.SetFilter("Planning Date Filter", Contrato.GetFilter("Planning Date Filter"));
+        ContratoTask.SetFilter("Planning Date Filter", Contrato.GetFilter("Planning Date Filter"));
 
-        CreateJobWIPTotal(JobTask, JobWIPTotal);
+        CreateContratoWIPTotal(ContratoTask, ContratoWIPTotal);
 
-        if JobTask.Find('-') then
+        if ContratoTask.Find('-') then
             repeat
-                if JobTask."Contrato Task Type" = JobTask."Contrato Task Type"::Posting then begin
-                    JobTask.CalcFields(
+                if ContratoTask."Contrato Task Type" = ContratoTask."Contrato Task Type"::Posting then begin
+                    ContratoTask.CalcFields(
                       "Schedule (Total Cost)",
                       "Schedule (Total Price)",
                       "Usage (Total Cost)",
@@ -186,79 +186,79 @@ codeunit 50225 "Contrato Calculate WIP"
                       "Contract (Invoiced Price)",
                       "Contract (Invoiced Cost)");
 
-                    OnJobTaskCalcWIPOnBeforeCalcWIP(JobTask);
+                    OnContratoTaskCalcWIPOnBeforeCalcWIP(ContratoTask);
 
-                    CalcWIP(JobTask, JobWIPTotal);
-                    JobTask.Modify();
+                    CalcWIP(ContratoTask, ContratoWIPTotal);
+                    ContratoTask.Modify();
 
-                    JobWIPTotal."Calc. Recog. Costs Amount" += JobTask."Recognized Costs Amount";
-                    JobWIPTotal."Calc. Recog. Sales Amount" += JobTask."Recognized Sales Amount";
+                    ContratoWIPTotal."Calc. Recog. Costs Amount" += ContratoTask."Recognized Costs Amount";
+                    ContratoWIPTotal."Calc. Recog. Sales Amount" += ContratoTask."Recognized Sales Amount";
                     IsHandled := false;
-                    OnJobTaskCalcWIPOnBeforeCreateTempJobWIPBuffer(JobTask, JobWIPTotal, IsHandled);
+                    OnContratoTaskCalcWIPOnBeforeCreateTempContratoWIPBuffer(ContratoTask, ContratoWIPTotal, IsHandled);
                     if not IsHandled then
-                        CreateTempJobWIPBuffers(JobTask, JobWIPTotal);
-                    if (JobTask."Recognized Costs Amount" <> 0) and (AccruedCostsJobTask."Contrato Task No." = '') then begin
-                        AccruedCostsJobTask := JobTask;
-                        AccruedCostsJobWIPTotal := JobWIPTotal;
+                        CreateTempContratoWIPBuffers(ContratoTask, ContratoWIPTotal);
+                    if (ContratoTask."Recognized Costs Amount" <> 0) and (AccruedCostsContratoTask."Contrato Task No." = '') then begin
+                        AccruedCostsContratoTask := ContratoTask;
+                        AccruedCostsContratoWIPTotal := ContratoWIPTotal;
                     end;
 
                     IsHandled := false;
-                    OnJobTaskCalcWIPOnBeforeSumJobTaskCosts(JobTask, RecognizedCostAmount, UsageTotalCost, IsHandled);
+                    OnContratoTaskCalcWIPOnBeforeSumContratoTaskCosts(ContratoTask, RecognizedCostAmount, UsageTotalCost, IsHandled);
                     if not IsHandled then begin
-                        RecognizedCostAmount += JobTask."Recognized Costs Amount";
-                        UsageTotalCost += JobTask."Usage (Total Cost)";
+                        RecognizedCostAmount += ContratoTask."Recognized Costs Amount";
+                        UsageTotalCost += ContratoTask."Usage (Total Cost)";
                     end;
 
-                    JobWIPTotalChanged := false;
+                    ContratoWIPTotalChanged := false;
                     WIPAmount := 0;
                 end;
-            until JobTask.Next() = 0;
-        JobTaskCalcAccruedCostsWIP(Contrato, AccruedCostsJobWIPTotal, AccruedCostsJobTask, RecognizedCostAmount, UsageTotalCost);
-        CalcCostInvoicePercentage(JobWIPTotal);
-        OnJobTaskCalcWIPOnBeforeJobWIPTotalModify(Contrato, JobWIPTotal);
-        JobWIPTotal.Modify();
-        OnJobTaskCalcWIPOnAfterJobWIPTotalModify(Contrato, JobWIPTotal);
-        JobWIPWarning.CreateEntries(JobWIPTotal);
+            until ContratoTask.Next() = 0;
+        ContratoTaskCalcAccruedCostsWIP(Contrato, AccruedCostsContratoWIPTotal, AccruedCostsContratoTask, RecognizedCostAmount, UsageTotalCost);
+        CalcCostInvoicePercentage(ContratoWIPTotal);
+        OnContratoTaskCalcWIPOnBeforeContratoWIPTotalModify(Contrato, ContratoWIPTotal);
+        ContratoWIPTotal.Modify();
+        OnContratoTaskCalcWIPOnAfterContratoWIPTotalModify(Contrato, ContratoWIPTotal);
+        ContratoWIPWarning.CreateEntries(ContratoWIPTotal);
 
-        OnAfterJobTaskCalcWIP(Contrato, FromJobTask, ToJobTask, JobWIPTotal);
+        OnAfterContratoTaskCalcWIP(Contrato, FromContratoTask, ToContratoTask, ContratoWIPTotal);
     end;
 
-    local procedure JobTaskCalcAccruedCostsWIP(Contrato: Record Contrato; AccruedCostsJobWIPTotal: Record "Contrato WIP Total"; AccruedCostsJobTask: Record "Contrato Task"; RecognizedCostAmount: Decimal; UsageTotalCost: Decimal)
+    local procedure ContratoTaskCalcAccruedCostsWIP(Contrato: Record Contrato; AccruedCostsContratoWIPTotal: Record "Contrato WIP Total"; AccruedCostsContratoTask: Record "Contrato Task"; RecognizedCostAmount: Decimal; UsageTotalCost: Decimal)
     var
-        JobWIPMethod: Record "Contrato WIP Method";
+        ContratoWIPMethod: Record "Contrato WIP Method";
     begin
-        if (not JobComplete) and (RecognizedCostAmount > UsageTotalCost) and (AccruedCostsJobTask."Contrato Task No." <> '') then begin
-            JobWIPMethod.Get(AccruedCostsJobWIPTotal."WIP Method");
+        if (not ContratoComplete) and (RecognizedCostAmount > UsageTotalCost) and (AccruedCostsContratoTask."Contrato Task No." <> '') then begin
+            ContratoWIPMethod.Get(AccruedCostsContratoWIPTotal."WIP Method");
             InitWIPBufferEntryFromTask(
-              AccruedCostsJobTask, AccruedCostsJobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Accrued Costs",
-              GetAccruedCostsAmount(JobWIPMethod, RecognizedCostAmount, UsageTotalCost));
-            UpdateWIPBufferEntryFromTask(AccruedCostsJobTask, AccruedCostsJobWIPTotal);
+              AccruedCostsContratoTask, AccruedCostsContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Accrued Costs",
+              GetAccruedCostsAmount(ContratoWIPMethod, RecognizedCostAmount, UsageTotalCost));
+            UpdateWIPBufferEntryFromTask(AccruedCostsContratoTask, AccruedCostsContratoWIPTotal);
             if Contrato."WIP Posting Method" = Contrato."WIP Posting Method"::"Per Contrato Ledger Entry" then begin
                 InitWIPBufferEntryFromTask(
-                  AccruedCostsJobTask, AccruedCostsJobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Costs",
-                  GetAppliedCostsAmount(RecognizedCostAmount, UsageTotalCost, JobWIPMethod, true));
-                UpdateWIPBufferEntryFromTask(AccruedCostsJobTask, AccruedCostsJobWIPTotal);
+                  AccruedCostsContratoTask, AccruedCostsContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Costs",
+                  GetAppliedCostsAmount(RecognizedCostAmount, UsageTotalCost, ContratoWIPMethod, true));
+                UpdateWIPBufferEntryFromTask(AccruedCostsContratoTask, AccruedCostsContratoWIPTotal);
             end;
         end;
     end;
 
-    local procedure CreateJobWIPTotal(var JobTask: Record "Contrato Task"; var JobWIPTotal: Record "Contrato WIP Total")
+    local procedure CreateContratoWIPTotal(var ContratoTask: Record "Contrato Task"; var ContratoWIPTotal: Record "Contrato WIP Total")
     var
         IsHandled: Boolean;
     begin
-        OnBeforeCreateJobWIPTotal(JobTask);
-        JobWIPTotalChanged := true;
+        OnBeforeCreateContratoWIPTotal(ContratoTask);
+        ContratoWIPTotalChanged := true;
         WIPAmount := 0;
         RecognizedAllocationPercentage := 0;
 
-        JobWIPTotal.Init();
+        ContratoWIPTotal.Init();
         IsHandled := false;
-        OnCreateJobWIPTotalOnBeforeLoopJobTask(JobTask, JobWIPTotal, IsHandled);
+        OnCreateContratoWIPTotalOnBeforeLoopContratoTask(ContratoTask, ContratoWIPTotal, IsHandled);
         if not IsHandled then
-            if JobTask.Find('-') then
+            if ContratoTask.Find('-') then
                 repeat
-                    if JobTask."Contrato Task Type" = JobTask."Contrato Task Type"::Posting then begin
-                        JobTask.CalcFields(
+                    if ContratoTask."Contrato Task Type" = ContratoTask."Contrato Task Type"::Posting then begin
+                        ContratoTask.CalcFields(
                         "Schedule (Total Cost)",
                         "Schedule (Total Price)",
                         "Usage (Total Cost)",
@@ -268,551 +268,551 @@ codeunit 50225 "Contrato Calculate WIP"
                         "Contract (Invoiced Price)",
                         "Contract (Invoiced Cost)");
 
-                        JobWIPTotal."Schedule (Total Cost)" += JobTask."Schedule (Total Cost)";
-                        JobWIPTotal."Schedule (Total Price)" += JobTask."Schedule (Total Price)";
-                        JobWIPTotal."Usage (Total Cost)" += JobTask."Usage (Total Cost)";
-                        JobWIPTotal."Usage (Total Price)" += JobTask."Usage (Total Price)";
-                        JobWIPTotal."Contract (Total Cost)" += JobTask."Contract (Total Cost)";
-                        JobWIPTotal."Contract (Total Price)" += JobTask."Contract (Total Price)";
-                        JobWIPTotal."Contract (Invoiced Price)" += JobTask."Contract (Invoiced Price)";
-                        JobWIPTotal."Contract (Invoiced Cost)" += JobTask."Contract (Invoiced Cost)";
+                        ContratoWIPTotal."Schedule (Total Cost)" += ContratoTask."Schedule (Total Cost)";
+                        ContratoWIPTotal."Schedule (Total Price)" += ContratoTask."Schedule (Total Price)";
+                        ContratoWIPTotal."Usage (Total Cost)" += ContratoTask."Usage (Total Cost)";
+                        ContratoWIPTotal."Usage (Total Price)" += ContratoTask."Usage (Total Price)";
+                        ContratoWIPTotal."Contract (Total Cost)" += ContratoTask."Contract (Total Cost)";
+                        ContratoWIPTotal."Contract (Total Price)" += ContratoTask."Contract (Total Price)";
+                        ContratoWIPTotal."Contract (Invoiced Price)" += ContratoTask."Contract (Invoiced Price)";
+                        ContratoWIPTotal."Contract (Invoiced Cost)" += ContratoTask."Contract (Invoiced Cost)";
 
-                        OnCreateJobWIPTotalOnAfterUpdateJobWIPTotal(JobTask, JobWIPTotal);
+                        OnCreateContratoWIPTotalOnAfterUpdateContratoWIPTotal(ContratoTask, ContratoWIPTotal);
                     end;
-                until JobTask.Next() = 0;
+                until ContratoTask.Next() = 0;
 
         // Get values from the "WIP-Total"::Total Contrato Task, which always is the last entry in the range:
-        JobWIPTotal."Contrato No." := JobTask."Contrato No.";
-        JobWIPTotal."Contrato Task No." := JobTask."Contrato Task No.";
-        JobWIPTotal."WIP Posting Date" := WIPPostingDate;
-        JobWIPTotal."WIP Posting Date Filter" :=
-          CopyStr(JobTask.GetFilter("Posting Date Filter"), 1, MaxStrLen(JobWIPTotal."WIP Posting Date Filter"));
-        JobWIPTotal."WIP Planning Date Filter" :=
-          CopyStr(JobTask.GetFilter("Planning Date Filter"), 1, MaxStrLen(JobWIPTotal."WIP Planning Date Filter"));
-        JobWIPTotal."WIP Method" := JobTask."WIP Method";
-        JobWIPTotal.Insert();
+        ContratoWIPTotal."Contrato No." := ContratoTask."Contrato No.";
+        ContratoWIPTotal."Contrato Task No." := ContratoTask."Contrato Task No.";
+        ContratoWIPTotal."WIP Posting Date" := WIPPostingDate;
+        ContratoWIPTotal."WIP Posting Date Filter" :=
+          CopyStr(ContratoTask.GetFilter("Posting Date Filter"), 1, MaxStrLen(ContratoWIPTotal."WIP Posting Date Filter"));
+        ContratoWIPTotal."WIP Planning Date Filter" :=
+          CopyStr(ContratoTask.GetFilter("Planning Date Filter"), 1, MaxStrLen(ContratoWIPTotal."WIP Planning Date Filter"));
+        ContratoWIPTotal."WIP Method" := ContratoTask."WIP Method";
+        ContratoWIPTotal.Insert();
     end;
 
-    local procedure CalcWIP(var JobTask: Record "Contrato Task"; JobWIPTotal: Record "Contrato WIP Total")
+    local procedure CalcWIP(var ContratoTask: Record "Contrato Task"; ContratoWIPTotal: Record "Contrato WIP Total")
     var
-        JobWIPMethod: Record "Contrato WIP Method";
+        ContratoWIPMethod: Record "Contrato WIP Method";
     begin
-        OnBeforeCalcWIP(JobTask, JobWIPTotal, JobComplete, RecognizedAllocationPercentage, JobWIPTotalChanged);
+        OnBeforeCalcWIP(ContratoTask, ContratoWIPTotal, ContratoComplete, RecognizedAllocationPercentage, ContratoWIPTotalChanged);
 
-        if JobComplete then begin
-            JobTask."Recognized Sales Amount" := JobTask."Contract (Invoiced Price)";
-            JobTask."Recognized Costs Amount" := JobTask."Usage (Total Cost)";
-            OnCaclWIPOnAfterRecognizedAmounts(JobTask);
+        if ContratoComplete then begin
+            ContratoTask."Recognized Sales Amount" := ContratoTask."Contract (Invoiced Price)";
+            ContratoTask."Recognized Costs Amount" := ContratoTask."Usage (Total Cost)";
+            OnCaclWIPOnAfterRecognizedAmounts(ContratoTask);
             exit;
         end;
 
-        JobWIPMethod.Get(JobWIPTotal."WIP Method");
-        CalcRecognizedCosts(JobTask, JobWIPTotal, JobWIPMethod);
-        CalcRecognizedSales(JobTask, JobWIPTotal, JobWIPMethod);
-        OnAfterCalcWIP(JobTask, JobWIPTotal, JobComplete, RecognizedAllocationPercentage, JobWIPTotalChanged);
+        ContratoWIPMethod.Get(ContratoWIPTotal."WIP Method");
+        CalcRecognizedCosts(ContratoTask, ContratoWIPTotal, ContratoWIPMethod);
+        CalcRecognizedSales(ContratoTask, ContratoWIPTotal, ContratoWIPMethod);
+        OnAfterCalcWIP(ContratoTask, ContratoWIPTotal, ContratoComplete, RecognizedAllocationPercentage, ContratoWIPTotalChanged);
     end;
 
-    local procedure CalcRecognizedCosts(var JobTask: Record "Contrato Task"; JobWIPTotal: Record "Contrato WIP Total"; JobWIPMethod: Record "Contrato WIP Method")
-    var
-        IsHandled: Boolean;
-    begin
-        IsHandled := false;
-        OnBeforeCalcRecognizedCosts(JobTask, JobWIPTotal, JobWIPMethod, IsHandled);
-        if IsHandled then
-            exit;
-
-        case JobWIPMethod."Recognized Costs" of
-            JobWIPMethod."Recognized Costs"::"Cost of Sales":
-                CalcCostOfSales(JobTask, JobWIPTotal);
-            JobWIPMethod."Recognized Costs"::"Cost Value":
-                CalcCostValue(JobTask, JobWIPTotal);
-            JobWIPMethod."Recognized Costs"::"Contract (Invoiced Cost)":
-                CalcContractInvoicedCost(JobTask);
-            JobWIPMethod."Recognized Costs"::"Usage (Total Cost)":
-                CalcUsageTotalCostCosts(JobTask);
-        end;
-    end;
-
-    local procedure CalcRecognizedSales(var JobTask: Record "Contrato Task"; JobWIPTotal: Record "Contrato WIP Total"; JobWIPMethod: Record "Contrato WIP Method")
+    local procedure CalcRecognizedCosts(var ContratoTask: Record "Contrato Task"; ContratoWIPTotal: Record "Contrato WIP Total"; ContratoWIPMethod: Record "Contrato WIP Method")
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCalcRecognizedSales(JobTask, JobWIPTotal, JobWIPMethod, IsHandled);
+        OnBeforeCalcRecognizedCosts(ContratoTask, ContratoWIPTotal, ContratoWIPMethod, IsHandled);
         if IsHandled then
             exit;
 
-        case JobWIPMethod."Recognized Sales" of
-            JobWIPMethod."Recognized Sales"::"Contract (Invoiced Price)":
-                CalcContractInvoicedPrice(JobTask);
-            JobWIPMethod."Recognized Sales"::"Usage (Total Cost)":
-                CalcUsageTotalCostSales(JobTask);
-            JobWIPMethod."Recognized Sales"::"Usage (Total Price)":
-                CalcUsageTotalPrice(JobTask);
-            JobWIPMethod."Recognized Sales"::"Percentage of Completion":
-                CalcPercentageofCompletion(JobTask, JobWIPTotal);
-            JobWIPMethod."Recognized Sales"::"Sales Value":
-                CalcSalesValue(JobTask, JobWIPTotal);
+        case ContratoWIPMethod."Recognized Costs" of
+            ContratoWIPMethod."Recognized Costs"::"Cost of Sales":
+                CalcCostOfSales(ContratoTask, ContratoWIPTotal);
+            ContratoWIPMethod."Recognized Costs"::"Cost Value":
+                CalcCostValue(ContratoTask, ContratoWIPTotal);
+            ContratoWIPMethod."Recognized Costs"::"Contract (Invoiced Cost)":
+                CalcContractInvoicedCost(ContratoTask);
+            ContratoWIPMethod."Recognized Costs"::"Usage (Total Cost)":
+                CalcUsageTotalCostCosts(ContratoTask);
         end;
     end;
 
-    local procedure CalcCostOfSales(var JobTask: Record "Contrato Task"; JobWIPTotal: Record "Contrato WIP Total")
+    local procedure CalcRecognizedSales(var ContratoTask: Record "Contrato Task"; ContratoWIPTotal: Record "Contrato WIP Total"; ContratoWIPMethod: Record "Contrato WIP Method")
+    var
+        IsHandled: Boolean;
     begin
-        if JobWIPTotal."Contract (Total Price)" = 0 then
+        IsHandled := false;
+        OnBeforeCalcRecognizedSales(ContratoTask, ContratoWIPTotal, ContratoWIPMethod, IsHandled);
+        if IsHandled then
             exit;
 
-        if JobWIPTotalChanged then begin
-            WIPAmount := JobWIPTotal."Usage (Total Cost)" -
-              ((JobWIPTotal."Contract (Invoiced Price)" / JobWIPTotal."Contract (Total Price)") *
-               JobWIPTotal."Schedule (Total Cost)");
-            if JobWIPTotal."Usage (Total Cost)" <> 0 then
-                RecognizedAllocationPercentage := WIPAmount / JobWIPTotal."Usage (Total Cost)";
+        case ContratoWIPMethod."Recognized Sales" of
+            ContratoWIPMethod."Recognized Sales"::"Contract (Invoiced Price)":
+                CalcContractInvoicedPrice(ContratoTask);
+            ContratoWIPMethod."Recognized Sales"::"Usage (Total Cost)":
+                CalcUsageTotalCostSales(ContratoTask);
+            ContratoWIPMethod."Recognized Sales"::"Usage (Total Price)":
+                CalcUsageTotalPrice(ContratoTask);
+            ContratoWIPMethod."Recognized Sales"::"Percentage of Completion":
+                CalcPercentageofCompletion(ContratoTask, ContratoWIPTotal);
+            ContratoWIPMethod."Recognized Sales"::"Sales Value":
+                CalcSalesValue(ContratoTask, ContratoWIPTotal);
+        end;
+    end;
+
+    local procedure CalcCostOfSales(var ContratoTask: Record "Contrato Task"; ContratoWIPTotal: Record "Contrato WIP Total")
+    begin
+        if ContratoWIPTotal."Contract (Total Price)" = 0 then
+            exit;
+
+        if ContratoWIPTotalChanged then begin
+            WIPAmount := ContratoWIPTotal."Usage (Total Cost)" -
+              ((ContratoWIPTotal."Contract (Invoiced Price)" / ContratoWIPTotal."Contract (Total Price)") *
+               ContratoWIPTotal."Schedule (Total Cost)");
+            if ContratoWIPTotal."Usage (Total Cost)" <> 0 then
+                RecognizedAllocationPercentage := WIPAmount / ContratoWIPTotal."Usage (Total Cost)";
         end;
 
         if RecognizedAllocationPercentage <> 0 then
-            WIPAmount := Round(JobTask."Usage (Total Cost)" * RecognizedAllocationPercentage);
-        JobTask."Recognized Costs Amount" := JobTask."Usage (Total Cost)" - WIPAmount;
+            WIPAmount := Round(ContratoTask."Usage (Total Cost)" * RecognizedAllocationPercentage);
+        ContratoTask."Recognized Costs Amount" := ContratoTask."Usage (Total Cost)" - WIPAmount;
     end;
 
-    local procedure CalcCostValue(var JobTask: Record "Contrato Task"; JobWIPTotal: Record "Contrato WIP Total")
+    local procedure CalcCostValue(var ContratoTask: Record "Contrato Task"; ContratoWIPTotal: Record "Contrato WIP Total")
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCalcCostValue(JobTask, JobWIPTotal, WIPAmount, RecognizedAllocationPercentage, JobWIPTotalChanged, IsHandled);
+        OnBeforeCalcCostValue(ContratoTask, ContratoWIPTotal, WIPAmount, RecognizedAllocationPercentage, ContratoWIPTotalChanged, IsHandled);
         if IsHandled then
             exit;
 
-        if JobWIPTotal."Schedule (Total Price)" = 0 then
+        if ContratoWIPTotal."Schedule (Total Price)" = 0 then
             exit;
 
-        if JobWIPTotalChanged then begin
+        if ContratoWIPTotalChanged then begin
             WIPAmount :=
-              (JobWIPTotal."Usage (Total Cost)" *
-               JobWIPTotal."Contract (Total Price)" /
-               JobWIPTotal."Schedule (Total Price)") -
-              JobWIPTotal."Schedule (Total Cost)" *
-              JobWIPTotal."Contract (Invoiced Price)" /
-              JobWIPTotal."Schedule (Total Price)";
-            if JobWIPTotal."Usage (Total Cost)" <> 0 then
-                RecognizedAllocationPercentage := WIPAmount / JobWIPTotal."Usage (Total Cost)";
+              (ContratoWIPTotal."Usage (Total Cost)" *
+               ContratoWIPTotal."Contract (Total Price)" /
+               ContratoWIPTotal."Schedule (Total Price)") -
+              ContratoWIPTotal."Schedule (Total Cost)" *
+              ContratoWIPTotal."Contract (Invoiced Price)" /
+              ContratoWIPTotal."Schedule (Total Price)";
+            if ContratoWIPTotal."Usage (Total Cost)" <> 0 then
+                RecognizedAllocationPercentage := WIPAmount / ContratoWIPTotal."Usage (Total Cost)";
         end;
 
         if RecognizedAllocationPercentage <> 0 then
-            WIPAmount := Round(JobTask."Usage (Total Cost)" * RecognizedAllocationPercentage);
-        JobTask."Recognized Costs Amount" := JobTask."Usage (Total Cost)" - WIPAmount;
+            WIPAmount := Round(ContratoTask."Usage (Total Cost)" * RecognizedAllocationPercentage);
+        ContratoTask."Recognized Costs Amount" := ContratoTask."Usage (Total Cost)" - WIPAmount;
     end;
 
-    local procedure CalcContractInvoicedCost(var JobTask: Record "Contrato Task")
+    local procedure CalcContractInvoicedCost(var ContratoTask: Record "Contrato Task")
     begin
-        JobTask."Recognized Costs Amount" := JobTask."Contract (Invoiced Cost)";
+        ContratoTask."Recognized Costs Amount" := ContratoTask."Contract (Invoiced Cost)";
     end;
 
-    local procedure CalcUsageTotalCostCosts(var JobTask: Record "Contrato Task")
+    local procedure CalcUsageTotalCostCosts(var ContratoTask: Record "Contrato Task")
     begin
-        JobTask."Recognized Costs Amount" := JobTask."Usage (Total Cost)";
-        OnAfterCalcUsageTotalCostCosts(JobTask);
+        ContratoTask."Recognized Costs Amount" := ContratoTask."Usage (Total Cost)";
+        OnAfterCalcUsageTotalCostCosts(ContratoTask);
     end;
 
-    local procedure CalcContractInvoicedPrice(var JobTask: Record "Contrato Task")
+    local procedure CalcContractInvoicedPrice(var ContratoTask: Record "Contrato Task")
     begin
-        JobTask."Recognized Sales Amount" := JobTask."Contract (Invoiced Price)";
+        ContratoTask."Recognized Sales Amount" := ContratoTask."Contract (Invoiced Price)";
     end;
 
-    local procedure CalcUsageTotalCostSales(var JobTask: Record "Contrato Task")
+    local procedure CalcUsageTotalCostSales(var ContratoTask: Record "Contrato Task")
     begin
-        JobTask."Recognized Sales Amount" := JobTask."Usage (Total Cost)";
+        ContratoTask."Recognized Sales Amount" := ContratoTask."Usage (Total Cost)";
     end;
 
-    local procedure CalcUsageTotalPrice(var JobTask: Record "Contrato Task")
+    local procedure CalcUsageTotalPrice(var ContratoTask: Record "Contrato Task")
     begin
-        JobTask."Recognized Sales Amount" := JobTask."Usage (Total Price)";
+        ContratoTask."Recognized Sales Amount" := ContratoTask."Usage (Total Price)";
     end;
 
-    local procedure CalcPercentageofCompletion(var JobTask: Record "Contrato Task"; JobWIPTotal: Record "Contrato WIP Total")
+    local procedure CalcPercentageofCompletion(var ContratoTask: Record "Contrato Task"; ContratoWIPTotal: Record "Contrato WIP Total")
     var
         IsHandled: Boolean;
     begin
         OnBeforeCalcPercentageOfCompletion(
-          JobTask, JobWIPTotal, JobWIPTotalChanged, WIPAmount, RecognizedAllocationPercentage, IsHandled);
+          ContratoTask, ContratoWIPTotal, ContratoWIPTotalChanged, WIPAmount, RecognizedAllocationPercentage, IsHandled);
         if IsHandled then
             exit;
 
-        if JobWIPTotal."Schedule (Total Cost)" = 0 then
+        if ContratoWIPTotal."Schedule (Total Cost)" = 0 then
             exit;
 
-        if JobWIPTotalChanged then begin
-            if JobWIPTotal."Usage (Total Cost)" <= JobWIPTotal."Schedule (Total Cost)" then
+        if ContratoWIPTotalChanged then begin
+            if ContratoWIPTotal."Usage (Total Cost)" <= ContratoWIPTotal."Schedule (Total Cost)" then
                 WIPAmount :=
-                  (JobWIPTotal."Usage (Total Cost)" / JobWIPTotal."Schedule (Total Cost)") *
-                  JobWIPTotal."Contract (Total Price)"
+                  (ContratoWIPTotal."Usage (Total Cost)" / ContratoWIPTotal."Schedule (Total Cost)") *
+                  ContratoWIPTotal."Contract (Total Price)"
             else
-                WIPAmount := JobWIPTotal."Contract (Total Price)";
-            if JobWIPTotal."Contract (Total Price)" <> 0 then
-                RecognizedAllocationPercentage := WIPAmount / JobWIPTotal."Contract (Total Price)";
+                WIPAmount := ContratoWIPTotal."Contract (Total Price)";
+            if ContratoWIPTotal."Contract (Total Price)" <> 0 then
+                RecognizedAllocationPercentage := WIPAmount / ContratoWIPTotal."Contract (Total Price)";
         end;
 
         if RecognizedAllocationPercentage <> 0 then
-            WIPAmount := Round(JobTask."Contract (Total Price)" * RecognizedAllocationPercentage);
-        JobTask."Recognized Sales Amount" := WIPAmount;
+            WIPAmount := Round(ContratoTask."Contract (Total Price)" * RecognizedAllocationPercentage);
+        ContratoTask."Recognized Sales Amount" := WIPAmount;
     end;
 
-    local procedure CalcSalesValue(var JobTask: Record "Contrato Task"; JobWIPTotal: Record "Contrato WIP Total")
+    local procedure CalcSalesValue(var ContratoTask: Record "Contrato Task"; ContratoWIPTotal: Record "Contrato WIP Total")
     begin
-        if JobWIPTotal."Schedule (Total Price)" = 0 then
+        if ContratoWIPTotal."Schedule (Total Price)" = 0 then
             exit;
 
-        if JobWIPTotalChanged then begin
+        if ContratoWIPTotalChanged then begin
             WIPAmount :=
-              (JobWIPTotal."Usage (Total Price)" *
-               JobWIPTotal."Contract (Total Price)" /
-               JobWIPTotal."Schedule (Total Price)") -
-              JobWIPTotal."Contract (Invoiced Price)";
-            if JobWIPTotal."Usage (Total Price)" <> 0 then
-                RecognizedAllocationPercentage := WIPAmount / JobWIPTotal."Usage (Total Price)";
+              (ContratoWIPTotal."Usage (Total Price)" *
+               ContratoWIPTotal."Contract (Total Price)" /
+               ContratoWIPTotal."Schedule (Total Price)") -
+              ContratoWIPTotal."Contract (Invoiced Price)";
+            if ContratoWIPTotal."Usage (Total Price)" <> 0 then
+                RecognizedAllocationPercentage := WIPAmount / ContratoWIPTotal."Usage (Total Price)";
         end;
 
         if RecognizedAllocationPercentage <> 0 then
-            WIPAmount := Round(JobTask."Usage (Total Price)" * RecognizedAllocationPercentage);
-        JobTask."Recognized Sales Amount" := (JobTask."Contract (Invoiced Price)" + WIPAmount);
+            WIPAmount := Round(ContratoTask."Usage (Total Price)" * RecognizedAllocationPercentage);
+        ContratoTask."Recognized Sales Amount" := (ContratoTask."Contract (Invoiced Price)" + WIPAmount);
     end;
 
-    local procedure CalcCostInvoicePercentage(var JobWIPTotal: Record "Contrato WIP Total")
+    local procedure CalcCostInvoicePercentage(var ContratoWIPTotal: Record "Contrato WIP Total")
     begin
-        if JobWIPTotal."Schedule (Total Cost)" <> 0 then
-            JobWIPTotal."Cost Completion %" := Round(100 * JobWIPTotal."Usage (Total Cost)" / JobWIPTotal."Schedule (Total Cost)", 0.00001)
+        if ContratoWIPTotal."Schedule (Total Cost)" <> 0 then
+            ContratoWIPTotal."Cost Completion %" := Round(100 * ContratoWIPTotal."Usage (Total Cost)" / ContratoWIPTotal."Schedule (Total Cost)", 0.00001)
         else
-            JobWIPTotal."Cost Completion %" := 0;
-        if JobWIPTotal."Contract (Total Price)" <> 0 then
-            JobWIPTotal."Invoiced %" := Round(100 * JobWIPTotal."Contract (Invoiced Price)" / JobWIPTotal."Contract (Total Price)", 0.00001)
+            ContratoWIPTotal."Cost Completion %" := 0;
+        if ContratoWIPTotal."Contract (Total Price)" <> 0 then
+            ContratoWIPTotal."Invoiced %" := Round(100 * ContratoWIPTotal."Contract (Invoiced Price)" / ContratoWIPTotal."Contract (Total Price)", 0.00001)
         else
-            JobWIPTotal."Invoiced %" := 0;
+            ContratoWIPTotal."Invoiced %" := 0;
     end;
 
-    local procedure CreateTempJobWIPBuffers(var JobTask: Record "Contrato Task"; var JobWIPTotal: Record "Contrato WIP Total")
+    local procedure CreateTempContratoWIPBuffers(var ContratoTask: Record "Contrato Task"; var ContratoWIPTotal: Record "Contrato WIP Total")
     var
         Contrato: Record Contrato;
-        JobWIPMethod: Record "Contrato WIP Method";
+        ContratoWIPMethod: Record "Contrato WIP Method";
     begin
-        Contrato.Get(JobTask."Contrato No.");
-        JobWIPMethod.Get(JobWIPTotal."WIP Method");
-        if not JobComplete then begin
-            if JobTask."Recognized Costs Amount" <> 0 then begin
-                CreateWIPBufferEntryFromTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Recognized Costs", false);
+        Contrato.Get(ContratoTask."Contrato No.");
+        ContratoWIPMethod.Get(ContratoWIPTotal."WIP Method");
+        if not ContratoComplete then begin
+            if ContratoTask."Recognized Costs Amount" <> 0 then begin
+                CreateWIPBufferEntryFromTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Recognized Costs", false);
                 if Contrato."WIP Posting Method" = Contrato."WIP Posting Method"::"Per Contrato" then
-                    CreateWIPBufferEntryFromTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Costs", false)
+                    CreateWIPBufferEntryFromTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Costs", false)
                 else
-                    FindJobLedgerEntriesByJobTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Costs");
+                    FindContratoLedgerEntriesByContratoTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Costs");
             end;
-            if JobTask."Recognized Sales Amount" <> 0 then begin
-                CreateWIPBufferEntryFromTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Recognized Sales", false);
+            if ContratoTask."Recognized Sales Amount" <> 0 then begin
+                CreateWIPBufferEntryFromTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Recognized Sales", false);
                 if (Contrato."WIP Posting Method" = Contrato."WIP Posting Method"::"Per Contrato") or
-                    (JobWIPMethod."Recognized Sales" = JobWIPMethod."Recognized Sales"::"Percentage of Completion")
+                    (ContratoWIPMethod."Recognized Sales" = ContratoWIPMethod."Recognized Sales"::"Percentage of Completion")
                 then
                     CreateWIPBufferEntryFromTask(
-                        JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Sales",
-                        ((JobTask."Contract (Invoiced Price)" > JobTask."Recognized Sales Amount") and
-                        (JobWIPMethod."Recognized Sales" = JobWIPMethod."Recognized Sales"::"Percentage of Completion")))
+                        ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Sales",
+                        ((ContratoTask."Contract (Invoiced Price)" > ContratoTask."Recognized Sales Amount") and
+                        (ContratoWIPMethod."Recognized Sales" = ContratoWIPMethod."Recognized Sales"::"Percentage of Completion")))
                 else
-                    FindJobLedgerEntriesByJobTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Sales");
-                if JobTask."Recognized Sales Amount" > JobTask."Contract (Invoiced Price)" then
-                    CreateWIPBufferEntryFromTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Accrued Sales", false);
+                    FindContratoLedgerEntriesByContratoTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Sales");
+                if ContratoTask."Recognized Sales Amount" > ContratoTask."Contract (Invoiced Price)" then
+                    CreateWIPBufferEntryFromTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Accrued Sales", false);
             end;
-            if (JobTask."Recognized Costs Amount" = 0) and (JobTask."Usage (Total Cost)" <> 0) then
+            if (ContratoTask."Recognized Costs Amount" = 0) and (ContratoTask."Usage (Total Cost)" <> 0) then
                 if Contrato."WIP Posting Method" = Contrato."WIP Posting Method"::"Per Contrato" then
-                    CreateWIPBufferEntryFromTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Costs", false)
+                    CreateWIPBufferEntryFromTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Costs", false)
                 else
-                    FindJobLedgerEntriesByJobTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Costs");
-            if (JobTask."Recognized Sales Amount" = 0) and (JobTask."Contract (Invoiced Price)" <> 0) then
+                    FindContratoLedgerEntriesByContratoTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Costs");
+            if (ContratoTask."Recognized Sales Amount" = 0) and (ContratoTask."Contract (Invoiced Price)" <> 0) then
                 if Contrato."WIP Posting Method" = Contrato."WIP Posting Method"::"Per Contrato" then
-                    CreateWIPBufferEntryFromTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Sales", false)
+                    CreateWIPBufferEntryFromTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Sales", false)
                 else
-                    FindJobLedgerEntriesByJobTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Sales");
+                    FindContratoLedgerEntriesByContratoTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Sales");
         end else begin
             if Contrato."WIP Posting Method" = Contrato."WIP Posting Method"::"Per Contrato Ledger Entry" then begin
-                FindJobLedgerEntriesByJobTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Costs");
-                FindJobLedgerEntriesByJobTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Sales");
+                FindContratoLedgerEntriesByContratoTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Costs");
+                FindContratoLedgerEntriesByContratoTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Applied Sales");
             end;
 
-            if JobTask."Recognized Costs Amount" <> 0 then
-                CreateWIPBufferEntryFromTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Recognized Costs", false);
-            if JobTask."Recognized Sales Amount" <> 0 then
-                CreateWIPBufferEntryFromTask(JobTask, JobWIPTotal, Enum::"Contrato WIP Buffer Type"::"Recognized Sales", false);
+            if ContratoTask."Recognized Costs Amount" <> 0 then
+                CreateWIPBufferEntryFromTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Recognized Costs", false);
+            if ContratoTask."Recognized Sales Amount" <> 0 then
+                CreateWIPBufferEntryFromTask(ContratoTask, ContratoWIPTotal, Enum::"Contrato WIP Buffer Type"::"Recognized Sales", false);
         end;
     end;
 
-    procedure CreateWIPBufferEntryFromTask(var JobTask: Record "Contrato Task"; var JobWIPTotal: Record "Contrato WIP Total"; JobWIPBufferType: Enum "Contrato WIP Buffer Type"; AppliedAccrued: Boolean)
+    procedure CreateWIPBufferEntryFromTask(var ContratoTask: Record "Contrato Task"; var ContratoWIPTotal: Record "Contrato WIP Total"; ContratoWIPBufferType: Enum "Contrato WIP Buffer Type"; AppliedAccrued: Boolean)
     begin
         InitWIPBufferEntryFromTask(
-          JobTask, JobWIPTotal, JobWIPBufferType, GetWIPEntryAmount(JobWIPBufferType, JobTask, JobWIPTotal."WIP Method", AppliedAccrued));
-        UpdateWIPBufferEntryFromTask(JobTask, JobWIPTotal);
+          ContratoTask, ContratoWIPTotal, ContratoWIPBufferType, GetWIPEntryAmount(ContratoWIPBufferType, ContratoTask, ContratoWIPTotal."WIP Method", AppliedAccrued));
+        UpdateWIPBufferEntryFromTask(ContratoTask, ContratoWIPTotal);
     end;
 
-    local procedure InitWIPBufferEntryFromTask(var JobTask: Record "Contrato Task"; var JobWIPTotal: Record "Contrato WIP Total"; JobWIPBufferType: Enum "Contrato WIP Buffer Type"; WIPEntryAmount: Decimal)
+    local procedure InitWIPBufferEntryFromTask(var ContratoTask: Record "Contrato Task"; var ContratoWIPTotal: Record "Contrato WIP Total"; ContratoWIPBufferType: Enum "Contrato WIP Buffer Type"; WIPEntryAmount: Decimal)
     var
-        JobTaskDimension: Record "Contrato Task Dimension";
+        ContratoTaskDimension: Record "Contrato Task Dimension";
         TempDimensionBuffer: Record "Dimension Buffer" temporary;
         Contrato: Record Contrato;
-        JobPostingGroup: Record "Contrato Posting Group";
-        JobWIPMethod: Record "Contrato WIP Method";
+        ContratoPostingGroup: Record "Contrato Posting Group";
+        ContratoWIPMethod: Record "Contrato WIP Method";
     begin
-        Clear(TempJobWIPBuffer);
+        Clear(TempContratoWIPBuffer);
         TempDimensionBuffer.Reset();
         TempDimensionBuffer.DeleteAll();
 
-        JobTaskDimension.SetRange("Contrato No.", JobTask."Contrato No.");
-        JobTaskDimension.SetRange("Contrato Task No.", JobTask."Contrato Task No.");
-        if JobTaskDimension.FindSet() then
+        ContratoTaskDimension.SetRange("Contrato No.", ContratoTask."Contrato No.");
+        ContratoTaskDimension.SetRange("Contrato Task No.", ContratoTask."Contrato Task No.");
+        if ContratoTaskDimension.FindSet() then
             repeat
-                TempDimensionBuffer."Dimension Code" := JobTaskDimension."Dimension Code";
-                TempDimensionBuffer."Dimension Value Code" := JobTaskDimension."Dimension Value Code";
+                TempDimensionBuffer."Dimension Code" := ContratoTaskDimension."Dimension Code";
+                TempDimensionBuffer."Dimension Value Code" := ContratoTaskDimension."Dimension Value Code";
                 TempDimensionBuffer.Insert();
-            until JobTaskDimension.Next() = 0;
+            until ContratoTaskDimension.Next() = 0;
         if not DimMgt.CheckDimBuffer(TempDimensionBuffer) then
             Error(DimMgt.GetDimCombErr());
-        OnInitWIPBufferEntryFromTaskOnBeforeSetDimCombinationID(TempDimensionBuffer, JobTask);
-        TempJobWIPBuffer[1]."Dim Combination ID" := DimMgt.CreateDimSetIDFromDimBuf(TempDimensionBuffer);
+        OnInitWIPBufferEntryFromTaskOnBeforeSetDimCombinationID(TempDimensionBuffer, ContratoTask);
+        TempContratoWIPBuffer[1]."Dim Combination ID" := DimMgt.CreateDimSetIDFromDimBuf(TempDimensionBuffer);
 
-        Contrato.Get(JobTask."Contrato No.");
-        if JobTask."Contrato Posting Group" = '' then begin
+        Contrato.Get(ContratoTask."Contrato No.");
+        if ContratoTask."Contrato Posting Group" = '' then begin
             Contrato.TestField("Contrato Posting Group");
-            JobTask."Contrato Posting Group" := Contrato."Contrato Posting Group";
+            ContratoTask."Contrato Posting Group" := Contrato."Contrato Posting Group";
         end;
-        JobPostingGroup.Get(JobTask."Contrato Posting Group");
-        JobWIPMethod.Get(JobWIPTotal."WIP Method");
+        ContratoPostingGroup.Get(ContratoTask."Contrato Posting Group");
+        ContratoWIPMethod.Get(ContratoWIPTotal."WIP Method");
 
-        case JobWIPBufferType of
+        case ContratoWIPBufferType of
             Enum::"Contrato WIP Buffer Type"::"Applied Costs":
                 begin
-                    TempJobWIPBuffer[1].Type := TempJobWIPBuffer[1].Type::"Applied Costs";
-                    TempJobWIPBuffer[1]."G/L Account No." := JobPostingGroup.GetJobCostsAppliedAccount();
-                    TempJobWIPBuffer[1]."Bal. G/L Account No." := JobPostingGroup.GetWIPCostsAccount();
+                    TempContratoWIPBuffer[1].Type := TempContratoWIPBuffer[1].Type::"Applied Costs";
+                    TempContratoWIPBuffer[1]."G/L Account No." := ContratoPostingGroup.GetContratoCostsAppliedAccount();
+                    TempContratoWIPBuffer[1]."Bal. G/L Account No." := ContratoPostingGroup.GetWIPCostsAccount();
                 end;
             Enum::"Contrato WIP Buffer Type"::"Applied Sales":
                 begin
-                    TempJobWIPBuffer[1].Type := TempJobWIPBuffer[1].Type::"Applied Sales";
-                    TempJobWIPBuffer[1]."G/L Account No." := JobPostingGroup.GetJobSalesAppliedAccount();
-                    TempJobWIPBuffer[1]."Bal. G/L Account No." := JobPostingGroup.GetWIPInvoicedSalesAccount();
+                    TempContratoWIPBuffer[1].Type := TempContratoWIPBuffer[1].Type::"Applied Sales";
+                    TempContratoWIPBuffer[1]."G/L Account No." := ContratoPostingGroup.GetContratoSalesAppliedAccount();
+                    TempContratoWIPBuffer[1]."Bal. G/L Account No." := ContratoPostingGroup.GetWIPInvoicedSalesAccount();
                 end;
             Enum::"Contrato WIP Buffer Type"::"Recognized Costs":
                 begin
-                    TempJobWIPBuffer[1].Type := TempJobWIPBuffer[1].Type::"Recognized Costs";
-                    TempJobWIPBuffer[1]."G/L Account No." := JobPostingGroup.GetRecognizedCostsAccount();
-                    TempJobWIPBuffer[1]."Bal. G/L Account No." := GetRecognizedCostsBalGLAccountNo(Contrato, JobPostingGroup);
-                    TempJobWIPBuffer[1]."Contrato Complete" := JobComplete;
+                    TempContratoWIPBuffer[1].Type := TempContratoWIPBuffer[1].Type::"Recognized Costs";
+                    TempContratoWIPBuffer[1]."G/L Account No." := ContratoPostingGroup.GetRecognizedCostsAccount();
+                    TempContratoWIPBuffer[1]."Bal. G/L Account No." := GetRecognizedCostsBalGLAccountNo(Contrato, ContratoPostingGroup);
+                    TempContratoWIPBuffer[1]."Contrato Complete" := ContratoComplete;
                 end;
             Enum::"Contrato WIP Buffer Type"::"Recognized Sales":
                 begin
-                    TempJobWIPBuffer[1].Type := TempJobWIPBuffer[1].Type::"Recognized Sales";
-                    TempJobWIPBuffer[1]."G/L Account No." := JobPostingGroup.GetRecognizedSalesAccount();
-                    TempJobWIPBuffer[1]."Bal. G/L Account No." := GetRecognizedSalesBalGLAccountNo(Contrato, JobPostingGroup, JobWIPMethod);
-                    TempJobWIPBuffer[1]."Contrato Complete" := JobComplete;
+                    TempContratoWIPBuffer[1].Type := TempContratoWIPBuffer[1].Type::"Recognized Sales";
+                    TempContratoWIPBuffer[1]."G/L Account No." := ContratoPostingGroup.GetRecognizedSalesAccount();
+                    TempContratoWIPBuffer[1]."Bal. G/L Account No." := GetRecognizedSalesBalGLAccountNo(Contrato, ContratoPostingGroup, ContratoWIPMethod);
+                    TempContratoWIPBuffer[1]."Contrato Complete" := ContratoComplete;
                 end;
             Enum::"Contrato WIP Buffer Type"::"Accrued Costs":
                 begin
-                    TempJobWIPBuffer[1].Type := TempJobWIPBuffer[1].Type::"Accrued Costs";
-                    TempJobWIPBuffer[1]."G/L Account No." := JobPostingGroup.GetJobCostsAdjustmentAccount();
-                    TempJobWIPBuffer[1]."Bal. G/L Account No." := JobPostingGroup.GetWIPAccruedCostsAccount();
+                    TempContratoWIPBuffer[1].Type := TempContratoWIPBuffer[1].Type::"Accrued Costs";
+                    TempContratoWIPBuffer[1]."G/L Account No." := ContratoPostingGroup.GetContratoCostsAdjustmentAccount();
+                    TempContratoWIPBuffer[1]."Bal. G/L Account No." := ContratoPostingGroup.GetWIPAccruedCostsAccount();
                 end;
             Enum::"Contrato WIP Buffer Type"::"Accrued Sales":
                 begin
-                    TempJobWIPBuffer[1].Type := TempJobWIPBuffer[1].Type::"Accrued Sales";
-                    TempJobWIPBuffer[1]."G/L Account No." := JobPostingGroup.GetJobSalesAdjustmentAccount();
-                    TempJobWIPBuffer[1]."Bal. G/L Account No." := JobPostingGroup.GetWIPAccruedSalesAccount();
+                    TempContratoWIPBuffer[1].Type := TempContratoWIPBuffer[1].Type::"Accrued Sales";
+                    TempContratoWIPBuffer[1]."G/L Account No." := ContratoPostingGroup.GetContratoSalesAdjustmentAccount();
+                    TempContratoWIPBuffer[1]."Bal. G/L Account No." := ContratoPostingGroup.GetWIPAccruedSalesAccount();
                 end;
         end;
-        TempJobWIPBuffer[1]."WIP Entry Amount" := WIPEntryAmount;
+        TempContratoWIPBuffer[1]."WIP Entry Amount" := WIPEntryAmount;
     end;
 
-    local procedure UpdateWIPBufferEntryFromTask(var JobTask: Record "Contrato Task"; var JobWIPTotal: Record "Contrato WIP Total")
+    local procedure UpdateWIPBufferEntryFromTask(var ContratoTask: Record "Contrato Task"; var ContratoWIPTotal: Record "Contrato WIP Total")
     begin
-        if TempJobWIPBuffer[1]."WIP Entry Amount" <> 0 then begin
-            TempJobWIPBuffer[1].Reverse := true;
-            TransferJobTaskToTempJobWIPBuf(JobTask, JobWIPTotal);
-            UpdateTempJobWIPBufferEntry();
+        if TempContratoWIPBuffer[1]."WIP Entry Amount" <> 0 then begin
+            TempContratoWIPBuffer[1].Reverse := true;
+            TransferContratoTaskToTempContratoWIPBuf(ContratoTask, ContratoWIPTotal);
+            UpdateTempContratoWIPBufferEntry();
         end;
     end;
 
-    procedure FindJobLedgerEntriesByJobTask(var JobTask: Record "Contrato Task"; var JobWIPTotal: Record "Contrato WIP Total"; JobWIPBufferType: Enum "Contrato WIP Buffer Type")
+    procedure FindContratoLedgerEntriesByContratoTask(var ContratoTask: Record "Contrato Task"; var ContratoWIPTotal: Record "Contrato WIP Total"; ContratoWIPBufferType: Enum "Contrato WIP Buffer Type")
     var
-        JobLedgerEntry: Record "Contrato Ledger Entry";
-        JobWIPMethod: Record "Contrato WIP Method";
+        ContratoLedgerEntry: Record "Contrato Ledger Entry";
+        ContratoWIPMethod: Record "Contrato WIP Method";
     begin
-        JobLedgerEntry.SetRange("Contrato No.", JobTask."Contrato No.");
-        JobLedgerEntry.SetRange("Contrato Task No.", JobTask."Contrato Task No.");
-        JobLedgerEntry.SetFilter("Posting Date", JobTask.GetFilter("Posting Date Filter"));
-        if JobWIPBufferType = Enum::"Contrato WIP Buffer Type"::"Applied Costs" then
-            JobLedgerEntry.SetRange("Entry Type", JobLedgerEntry."Entry Type"::Usage);
-        if JobWIPBufferType = Enum::"Contrato WIP Buffer Type"::"Applied Sales" then begin
-            JobLedgerEntry.SetRange("Entry Type", JobLedgerEntry."Entry Type"::Sale);
-            if JobWIPMethod.Get(JobWIPTotal."WIP Method") then
-                if JobWIPMethod."Recognized Sales" = JobWIPMethod."Recognized Sales"::"Usage (Total Price)" then
-                    if JobTask."Contract (Invoiced Price)" < JobTask."Recognized Sales Amount" then
-                        JobLedgerEntry.SetRange("Entry Type", JobLedgerEntry."Entry Type"::Usage);
+        ContratoLedgerEntry.SetRange("Contrato No.", ContratoTask."Contrato No.");
+        ContratoLedgerEntry.SetRange("Contrato Task No.", ContratoTask."Contrato Task No.");
+        ContratoLedgerEntry.SetFilter("Posting Date", ContratoTask.GetFilter("Posting Date Filter"));
+        if ContratoWIPBufferType = Enum::"Contrato WIP Buffer Type"::"Applied Costs" then
+            ContratoLedgerEntry.SetRange("Entry Type", ContratoLedgerEntry."Entry Type"::Usage);
+        if ContratoWIPBufferType = Enum::"Contrato WIP Buffer Type"::"Applied Sales" then begin
+            ContratoLedgerEntry.SetRange("Entry Type", ContratoLedgerEntry."Entry Type"::Sale);
+            if ContratoWIPMethod.Get(ContratoWIPTotal."WIP Method") then
+                if ContratoWIPMethod."Recognized Sales" = ContratoWIPMethod."Recognized Sales"::"Usage (Total Price)" then
+                    if ContratoTask."Contract (Invoiced Price)" < ContratoTask."Recognized Sales Amount" then
+                        ContratoLedgerEntry.SetRange("Entry Type", ContratoLedgerEntry."Entry Type"::Usage);
         end;
-        if JobLedgerEntry.FindSet() then
+        if ContratoLedgerEntry.FindSet() then
             repeat
-                CreateWIPBufferEntryFromLedger(JobLedgerEntry, JobTask, JobWIPTotal, JobWIPBufferType)
-            until JobLedgerEntry.Next() = 0;
+                CreateWIPBufferEntryFromLedger(ContratoLedgerEntry, ContratoTask, ContratoWIPTotal, ContratoWIPBufferType)
+            until ContratoLedgerEntry.Next() = 0;
     end;
 
-    procedure CreateWIPBufferEntryFromLedger(var JobLedgerEntry: Record "Contrato Ledger Entry"; var JobTask: Record "Contrato Task"; var JobWIPTotal: Record "Contrato WIP Total"; JobWIPBufferType: Enum "Contrato WIP Buffer Type")
+    procedure CreateWIPBufferEntryFromLedger(var ContratoLedgerEntry: Record "Contrato Ledger Entry"; var ContratoTask: Record "Contrato Task"; var ContratoWIPTotal: Record "Contrato WIP Total"; ContratoWIPBufferType: Enum "Contrato WIP Buffer Type")
     var
         Contrato: Record Contrato;
-        JobPostingGroup: Record "Contrato Posting Group";
+        ContratoPostingGroup: Record "Contrato Posting Group";
     begin
-        Clear(TempJobWIPBuffer);
-        TempJobWIPBuffer[1]."Dim Combination ID" := JobLedgerEntry."Dimension Set ID";
-        TempJobWIPBuffer[1]."Contrato Complete" := JobComplete;
-        OnBeforeCreateWIPBufferEntryFromLedgerOnBeforeAssignPostingGroup(TempJobWIPBuffer[1], JobLedgerEntry, JobComplete);
-        if JobTask."Contrato Posting Group" = '' then begin
-            Contrato.Get(JobTask."Contrato No.");
+        Clear(TempContratoWIPBuffer);
+        TempContratoWIPBuffer[1]."Dim Combination ID" := ContratoLedgerEntry."Dimension Set ID";
+        TempContratoWIPBuffer[1]."Contrato Complete" := ContratoComplete;
+        OnBeforeCreateWIPBufferEntryFromLedgerOnBeforeAssignPostingGroup(TempContratoWIPBuffer[1], ContratoLedgerEntry, ContratoComplete);
+        if ContratoTask."Contrato Posting Group" = '' then begin
+            Contrato.Get(ContratoTask."Contrato No.");
             Contrato.TestField("Contrato Posting Group");
-            JobTask."Contrato Posting Group" := Contrato."Contrato Posting Group";
+            ContratoTask."Contrato Posting Group" := Contrato."Contrato Posting Group";
         end;
-        JobPostingGroup.Get(JobTask."Contrato Posting Group");
+        ContratoPostingGroup.Get(ContratoTask."Contrato Posting Group");
 
-        case JobWIPBufferType of
+        case ContratoWIPBufferType of
             Enum::"Contrato WIP Buffer Type"::"Applied Costs":
                 begin
-                    TempJobWIPBuffer[1].Type := TempJobWIPBuffer[1].Type::"Applied Costs";
-                    case JobLedgerEntry.Type of
-                        JobLedgerEntry.Type::Item:
-                            TempJobWIPBuffer[1]."G/L Account No." := JobPostingGroup.GetItemCostsAppliedAccount();
-                        JobLedgerEntry.Type::Resource:
-                            TempJobWIPBuffer[1]."G/L Account No." := JobPostingGroup.GetResourceCostsAppliedAccount();
-                        JobLedgerEntry.Type::"G/L Account":
-                            TempJobWIPBuffer[1]."G/L Account No." := JobPostingGroup.GetGLCostsAppliedAccount();
+                    TempContratoWIPBuffer[1].Type := TempContratoWIPBuffer[1].Type::"Applied Costs";
+                    case ContratoLedgerEntry.Type of
+                        ContratoLedgerEntry.Type::Item:
+                            TempContratoWIPBuffer[1]."G/L Account No." := ContratoPostingGroup.GetItemCostsAppliedAccount();
+                        ContratoLedgerEntry.Type::Resource:
+                            TempContratoWIPBuffer[1]."G/L Account No." := ContratoPostingGroup.GetResourceCostsAppliedAccount();
+                        ContratoLedgerEntry.Type::"G/L Account":
+                            TempContratoWIPBuffer[1]."G/L Account No." := ContratoPostingGroup.GetGLCostsAppliedAccount();
                     end;
-                    TempJobWIPBuffer[1]."Bal. G/L Account No." := JobPostingGroup.GetWIPCostsAccount();
-                    TempJobWIPBuffer[1]."WIP Entry Amount" := -JobLedgerEntry."Total Cost (LCY)";
-                    JobLedgerEntry."Amt. to Post to G/L" := JobLedgerEntry."Total Cost (LCY)" - JobLedgerEntry."Amt. Posted to G/L";
+                    TempContratoWIPBuffer[1]."Bal. G/L Account No." := ContratoPostingGroup.GetWIPCostsAccount();
+                    TempContratoWIPBuffer[1]."WIP Entry Amount" := -ContratoLedgerEntry."Total Cost (LCY)";
+                    ContratoLedgerEntry."Amt. to Post to G/L" := ContratoLedgerEntry."Total Cost (LCY)" - ContratoLedgerEntry."Amt. Posted to G/L";
                 end;
             Enum::"Contrato WIP Buffer Type"::"Applied Sales":
                 begin
-                    TempJobWIPBuffer[1].Type := TempJobWIPBuffer[1].Type::"Applied Sales";
-                    TempJobWIPBuffer[1]."G/L Account No." := JobPostingGroup.GetJobSalesAppliedAccount();
-                    TempJobWIPBuffer[1]."Bal. G/L Account No." := JobPostingGroup.GetWIPInvoicedSalesAccount();
-                    if JobLedgerEntry."Entry Type" = JobLedgerEntry."Entry Type"::Sale then
-                        TempJobWIPBuffer[1]."WIP Entry Amount" := -JobLedgerEntry."Line Amount (LCY)"
+                    TempContratoWIPBuffer[1].Type := TempContratoWIPBuffer[1].Type::"Applied Sales";
+                    TempContratoWIPBuffer[1]."G/L Account No." := ContratoPostingGroup.GetContratoSalesAppliedAccount();
+                    TempContratoWIPBuffer[1]."Bal. G/L Account No." := ContratoPostingGroup.GetWIPInvoicedSalesAccount();
+                    if ContratoLedgerEntry."Entry Type" = ContratoLedgerEntry."Entry Type"::Sale then
+                        TempContratoWIPBuffer[1]."WIP Entry Amount" := -ContratoLedgerEntry."Line Amount (LCY)"
                     else
-                        TempJobWIPBuffer[1]."WIP Entry Amount" := JobLedgerEntry."Line Amount (LCY)";
-                    JobLedgerEntry."Amt. to Post to G/L" := JobLedgerEntry."Line Amount (LCY)" - JobLedgerEntry."Amt. Posted to G/L";
+                        TempContratoWIPBuffer[1]."WIP Entry Amount" := ContratoLedgerEntry."Line Amount (LCY)";
+                    ContratoLedgerEntry."Amt. to Post to G/L" := ContratoLedgerEntry."Line Amount (LCY)" - ContratoLedgerEntry."Amt. Posted to G/L";
                 end;
         end;
-        OnCreateWIPBufferEntryFromLedgerOnBeforeModifyJobLedgerEntry(JobLedgerEntry, TempJobWIPBuffer, JobWIPBufferType);
-        JobLedgerEntry.Modify();
+        OnCreateWIPBufferEntryFromLedgerOnBeforeModifyContratoLedgerEntry(ContratoLedgerEntry, TempContratoWIPBuffer, ContratoWIPBufferType);
+        ContratoLedgerEntry.Modify();
 
-        if TempJobWIPBuffer[1]."WIP Entry Amount" <> 0 then begin
-            TempJobWIPBuffer[1].Reverse := true;
-            TransferJobTaskToTempJobWIPBuf(JobTask, JobWIPTotal);
-            UpdateTempJobWIPBufferEntry();
+        if TempContratoWIPBuffer[1]."WIP Entry Amount" <> 0 then begin
+            TempContratoWIPBuffer[1].Reverse := true;
+            TransferContratoTaskToTempContratoWIPBuf(ContratoTask, ContratoWIPTotal);
+            UpdateTempContratoWIPBufferEntry();
         end;
     end;
 
-    local procedure TransferJobTaskToTempJobWIPBuf(JobTask: Record "Contrato Task"; JobWIPTotal: Record "Contrato WIP Total")
+    local procedure TransferContratoTaskToTempContratoWIPBuf(ContratoTask: Record "Contrato Task"; ContratoWIPTotal: Record "Contrato WIP Total")
     var
         Contrato: Record Contrato;
     begin
-        Contrato.Get(JobTask."Contrato No.");
-        TempJobWIPBuffer[1]."WIP Posting Method Used" := Contrato."WIP Posting Method";
-        TempJobWIPBuffer[1]."Contrato No." := JobTask."Contrato No.";
-        TempJobWIPBuffer[1]."Posting Group" := JobTask."Contrato Posting Group";
-        TempJobWIPBuffer[1]."WIP Method" := JobWIPTotal."WIP Method";
-        TempJobWIPBuffer[1]."Contrato WIP Total Entry No." := JobWIPTotal."Entry No.";
+        Contrato.Get(ContratoTask."Contrato No.");
+        TempContratoWIPBuffer[1]."WIP Posting Method Used" := Contrato."WIP Posting Method";
+        TempContratoWIPBuffer[1]."Contrato No." := ContratoTask."Contrato No.";
+        TempContratoWIPBuffer[1]."Posting Group" := ContratoTask."Contrato Posting Group";
+        TempContratoWIPBuffer[1]."WIP Method" := ContratoWIPTotal."WIP Method";
+        TempContratoWIPBuffer[1]."Contrato WIP Total Entry No." := ContratoWIPTotal."Entry No.";
     end;
 
-    local procedure UpdateTempJobWIPBufferEntry()
+    local procedure UpdateTempContratoWIPBufferEntry()
     begin
-        TempJobWIPBuffer[2] := TempJobWIPBuffer[1];
-        if TempJobWIPBuffer[2].Find() then begin
-            TempJobWIPBuffer[2]."WIP Entry Amount" += TempJobWIPBuffer[1]."WIP Entry Amount";
-            TempJobWIPBuffer[2].Modify();
+        TempContratoWIPBuffer[2] := TempContratoWIPBuffer[1];
+        if TempContratoWIPBuffer[2].Find() then begin
+            TempContratoWIPBuffer[2]."WIP Entry Amount" += TempContratoWIPBuffer[1]."WIP Entry Amount";
+            TempContratoWIPBuffer[2].Modify();
         end else
-            TempJobWIPBuffer[1].Insert();
+            TempContratoWIPBuffer[1].Insert();
     end;
 
-    local procedure CreateWIPEntries(JobNo: Code[20])
+    local procedure CreateWIPEntries(ContratoNo: Code[20])
     var
-        JobWIPEntry: Record "Contrato WIP Entry";
-        JobWIPMethod: Record "Contrato WIP Method";
+        ContratoWIPEntry: Record "Contrato WIP Entry";
+        ContratoWIPMethod: Record "Contrato WIP Method";
         NextEntryNo: Integer;
         CreateEntry: Boolean;
     begin
-        NextEntryNo := JobWIPEntry.GetLastEntryNo() + 1;
+        NextEntryNo := ContratoWIPEntry.GetLastEntryNo() + 1;
 
         GetGLSetup();
-        if TempJobWIPBuffer[1].Find('-') then
+        if TempContratoWIPBuffer[1].Find('-') then
             repeat
                 CreateEntry := true;
 
-                JobWIPMethod.Get(TempJobWIPBuffer[1]."WIP Method");
-                if not JobWIPMethod."WIP Cost" and
-                   ((TempJobWIPBuffer[1].Type = TempJobWIPBuffer[1].Type::"Recognized Costs") or
-                    (TempJobWIPBuffer[1].Type = TempJobWIPBuffer[1].Type::"Applied Costs"))
+                ContratoWIPMethod.Get(TempContratoWIPBuffer[1]."WIP Method");
+                if not ContratoWIPMethod."WIP Cost" and
+                   ((TempContratoWIPBuffer[1].Type = TempContratoWIPBuffer[1].Type::"Recognized Costs") or
+                    (TempContratoWIPBuffer[1].Type = TempContratoWIPBuffer[1].Type::"Applied Costs"))
                 then
                     CreateEntry := false;
 
-                if not JobWIPMethod."WIP Sales" and
-                   ((TempJobWIPBuffer[1].Type = TempJobWIPBuffer[1].Type::"Recognized Sales") or
-                    (TempJobWIPBuffer[1].Type = TempJobWIPBuffer[1].Type::"Applied Sales"))
+                if not ContratoWIPMethod."WIP Sales" and
+                   ((TempContratoWIPBuffer[1].Type = TempContratoWIPBuffer[1].Type::"Recognized Sales") or
+                    (TempContratoWIPBuffer[1].Type = TempContratoWIPBuffer[1].Type::"Applied Sales"))
                 then
                     CreateEntry := false;
 
-                if TempJobWIPBuffer[1]."WIP Entry Amount" = 0 then
+                if TempContratoWIPBuffer[1]."WIP Entry Amount" = 0 then
                     CreateEntry := false;
 
                 if CreateEntry then begin
-                    Clear(JobWIPEntry);
-                    JobWIPEntry."Contrato No." := JobNo;
-                    JobWIPEntry."WIP Posting Date" := WIPPostingDate;
-                    JobWIPEntry."Document No." := DocNo;
-                    JobWIPEntry.Type := TempJobWIPBuffer[1].Type;
-                    JobWIPEntry."Contrato Posting Group" := TempJobWIPBuffer[1]."Posting Group";
-                    JobWIPEntry."G/L Account No." := TempJobWIPBuffer[1]."G/L Account No.";
-                    JobWIPEntry."G/L Bal. Account No." := TempJobWIPBuffer[1]."Bal. G/L Account No.";
-                    JobWIPEntry."WIP Method Used" := TempJobWIPBuffer[1]."WIP Method";
-                    JobWIPEntry."Contrato Complete" := TempJobWIPBuffer[1]."Contrato Complete";
-                    JobWIPEntry."Contrato WIP Total Entry No." := TempJobWIPBuffer[1]."Contrato WIP Total Entry No.";
-                    JobWIPEntry."WIP Entry Amount" := Round(TempJobWIPBuffer[1]."WIP Entry Amount");
-                    JobWIPEntry.Reverse := TempJobWIPBuffer[1].Reverse;
-                    JobWIPEntry."WIP Posting Method Used" := TempJobWIPBuffer[1]."WIP Posting Method Used";
-                    JobWIPEntry."Entry No." := NextEntryNo;
-                    JobWIPEntry."Dimension Set ID" := TempJobWIPBuffer[1]."Dim Combination ID";
-                    DimMgt.UpdateGlobalDimFromDimSetID(JobWIPEntry."Dimension Set ID", JobWIPEntry."Global Dimension 1 Code",
-                      JobWIPEntry."Global Dimension 2 Code");
-                    OnCreateWIPEntriesOnBeforeJobWIPEntryInsert(JobWIPEntry);
-                    JobWIPEntry.Insert(true);
+                    Clear(ContratoWIPEntry);
+                    ContratoWIPEntry."Contrato No." := ContratoNo;
+                    ContratoWIPEntry."WIP Posting Date" := WIPPostingDate;
+                    ContratoWIPEntry."Document No." := DocNo;
+                    ContratoWIPEntry.Type := TempContratoWIPBuffer[1].Type;
+                    ContratoWIPEntry."Contrato Posting Group" := TempContratoWIPBuffer[1]."Posting Group";
+                    ContratoWIPEntry."G/L Account No." := TempContratoWIPBuffer[1]."G/L Account No.";
+                    ContratoWIPEntry."G/L Bal. Account No." := TempContratoWIPBuffer[1]."Bal. G/L Account No.";
+                    ContratoWIPEntry."WIP Method Used" := TempContratoWIPBuffer[1]."WIP Method";
+                    ContratoWIPEntry."Contrato Complete" := TempContratoWIPBuffer[1]."Contrato Complete";
+                    ContratoWIPEntry."Contrato WIP Total Entry No." := TempContratoWIPBuffer[1]."Contrato WIP Total Entry No.";
+                    ContratoWIPEntry."WIP Entry Amount" := Round(TempContratoWIPBuffer[1]."WIP Entry Amount");
+                    ContratoWIPEntry.Reverse := TempContratoWIPBuffer[1].Reverse;
+                    ContratoWIPEntry."WIP Posting Method Used" := TempContratoWIPBuffer[1]."WIP Posting Method Used";
+                    ContratoWIPEntry."Entry No." := NextEntryNo;
+                    ContratoWIPEntry."Dimension Set ID" := TempContratoWIPBuffer[1]."Dim Combination ID";
+                    DimMgt.UpdateGlobalDimFromDimSetID(ContratoWIPEntry."Dimension Set ID", ContratoWIPEntry."Global Dimension 1 Code",
+                      ContratoWIPEntry."Global Dimension 2 Code");
+                    OnCreateWIPEntriesOnBeforeContratoWIPEntryInsert(ContratoWIPEntry);
+                    ContratoWIPEntry.Insert(true);
                     NextEntryNo := NextEntryNo + 1;
                 end;
-            until TempJobWIPBuffer[1].Next() = 0;
+            until TempContratoWIPBuffer[1].Next() = 0;
     end;
 
-    procedure CalcGLWIP(JobNo: Code[20]; JustReverse: Boolean; DocNo: Code[20]; PostingDate: Date; NewPostDate: Boolean)
+    procedure CalcGLWIP(ContratoNo: Code[20]; JustReverse: Boolean; DocNo: Code[20]; PostingDate: Date; NewPostDate: Boolean)
     var
         SourceCodeSetup: Record "Source Code Setup";
         GLEntry: Record "G/L Entry";
         Contrato: Record Contrato;
-        JobWIPEntry: Record "Contrato WIP Entry";
-        JobWIPGLEntry: Record "Contrato WIP G/L Entry";
-        JobWIPTotal: Record "Contrato WIP Total";
-        JobLedgerEntry: Record "Contrato Ledger Entry";
-        JobTask: Record "Contrato Task";
+        ContratoWIPEntry: Record "Contrato WIP Entry";
+        ContratoWIPGLEntry: Record "Contrato WIP G/L Entry";
+        ContratoWIPTotal: Record "Contrato WIP Total";
+        ContratoLedgerEntry: Record "Contrato Ledger Entry";
+        ContratoTask: Record "Contrato Task";
         NextEntryNo: Integer;
         NextTransactionNo: Integer;
     begin
-        JobWIPGLEntry.LockTable();
-        JobWIPEntry.LockTable();
+        ContratoWIPGLEntry.LockTable();
+        ContratoWIPEntry.LockTable();
         Contrato.LockTable();
 
-        JobWIPGLEntry.SetCurrentKey("Contrato No.", Reversed, "Contrato Complete");
-        JobWIPGLEntry.SetRange("Contrato No.", JobNo);
-        JobWIPGLEntry.SetRange("Contrato Complete", true);
-        if not JobWIPGLEntry.IsEmpty() then
+        ContratoWIPGLEntry.SetCurrentKey("Contrato No.", Reversed, "Contrato Complete");
+        ContratoWIPGLEntry.SetRange("Contrato No.", ContratoNo);
+        ContratoWIPGLEntry.SetRange("Contrato Complete", true);
+        if not ContratoWIPGLEntry.IsEmpty() then
             exit;
-        JobWIPGLEntry.Reset();
+        ContratoWIPGLEntry.Reset();
 
-        Contrato.Get(JobNo);
+        Contrato.Get(ContratoNo);
         Contrato.TestBlocked();
         if NewPostDate then
             Contrato."WIP G/L Posting Date" := PostingDate;
@@ -820,128 +820,128 @@ codeunit 50225 "Contrato Calculate WIP"
             Contrato."WIP G/L Posting Date" := 0D;
         Contrato.Modify();
 
-        NextEntryNo := JobWIPGLEntry.GetLastEntryNo() + 1;
+        NextEntryNo := ContratoWIPGLEntry.GetLastEntryNo() + 1;
 
-        JobWIPGLEntry.SetCurrentKey("WIP Transaction No.");
-        if JobWIPGLEntry.FindLast() then
-            NextTransactionNo := JobWIPGLEntry."WIP Transaction No." + 1
+        ContratoWIPGLEntry.SetCurrentKey("WIP Transaction No.");
+        if ContratoWIPGLEntry.FindLast() then
+            NextTransactionNo := ContratoWIPGLEntry."WIP Transaction No." + 1
         else
             NextTransactionNo := 1;
 
         SourceCodeSetup.Get();
 
         // Reverse Entries
-        JobWIPGLEntry.SetCurrentKey("Contrato No.", Reversed);
-        JobWIPGLEntry.SetRange("Contrato No.", JobNo);
-        JobWIPGLEntry.SetRange(Reverse, true);
-        JobWIPGLEntry.SetRange(Reversed, false);
-        if JobWIPGLEntry.Find('-') then
+        ContratoWIPGLEntry.SetCurrentKey("Contrato No.", Reversed);
+        ContratoWIPGLEntry.SetRange("Contrato No.", ContratoNo);
+        ContratoWIPGLEntry.SetRange(Reverse, true);
+        ContratoWIPGLEntry.SetRange(Reversed, false);
+        if ContratoWIPGLEntry.Find('-') then
             repeat
-                if JobWIPGLEntry."Posting Date" > PostingDate then
-                    Error(Text004, JobWIPGLEntry."Contrato No.", JobWIPGLEntry."Posting Date");
-            until JobWIPGLEntry.Next() = 0;
-        if JobWIPGLEntry.Find('-') then
+                if ContratoWIPGLEntry."Posting Date" > PostingDate then
+                    Error(Text004, ContratoWIPGLEntry."Contrato No.", ContratoWIPGLEntry."Posting Date");
+            until ContratoWIPGLEntry.Next() = 0;
+        if ContratoWIPGLEntry.Find('-') then
             repeat
-                PostWIPGL(JobWIPGLEntry, true, DocNo, SourceCodeSetup."JOb G/L WIP", PostingDate);
-            until JobWIPGLEntry.Next() = 0;
-        JobWIPGLEntry.ModifyAll("Reverse Date", PostingDate);
-        JobWIPGLEntry.ModifyAll(Reversed, true);
+                PostWIPGL(ContratoWIPGLEntry, true, DocNo, SourceCodeSetup."Job G/L WIP", PostingDate);
+            until ContratoWIPGLEntry.Next() = 0;
+        ContratoWIPGLEntry.ModifyAll("Reverse Date", PostingDate);
+        ContratoWIPGLEntry.ModifyAll(Reversed, true);
 
-        JobTask.SetRange("Contrato No.", Contrato."No.");
-        if JobTask.FindSet() then
+        ContratoTask.SetRange("Contrato No.", Contrato."No.");
+        if ContratoTask.FindSet() then
             repeat
-                JobTask."Recognized Sales G/L Amount" := JobTask."Recognized Sales Amount";
-                JobTask."Recognized Costs G/L Amount" := JobTask."Recognized Costs Amount";
-                JobTask.Modify();
-            until JobTask.Next() = 0;
+                ContratoTask."Recognized Sales G/L Amount" := ContratoTask."Recognized Sales Amount";
+                ContratoTask."Recognized Costs G/L Amount" := ContratoTask."Recognized Costs Amount";
+                ContratoTask.Modify();
+            until ContratoTask.Next() = 0;
 
         if JustReverse then
             exit;
 
-        JobWIPEntry.SetRange("Contrato No.", JobNo);
-        if JobWIPEntry.Find('-') then
+        ContratoWIPEntry.SetRange("Contrato No.", ContratoNo);
+        if ContratoWIPEntry.Find('-') then
             repeat
-                Clear(JobWIPGLEntry);
-                JobWIPGLEntry."Contrato No." := JobWIPEntry."Contrato No.";
-                JobWIPGLEntry."Document No." := JobWIPEntry."Document No.";
-                JobWIPGLEntry."G/L Account No." := JobWIPEntry."G/L Account No.";
-                JobWIPGLEntry."G/L Bal. Account No." := JobWIPEntry."G/L Bal. Account No.";
-                JobWIPGLEntry.Type := JobWIPEntry.Type;
-                JobWIPGLEntry."WIP Posting Date" := JobWIPEntry."WIP Posting Date";
+                Clear(ContratoWIPGLEntry);
+                ContratoWIPGLEntry."Contrato No." := ContratoWIPEntry."Contrato No.";
+                ContratoWIPGLEntry."Document No." := ContratoWIPEntry."Document No.";
+                ContratoWIPGLEntry."G/L Account No." := ContratoWIPEntry."G/L Account No.";
+                ContratoWIPGLEntry."G/L Bal. Account No." := ContratoWIPEntry."G/L Bal. Account No.";
+                ContratoWIPGLEntry.Type := ContratoWIPEntry.Type;
+                ContratoWIPGLEntry."WIP Posting Date" := ContratoWIPEntry."WIP Posting Date";
                 if NewPostDate then
-                    JobWIPGLEntry."Posting Date" := PostingDate
+                    ContratoWIPGLEntry."Posting Date" := PostingDate
                 else
-                    JobWIPGLEntry."Posting Date" := JobWIPEntry."WIP Posting Date";
-                JobWIPGLEntry."Contrato Posting Group" := JobWIPEntry."Contrato Posting Group";
-                JobWIPGLEntry."WIP Method Used" := JobWIPEntry."WIP Method Used";
+                    ContratoWIPGLEntry."Posting Date" := ContratoWIPEntry."WIP Posting Date";
+                ContratoWIPGLEntry."Contrato Posting Group" := ContratoWIPEntry."Contrato Posting Group";
+                ContratoWIPGLEntry."WIP Method Used" := ContratoWIPEntry."WIP Method Used";
                 if not NewPostDate then begin
-                    Contrato."WIP G/L Posting Date" := JobWIPEntry."WIP Posting Date";
+                    Contrato."WIP G/L Posting Date" := ContratoWIPEntry."WIP Posting Date";
                     Contrato.Modify();
                 end;
-                JobWIPGLEntry.Reversed := false;
-                JobWIPGLEntry."Contrato Complete" := JobWIPEntry."Contrato Complete";
-                JobWIPGLEntry."WIP Transaction No." := NextTransactionNo;
-                if JobWIPGLEntry.Type in [JobWIPGLEntry.Type::"Recognized Costs", JobWIPGLEntry.Type::"Recognized Sales"] then begin
-                    if JobWIPGLEntry."Contrato Complete" then
-                        JobWIPGLEntry.Description := StrSubstNo(Text003, JobNo)
+                ContratoWIPGLEntry.Reversed := false;
+                ContratoWIPGLEntry."Contrato Complete" := ContratoWIPEntry."Contrato Complete";
+                ContratoWIPGLEntry."WIP Transaction No." := NextTransactionNo;
+                if ContratoWIPGLEntry.Type in [ContratoWIPGLEntry.Type::"Recognized Costs", ContratoWIPGLEntry.Type::"Recognized Sales"] then begin
+                    if ContratoWIPGLEntry."Contrato Complete" then
+                        ContratoWIPGLEntry.Description := StrSubstNo(Text003, ContratoNo)
                     else
-                        JobWIPGLEntry.Description := StrSubstNo(Text002, JobNo);
+                        ContratoWIPGLEntry.Description := StrSubstNo(Text002, ContratoNo);
                 end else
-                    JobWIPGLEntry.Description := StrSubstNo(Text001, JobNo);
-                JobWIPGLEntry."WIP Entry Amount" := JobWIPEntry."WIP Entry Amount";
-                JobWIPGLEntry.Reverse := JobWIPEntry.Reverse;
-                JobWIPGLEntry."WIP Posting Method Used" := JobWIPEntry."WIP Posting Method Used";
-                JobWIPGLEntry."Contrato WIP Total Entry No." := JobWIPEntry."Contrato WIP Total Entry No.";
-                JobWIPGLEntry."Global Dimension 1 Code" := JobWIPEntry."Global Dimension 1 Code";
-                JobWIPGLEntry."Global Dimension 2 Code" := JobWIPEntry."Global Dimension 2 Code";
-                JobWIPGLEntry."Dimension Set ID" := JobWIPEntry."Dimension Set ID";
-                JobWIPGLEntry."Entry No." := NextEntryNo;
+                    ContratoWIPGLEntry.Description := StrSubstNo(Text001, ContratoNo);
+                ContratoWIPGLEntry."WIP Entry Amount" := ContratoWIPEntry."WIP Entry Amount";
+                ContratoWIPGLEntry.Reverse := ContratoWIPEntry.Reverse;
+                ContratoWIPGLEntry."WIP Posting Method Used" := ContratoWIPEntry."WIP Posting Method Used";
+                ContratoWIPGLEntry."Contrato WIP Total Entry No." := ContratoWIPEntry."Contrato WIP Total Entry No.";
+                ContratoWIPGLEntry."Global Dimension 1 Code" := ContratoWIPEntry."Global Dimension 1 Code";
+                ContratoWIPGLEntry."Global Dimension 2 Code" := ContratoWIPEntry."Global Dimension 2 Code";
+                ContratoWIPGLEntry."Dimension Set ID" := ContratoWIPEntry."Dimension Set ID";
+                ContratoWIPGLEntry."Entry No." := NextEntryNo;
                 NextEntryNo := NextEntryNo + 1;
-                PostWIPGL(JobWIPGLEntry,
+                PostWIPGL(ContratoWIPGLEntry,
                   false,
-                  JobWIPGLEntry."Document No.",
+                  ContratoWIPGLEntry."Document No.",
                   SourceCodeSetup."Job G/L WIP",
-                  JobWIPGLEntry."Posting Date");
-                JobWIPGLEntry."G/L Entry No." := GLEntry.GetLastEntryNo();
-                JobWIPGLEntry.Insert();
-                JobWIPTotal.Get(JobWIPGLEntry."Contrato WIP Total Entry No.");
-                JobWIPTotal."Posted to G/L" := true;
-                JobWIPTotal.Modify();
-            until JobWIPEntry.Next() = 0;
+                  ContratoWIPGLEntry."Posting Date");
+                ContratoWIPGLEntry."G/L Entry No." := GLEntry.GetLastEntryNo();
+                ContratoWIPGLEntry.Insert();
+                ContratoWIPTotal.Get(ContratoWIPGLEntry."Contrato WIP Total Entry No.");
+                ContratoWIPTotal."Posted to G/L" := true;
+                ContratoWIPTotal.Modify();
+            until ContratoWIPEntry.Next() = 0;
 
-        JobLedgerEntry.SetRange("Contrato No.", Contrato."No.");
-        JobLedgerEntry.SetFilter("Amt. to Post to G/L", '<>%1', 0);
-        if JobLedgerEntry.FindSet() then
+        ContratoLedgerEntry.SetRange("Contrato No.", Contrato."No.");
+        ContratoLedgerEntry.SetFilter("Amt. to Post to G/L", '<>%1', 0);
+        if ContratoLedgerEntry.FindSet() then
             repeat
-                JobLedgerEntry."Amt. Posted to G/L" += JobLedgerEntry."Amt. to Post to G/L";
-                JobLedgerEntry.Modify();
-            until JobLedgerEntry.Next() = 0;
+                ContratoLedgerEntry."Amt. Posted to G/L" += ContratoLedgerEntry."Amt. to Post to G/L";
+                ContratoLedgerEntry.Modify();
+            until ContratoLedgerEntry.Next() = 0;
 
         DeleteWIP(Contrato);
     end;
 
-    local procedure PostWIPGL(JobWIPGLEntry: Record "Contrato WIP G/L Entry"; Reversed: Boolean; JnlDocNo: Code[20]; SourceCode: Code[10]; JnlPostingDate: Date)
+    local procedure PostWIPGL(ContratoWIPGLEntry: Record "Contrato WIP G/L Entry"; Reversed: Boolean; JnlDocNo: Code[20]; SourceCode: Code[10]; JnlPostingDate: Date)
     var
         GLAmount: Decimal;
     begin
-        CheckJobGLAcc(JobWIPGLEntry."G/L Account No.");
-        CheckJobGLAcc(JobWIPGLEntry."G/L Bal. Account No.");
-        GLAmount := JobWIPGLEntry."WIP Entry Amount";
+        CheckContratoGLAcc(ContratoWIPGLEntry."G/L Account No.");
+        CheckContratoGLAcc(ContratoWIPGLEntry."G/L Bal. Account No.");
+        GLAmount := ContratoWIPGLEntry."WIP Entry Amount";
         if Reversed then
             GLAmount := -GLAmount;
 
-        InsertWIPGL(JobWIPGLEntry."G/L Account No.", JobWIPGLEntry."G/L Bal. Account No.", JnlPostingDate, JnlDocNo, SourceCode,
-          GLAmount, JobWIPGLEntry.Description, JobWIPGLEntry."Contrato No.", JobWIPGLEntry."Dimension Set ID", Reversed, JobWIPGLEntry);
+        InsertWIPGL(ContratoWIPGLEntry."G/L Account No.", ContratoWIPGLEntry."G/L Bal. Account No.", JnlPostingDate, JnlDocNo, SourceCode,
+          GLAmount, ContratoWIPGLEntry.Description, ContratoWIPGLEntry."Contrato No.", ContratoWIPGLEntry."Dimension Set ID", Reversed, ContratoWIPGLEntry);
     end;
 
-    local procedure InsertWIPGL(AccNo: Code[20]; BalAccNo: Code[20]; JnlPostingDate: Date; JnlDocNo: Code[20]; SourceCode: Code[10]; GLAmount: Decimal; JnlDescription: Text[100]; JobNo: Code[20]; JobWIPGLEntryDimSetID: Integer; Reversed: Boolean; JobWIPGLEntry: Record "Contrato WIP G/L Entry")
+    local procedure InsertWIPGL(AccNo: Code[20]; BalAccNo: Code[20]; JnlPostingDate: Date; JnlDocNo: Code[20]; SourceCode: Code[10]; GLAmount: Decimal; JnlDescription: Text[100]; ContratoNo: Code[20]; ContratoWIPGLEntryDimSetID: Integer; Reversed: Boolean; ContratoWIPGLEntry: Record "Contrato WIP G/L Entry")
     var
         GenJnlLine: Record "Gen. Journal Line";
         GLAcc: Record "G/L Account";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeInsertWIPGL(JnlPostingDate, JnlDocNo, SourceCode, GLAmount, JobWIPGLEntry, Reversed, IsHandled);
+        OnBeforeInsertWIPGL(JnlPostingDate, JnlDocNo, SourceCode, GLAmount, ContratoWIPGLEntry, Reversed, IsHandled);
         if not IsHandled then begin
             GLAcc.Get(AccNo);
             GenJnlLine.Init();
@@ -955,9 +955,9 @@ codeunit 50225 "Contrato Calculate WIP"
             GenJnlLine."Document No." := JnlDocNo;
             GenJnlLine."Source Code" := SourceCode;
             GenJnlLine.Description := JnlDescription;
-            GenJnlLine."Job No." := JobNo;
+            GenJnlLine."Job No." := ContratoNo;
             GenJnlLine."System-Created Entry" := true;
-            GenJnlLine."Dimension Set ID" := JobWIPGLEntryDimSetID;
+            GenJnlLine."Dimension Set ID" := ContratoWIPGLEntryDimSetID;
             GetGLSetup();
             if GLSetup."Journal Templ. Name Mandatory" then begin
                 GenJnlLine."Journal Template Name" := GenJnlBatch."Journal Template Name";
@@ -972,12 +972,12 @@ codeunit 50225 "Contrato Calculate WIP"
         end;
     end;
 
-    local procedure CheckJobGLAcc(AccNo: Code[20])
+    local procedure CheckContratoGLAcc(AccNo: Code[20])
     var
         GLAcc: Record "G/L Account";
         IsHandled: Boolean;
     begin
-        OnBeforeCheckJobGLAcc(AccNo, IsHandled);
+        OnBeforeCheckContratoGLAcc(AccNo, IsHandled);
         if IsHandled then
             exit;
 
@@ -998,59 +998,59 @@ codeunit 50225 "Contrato Calculate WIP"
         end;
     end;
 
-    procedure ReOpenJob(JobNo: Code[20])
+    procedure ReOpenContrato(ContratoNo: Code[20])
     var
         Contrato: Record Contrato;
-        JobWIPGLEntry: Record "Contrato WIP G/L Entry";
+        ContratoWIPGLEntry: Record "Contrato WIP G/L Entry";
     begin
-        Contrato.Get(JobNo);
+        Contrato.Get(ContratoNo);
         DeleteWIP(Contrato);
-        JobWIPGLEntry.SetCurrentKey("Contrato No.", Reversed, "Contrato Complete");
-        JobWIPGLEntry.SetRange("Contrato No.", JobNo);
-        JobWIPGLEntry.ModifyAll("Contrato Complete", false);
+        ContratoWIPGLEntry.SetCurrentKey("Contrato No.", Reversed, "Contrato Complete");
+        ContratoWIPGLEntry.SetRange("Contrato No.", ContratoNo);
+        ContratoWIPGLEntry.ModifyAll("Contrato Complete", false);
     end;
 
-    local procedure GetRecognizedCostsBalGLAccountNo(Contrato: Record Contrato; JobPostingGroup: Record "Contrato Posting Group"): Code[20]
+    local procedure GetRecognizedCostsBalGLAccountNo(Contrato: Record Contrato; ContratoPostingGroup: Record "Contrato Posting Group"): Code[20]
     begin
-        if not JobComplete or (Contrato."WIP Posting Method" = Contrato."WIP Posting Method"::"Per Contrato Ledger Entry") then
-            exit(JobPostingGroup.GetWIPCostsAccount());
+        if not ContratoComplete or (Contrato."WIP Posting Method" = Contrato."WIP Posting Method"::"Per Contrato Ledger Entry") then
+            exit(ContratoPostingGroup.GetWIPCostsAccount());
 
-        exit(JobPostingGroup.GetJobCostsAppliedAccount());
+        exit(ContratoPostingGroup.GetContratoCostsAppliedAccount());
     end;
 
-    local procedure GetRecognizedSalesBalGLAccountNo(Contrato: Record Contrato; JobPostingGroup: Record "Contrato Posting Group"; JobWIPMethod: Record "Contrato WIP Method"): Code[20]
+    local procedure GetRecognizedSalesBalGLAccountNo(Contrato: Record Contrato; ContratoPostingGroup: Record "Contrato Posting Group"; ContratoWIPMethod: Record "Contrato WIP Method"): Code[20]
     begin
         case true of
-            not JobComplete and
-          (JobWIPMethod."Recognized Sales" = JobWIPMethod."Recognized Sales"::"Percentage of Completion"):
-                exit(JobPostingGroup.GetWIPAccruedSalesAccount());
-            not JobComplete or (Contrato."WIP Posting Method" = Contrato."WIP Posting Method"::"Per Contrato Ledger Entry"):
-                exit(JobPostingGroup.GetWIPInvoicedSalesAccount());
+            not ContratoComplete and
+          (ContratoWIPMethod."Recognized Sales" = ContratoWIPMethod."Recognized Sales"::"Percentage of Completion"):
+                exit(ContratoPostingGroup.GetWIPAccruedSalesAccount());
+            not ContratoComplete or (Contrato."WIP Posting Method" = Contrato."WIP Posting Method"::"Per Contrato Ledger Entry"):
+                exit(ContratoPostingGroup.GetWIPInvoicedSalesAccount());
             else
-                exit(JobPostingGroup.GetJobSalesAppliedAccount());
+                exit(ContratoPostingGroup.GetContratoSalesAppliedAccount());
         end;
     end;
 
-    local procedure GetAppliedCostsWIPEntryAmount(JobTask: Record "Contrato Task"; JobWIPMethod: Record "Contrato WIP Method"; AppliedAccrued: Boolean): Decimal
+    local procedure GetAppliedCostsWIPEntryAmount(ContratoTask: Record "Contrato Task"; ContratoWIPMethod: Record "Contrato WIP Method"; AppliedAccrued: Boolean): Decimal
     var
         IsHandled: Boolean;
         Result: Decimal;
     begin
         IsHandled := false;
         Result := 0;
-        OnBeforeGetAppliedCostsWIPEntryAmount(JobTask, JobWIPMethod, AppliedAccrued, Result, IsHandled);
+        OnBeforeGetAppliedCostsWIPEntryAmount(ContratoTask, ContratoWIPMethod, AppliedAccrued, Result, IsHandled);
         if IsHandled then
             exit(Result);
 
-        exit(GetAppliedCostsAmount(JobTask."Recognized Costs Amount", JobTask."Usage (Total Cost)", JobWIPMethod, AppliedAccrued));
+        exit(GetAppliedCostsAmount(ContratoTask."Recognized Costs Amount", ContratoTask."Usage (Total Cost)", ContratoWIPMethod, AppliedAccrued));
     end;
 
-    local procedure GetAppliedCostsAmount(RecognizedCostsAmount: Decimal; UsageTotalCost: Decimal; JobWIPMethod: Record "Contrato WIP Method"; AppliedAccrued: Boolean) AppliedCostsWIPEntryAmount: Decimal
+    local procedure GetAppliedCostsAmount(RecognizedCostsAmount: Decimal; UsageTotalCost: Decimal; ContratoWIPMethod: Record "Contrato WIP Method"; AppliedAccrued: Boolean) AppliedCostsWIPEntryAmount: Decimal
     begin
         if AppliedAccrued then
             exit(UsageTotalCost - RecognizedCostsAmount);
 
-        if IsAccruedCostsWIPMethod(JobWIPMethod) and (RecognizedCostsAmount <> 0) then begin
+        if IsAccruedCostsWIPMethod(ContratoWIPMethod) and (RecognizedCostsAmount <> 0) then begin
             AppliedCostsWIPEntryAmount := GetMAX(Abs(RecognizedCostsAmount), Abs(UsageTotalCost));
             if RecognizedCostsAmount > 0 then
                 AppliedCostsWIPEntryAmount := -AppliedCostsWIPEntryAmount;
@@ -1060,32 +1060,32 @@ codeunit 50225 "Contrato Calculate WIP"
         exit(-UsageTotalCost);
     end;
 
-    local procedure GetAppliedSalesWIPEntryAmount(JobTask: Record "Contrato Task"; JobWIPMethod: Record "Contrato WIP Method"; AppliedAccrued: Boolean) SalesAmount: Decimal
+    local procedure GetAppliedSalesWIPEntryAmount(ContratoTask: Record "Contrato Task"; ContratoWIPMethod: Record "Contrato WIP Method"; AppliedAccrued: Boolean) SalesAmount: Decimal
     begin
         if AppliedAccrued then begin
-            SalesAmount := JobTask."Recognized Sales Amount" - JobTask."Contract (Invoiced Price)";
+            SalesAmount := ContratoTask."Recognized Sales Amount" - ContratoTask."Contract (Invoiced Price)";
             if SalesAmount < 0 then
-                exit(JobTask."Contract (Invoiced Price)");
+                exit(ContratoTask."Contract (Invoiced Price)");
             exit(SalesAmount);
         end;
 
-        if IsAccruedSalesWIPMethod(JobWIPMethod) then
-            exit(GetMAX(JobTask."Recognized Sales Amount", JobTask."Contract (Invoiced Price)"));
+        if IsAccruedSalesWIPMethod(ContratoWIPMethod) then
+            exit(GetMAX(ContratoTask."Recognized Sales Amount", ContratoTask."Contract (Invoiced Price)"));
 
-        exit(JobTask."Contract (Invoiced Price)");
+        exit(ContratoTask."Contract (Invoiced Price)");
     end;
 
-    local procedure GetAccruedCostsAmount(JobWIPMethod: Record "Contrato WIP Method"; RecognizedCostsAmount: Decimal; UsageTotalCost: Decimal): Decimal
+    local procedure GetAccruedCostsAmount(ContratoWIPMethod: Record "Contrato WIP Method"; RecognizedCostsAmount: Decimal; UsageTotalCost: Decimal): Decimal
     begin
-        if IsAccruedCostsWIPMethod(JobWIPMethod) then
+        if IsAccruedCostsWIPMethod(ContratoWIPMethod) then
             exit(RecognizedCostsAmount - UsageTotalCost);
         exit(0);
     end;
 
-    local procedure GetAccruedSalesWIPEntryAmount(JobTask: Record "Contrato Task"; JobWIPMethod: Record "Contrato WIP Method"): Decimal
+    local procedure GetAccruedSalesWIPEntryAmount(ContratoTask: Record "Contrato Task"; ContratoWIPMethod: Record "Contrato WIP Method"): Decimal
     begin
-        if IsAccruedSalesWIPMethod(JobWIPMethod) then
-            exit(-JobTask."Recognized Sales Amount" + JobTask."Contract (Invoiced Price)");
+        if IsAccruedSalesWIPMethod(ContratoWIPMethod) then
+            exit(-ContratoTask."Recognized Sales Amount" + ContratoTask."Contract (Invoiced Price)");
         exit(0);
     end;
 
@@ -1096,126 +1096,126 @@ codeunit 50225 "Contrato Calculate WIP"
         exit(Value2);
     end;
 
-    local procedure GetWIPEntryAmount(JobWIPBufferType: Enum "Contrato WIP Buffer Type"; JobTask: Record "Contrato Task"; WIPMethodCode: Code[20]; AppliedAccrued: Boolean): Decimal
+    local procedure GetWIPEntryAmount(ContratoWIPBufferType: Enum "Contrato WIP Buffer Type"; ContratoTask: Record "Contrato Task"; WIPMethodCode: Code[20]; AppliedAccrued: Boolean): Decimal
     var
-        JobWIPMethod: Record "Contrato WIP Method";
+        ContratoWIPMethod: Record "Contrato WIP Method";
         IsHandled: Boolean;
         Result: Decimal;
     begin
-        JobWIPMethod.Get(WIPMethodCode);
+        ContratoWIPMethod.Get(WIPMethodCode);
         IsHandled := false;
         Result := 0;
-        OnBeforeGetWIPEntryAmount(JobWIPBufferType, JobTask, JobWIPMethod, AppliedAccrued, Result, IsHandled);
+        OnBeforeGetWIPEntryAmount(ContratoWIPBufferType, ContratoTask, ContratoWIPMethod, AppliedAccrued, Result, IsHandled);
         if IsHandled then
             exit(Result);
-        case JobWIPBufferType of
+        case ContratoWIPBufferType of
             Enum::"Contrato WIP Buffer Type"::"Applied Costs":
-                exit(GetAppliedCostsWIPEntryAmount(JobTask, JobWIPMethod, AppliedAccrued));
+                exit(GetAppliedCostsWIPEntryAmount(ContratoTask, ContratoWIPMethod, AppliedAccrued));
             Enum::"Contrato WIP Buffer Type"::"Applied Sales":
-                exit(GetAppliedSalesWIPEntryAmount(JobTask, JobWIPMethod, AppliedAccrued));
+                exit(GetAppliedSalesWIPEntryAmount(ContratoTask, ContratoWIPMethod, AppliedAccrued));
             Enum::"Contrato WIP Buffer Type"::"Recognized Costs":
-                exit(JobTask."Recognized Costs Amount");
+                exit(ContratoTask."Recognized Costs Amount");
             Enum::"Contrato WIP Buffer Type"::"Recognized Sales":
-                exit(-JobTask."Recognized Sales Amount");
+                exit(-ContratoTask."Recognized Sales Amount");
             Enum::"Contrato WIP Buffer Type"::"Accrued Sales":
-                exit(GetAccruedSalesWIPEntryAmount(JobTask, JobWIPMethod));
+                exit(GetAccruedSalesWIPEntryAmount(ContratoTask, ContratoWIPMethod));
         end;
     end;
 
-    local procedure AssignWIPTotalAndMethodToRemainingJobTask(var JobTask: Record "Contrato Task"; Contrato: Record Contrato)
+    local procedure AssignWIPTotalAndMethodToRemainingContratoTask(var ContratoTask: Record "Contrato Task"; Contrato: Record Contrato)
     var
-        RemainingJobTask: Record "Contrato Task";
+        RemainingContratoTask: Record "Contrato Task";
     begin
-        RemainingJobTask.Copy(JobTask);
-        RemainingJobTask.SetFilter("Contrato Task No.", '>%1', JobTask."Contrato Task No.");
-        AssignWIPTotalAndMethodToJobTask(RemainingJobTask, Contrato);
+        RemainingContratoTask.Copy(ContratoTask);
+        RemainingContratoTask.SetFilter("Contrato Task No.", '>%1', ContratoTask."Contrato Task No.");
+        AssignWIPTotalAndMethodToContratoTask(RemainingContratoTask, Contrato);
     end;
 
-    local procedure AssignWIPTotalAndMethodToJobTask(var JobTask: Record "Contrato Task"; Contrato: Record Contrato)
+    local procedure AssignWIPTotalAndMethodToContratoTask(var ContratoTask: Record "Contrato Task"; Contrato: Record Contrato)
     begin
-        JobTask.SetRange("Contrato No.", Contrato."No.");
-        JobTask.SetRange("WIP-Total", JobTask."WIP-Total"::Total);
-        if not JobTask.FindFirst() then begin
-            JobTask.SetFilter("WIP-Total", '<> %1', JobTask."WIP-Total"::Excluded);
-            if JobTask.FindLast() then begin
-                JobTask.Validate("WIP-Total", JobTask."WIP-Total"::Total);
-                JobTask.Modify();
+        ContratoTask.SetRange("Contrato No.", Contrato."No.");
+        ContratoTask.SetRange("WIP-Total", ContratoTask."WIP-Total"::Total);
+        if not ContratoTask.FindFirst() then begin
+            ContratoTask.SetFilter("WIP-Total", '<> %1', ContratoTask."WIP-Total"::Excluded);
+            if ContratoTask.FindLast() then begin
+                ContratoTask.Validate("WIP-Total", ContratoTask."WIP-Total"::Total);
+                ContratoTask.Modify();
             end;
         end;
 
-        JobTask.SetRange("WIP-Total", JobTask."WIP-Total"::Total);
-        JobTask.SetRange("WIP Method", '');
-        if JobTask.FindFirst() then
-            JobTask.ModifyAll("WIP Method", Contrato."WIP Method");
+        ContratoTask.SetRange("WIP-Total", ContratoTask."WIP-Total"::Total);
+        ContratoTask.SetRange("WIP Method", '');
+        if ContratoTask.FindFirst() then
+            ContratoTask.ModifyAll("WIP Method", Contrato."WIP Method");
 
-        JobTask.SetRange("WIP-Total");
-        JobTask.SetRange("WIP Method");
+        ContratoTask.SetRange("WIP-Total");
+        ContratoTask.SetRange("WIP Method");
     end;
 
-    local procedure IsAccruedCostsWIPMethod(JobWIPMethod: Record "Contrato WIP Method"): Boolean
+    local procedure IsAccruedCostsWIPMethod(ContratoWIPMethod: Record "Contrato WIP Method"): Boolean
     begin
         exit(
-          JobWIPMethod."Recognized Costs" in
-          [JobWIPMethod."Recognized Costs"::"Cost Value",
-           JobWIPMethod."Recognized Costs"::"Cost of Sales",
-           JobWIPMethod."Recognized Costs"::"Contract (Invoiced Cost)"]);
+          ContratoWIPMethod."Recognized Costs" in
+          [ContratoWIPMethod."Recognized Costs"::"Cost Value",
+           ContratoWIPMethod."Recognized Costs"::"Cost of Sales",
+           ContratoWIPMethod."Recognized Costs"::"Contract (Invoiced Cost)"]);
     end;
 
-    local procedure IsAccruedSalesWIPMethod(JobWIPMethod: Record "Contrato WIP Method"): Boolean
+    local procedure IsAccruedSalesWIPMethod(ContratoWIPMethod: Record "Contrato WIP Method"): Boolean
     begin
         exit(
-          JobWIPMethod."Recognized Sales" in
-          [JobWIPMethod."Recognized Sales"::"Sales Value",
-           JobWIPMethod."Recognized Sales"::"Usage (Total Price)"]);
+          ContratoWIPMethod."Recognized Sales" in
+          [ContratoWIPMethod."Recognized Sales"::"Sales Value",
+           ContratoWIPMethod."Recognized Sales"::"Usage (Total Price)"]);
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Contrato Task", 'OnBeforeModifyEvent', '', false, false)]
-    procedure VerifyJobWIPEntryOnBeforeModify(var Rec: Record "Contrato Task"; var xRec: Record "Contrato Task"; RunTrigger: Boolean)
+    procedure VerifyContratoWIPEntryOnBeforeModify(var Rec: Record "Contrato Task"; var xRec: Record "Contrato Task"; RunTrigger: Boolean)
     begin
         if Rec.IsTemporary then
             exit;
 
-        if JobTaskWIPRelatedFieldsAreModified(Rec) then
-            VerifyJobWIPEntryIsEmpty(Rec."Contrato No.");
+        if ContratoTaskWIPRelatedFieldsAreModified(Rec) then
+            VerifyContratoWIPEntryIsEmpty(Rec."Contrato No.");
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Contrato Task", 'OnBeforeRenameEvent', '', false, false)]
-    procedure VerifyJobWIPEntryOnBeforeRename(var Rec: Record "Contrato Task"; var xRec: Record "Contrato Task"; RunTrigger: Boolean)
+    procedure VerifyContratoWIPEntryOnBeforeRename(var Rec: Record "Contrato Task"; var xRec: Record "Contrato Task"; RunTrigger: Boolean)
     begin
         if Rec.IsTemporary then
             exit;
 
-        VerifyJobWIPEntryIsEmpty(Rec."Contrato No.");
+        VerifyContratoWIPEntryIsEmpty(Rec."Contrato No.");
     end;
 
-    local procedure JobTaskWIPRelatedFieldsAreModified(JobTask: Record "Contrato Task") Result: Boolean
+    local procedure ContratoTaskWIPRelatedFieldsAreModified(ContratoTask: Record "Contrato Task") Result: Boolean
     var
-        OldJobTask: Record "Contrato Task";
+        OldContratoTask: Record "Contrato Task";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeJobTaskWIPRelatedFieldsAreModified(JobTask, Result, IsHandled);
+        OnBeforeContratoTaskWIPRelatedFieldsAreModified(ContratoTask, Result, IsHandled);
         if IsHandled then
             exit(Result);
 
-        OldJobTask.Get(JobTask."Contrato No.", JobTask."Contrato Task No.");
+        OldContratoTask.Get(ContratoTask."Contrato No.", ContratoTask."Contrato Task No.");
         exit(
-          (OldJobTask."Contrato Task Type" <> JobTask."Contrato Task Type") or
-          (OldJobTask."WIP-Total" <> JobTask."WIP-Total") or
-          (OldJobTask."Contrato Posting Group" <> JobTask."Contrato Posting Group") or
-          (OldJobTask."WIP Method" <> JobTask."WIP Method") or
-          (OldJobTask.Totaling <> JobTask.Totaling));
+          (OldContratoTask."Contrato Task Type" <> ContratoTask."Contrato Task Type") or
+          (OldContratoTask."WIP-Total" <> ContratoTask."WIP-Total") or
+          (OldContratoTask."Contrato Posting Group" <> ContratoTask."Contrato Posting Group") or
+          (OldContratoTask."WIP Method" <> ContratoTask."WIP Method") or
+          (OldContratoTask.Totaling <> ContratoTask.Totaling));
     end;
 
-    local procedure VerifyJobWIPEntryIsEmpty(JobNo: Code[20])
+    local procedure VerifyContratoWIPEntryIsEmpty(ContratoNo: Code[20])
     var
-        JobWIPEntry: Record "Contrato WIP Entry";
-        JobTask: Record "Contrato Task";
+        ContratoWIPEntry: Record "Contrato WIP Entry";
+        ContratoTask: Record "Contrato Task";
     begin
-        OnBeforeVerifyJobWIPEntryIsEmpty(JobWIPEntry);
-        JobWIPEntry.SetRange("Contrato No.", JobNo);
-        if not JobWIPEntry.IsEmpty() then
-            Error(CannotModifyAssociatedEntriesErr, JobTask.TableCaption());
+        OnBeforeVerifyContratoWIPEntryIsEmpty(ContratoWIPEntry);
+        ContratoWIPEntry.SetRange("Contrato No.", ContratoNo);
+        if not ContratoWIPEntry.IsEmpty() then
+            Error(CannotModifyAssociatedEntriesErr, ContratoTask.TableCaption());
     end;
 
     procedure SetGenJnlBatch(NewGenJnlBatch: Record "Gen. Journal Batch")
@@ -1224,12 +1224,12 @@ codeunit 50225 "Contrato Calculate WIP"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCalcUsageTotalCostCosts(var JobTask: Record "Contrato Task")
+    local procedure OnAfterCalcUsageTotalCostCosts(var ContratoTask: Record "Contrato Task")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCalcWIP(var JobTask: Record "Contrato Task"; JobWIPTotal: Record "Contrato WIP Total"; JobComplete: Boolean; var RecognizedAllocationPercentage: Decimal; var JobWIPTotalChanged: Boolean)
+    local procedure OnAfterCalcWIP(var ContratoTask: Record "Contrato Task"; ContratoWIPTotal: Record "Contrato WIP Total"; ContratoComplete: Boolean; var RecognizedAllocationPercentage: Decimal; var ContratoWIPTotalChanged: Boolean)
     begin
     end;
 
@@ -1239,52 +1239,52 @@ codeunit 50225 "Contrato Calculate WIP"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCalcPercentageOfCompletion(var JobTask: Record "Contrato Task"; JobWIPTotal: Record "Contrato WIP Total"; var JobWIPTotalChanged: Boolean; var WIPAmount: Decimal; var RecognizedAllocationPercentage: Decimal; var IsHandled: Boolean)
+    local procedure OnBeforeCalcPercentageOfCompletion(var ContratoTask: Record "Contrato Task"; ContratoWIPTotal: Record "Contrato WIP Total"; var ContratoWIPTotalChanged: Boolean; var WIPAmount: Decimal; var RecognizedAllocationPercentage: Decimal; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCalcRecognizedCosts(var JobTask: Record "Contrato Task"; var JobWIPTotal: Record "Contrato WIP Total"; var JobWIPMethod: Record "Contrato WIP Method"; var IsHandled: Boolean)
+    local procedure OnBeforeCalcRecognizedCosts(var ContratoTask: Record "Contrato Task"; var ContratoWIPTotal: Record "Contrato WIP Total"; var ContratoWIPMethod: Record "Contrato WIP Method"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCalcRecognizedSales(var JobTask: Record "Contrato Task"; var JobWIPTotal: Record "Contrato WIP Total"; var JobWIPMethod: Record "Contrato WIP Method"; var IsHandled: Boolean)
+    local procedure OnBeforeCalcRecognizedSales(var ContratoTask: Record "Contrato Task"; var ContratoWIPTotal: Record "Contrato WIP Total"; var ContratoWIPMethod: Record "Contrato WIP Method"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCalcCostValue(var JobTask: Record "Contrato Task"; JobWIPTotal: Record "Contrato WIP Total"; var WIPAmount: Decimal; var RecognizedAllocationPercentage: Decimal; var JobWIPTotalChanged: Boolean; var IsHandled: Boolean)
+    local procedure OnBeforeCalcCostValue(var ContratoTask: Record "Contrato Task"; ContratoWIPTotal: Record "Contrato WIP Total"; var WIPAmount: Decimal; var RecognizedAllocationPercentage: Decimal; var ContratoWIPTotalChanged: Boolean; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeJobTaskWIPRelatedFieldsAreModified(JobTask: Record "Contrato Task"; var Result: Boolean; var IsHandled: Boolean)
+    local procedure OnBeforeContratoTaskWIPRelatedFieldsAreModified(ContratoTask: Record "Contrato Task"; var Result: Boolean; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeVerifyJobWIPEntryIsEmpty(var JobWIPEntry: Record "Contrato WIP Entry")
+    local procedure OnBeforeVerifyContratoWIPEntryIsEmpty(var ContratoWIPEntry: Record "Contrato WIP Entry")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCreateWIPEntriesOnBeforeJobWIPEntryInsert(var JobWIPEntry: Record "Contrato WIP Entry")
+    local procedure OnCreateWIPEntriesOnBeforeContratoWIPEntryInsert(var ContratoWIPEntry: Record "Contrato WIP Entry")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCreateJobWIPTotalOnAfterUpdateJobWIPTotal(var JobTask: Record "Contrato Task"; var JobWIPTotal: Record "Contrato WIP Total")
+    local procedure OnCreateContratoWIPTotalOnAfterUpdateContratoWIPTotal(var ContratoTask: Record "Contrato Task"; var ContratoWIPTotal: Record "Contrato WIP Total")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCreateJobWIPTotal(var JobTask: Record "Contrato Task")
+    local procedure OnBeforeCreateContratoWIPTotal(var ContratoTask: Record "Contrato Task")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnInitWIPBufferEntryFromTaskOnBeforeSetDimCombinationID(var TempDimensionBuffer: Record "Dimension Buffer" temporary; JobTask: Record "Contrato Task")
+    local procedure OnInitWIPBufferEntryFromTaskOnBeforeSetDimCombinationID(var TempDimensionBuffer: Record "Dimension Buffer" temporary; ContratoTask: Record "Contrato Task")
     begin
     end;
 
@@ -1294,82 +1294,82 @@ codeunit 50225 "Contrato Calculate WIP"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnJobTaskCalcWIPOnAfterJobWIPTotalModify(var Contrato: Record Contrato; var JobWIPTotal: Record "Contrato WIP Total")
+    local procedure OnContratoTaskCalcWIPOnAfterContratoWIPTotalModify(var Contrato: Record Contrato; var ContratoWIPTotal: Record "Contrato WIP Total")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnJobCalcWIPOnBeforeJobModify(var Contrato: Record Contrato; var JobComplete: Boolean)
+    local procedure OnContratoCalcWIPOnBeforeContratoModify(var Contrato: Record Contrato; var ContratoComplete: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnJobTaskCalcWIPOnBeforeJobWIPTotalModify(var Contrato: Record Contrato; var JobWIPTotal: Record "Contrato WIP Total")
+    local procedure OnContratoTaskCalcWIPOnBeforeContratoWIPTotalModify(var Contrato: Record Contrato; var ContratoWIPTotal: Record "Contrato WIP Total")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterJobTaskCalcWIP(var Contrato: Record Contrato; FromJobTask: Code[20]; ToJobTask: Code[20]; var JobWIPTotal: Record "Contrato WIP Total")
+    local procedure OnAfterContratoTaskCalcWIP(var Contrato: Record Contrato; FromContratoTask: Code[20]; ToContratoTask: Code[20]; var ContratoWIPTotal: Record "Contrato WIP Total")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCalcWIP(var JobTask: Record "Contrato Task"; JobWIPTotal: Record "Contrato WIP Total"; JobComplete: Boolean; var RecognizedAllocationPercentage: Decimal; var JobWIPTotalChanged: Boolean)
+    local procedure OnBeforeCalcWIP(var ContratoTask: Record "Contrato Task"; ContratoWIPTotal: Record "Contrato WIP Total"; ContratoComplete: Boolean; var RecognizedAllocationPercentage: Decimal; var ContratoWIPTotalChanged: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnJobTaskCalcWIPOnBeforeCreateTempJobWIPBuffer(var JobTask: Record "Contrato Task"; var JobWIPTotal: Record "Contrato WIP Total"; var IsHandled: Boolean);
+    local procedure OnContratoTaskCalcWIPOnBeforeCreateTempContratoWIPBuffer(var ContratoTask: Record "Contrato Task"; var ContratoWIPTotal: Record "Contrato WIP Total"; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnJobTaskCalcWIPOnBeforeCalcWIP(var JobTask: Record "Contrato Task")
+    local procedure OnContratoTaskCalcWIPOnBeforeCalcWIP(var ContratoTask: Record "Contrato Task")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCaclWIPOnAfterRecognizedAmounts(var JobTask: Record "Contrato Task")
+    local procedure OnCaclWIPOnAfterRecognizedAmounts(var ContratoTask: Record "Contrato Task")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCreateWIPBufferEntryFromLedgerOnBeforeModifyJobLedgerEntry(var JobLedgerEntry: Record "Contrato Ledger Entry"; var TempJobWIPBuffer: array[2] of Record "Contrato WIP Buffer" temporary; JobWIPBufferType: Enum "Contrato WIP Buffer Type")
+    local procedure OnCreateWIPBufferEntryFromLedgerOnBeforeModifyContratoLedgerEntry(var ContratoLedgerEntry: Record "Contrato Ledger Entry"; var TempContratoWIPBuffer: array[2] of Record "Contrato WIP Buffer" temporary; ContratoWIPBufferType: Enum "Contrato WIP Buffer Type")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeGetAppliedCostsWIPEntryAmount(JobTask: Record "Contrato Task"; JobWIPMethod: Record "Contrato WIP Method"; AppliedAccrued: Boolean; var Result: Decimal; var IsHandled: Boolean)
+    local procedure OnBeforeGetAppliedCostsWIPEntryAmount(ContratoTask: Record "Contrato Task"; ContratoWIPMethod: Record "Contrato WIP Method"; AppliedAccrued: Boolean; var Result: Decimal; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCreateWIPBufferEntryFromLedgerOnBeforeAssignPostingGroup(var TempJobWIPBuffer: Record "Contrato WIP Buffer"; var JobLedgerEntry: Record "Contrato Ledger Entry"; JobComplete: Boolean)
+    local procedure OnBeforeCreateWIPBufferEntryFromLedgerOnBeforeAssignPostingGroup(var TempContratoWIPBuffer: Record "Contrato WIP Buffer"; var ContratoLedgerEntry: Record "Contrato Ledger Entry"; ContratoComplete: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInsertWIPGL(JnlPostingDate: Date; JnlDocNo: Code[20]; SourceCode: Code[10]; GLAmount: Decimal; JobWIPGLEntry: Record "Contrato WIP G/L Entry"; Reversed: Boolean; var IsHandled: Boolean)
+    local procedure OnBeforeInsertWIPGL(JnlPostingDate: Date; JnlDocNo: Code[20]; SourceCode: Code[10]; GLAmount: Decimal; ContratoWIPGLEntry: Record "Contrato WIP G/L Entry"; Reversed: Boolean; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnJobTaskCalcWIPOnBeforeSumJobTaskCosts(var JobTask: Record "Contrato Task"; var RecognizedCostAmount: Decimal; var UsageTotalCost: Decimal; var IsHandled: Boolean);
+    local procedure OnContratoTaskCalcWIPOnBeforeSumContratoTaskCosts(var ContratoTask: Record "Contrato Task"; var RecognizedCostAmount: Decimal; var UsageTotalCost: Decimal; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCreateJobWIPTotalOnBeforeLoopJobTask(var JobTask: Record "Contrato Task"; var JobWIPTotal: Record "Contrato WIP Total"; var IsHandled: Boolean);
+    local procedure OnCreateContratoWIPTotalOnBeforeLoopContratoTask(var ContratoTask: Record "Contrato Task"; var ContratoWIPTotal: Record "Contrato WIP Total"; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeGetWIPEntryAmount(JobWIPBufferType: Enum "Contrato WIP Buffer Type"; JobTask: Record "Contrato Task"; JobWIPMethod: Record "Contrato WIP Method"; AppliedAccrued: Boolean; var Result: Decimal; var IsHandled: Boolean)
+    local procedure OnBeforeGetWIPEntryAmount(ContratoWIPBufferType: Enum "Contrato WIP Buffer Type"; ContratoTask: Record "Contrato Task"; ContratoWIPMethod: Record "Contrato WIP Method"; AppliedAccrued: Boolean; var Result: Decimal; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckJobGLAcc(AccNo: Code[20]; var IsHandled: Boolean)
+    local procedure OnBeforeCheckContratoGLAcc(AccNo: Code[20]; var IsHandled: Boolean)
     begin
     end;
 }

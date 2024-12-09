@@ -1,7 +1,7 @@
 report 50201 "Contrato Producto Factura"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './Local/Projects/Project/Reports/JobCostSuggestedBilling.rdlc';
+    RDLCLayout = './Local/Projects/Project/Reports/ContratoCostSuggestedBilling.rdlc';
     Caption = 'Contrato Producto Factura';
     AdditionalSearchTerms = 'Contrato Producto Factura';
     UsageCategory = ReportsAndAnalysis;
@@ -41,21 +41,21 @@ report 50201 "Contrato Producto Factura"
     trigger OnPreReport()
     begin
         CompanyInformation.Get();
-        //JobFilter := Job.GetFilters();
+        //ContratoFilter := Contrato.GetFilters();
     end;
 
     var
         CompanyInformation: Record "Company Information";
         Customer: Record Customer;
-        JobPlanningLine: Record "Job Planning Line";
-        JobLedgerEntry: Record "Job Ledger Entry";
-        JobFilter: Text;
+        ContratoPlanningLine: Record "Contrato Planning Line";
+        ContratoLedgerEntry: Record "Contrato Ledger Entry";
+        ContratoFilter: Text;
         SuggestedBilling: Decimal;
         Text000: Label 'Total for %1 %2 %3';
         ContractPrice: Decimal;
         UsagePrice: Decimal;
         InvoicedPrice: Decimal;
-        Job_Cost_Suggested_BillingCaptionLbl: Label 'Project Cost Suggested Billing';
+        Contrato_Cost_Suggested_BillingCaptionLbl: Label 'Project Cost Suggested Billing';
         CurrReport_PAGENOCaptionLbl: Label 'Page';
         ContractPriceCaptionLbl: Label 'Billable Price';
         UsagePriceCaptionLbl: Label 'Usage Amount';

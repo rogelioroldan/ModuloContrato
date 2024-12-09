@@ -23,12 +23,12 @@ page 50233 "Contrato Archive Card"
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies a short description of the project.';
                 }
                 field("Sell-to Customer No."; Rec."Sell-to Customer No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Customer No.';
                     Importance = Additional;
                     NotBlank = true;
@@ -36,7 +36,7 @@ page 50233 "Contrato Archive Card"
                 }
                 field("Sell-to Customer Name"; Rec."Sell-to Customer Name")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Customer Name';
                     Importance = Promoted;
                     NotBlank = true;
@@ -49,7 +49,7 @@ page 50233 "Contrato Archive Card"
 
                     field("Sell-to Address"; Rec."Sell-to Address")
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Address';
                         Importance = Additional;
                         QuickEntry = false;
@@ -57,7 +57,7 @@ page 50233 "Contrato Archive Card"
                     }
                     field("Sell-to Address 2"; Rec."Sell-to Address 2")
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Address 2';
                         Importance = Additional;
                         QuickEntry = false;
@@ -65,7 +65,7 @@ page 50233 "Contrato Archive Card"
                     }
                     field("Sell-to City"; Rec."Sell-to City")
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'City';
                         Importance = Additional;
                         QuickEntry = false;
@@ -77,7 +77,7 @@ page 50233 "Contrato Archive Card"
                         Visible = IsSellToCountyVisible;
                         field("Sell-to County"; Rec."Sell-to County")
                         {
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Caption = 'County';
                             Importance = Additional;
                             QuickEntry = false;
@@ -86,7 +86,7 @@ page 50233 "Contrato Archive Card"
                     }
                     field("Sell-to Post Code"; Rec."Sell-to Post Code")
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Post Code';
                         Importance = Additional;
                         QuickEntry = false;
@@ -94,7 +94,7 @@ page 50233 "Contrato Archive Card"
                     }
                     field("Sell-to Country/Region Code"; Rec."Sell-to Country/Region Code")
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Country/Region Code';
                         Importance = Additional;
                         QuickEntry = false;
@@ -102,14 +102,14 @@ page 50233 "Contrato Archive Card"
                     }
                     field("Sell-to Contact No."; Rec."Sell-to Contact No.")
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Contact No.';
                         Importance = Additional;
                         ToolTip = 'Specifies the number of the contact person that the sales document will be sent to.';
                     }
                     field(SellToPhoneNo; SellToContact."Phone No.")
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Phone No.';
                         Importance = Additional;
                         Editable = false;
@@ -118,7 +118,7 @@ page 50233 "Contrato Archive Card"
                     }
                     field(SellToMobilePhoneNo; SellToContact."Mobile Phone No.")
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Mobile Phone No.';
                         Importance = Additional;
                         Editable = false;
@@ -127,7 +127,7 @@ page 50233 "Contrato Archive Card"
                     }
                     field(SellToEmail; SellToContact."E-Mail")
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Email';
                         Importance = Additional;
                         Editable = false;
@@ -136,7 +136,7 @@ page 50233 "Contrato Archive Card"
                     }
                     field("Sell-to Contact"; Rec."Sell-to Contact")
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Contact';
                         Importance = Additional;
                         Editable = Rec."Sell-to Customer No." <> '';
@@ -145,47 +145,47 @@ page 50233 "Contrato Archive Card"
                 }
                 field("Search Description"; Rec."Search Description")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Importance = Additional;
                     ToolTip = 'Specifies an additional description of the project for searching purposes.';
                 }
                 field("External Document No."; Rec."External Document No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Importance = Promoted;
                     Tooltip = 'Specifies a document number that refers to the customer''s or vendor''s numbering system.';
                 }
                 field("Your Reference"; Rec."Your Reference")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Importance = Additional;
                     Tooltip = 'Specifies the customer''s reference. The content will be printed on sales documents.';
                 }
                 field("Person Responsible"; Rec."Person Responsible")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Importance = Promoted;
                     ToolTip = 'Specifies the person at your company who is responsible for the project.';
                 }
                 field(Blocked; Rec.Blocked)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies that the related record is blocked from being posted in transactions, for example a customer that is declared insolvent or an item that is placed in quarantine.';
                 }
                 field("Last Date Modified"; Rec."Last Date Modified")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies when the project card was last modified.';
                 }
                 field("Project Manager"; Rec."Project Manager")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the person who is assigned to manage the project.';
                 }
             }
-            part(JobTaskLines; ContrTaskArchiveLinesSubform)
+            part(ContratoTaskLines; ContrTaskArchiveLinesSubform)
             {
-                ApplicationArea = Jobs;
+                ApplicationArea = Contratos;
                 Caption = 'Tasks';
                 SubPageLink = "Contrato No." = field("No."),
                             "Version No." = field("Version No.");
@@ -197,49 +197,49 @@ page 50233 "Contrato Archive Card"
                 Caption = 'Posting';
                 field(Status; Rec.Status)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Importance = Promoted;
                     ToolTip = 'Specifies a current status of the project. You can change the status for the project as it progresses. Final calculations can be made on completed projects.';
                 }
                 field("Contrato Posting Group"; Rec."Contrato Posting Group")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the posting group that links transactions made for the project with the appropriate general ledger accounts according to the general posting setup.';
                 }
                 field("Location Code"; Rec."Location Code")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Importance = Promoted;
                     ToolTip = 'Specifies the location code of the project.';
                 }
                 field("Bin Code"; Rec."Bin Code")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Importance = Promoted;
                     ToolTip = 'Specifies a bin code for specific location of the project.';
                 }
                 field("WIP Method"; Rec."WIP Method")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Importance = Additional;
                     ToolTip = 'Specifies the method that is used to calculate the value of work in process for the project.';
                 }
                 field("WIP Posting Method"; Rec."WIP Posting Method")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Importance = Additional;
                     ToolTip = 'Specifies how WIP posting is performed. Per Project: The total WIP costs and the sales value is used to calculate WIP. Per Project Ledger Entry: The accumulated values of WIP costs and sales are used to calculate WIP.';
                 }
                 field("Allow Schedule/Contract Lines"; Rec."Allow Schedule/Contract Lines")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Allow Budget/Billable Lines';
                     Importance = Additional;
                     ToolTip = 'Specifies if you can add planning lines of both type Budget and type Billable to the project.';
                 }
                 field("Apply Usage Link"; Rec."Apply Usage Link")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Importance = Additional;
                     ToolTip = 'Specifies whether usage entries, from the project journal or purchase line, for example, are linked to project planning lines. Select this check box if you want to be able to track the quantities and amounts of the remaining work needed to complete a project and to create a relationship between demand planning, usage, and sales. On a project card, you can select this check box if there are no existing project planning lines that include type Budget that have been posted. The usage link only applies to project planning lines that include type Budget.';
                 }
@@ -253,7 +253,7 @@ page 50233 "Contrato Archive Card"
                     Caption = 'Bill-to';
                     field(BillToOptions; BillToOptions)
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Bill-to';
                         ToolTip = 'Specifies the customer that the sales invoice will be sent to. Default (Customer): The same as the customer on the sales invoice. Another Customer: Any customer that you specify in the fields below.';
                     }
@@ -264,7 +264,7 @@ page 50233 "Contrato Archive Card"
 
                         field("Bill-to Customer No."; Rec."Bill-to Customer No.")
                         {
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Importance = Promoted;
                             ShowMandatory = true;
                             ToolTip = 'Specifies the number of the customer who pays for the project.';
@@ -273,7 +273,7 @@ page 50233 "Contrato Archive Card"
                         field("Bill-to Name"; Rec."Bill-to Name")
                         {
                             Caption = 'Name';
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Importance = Promoted;
                             ToolTip = 'Specifies the name of the customer who pays for the project.';
                             Editable = ((BillToOptions = BillToOptions::"Another Customer") or ((BillToOptions = BillToOptions::"Custom Address") and not ShouldSearchForCustByName));
@@ -283,7 +283,7 @@ page 50233 "Contrato Archive Card"
                         field("Bill-to Address"; Rec."Bill-to Address")
                         {
                             Caption = 'Address';
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Importance = Additional;
                             QuickEntry = false;
                             ToolTip = 'Specifies the address of the customer to whom you will send the invoice.';
@@ -293,7 +293,7 @@ page 50233 "Contrato Archive Card"
                         field("Bill-to Address 2"; Rec."Bill-to Address 2")
                         {
                             Caption = 'Address 2';
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Importance = Additional;
                             QuickEntry = false;
                             ToolTip = 'Specifies an additional line of the address.';
@@ -303,7 +303,7 @@ page 50233 "Contrato Archive Card"
                         field("Bill-to City"; Rec."Bill-to City")
                         {
                             Caption = 'City';
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Importance = Additional;
                             QuickEntry = false;
                             ToolTip = 'Specifies the city of the address.';
@@ -316,7 +316,7 @@ page 50233 "Contrato Archive Card"
                             Visible = IsBillToCountyVisible;
                             field("Bill-to County"; Rec."Bill-to County")
                             {
-                                ApplicationArea = Jobs;
+                                ApplicationArea = Contratos;
                                 QuickEntry = false;
                                 Importance = Additional;
                                 ToolTip = 'Specifies the county code of the customer''s billing address.';
@@ -328,7 +328,7 @@ page 50233 "Contrato Archive Card"
                         field("Bill-to Post Code"; Rec."Bill-to Post Code")
                         {
                             Caption = 'Post Code';
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Importance = Additional;
                             QuickEntry = false;
                             ToolTip = 'Specifies the postal code of the customer who pays for the project.';
@@ -338,7 +338,7 @@ page 50233 "Contrato Archive Card"
                         field("Bill-to Country/Region Code"; Rec."Bill-to Country/Region Code")
                         {
                             Caption = 'Country/Region';
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Importance = Additional;
                             QuickEntry = false;
                             ToolTip = 'Specifies the country/region code of the customer''s billing address.';
@@ -353,7 +353,7 @@ page 50233 "Contrato Archive Card"
                         field("Bill-to Contact No."; Rec."Bill-to Contact No.")
                         {
                             Caption = 'Contact No.';
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             ToolTip = 'Specifies the number of the contact person at the customer''s billing address.';
                             Importance = Additional;
                             Editable = BillToInformationEditable;
@@ -362,7 +362,7 @@ page 50233 "Contrato Archive Card"
                         field(ContactPhoneNo; BillToContact."Phone No.")
                         {
                             Caption = 'Phone No.';
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Editable = false;
                             Importance = Additional;
                             ExtendedDatatype = PhoneNo;
@@ -371,7 +371,7 @@ page 50233 "Contrato Archive Card"
                         field(ContactMobilePhoneNo; BillToContact."Mobile Phone No.")
                         {
                             Caption = 'Mobile Phone No.';
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Editable = false;
                             Importance = Additional;
                             ExtendedDatatype = PhoneNo;
@@ -380,7 +380,7 @@ page 50233 "Contrato Archive Card"
                         field(ContactEmail; BillToContact."E-Mail")
                         {
                             Caption = 'Email';
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             ExtendedDatatype = EMail;
                             Editable = false;
                             Importance = Additional;
@@ -389,7 +389,7 @@ page 50233 "Contrato Archive Card"
                         field("Bill-to Contact"; Rec."Bill-to Contact")
                         {
                             Caption = 'Contact';
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Importance = Additional;
                             ToolTip = 'Specifies the name of the contact person at the customer who pays for the project.';
                             Editable = BillToInformationEditable;
@@ -403,12 +403,12 @@ page 50233 "Contrato Archive Card"
 
                     field("Payment Terms Code"; Rec."Payment Terms Code")
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Tooltip = 'Specifies a formula that calculates the payment due date, payment discount date, and payment discount amount.';
                     }
                     field("Payment Method Code"; Rec."Payment Method Code")
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Tooltip = 'Specifies how to make payment, such as with bank transfer, cash, or check.';
                         Importance = Additional;
                     }
@@ -419,7 +419,7 @@ page 50233 "Contrato Archive Card"
 
                     field(ShippingOptions; ShipToOptions)
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Ship-to';
                         ToolTip = 'Specifies the address that the products on the sales document are shipped to. Default (Sell-to Address): The same as the customer''s sell-to address. Alternate Ship-to Address: One of the customer''s alternate ship-to addresses. Custom Address: Any ship-to address that you specify in the fields below.';
                     }
@@ -429,7 +429,7 @@ page 50233 "Contrato Archive Card"
                         Visible = not (ShipToOptions = ShipToOptions::"Default (Sell-to Address)");
                         field("Ship-to Code"; Rec."Ship-to Code")
                         {
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Caption = 'Code';
                             Editable = ShipToOptions = ShipToOptions::"Alternate Shipping Address";
                             Importance = Promoted;
@@ -437,14 +437,14 @@ page 50233 "Contrato Archive Card"
                         }
                         field("Ship-to Name"; Rec."Ship-to Name")
                         {
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Caption = 'Name';
                             Editable = ShipToOptions = ShipToOptions::"Custom Address";
                             ToolTip = 'Specifies the name that products on the sales document will be shipped to.';
                         }
                         field("Ship-to Address"; Rec."Ship-to Address")
                         {
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Caption = 'Address';
                             Editable = ShipToOptions = ShipToOptions::"Custom Address";
                             QuickEntry = false;
@@ -452,7 +452,7 @@ page 50233 "Contrato Archive Card"
                         }
                         field("Ship-to Address 2"; Rec."Ship-to Address 2")
                         {
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Caption = 'Address 2';
                             Editable = ShipToOptions = ShipToOptions::"Custom Address";
                             QuickEntry = false;
@@ -460,7 +460,7 @@ page 50233 "Contrato Archive Card"
                         }
                         field("Ship-to City"; Rec."Ship-to City")
                         {
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Caption = 'City';
                             Editable = ShipToOptions = ShipToOptions::"Custom Address";
                             QuickEntry = false;
@@ -472,7 +472,7 @@ page 50233 "Contrato Archive Card"
                             Visible = IsShipToCountyVisible;
                             field("Ship-to County"; Rec."Ship-to County")
                             {
-                                ApplicationArea = Jobs;
+                                ApplicationArea = Contratos;
                                 Caption = 'County';
                                 Editable = ShipToOptions = ShipToOptions::"Custom Address";
                                 QuickEntry = false;
@@ -481,7 +481,7 @@ page 50233 "Contrato Archive Card"
                         }
                         field("Ship-to Post Code"; Rec."Ship-to Post Code")
                         {
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Caption = 'Post Code';
                             Editable = ShipToOptions = ShipToOptions::"Custom Address";
                             QuickEntry = false;
@@ -489,7 +489,7 @@ page 50233 "Contrato Archive Card"
                         }
                         field("Ship-to Country/Region Code"; Rec."Ship-to Country/Region Code")
                         {
-                            ApplicationArea = Jobs;
+                            ApplicationArea = Contratos;
                             Caption = 'Country/Region';
                             Editable = ShipToOptions = ShipToOptions::"Custom Address";
                             Importance = Additional;
@@ -504,7 +504,7 @@ page 50233 "Contrato Archive Card"
                     }
                     field("Ship-to Contact"; Rec."Ship-to Contact")
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Contact';
                         ToolTip = 'Specifies the name of the contact person at the address that products on the sales document will be shipped to.';
                     }
@@ -515,19 +515,19 @@ page 50233 "Contrato Archive Card"
                 Caption = 'Duration';
                 field("Starting Date"; Rec."Starting Date")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Importance = Promoted;
                     ToolTip = 'Specifies the date on which the project actually starts.';
                 }
                 field("Ending Date"; Rec."Ending Date")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Importance = Promoted;
                     ToolTip = 'Specifies the date on which the project is expected to be completed.';
                 }
                 field("Creation Date"; Rec."Creation Date")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the date on which you set up the project.';
                 }
             }
@@ -624,26 +624,26 @@ page 50233 "Contrato Archive Card"
             group("&Contrato")
             {
                 Caption = '&Project';
-                Image = Contrato;
-                action(JobPlanningLines)
+                Image = Job;
+                action(ContratoPlanningLines)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Project &Planning Lines';
                     Image = JobLines;
                     ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (Budget) or you can specify what you actually agreed with your customer that he should pay for the project (Billable).';
 
                     trigger OnAction()
                     var
-                        JobPlanningLineArchive: Record "Contrato Planning Line Archive";
-                        JobPlanningArchiveLines: Page "ContratoPlanningArchiveLines";
+                        ContratoPlanningLineArchive: Record "Contrato Planning Line Archive";
+                        ContratoPlanningArchiveLines: Page "ContratoPlanningArchiveLines";
                     begin
                         Rec.TestField("No.");
-                        JobPlanningLineArchive.FilterGroup(2);
-                        JobPlanningLineArchive.SetRange("Contrato No.", Rec."No.");
-                        JobPlanningLineArchive.SetRange("Version No.", Rec."Version No.");
-                        JobPlanningLineArchive.FilterGroup(0);
-                        JobPlanningArchiveLines.SetTableView(JobPlanningLineArchive);
-                        JobPlanningArchiveLines.Run();
+                        ContratoPlanningLineArchive.FilterGroup(2);
+                        ContratoPlanningLineArchive.SetRange("Contrato No.", Rec."No.");
+                        ContratoPlanningLineArchive.SetRange("Version No.", Rec."Version No.");
+                        ContratoPlanningLineArchive.FilterGroup(0);
+                        ContratoPlanningArchiveLines.SetTableView(ContratoPlanningLineArchive);
+                        ContratoPlanningArchiveLines.Run();
                     end;
                 }
                 separator(Action64)
@@ -662,7 +662,7 @@ page 50233 "Contrato Archive Card"
                 }
                 action("&Online Map")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = '&Online Map';
                     Image = Map;
                     ToolTip = 'View online map for addresses assigned to this project.';
@@ -686,9 +686,9 @@ page 50233 "Contrato Archive Card"
 
                 trigger OnAction()
                 var
-                    JobArchiveManagement: Codeunit "Contrato Archive Management";
+                    ContratoArchiveManagement: Codeunit "Contrato Archive Management";
                 begin
-                    JobArchiveManagement.RestoreJob(Rec);
+                    ContratoArchiveManagement.RestoreContrato(Rec);
                 end;
             }
         }
@@ -712,7 +712,7 @@ page 50233 "Contrato Archive Card"
                 separator(Navigate_Separator)
                 {
                 }
-                actionref(JobPlanningLines_Promoted; JobPlanningLines)
+                actionref(ContratoPlanningLines_Promoted; ContratoPlanningLines)
                 {
                 }
             }

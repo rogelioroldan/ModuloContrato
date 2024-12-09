@@ -17,7 +17,7 @@ page 50234 "ContrTaskArchiveLinesSubform"
                 ShowCaption = false;
                 field("Contrato No."; Rec."Contrato No.")
                 {
-                    ApplicationArea = Basic, Suite, Jobs;
+                    ApplicationArea = Basic, Suite, Contratos;
                     Style = Strong;
                     StyleExpr = StyleIsStrong;
                     ToolTip = 'Specifies the number of the related project.';
@@ -25,21 +25,21 @@ page 50234 "ContrTaskArchiveLinesSubform"
                 }
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
-                    ApplicationArea = Basic, Suite, Jobs;
+                    ApplicationArea = Basic, Suite, Contratos;
                     Style = Strong;
                     StyleExpr = StyleIsStrong;
                     ToolTip = 'Specifies the number of the related project task.';
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = Basic, Suite, Jobs;
+                    ApplicationArea = Basic, Suite, Contratos;
                     Style = Strong;
                     StyleExpr = StyleIsStrong;
                     ToolTip = 'Specifies a description of the project task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the project planning line.';
                 }
                 field("Contrato Task Type"; Rec."Contrato Task Type")
                 {
-                    ApplicationArea = Basic, Suite, Jobs;
+                    ApplicationArea = Basic, Suite, Contratos;
                     ToolTip = 'Specifies the purpose of the account. Newly created accounts are automatically assigned the Posting account type, but you can change this. Choose the field to select one of the following five options:';
                 }
                 field(Totaling; Rec.Totaling)
@@ -50,14 +50,14 @@ page 50234 "ContrTaskArchiveLinesSubform"
                 }
                 field("Sell-to Customer No."; Rec."Sell-to Customer No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Customer No.';
                     ToolTip = 'Specifies the number of the customer who will receive the products and be billed by default for the project task.';
                     Visible = PerTaskBillingFieldsVisible;
                 }
                 field("Bill-to Customer No."; Rec."Bill-to Customer No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the number of the customer who pays for the project task.';
                     Visible = PerTaskBillingFieldsVisible;
                 }
@@ -69,13 +69,13 @@ page 50234 "ContrTaskArchiveLinesSubform"
                 }
                 field("Location Code"; Rec."Location Code")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the location code of the task.';
                     Visible = false;
                 }
                 field("Bin Code"; Rec."Bin Code")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies a bin code for specific location of the task.';
                     Visible = false;
                 }
@@ -93,17 +93,17 @@ page 50234 "ContrTaskArchiveLinesSubform"
                 }
                 field("Start Date"; Rec."Start Date")
                 {
-                    ApplicationArea = Basic, Suite, Jobs;
+                    ApplicationArea = Basic, Suite, Contratos;
                     ToolTip = 'Specifies the start date for the project task. The date is based on the date on the related project planning line.';
                 }
                 field("End Date"; Rec."End Date")
                 {
-                    ApplicationArea = Basic, Suite, Jobs;
+                    ApplicationArea = Basic, Suite, Contratos;
                     ToolTip = 'Specifies the end date for the project task. The date is based on the date on the related project planning line.';
                 }
                 field("Schedule (Total Cost)"; Rec."Schedule (Total Cost)")
                 {
-                    ApplicationArea = Basic, Suite, Jobs;
+                    ApplicationArea = Basic, Suite, Contratos;
                     Caption = 'Budget (Total Cost)';
                     ToolTip = 'Specifies, in the local currency, the total budgeted cost for the project task during the time period in the Planning Date Filter field.';
                 }
@@ -116,7 +116,7 @@ page 50234 "ContrTaskArchiveLinesSubform"
                 }
                 field("Usage (Total Cost)"; Rec."Usage (Total Cost)")
                 {
-                    ApplicationArea = Basic, Suite, Jobs;
+                    ApplicationArea = Basic, Suite, Contratos;
                     ToolTip = 'Specifies, in local currency, the total cost of the usage of items, resources and general ledger expenses posted on the project task during the time period in the Posting Date Filter field.';
                 }
                 field("Usage (Total Price)"; Rec."Usage (Total Price)")
@@ -133,7 +133,7 @@ page 50234 "ContrTaskArchiveLinesSubform"
                 }
                 field("Contract (Total Price)"; Rec."Contract (Total Price)")
                 {
-                    ApplicationArea = Basic, Suite, Jobs;
+                    ApplicationArea = Basic, Suite, Contratos;
                     ToolTip = 'Specifies, in the local currency, the total billable price for the project task during the time period in the Planning Date Filter field.';
                 }
                 field("Contract (Invoiced Cost)"; Rec."Contract (Invoiced Cost)")
@@ -144,7 +144,7 @@ page 50234 "ContrTaskArchiveLinesSubform"
                 }
                 field("Contract (Invoiced Price)"; Rec."Contract (Invoiced Price)")
                 {
-                    ApplicationArea = Basic, Suite, Jobs;
+                    ApplicationArea = Basic, Suite, Contratos;
                     ToolTip = 'Specifies, in the local currency, the total billable price for the project task that has been invoiced during the time period in the Posting Date Filter field.';
                 }
                 field("Remaining (Total Cost)"; Rec."Remaining (Total Cost)")
@@ -173,13 +173,13 @@ page 50234 "ContrTaskArchiveLinesSubform"
                 }
                 field("External Document No."; Rec."External Document No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Visible = PerTaskBillingFieldsVisible;
                     Tooltip = 'Specifies a document number that refers to the customer''s or vendor''s numbering system.';
                 }
                 field("Your Reference"; Rec."Your Reference")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Visible = PerTaskBillingFieldsVisible;
                     Tooltip = 'Specifies the customer''s reference. The content will be printed on sales documents.';
                 }
@@ -197,10 +197,10 @@ page 50234 "ContrTaskArchiveLinesSubform"
                 group("&Contrato")
                 {
                     Caption = '&Project';
-                    Image = Contrato;
-                    action(JobPlanningLines)
+                    Image = Job;
+                    action(ContratoPlanningLines)
                     {
-                        ApplicationArea = Jobs;
+                        ApplicationArea = Contratos;
                         Caption = 'Project &Planning Lines';
                         Image = JobLines;
                         Scope = Repeater;
@@ -208,18 +208,18 @@ page 50234 "ContrTaskArchiveLinesSubform"
 
                         trigger OnAction()
                         var
-                            JobPlanningLineArchive: Record "Contrato Planning Line Archive";
-                            JobPlanningArchiveLines: Page "ContratoPlanningArchiveLines";
+                            ContratoPlanningLineArchive: Record "Contrato Planning Line Archive";
+                            ContratoPlanningArchiveLines: Page "ContratoPlanningArchiveLines";
                         begin
                             Rec.TestField("Contrato No.");
-                            JobPlanningLineArchive.FilterGroup(2);
-                            JobPlanningLineArchive.SetRange("Contrato No.", Rec."Contrato No.");
-                            JobPlanningLineArchive.SetRange("Contrato Task No.", Rec."Contrato Task No.");
-                            JobPlanningLineArchive.SetRange("Version No.", Rec."Version No.");
-                            JobPlanningLineArchive.FilterGroup(0);
-                            JobPlanningArchiveLines.SetTableView(JobPlanningLineArchive);
-                            JobPlanningArchiveLines.Editable := true;
-                            JobPlanningArchiveLines.Run();
+                            ContratoPlanningLineArchive.FilterGroup(2);
+                            ContratoPlanningLineArchive.SetRange("Contrato No.", Rec."Contrato No.");
+                            ContratoPlanningLineArchive.SetRange("Contrato Task No.", Rec."Contrato Task No.");
+                            ContratoPlanningLineArchive.SetRange("Version No.", Rec."Version No.");
+                            ContratoPlanningLineArchive.FilterGroup(0);
+                            ContratoPlanningArchiveLines.SetTableView(ContratoPlanningLineArchive);
+                            ContratoPlanningArchiveLines.Editable := true;
+                            ContratoPlanningArchiveLines.Run();
                         end;
                     }
                 }
@@ -235,10 +235,10 @@ page 50234 "ContrTaskArchiveLinesSubform"
 
     trigger OnOpenPage()
     var
-        JobArchive: Record "Contrato Archive";
+        ContratoArchive: Record "Contrato Archive";
     begin
-        if JobArchive.Get(Rec."Contrato No.") then
-            PerTaskBillingFieldsVisible := JobArchive."Task Billing Method" = JobArchive."Task Billing Method"::"Multiple customers";
+        if ContratoArchive.Get(Rec."Contrato No.") then
+            PerTaskBillingFieldsVisible := ContratoArchive."Task Billing Method" = ContratoArchive."Task Billing Method"::"Multiple customers";
     end;
 
     trigger OnInit()

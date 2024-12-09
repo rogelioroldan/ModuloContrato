@@ -1,7 +1,7 @@
 page 50218 "Contrato WIP Entries"
 {
     AdditionalSearchTerms = 'Contrato WIP Entries';
-    ApplicationArea = Jobs;
+    ApplicationArea = Contratos;
     Caption = 'Project WIP Entries';
     DataCaptionFields = "Contrato No.";
     Editable = false;
@@ -18,67 +18,67 @@ page 50218 "Contrato WIP Entries"
                 ShowCaption = false;
                 field("WIP Posting Date"; Rec."WIP Posting Date")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the posting date you entered in the Posting Date field on the Options FastTab in the Project Calculate WIP batch job.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the posting date you entered in the Posting Date field on the Options FastTab in the Project Calculate WIP batch Contrato.';
                 }
                 field("Document No."; Rec."Document No.")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the document number you entered in the Document No. field on the Options FastTab in the Project Calculate WIP batch job.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the document number you entered in the Document No. field on the Options FastTab in the Project Calculate WIP batch Contrato.';
                 }
                 field("Contrato No."; Rec."Contrato No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the number of the related project.';
                 }
                 field("Contrato Complete"; Rec."Contrato Complete")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies whether the Project WIP Entry was created for a project with a Completed status.';
                 }
                 field("Contrato WIP Total Entry No."; Rec."Contrato WIP Total Entry No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the entry number of the WIP total.';
                 }
                 field("G/L Account No."; Rec."G/L Account No.")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the general ledger account number to which the WIP on this entry will be posted, if you run the Project Post WIP to the general ledger batch job.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the general ledger account number to which the WIP on this entry will be posted, if you run the Project Post WIP to the general ledger batch Contrato.';
                 }
                 field("G/L Bal. Account No."; Rec."G/L Bal. Account No.")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the general ledger balancing account number that WIP on this entry will be posted to, if you run the Project Post WIP to general ledger batch job.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the general ledger balancing account number that WIP on this entry will be posted to, if you run the Project Post WIP to general ledger batch Contrato.';
                 }
                 field("WIP Method Used"; Rec."WIP Method Used")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the WIP method that was specified for the project when you ran the Project Calculate WIP batch job.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the WIP method that was specified for the project when you ran the Project Calculate WIP batch Contrato.';
                 }
                 field("WIP Posting Method Used"; Rec."WIP Posting Method Used")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the WIP posting method used. The information in this field comes from the setting you have specified on the project card.';
                 }
                 field(Type; Rec.Type)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the WIP type for this entry.';
                 }
                 field("WIP Entry Amount"; Rec."WIP Entry Amount")
                 {
-                    ApplicationArea = Jobs;
-                    ToolTip = 'Specifies the WIP amount that will be posted for this entry, if you run the Project Post WIP to G/L batch job.';
+                    ApplicationArea = Contratos;
+                    ToolTip = 'Specifies the WIP amount that will be posted for this entry, if you run the Project Post WIP to G/L batch Contrato.';
                 }
                 field("Contrato Posting Group"; Rec."Contrato Posting Group")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the posting group related to this entry.';
                 }
                 field(Reverse; Rec.Reverse)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies whether the entry has been part of a reverse transaction (correction) made by the reverse function.';
                 }
                 field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
@@ -95,7 +95,7 @@ page 50218 "Contrato WIP Entries"
                 }
                 field("Entry No."; Rec."Entry No.")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     ToolTip = 'Specifies the number of the entry, as assigned from the specified number series when the entry was created.';
                 }
                 field("Dimension Set ID"; Rec."Dimension Set ID")
@@ -173,7 +173,7 @@ page 50218 "Contrato WIP Entries"
                 Image = Entry;
                 action("<Action57>")
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'WIP Totals';
                     Image = EntriesList;
                     RunObject = Page "Contrato WIP Totals";

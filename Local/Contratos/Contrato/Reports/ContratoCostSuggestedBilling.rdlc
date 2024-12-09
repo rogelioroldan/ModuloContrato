@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="FORMAT_TODAY_0_4_">
+          <DataField>FORMAT_TODAY_0_4_</DataField>
+        </Field>
+        <Field Name="TIME">
+          <DataField>TIME</DataField>
+        </Field>
+        <Field Name="CompanyInformation_Name">
+          <DataField>CompanyInformation_Name</DataField>
+        </Field>
+        <Field Name="USERID">
+          <DataField>USERID</DataField>
+        </Field>
+        <Field Name="Contrato_TABLECAPTION__________ContratoFilter">
+          <DataField>Contrato_TABLECAPTION__________ContratoFilter</DataField>
+        </Field>
+        <Field Name="ContratoFilter">
+          <DataField>ContratoFilter</DataField>
+        </Field>
+        <Field Name="Customer_TABLECAPTION_________Customer_FIELDCAPTION__No_____________Bill_to_Customer_No__">
+          <DataField>Customer_TABLECAPTION_________Customer_FIELDCAPTION__No_____________Bill_to_Customer_No__</DataField>
+        </Field>
+        <Field Name="Customer_Name">
+          <DataField>Customer_Name</DataField>
+        </Field>
+        <Field Name="Contrato__Bill_to_Customer_No__">
+          <DataField>Contrato__Bill_to_Customer_No__</DataField>
+        </Field>
+        <Field Name="Contrato__No__">
+          <DataField>Contrato__No__</DataField>
+        </Field>
+        <Field Name="Contrato_Description">
+          <DataField>Contrato_Description</DataField>
+        </Field>
+        <Field Name="Contrato__Starting_Date_">
+          <DataField>Contrato__Starting_Date_</DataField>
+        </Field>
+        <Field Name="Contrato__Ending_Date_">
+          <DataField>Contrato__Ending_Date_</DataField>
+        </Field>
+        <Field Name="ContractPrice">
+          <DataField>ContractPrice</DataField>
+        </Field>
+        <Field Name="ContractPriceFormat">
+          <DataField>ContractPriceFormat</DataField>
+        </Field>
+        <Field Name="UsagePrice">
+          <DataField>UsagePrice</DataField>
+        </Field>
+        <Field Name="UsagePriceFormat">
+          <DataField>UsagePriceFormat</DataField>
+        </Field>
+        <Field Name="InvoicedPrice">
+          <DataField>InvoicedPrice</DataField>
+        </Field>
+        <Field Name="InvoicedPriceFormat">
+          <DataField>InvoicedPriceFormat</DataField>
+        </Field>
+        <Field Name="SuggestedBilling">
+          <DataField>SuggestedBilling</DataField>
+        </Field>
+        <Field Name="SuggestedBillingFormat">
+          <DataField>SuggestedBillingFormat</DataField>
+        </Field>
+        <Field Name="STRSUBSTNO_Text000_Customer_TABLECAPTION_Customer_FIELDCAPTION__No_____Bill_to_Customer_No___">
+          <DataField>STRSUBSTNO_Text000_Customer_TABLECAPTION_Customer_FIELDCAPTION__No_____Bill_to_Customer_No___</DataField>
+        </Field>
+        <Field Name="ContractPrice_Control20">
+          <DataField>ContractPrice_Control20</DataField>
+        </Field>
+        <Field Name="ContractPrice_Control20Format">
+          <DataField>ContractPrice_Control20Format</DataField>
+        </Field>
+        <Field Name="UsagePrice_Control21">
+          <DataField>UsagePrice_Control21</DataField>
+        </Field>
+        <Field Name="UsagePrice_Control21Format">
+          <DataField>UsagePrice_Control21Format</DataField>
+        </Field>
+        <Field Name="InvoicedPrice_Control29">
+          <DataField>InvoicedPrice_Control29</DataField>
+        </Field>
+        <Field Name="InvoicedPrice_Control29Format">
+          <DataField>InvoicedPrice_Control29Format</DataField>
+        </Field>
+        <Field Name="SuggestedBilling_Control31">
+          <DataField>SuggestedBilling_Control31</DataField>
+        </Field>
+        <Field Name="SuggestedBilling_Control31Format">
+          <DataField>SuggestedBilling_Control31Format</DataField>
+        </Field>
+        <Field Name="ContractPrice_Control25">
+          <DataField>ContractPrice_Control25</DataField>
+        </Field>
+        <Field Name="ContractPrice_Control25Format">
+          <DataField>ContractPrice_Control25Format</DataField>
+        </Field>
+        <Field Name="UsagePrice_Control26">
+          <DataField>UsagePrice_Control26</DataField>
+        </Field>
+        <Field Name="UsagePrice_Control26Format">
+          <DataField>UsagePrice_Control26Format</DataField>
+        </Field>
+        <Field Name="InvoicedPrice_Control30">
+          <DataField>InvoicedPrice_Control30</DataField>
+        </Field>
+        <Field Name="InvoicedPrice_Control30Format">
+          <DataField>InvoicedPrice_Control30Format</DataField>
+        </Field>
+        <Field Name="SuggestedBilling_Control14">
+          <DataField>SuggestedBilling_Control14</DataField>
+        </Field>
+        <Field Name="SuggestedBilling_Control14Format">
+          <DataField>SuggestedBilling_Control14Format</DataField>
+        </Field>
+        <Field Name="Contrato_Cost_Suggested_BillingCaption">
+          <DataField>Contrato_Cost_Suggested_BillingCaption</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENOCaption">
+          <DataField>CurrReport_PAGENOCaption</DataField>
+        </Field>
+        <Field Name="Contrato__No__Caption">
+          <DataField>Contrato__No__Caption</DataField>
+        </Field>
+        <Field Name="Contrato_DescriptionCaption">
+          <DataField>Contrato_DescriptionCaption</DataField>
+        </Field>
+        <Field Name="Contrato__Starting_Date_Caption">
+          <DataField>Contrato__Starting_Date_Caption</DataField>
+        </Field>
+        <Field Name="Contrato__Ending_Date_Caption">
+          <DataField>Contrato__Ending_Date_Caption</DataField>
+        </Field>
+        <Field Name="ContractPriceCaption">
+          <DataField>ContractPriceCaption</DataField>
+        </Field>
+        <Field Name="UsagePriceCaption">
+          <DataField>UsagePriceCaption</DataField>
+        </Field>
+        <Field Name="InvoicedPriceCaption">
+          <DataField>InvoicedPriceCaption</DataField>
+        </Field>
+        <Field Name="SuggestedBillingCaption">
+          <DataField>SuggestedBillingCaption</DataField>
+        </Field>
+        <Field Name="Report_TotalCaption">
+          <DataField>Report_TotalCaption</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

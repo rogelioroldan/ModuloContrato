@@ -3,7 +3,7 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
 #if not CLEAN23
     var
         AssemblyWarehouseMgt: Codeunit "Assembly Warehouse Mgt.";
-        JobWarehouseMgt: Codeunit "ContratoWhseValidateSourceLine";
+        ContratoWarehouseMgt: Codeunit "ContratoWhseValidateSourceLine";
         ServiceWarehouseMgt: Codeunit "Service Warehouse Mgt.";
         SalesWarehouseMgt: Codeunit "Sales Warehouse Mgt.";
         PurchasesWarehouseMgt: Codeunit "Purchases Warehouse Mgt.";
@@ -21,7 +21,7 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
         Text000: Label 'must not be changed when a %1 for this %2 exists: ';
         Text001: Label 'The %1 cannot be deleted when a related %2 exists.';
         Text002: Label 'You cannot post consumption for order no. %1 because a quantity of %2 remains to be picked.';
-        JobPostQtyPickRemainErr: Label 'You cannot post usage for project number %1 because a quantity of %2 remains to be picked.', Comment = '%1 = Project number, %2 = remaining quantity to pick';
+        ContratoPostQtyPickRemainErr: Label 'You cannot post usage for project number %1 because a quantity of %2 remains to be picked.', Comment = '%1 = Project number, %2 = remaining quantity to pick';
 
 #if not CLEAN23
     procedure SalesLineVerifyChange(var NewSalesLine: Record "Sales Line"; var OldSalesLine: Record "Sales Line")
@@ -218,7 +218,7 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
         exit(Success);
     end;
 
-    procedure WhseWorkSheetLinesExistForJobOrProdOrderComponent(SourceType: Integer; SourceSubType: Option; SourceNo: Code[20]; SourceLineNo: Integer; SourceSublineNo: Integer; SourceQty: Decimal): Boolean
+    procedure WhseWorkSheetLinesExistForContratoOrProdOrderComponent(SourceType: Integer; SourceSubType: Option; SourceNo: Code[20]; SourceLineNo: Integer; SourceSublineNo: Integer; SourceQty: Decimal): Boolean
     begin
         if not (SourceType in [Database::Contrato, Database::"Prod. Order Component"]) then begin
             TableCaptionValue := '';
@@ -263,16 +263,16 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
 #endif
 
 #if not CLEAN23
-    procedure JobPlanningLineVerifyChange(var NewJobPlanningLine: Record "Contrato Planning Line"; var OldJobPlanningLine: Record "Contrato Planning Line"; FieldNo: Integer)
+    procedure ContratoPlanningLineVerifyChange(var NewContratoPlanningLine: Record "Contrato Planning Line"; var OldContratoPlanningLine: Record "Contrato Planning Line"; FieldNo: Integer)
     begin
-        JobWarehouseMgt.JobPlanningLineVerifyChange(NewJobPlanningLine, OldJobPlanningLine, FieldNo);
+        ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(NewContratoPlanningLine, OldContratoPlanningLine, FieldNo);
     end;
 #endif
 
 #if not CLEAN23
-    procedure JobPlanningLineDelete(var JobPlanningLine: Record "Contrato Planning Line")
+    procedure ContratoPlanningLineDelete(var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
-        JobWarehouseMgt.JobPlanningLineDelete(JobPlanningLine);
+        ContratoWarehouseMgt.ContratoPlanningLineDelete(ContratoPlanningLine);
     end;
 #endif
 
@@ -369,60 +369,60 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
         OnAfterItemLineVerifyChange(NewItemJnlLine, OldItemJnlLine);
     end;
 
-    internal procedure JobJnlLineVerifyChangeForWhsePick(var NewJobJnlLine: Record "Contrato Journal Line"; var OldJobJnlLine: Record "Contrato Journal Line")
+    internal procedure ContratoJnlLineVerifyChangeForWhsePick(var NewContratoJnlLine: Record "Contrato Journal Line"; var OldContratoJnlLine: Record "Contrato Journal Line")
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
         QtyRemainingToBePicked: Decimal;
     begin
-        if IsWhsePickRequiredForJobJnlLine(NewJobJnlLine) and (NewJobJnlLine.Quantity > 0) then
-            if JobPlanningLine.Get(NewJobJnlLine."Contrato No.", NewJobJnlLine."Contrato Task No.", NewJobJnlLine."Contrato Planning Line No.") and (NewJobJnlLine.Quantity >= 0) then begin
-                QtyRemainingToBePicked := NewJobJnlLine.Quantity + JobPlanningLine."Qty. Posted" - JobPlanningLine."Qty. Picked" - JobPlanningLine."Qty. to Assemble";
-                CheckQtyRemainingToBePickedForJob(NewJobJnlLine, QtyRemainingToBePicked);
+        if IsWhsePickRequiredForContratoJnlLine(NewContratoJnlLine) and (NewContratoJnlLine.Quantity > 0) then
+            if ContratoPlanningLine.Get(NewContratoJnlLine."Contrato No.", NewContratoJnlLine."Contrato Task No.", NewContratoJnlLine."Contrato Planning Line No.") and (NewContratoJnlLine.Quantity >= 0) then begin
+                QtyRemainingToBePicked := NewContratoJnlLine.Quantity + ContratoPlanningLine."Qty. Posted" - ContratoPlanningLine."Qty. Picked" - ContratoPlanningLine."Qty. to Assemble";
+                CheckQtyRemainingToBePickedForContrato(NewContratoJnlLine, QtyRemainingToBePicked);
             end;
     end;
 
-    internal procedure IsWhsePickRequiredForJobJnlLine(var JobJournalLine: Record "Contrato Journal Line"): Boolean
+    internal procedure IsWhsePickRequiredForContratoJnlLine(var ContratoJournalLine: Record "Contrato Journal Line"): Boolean
     var
         Item: Record Item;
     begin
-        if (JobJournalLine."Line Type" in [JobJournalLine."Line Type"::Budget, JobJournalLine."Line Type"::"Both Budget and Billable"]) and (JobJournalLine.Type = JobJournalLine.Type::Item) then
-            if RequireWarehousePicking(JobJournalLine) then
-                if Item.Get(JobJournalLine."No.") then
+        if (ContratoJournalLine."Line Type" in [ContratoJournalLine."Line Type"::Budget, ContratoJournalLine."Line Type"::"Both Budget and Billable"]) and (ContratoJournalLine.Type = ContratoJournalLine.Type::Item) then
+            if RequireWarehousePicking(ContratoJournalLine) then
+                if Item.Get(ContratoJournalLine."No.") then
                     if Item.IsInventoriableType() then
                         exit(true);
     end;
 
-    internal procedure IsInventoryPickRequiredForJobJnlLine(var JobJournalLine: Record "Contrato Journal Line"): Boolean
+    internal procedure IsInventoryPickRequiredForContratoJnlLine(var ContratoJournalLine: Record "Contrato Journal Line"): Boolean
     var
         WarehouseActivityLine: Record "Warehouse Activity Line";
     begin
-        if (JobJournalLine."Line Type" in [JobJournalLine."Line Type"::Budget, JobJournalLine."Line Type"::"Both Budget and Billable"]) and (JobJournalLine.Type = JobJournalLine.Type::Item) then
-            if RequireInventoryPicking(JobJournalLine) then begin
-                if JobJournalLine."Contrato Planning Line No." <> 0 then
-                    WarehouseActivityLine.SetRange("Source Subline No.", JobJournalLine."Contrato Planning Line No.");
+        if (ContratoJournalLine."Line Type" in [ContratoJournalLine."Line Type"::Budget, ContratoJournalLine."Line Type"::"Both Budget and Billable"]) and (ContratoJournalLine.Type = ContratoJournalLine.Type::Item) then
+            if RequireInventoryPicking(ContratoJournalLine) then begin
+                if ContratoJournalLine."Contrato Planning Line No." <> 0 then
+                    WarehouseActivityLine.SetRange("Source Subline No.", ContratoJournalLine."Contrato Planning Line No.");
                 WarehouseActivityLine.SetRange("Source Type", Database::Contrato);
-                WarehouseActivityLine.SetRange("Source No.", JobJournalLine."Contrato No.");
+                WarehouseActivityLine.SetRange("Source No.", ContratoJournalLine."Contrato No.");
                 exit(not WarehouseActivityLine.IsEmpty());
             end;
     end;
 
-    local procedure RequireInventoryPicking(var JobJournalLine: Record "Contrato Journal Line"): Boolean
+    local procedure RequireInventoryPicking(var ContratoJournalLine: Record "Contrato Journal Line"): Boolean
     var
         Location: Record Location;
         WarehouseSetup: Record "Warehouse Setup";
     begin
-        if Location.Get(JobJournalLine."Location Code") then
+        if Location.Get(ContratoJournalLine."Location Code") then
             exit(Location."Job Consump. Whse. Handling" = Enum::"Job Consump. Whse. Handling"::"Inventory Pick");
         WarehouseSetup.Get();
         exit(WarehouseSetup."Require Pick" and not WarehouseSetup."Require Shipment");
     end;
 
-    local procedure RequireWarehousePicking(var JobJournalLine: Record "Contrato Journal Line"): Boolean
+    local procedure RequireWarehousePicking(var ContratoJournalLine: Record "Contrato Journal Line"): Boolean
     var
         Location: Record Location;
         WarehouseSetup: Record "Warehouse Setup";
     begin
-        if Location.Get(JobJournalLine."Location Code") then
+        if Location.Get(ContratoJournalLine."Location Code") then
             exit(Location."Job Consump. Whse. Handling" = Enum::"Job Consump. Whse. Handling"::"Warehouse Pick (mandatory)");
         WarehouseSetup.Get();
         exit(WarehouseSetup."Require Pick" and WarehouseSetup."Require Shipment");
@@ -452,17 +452,17 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
         CheckQtyRemainingToBePicked(QtyRemainingToBePicked, NewItemJnlLine."Order No.");
     end;
 
-    local procedure CheckQtyRemainingToBePickedForJob(NewJobJnlLine: Record "Contrato Journal Line"; QtyRemainingToBePicked: Decimal)
+    local procedure CheckQtyRemainingToBePickedForContrato(NewContratoJnlLine: Record "Contrato Journal Line"; QtyRemainingToBePicked: Decimal)
     var
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckQtyRemainingToBePickedForJob(NewJobJnlLine, QtyRemainingToBePicked, IsHandled);
+        OnBeforeCheckQtyRemainingToBePickedForContrato(NewContratoJnlLine, QtyRemainingToBePicked, IsHandled);
         if IsHandled then
             exit;
 
         if QtyRemainingToBePicked > 0 then
-            Error(JobPostQtyPickRemainErr, NewJobJnlLine."Contrato No.", QtyRemainingToBePicked);
+            Error(ContratoPostQtyPickRemainErr, NewContratoJnlLine."Contrato No.", QtyRemainingToBePicked);
     end;
 
     local procedure CheckQtyRemainingToBePicked(QtyRemainingToBePicked: Decimal; OrderNo: Code[20])
@@ -700,7 +700,7 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckQtyRemainingToBePickedForJob(NewJobJnlLine: Record "Contrato Journal Line"; QtyRemainingToBePicked: Decimal; var IsHandled: Boolean)
+    local procedure OnBeforeCheckQtyRemainingToBePickedForContrato(NewContratoJnlLine: Record "Contrato Journal Line"; QtyRemainingToBePicked: Decimal; var IsHandled: Boolean)
     begin
     end;
 

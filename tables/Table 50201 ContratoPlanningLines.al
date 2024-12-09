@@ -112,13 +112,13 @@ table 50201 "Contrato Planning Line"
                             InitLocation();
                         if "Bin Code" = '' then
                             SetDefaultBin();
-                        JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("No."));
+                        ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("No."));
                     end;
                     if "No." = '' then
                         exit;
                 end;
 
-                CopyFieldsFromJob();
+                CopyFieldsFromContrato();
 
                 case Type of
                     Type::Resource:
@@ -199,7 +199,7 @@ table 50201 "Contrato Planning Line"
                     Validate("Qty. to Assemble");
 
                 if not BypassQtyValidation then
-                    JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo(Quantity));
+                    ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo(Quantity));
 
                 BypassQtyValidation := false;
             end;
@@ -299,7 +299,7 @@ table 50201 "Contrato Planning Line"
                               UOMMgt.GetQtyPerUnitOfMeasure(Item, "Unit of Measure Code");
                             "Qty. Rounding Precision" := UOMMgt.GetQtyRoundingPrecision(Item, "Unit of Measure Code");
                             "Qty. Rounding Precision (Base)" := UOMMgt.GetQtyRoundingPrecision(Item, Item."Base Unit of Measure");
-                            JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Unit of Measure Code"));
+                            ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Unit of Measure Code"));
                         end;
                     Type::Resource:
                         begin
@@ -361,9 +361,9 @@ table 50201 "Contrato Planning Line"
                     UpdateReservation(FieldNo("Location Code"));
                     Validate(Quantity);
                     SetDefaultBin();
-                    JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Location Code"));
+                    ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Location Code"));
                     InitQtyToAsm();
-                    //ATOLink.UpdateAsmFromJobPlanningLine(Rec);
+                    //ATOLink.UpdateAsmFromContratoPlanningLine(Rec);
 
                     DeleteWarehouseRequest(xRec);
                     CreateWarehouseRequest();
@@ -457,7 +457,7 @@ table 50201 "Contrato Planning Line"
 
             trigger OnValidate()
             begin
-                JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Planning Due Date"));
+                ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Planning Due Date"));
             end;
         }
         field(900; "Qty. to Assemble"; Decimal)
@@ -482,7 +482,7 @@ table 50201 "Contrato Planning Line"
                     FieldError("Qty. to Assemble", NegativeQtyToAssembleErr);
 
                 CheckItemAvailable(FieldNo("Qty. to Assemble"));
-                ATOLink.UpdateAsmFromJobPlanningLine(Rec);
+                ATOLink.UpdateAsmFromContratoPlanningLine(Rec);
             end;
         }
         field(901; "Qty. to Assemble (Base)"; Decimal)
@@ -797,7 +797,7 @@ table 50201 "Contrato Planning Line"
 
             trigger OnValidate()
             begin
-                JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo(Status));
+                ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo(Status));
             end;
         }
         field(1050; "Ledger Entry Type"; Enum "Contrato Ledger Entry Type")
@@ -1083,8 +1083,8 @@ table 50201 "Contrato Planning Line"
                 CheckItemAvailable(FieldNo("Variant Code"));
                 UpdateReservation(FieldNo("Variant Code"));
                 InitQtyToAsm();
-                //ATOLink.UpdateAsmFromJobPlanningLine(Rec);
-                JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Variant Code"));
+                //ATOLink.UpdateAsmFromContratoPlanningLine(Rec);
+                ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Variant Code"));
             end;
         }
         field(5403; "Bin Code"; Code[20])
@@ -1114,8 +1114,8 @@ table 50201 "Contrato Planning Line"
                 end;
 
                 UpdateReservation(FieldNo("Bin Code"));
-                JobWarehouseMgt.JobPlanningLineVerifyChange(Rec, xRec, FieldNo("Bin Code"));
-                // ATOLink.UpdateAsmBinCodeFromJobPlanningLine(Rec);
+                ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Bin Code"));
+                // ATOLink.UpdateAsmBinCodeFromContratoPlanningLine(Rec);
             end;
 
             trigger OnLookup()
@@ -1351,27 +1351,27 @@ table 50201 "Contrato Planning Line"
 
     trigger OnDelete()
     var
-        JobUsageLink: Record "Contrato Usage Link";
+        ContratoUsageLink: Record "Contrato Usage Link";
         IsHandled: Boolean;
     begin
         ConfirmDeletion();
 
         ValidateModification(true, 0);
-        CheckRelatedJobPlanningLineInvoice();
+        CheckRelatedContratoPlanningLineInvoice();
 
         if "Usage Link" then begin
-            JobUsageLink.SetRange("Contrato No.", "Contrato No.");
-            JobUsageLink.SetRange("Contrato Task No.", "Contrato Task No.");
-            JobUsageLink.SetRange("Line No.", "Line No.");
+            ContratoUsageLink.SetRange("Contrato No.", "Contrato No.");
+            ContratoUsageLink.SetRange("Contrato Task No.", "Contrato Task No.");
+            ContratoUsageLink.SetRange("Line No.", "Line No.");
             IsHandled := false;
-            OnDeleteOnAfterSetFilterOnJobUsageLink(Rec, JobUsageLink, IsHandled);
+            OnDeleteOnAfterSetFilterOnContratoUsageLink(Rec, ContratoUsageLink, IsHandled);
             if not IsHandled then
-                if not JobUsageLink.IsEmpty() then
-                    Error(JobUsageLinkErr, TableCaption);
+                if not ContratoUsageLink.IsEmpty() then
+                    Error(ContratoUsageLinkErr, TableCaption);
         end;
 
         if (Rec.Quantity <> 0) and ItemExists(Rec."No.") then begin
-            //JobPlanningLineReserve.DeleteLine(Rec);
+            //ContratoPlanningLineReserve.DeleteLine(Rec);
             CalcFields("Reserved Qty. (Base)");
             TestField("Reserved Qty. (Base)", 0);
         end;
@@ -1379,10 +1379,10 @@ table 50201 "Contrato Planning Line"
         if "Schedule Line" then
             Contrato.UpdateOverBudgetValue("Contrato No.", false, "Total Cost (LCY)");
 
-        //JobWarehouseMgt.JobPlanningLineDelete(Rec);
+        //ContratoWarehouseMgt.ContratoPlanningLineDelete(Rec);
 
         // if Rec.Type = Rec.Type::Item then
-        //     ATOLink.DeleteAsmFromJobPlanningLine(Rec);
+        //     ATOLink.DeleteAsmFromContratoPlanningLine(Rec);
 
         DeleteWarehouseRequest(Rec);
     end;
@@ -1397,12 +1397,12 @@ table 50201 "Contrato Planning Line"
             exit;
 
         LockTable();
-        GetJob();
-        // if Contrato.Blocked = Contrato.Blocked::All then
-        //     Contrato.TestBlocked();
-        JobTask.Get("Contrato No.", "Contrato Task No.");
-        JobTask.TestField("Contrato Task Type", JobTask."Contrato Task Type"::Posting);
-        InitJobPlanningLine();
+        GetContrato();
+        if Contrato.Blocked = Contrato.Blocked::All then
+            Contrato.TestBlocked();
+        ContratoTask.Get("Contrato No.", "Contrato Task No.");
+        ContratoTask.TestField("Contrato Task Type", ContratoTask."Contrato Task Type"::Posting);
+        InitContratoPlanningLine();
         if Quantity <> 0 then
             UpdateReservation(0);
 
@@ -1445,7 +1445,7 @@ table 50201 "Contrato Planning Line"
         GLAcc: Record "G/L Account";
         Location: Record Location;
         Item: Record Item;
-        JobTask: Record "Contrato Task";
+        ContratoTask: Record "Contrato Task";
         Res: Record Resource;
         WorkType: Record "Work Type";
         ResourceUnitOfMeasure: Record "Resource Unit of Measure";
@@ -1455,8 +1455,8 @@ table 50201 "Contrato Planning Line"
         ItemTranslation: Record "Item Translation";
         GLSetup: Record "General Ledger Setup";
         ATOLink: Record "Assemble-to-OrderLinkContrato";
-        JobPlanningLineReserve: Codeunit "Contrato Planning Line-Reserve";
-        JobWarehouseMgt: Codeunit "ContratoWhseValidateSourceLine";
+        ContratoPlanningLineReserve: Codeunit "Contrato Planning Line-Reserve";
+        ContratoWarehouseMgt: Codeunit "ContratoWhseValidateSourceLine";
         UOMMgt: Codeunit "Unit of Measure Management";
         ItemCheckAvail: Codeunit "Item-Check Avail.";
         CurrencyFactorErr: Label 'cannot be specified without %1', Comment = '%1 = Currency Code field name';
@@ -1466,11 +1466,11 @@ table 50201 "Contrato Planning Line"
         HasGotGLSetup: Boolean;
         QtyLessErr: Label '%1 cannot be less than %2.', Comment = '%1 = Name of first field to compare; %2 = Name of second field to compare';
         ControlUsageLinkErr: Label 'The %1 must be a %2 and %3 must be enabled, because linked Project Ledger Entries exist.', Comment = '%1 = Project Planning Line table name; %2 = Caption for field Schedule Line; %3 = Captiion for field Usage Link';
-        JobUsageLinkErr: Label 'This %1 cannot be deleted because linked project ledger entries exist.', Comment = '%1 = Project Planning Line table name';
+        ContratoUsageLinkErr: Label 'This %1 cannot be deleted because linked project ledger entries exist.', Comment = '%1 = Project Planning Line table name';
         BypassQtyValidation: Boolean;
-        SkipCheckForMultipleJobsOnSalesLine: Boolean;
+        SkipCheckForMultipleContratosOnSalesLine: Boolean;
         CalledFromHeader: Boolean;
-        LinkedJobLedgerErr: Label 'You cannot change this value because linked project ledger entries exist.';
+        LinkedContratoLedgerErr: Label 'You cannot change this value because linked project ledger entries exist.';
         LineTypeErr: Label 'The %1 cannot be of %2 %3 because it is transferred to an invoice.', Comment = 'The Project Planning Line cannot be of Line Type Schedule, because it is transferred to an invoice.';
         QtyToTransferToInvoiceErr: Label '%1 may not be lower than %2 and may not exceed %3.', Comment = '%1 = Qty. to Transfer to Invoice field name; %2 = First value in comparison; %3 = Second value in comparison';
         AutoReserveQst: Label 'Automatic reservation is not possible.\Do you want to reserve items manually?';
@@ -1479,7 +1479,7 @@ table 50201 "Contrato Planning Line"
         UsageLinkErr: Label '%1 cannot be enabled on a %2 with %3 %4.', Comment = 'Usage Link cannot be enabled on a Project Planning Line with Line Type Schedule';
         QtyGreaterErr: Label '%1 cannot be higher than %2.', Comment = '%1 = Caption for field Quantity; %2 = Captiion for field Qty. Transferred to Invoice';
         RequestedDeliveryDateErr: Label 'You cannot change the %1 when the %2 has been filled in.', Comment = '%1 = Caption for field Requested Delivery Date; %2 = Captiion for field Promised Delivery Date';
-        NotPossibleJobPlanningLineErr: Label 'It is not possible to deleted project planning line transferred to an invoice.';
+        NotPossibleContratoPlanningLineErr: Label 'It is not possible to deleted project planning line transferred to an invoice.';
         NegativeQtyToAssembleErr: Label ' must be positive.', Comment = 'Qty. to Assemble can''t be negative';
         DifferentQtyToAssembleErr: Label ' must be equal to %1.', Comment = 'Qty. to Assemble must be equal to Quantity, %1 = Quantity';
         CannotBeMoreErr: Label 'cannot be more than %1', Comment = '%1 = Quantity';
@@ -1494,7 +1494,7 @@ table 50201 "Contrato Planning Line"
 
     internal procedure OpenItemTrackingLines()
     begin
-        //JobPlanningLineReserve.CallItemTracking(Rec);
+        //ContratoPlanningLineReserve.CallItemTracking(Rec);
     end;
 
     internal procedure IsInbound(): Boolean
@@ -1513,7 +1513,7 @@ table 50201 "Contrato Planning Line"
         if not (Status in [Status::Order]) then
             exit;
 
-        // if ItemCheckAvail.JobPlanningLineCheck(Rec) then
+        // if ItemCheckAvail.ContratoPlanningLineCheck(Rec) then
         //     ItemCheckAvail.RaiseUpdateInterruptedError();
     end;
 
@@ -1541,14 +1541,14 @@ table 50201 "Contrato Planning Line"
         end;
     end;
 
-    local procedure CopyFieldsFromJob()
+    local procedure CopyFieldsFromContrato()
     begin
-        GetJob();
+        GetContrato();
         Rec."Customer Price Group" := Contrato."Customer Price Group";
         Rec."Price Calculation Method" := Contrato.GetPriceCalculationMethod();
         Rec."Cost Calculation Method" := Contrato.GetCostCalculationMethod();
 
-        OnAfterCopyFieldsFromJob(Rec, xRec, Contrato);
+        OnAfterCopyFieldsFromContrato(Rec, xRec, Contrato);
     end;
 
     local procedure CheckQuantityPosted()
@@ -1672,11 +1672,11 @@ table 50201 "Contrato Planning Line"
         LocationToCheck.TestField("Directed Put-away and Pick", false);
     end;
 
-    procedure GetJob()
+    procedure GetContrato()
     begin
         if ("Contrato No." <> Contrato."No.") and ("Contrato No." <> '') then
             Contrato.Get("Contrato No.");
-        OnAfterGetJob(Rec, Contrato);
+        OnAfterGetContrato(Rec, Contrato);
     end;
 
     procedure UpdateCurrencyFactor()
@@ -1759,7 +1759,7 @@ table 50201 "Contrato Planning Line"
     procedure Caption(): Text
     var
         Contrato: Record Contrato;
-        JobTask: Record "Contrato Task";
+        ContratoTask: Record "Contrato Task";
         Result: Text;
         IsHandled: Boolean;
     begin
@@ -1771,41 +1771,41 @@ table 50201 "Contrato Planning Line"
 
         if not Contrato.Get("Contrato No.") then
             exit('');
-        if not JobTask.Get("Contrato No.", "Contrato Task No.") then
+        if not ContratoTask.Get("Contrato No.", "Contrato Task No.") then
             exit('');
         exit(StrSubstNo('%1 %2 %3 %4',
             Contrato."No.",
             Contrato.Description,
-            JobTask."Contrato Task No.",
-            JobTask.Description));
+            ContratoTask."Contrato Task No.",
+            ContratoTask.Description));
     end;
 
-    procedure SetUpNewLine(LastJobPlanningLine: Record "Contrato Planning Line")
+    procedure SetUpNewLine(LastContratoPlanningLine: Record "Contrato Planning Line")
     begin
-        "Document Date" := LastJobPlanningLine."Planning Date";
-        "Document No." := LastJobPlanningLine."Document No.";
-        Type := LastJobPlanningLine.Type;
-        Validate("Line Type", LastJobPlanningLine."Line Type");
-        GetJob();
+        "Document Date" := LastContratoPlanningLine."Planning Date";
+        "Document No." := LastContratoPlanningLine."Document No.";
+        Type := LastContratoPlanningLine.Type;
+        Validate("Line Type", LastContratoPlanningLine."Line Type");
+        GetContrato();
         "Currency Code" := Contrato."Currency Code";
         UpdateCurrencyFactor();
-        if LastJobPlanningLine."Planning Date" <> 0D then
-            Validate("Planning Date", LastJobPlanningLine."Planning Date");
+        if LastContratoPlanningLine."Planning Date" <> 0D then
+            Validate("Planning Date", LastContratoPlanningLine."Planning Date");
         "Price Calculation Method" := Contrato.GetPriceCalculationMethod();
         "Cost Calculation Method" := Contrato.GetCostCalculationMethod();
 
-        OnAfterSetupNewLine(Rec, LastJobPlanningLine);
+        OnAfterSetupNewLine(Rec, LastContratoPlanningLine);
     end;
 
-    procedure InitJobPlanningLine()
+    procedure InitContratoPlanningLine()
     var
-        JobJnlManagement: Codeunit ContratoJnlManagement;
+        ContratoJnlManagement: Codeunit ContratoJnlManagement;
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeInitJobPlanningLine(Rec, Contrato, IsHandled);
+        OnBeforeInitContratoPlanningLine(Rec, Contrato, IsHandled);
         if not IsHandled then begin
-            GetJob();
+            GetContrato();
             if "Planning Date" = 0D then
                 Validate("Planning Date", WorkDate());
             "Currency Code" := Contrato."Currency Code";
@@ -1814,14 +1814,14 @@ table 50201 "Contrato Planning Line"
             "VAT Line Discount Amount" := 0;
             "VAT Line Amount" := 0;
             "VAT %" := 0;
-            "Contrato Contract Entry No." := JobJnlManagement.GetNextEntryNo();
+            "Contrato Contract Entry No." := ContratoJnlManagement.GetNextEntryNo();
             "User ID" := CopyStr(UserId(), 1, MaxStrLen("User ID"));
             "Last Date Modified" := 0D;
             Status := Contrato.Status;
             ControlUsageLink();
             "Country/Region Code" := Contrato."Bill-to Country/Region Code";
         end;
-        OnAfterInitJobPlanningLine(Rec);
+        OnAfterInitContratoPlanningLine(Rec);
     end;
 
     local procedure DeleteAmounts()
@@ -1877,7 +1877,7 @@ table 50201 "Contrato Planning Line"
 
     local procedure GetItemTranslation()
     begin
-        GetJob();
+        GetContrato();
         if ItemTranslation.Get("No.", "Variant Code", Contrato."Language Code") then begin
             Description := ItemTranslation.Description;
             "Description 2" := ItemTranslation."Description 2";
@@ -1975,7 +1975,7 @@ table 50201 "Contrato Planning Line"
         if IsHandled then
             exit;
 
-        GetJob();
+        GetContrato();
         if (Type = Type::Item) and Item.Get("No.") then
             if Item."Costing Method" = Item."Costing Method"::Standard then
                 if RetrieveCostPrice(CurrFieldNo) then begin
@@ -2135,9 +2135,9 @@ table 50201 "Contrato Planning Line"
 
     procedure GetLineWithPrice(var LineWithPrice: Interface "Line With Price")
     var
-        JobPlanningLinePrice: Codeunit "Contrato Planning Line - Price";
+        ContratoPlanningLinePrice: Codeunit "Contrato Planning Line - Price";
     begin
-        LineWithPrice := JobPlanningLinePrice;
+        LineWithPrice := ContratoPlanningLinePrice;
         OnAfterGetLineWithPrice(LineWithPrice);
     end;
 
@@ -2172,13 +2172,13 @@ table 50201 "Contrato Planning Line"
         IsHandled := false;
         OnBeforeUpdateUnitPrice(Rec, xRec, IsHandled);
         if not IsHandled then begin
-            GetJob();
+            GetContrato();
             RecalculateAmounts(Contrato."Exch. Calculation (Price)", xRec."Unit Price", "Unit Price", "Unit Price (LCY)");
         end;
         OnAfterUpdateUnitPrice(Rec, xRec, AmountRoundingPrecision, AmountRoundingPrecisionFCY);
     end;
 
-    local procedure RecalculateAmounts(JobExchCalculation: Option "Fixed FCY","Fixed LCY"; xAmount: Decimal; var Amount: Decimal; var AmountLCY: Decimal)
+    local procedure RecalculateAmounts(ContratoExchCalculation: Option "Fixed FCY","Fixed LCY"; xAmount: Decimal; var Amount: Decimal; var AmountLCY: Decimal)
     var
         IsHandled: Boolean;
     begin
@@ -2188,7 +2188,7 @@ table 50201 "Contrato Planning Line"
             exit;
 
         if (xRec."Currency Factor" <> "Currency Factor") and
-           (Amount = xAmount) and (JobExchCalculation = JobExchCalculation::"Fixed LCY")
+           (Amount = xAmount) and (ContratoExchCalculation = ContratoExchCalculation::"Fixed LCY")
         then
             Amount := ConvertAmountToFCY(AmountLCY, UnitAmountRoundingPrecisionFCY)
         else
@@ -2397,12 +2397,12 @@ table 50201 "Contrato Planning Line"
             Validate("Qty. to Invoice", 0);
     end;
 
-    procedure UpdatePostedTotalCost(AdjustJobCost: Decimal; AdjustJobCostLCY: Decimal)
+    procedure UpdatePostedTotalCost(AdjustContratoCost: Decimal; AdjustContratoCostLCY: Decimal)
     begin
         if "Usage Link" then begin
             InitRoundingPrecisions();
-            "Posted Total Cost" += Round(AdjustJobCost, AmountRoundingPrecisionFCY);
-            "Posted Total Cost (LCY)" += Round(AdjustJobCostLCY, AmountRoundingPrecision);
+            "Posted Total Cost" += Round(AdjustContratoCost, AmountRoundingPrecisionFCY);
+            "Posted Total Cost (LCY)" += Round(AdjustContratoCostLCY, AmountRoundingPrecision);
         end;
     end;
 
@@ -2425,24 +2425,24 @@ table 50201 "Contrato Planning Line"
 
     local procedure CheckUsageLinkRelations()
     var
-        JobUsageLink: Record "Contrato Usage Link";
+        ContratoUsageLink: Record "Contrato Usage Link";
     begin
-        JobUsageLink.SetRange("Contrato No.", "Contrato No.");
-        JobUsageLink.SetRange("Contrato Task No.", "Contrato Task No.");
-        JobUsageLink.SetRange("Line No.", "Line No.");
-        if not JobUsageLink.IsEmpty() then
-            Error(LinkedJobLedgerErr);
+        ContratoUsageLink.SetRange("Contrato No.", "Contrato No.");
+        ContratoUsageLink.SetRange("Contrato Task No.", "Contrato Task No.");
+        ContratoUsageLink.SetRange("Line No.", "Line No.");
+        if not ContratoUsageLink.IsEmpty() then
+            Error(LinkedContratoLedgerErr);
     end;
 
     local procedure ControlUsageLink()
     var
-        JobUsageLink: Record "Contrato Usage Link";
+        ContratoUsageLink: Record "Contrato Usage Link";
         IsHandled: Boolean;
     begin
-        GetJob();
+        GetContrato();
 
         IsHandled := false;
-        OnControlUsageLinkOnAfterGetJob(Rec, Contrato, CurrFieldNo, IsHandled);
+        OnControlUsageLinkOnAfterGetContrato(Rec, Contrato, CurrFieldNo, IsHandled);
         if IsHandled then
             exit;
 
@@ -2455,13 +2455,13 @@ table 50201 "Contrato Planning Line"
             if not "Schedule Line" then
                 "Usage Link" := false;
 
-        JobUsageLink.SetRange("Contrato No.", "Contrato No.");
-        JobUsageLink.SetRange("Contrato Task No.", "Contrato Task No.");
-        JobUsageLink.SetRange("Line No.", "Line No.");
+        ContratoUsageLink.SetRange("Contrato No.", "Contrato No.");
+        ContratoUsageLink.SetRange("Contrato Task No.", "Contrato Task No.");
+        ContratoUsageLink.SetRange("Line No.", "Line No.");
         IsHandled := false;
-        OnControlUsageLinkOnAfterSetFilterJobUsageLink(Rec, JobUsageLink, Contrato, CurrFieldNo, IsHandled);
+        OnControlUsageLinkOnAfterSetFilterContratoUsageLink(Rec, ContratoUsageLink, Contrato, CurrFieldNo, IsHandled);
         if not IsHandled then
-            if not JobUsageLink.IsEmpty() and not "Usage Link" then
+            if not ContratoUsageLink.IsEmpty() and not "Usage Link" then
                 Error(ControlUsageLinkErr, TableCaption(), FieldCaption("Schedule Line"), FieldCaption("Usage Link"));
 
         Validate("Remaining Qty.", Quantity - "Qty. Posted");
@@ -2515,22 +2515,22 @@ table 50201 "Contrato Planning Line"
                    (Reserve <> Reserve::Never)
                 then
                     Reserve := Contrato.Reserve;
-            //ReservationCheckDateConfl.JobPlanningLineCheck(Rec, true);
+            //ReservationCheckDateConfl.ContratoPlanningLineCheck(Rec, true);
             FieldNo(Quantity):
                 Reserve := Contrato.Reserve;
-            //JobPlanningLineReserve.VerifyQuantity(Rec, xRec);
+            //ContratoPlanningLineReserve.VerifyQuantity(Rec, xRec);
             FieldNo("Usage Link"):
                 if (Type = Type::Item) and "Usage Link" then begin
                     GetItem();
                     if Item.Reserve = Item.Reserve::Optional then begin
-                        GetJob();
+                        GetContrato();
                         Reserve := Contrato.Reserve
                     end else
                         Reserve := Item.Reserve;
                 end else
                     Reserve := Reserve::Never;
         end;
-        //JobPlanningLineReserve.VerifyChange(Rec, xRec);
+        //ContratoPlanningLineReserve.VerifyChange(Rec, xRec);
         UpdatePlanned();
     end;
 
@@ -2589,7 +2589,7 @@ table 50201 "Contrato Planning Line"
         TestField("No.");
         if Reserve = Reserve::Never then
             FieldError(Reserve);
-        //JobPlanningLineReserve.ReservQuantity(Rec, QtyToReserve, QtyToReserveBase);
+        //ContratoPlanningLineReserve.ReservQuantity(Rec, QtyToReserve, QtyToReserveBase);
         if QtyToReserveBase <> 0 then begin
             TestField("Planning Date");
             ReservMgt.SetReservSource(Rec);
@@ -2610,7 +2610,7 @@ table 50201 "Contrato Planning Line"
     var
         OrderTrackingForm: Page "Order Tracking";
     begin
-        //OrderTrackingForm.SetJobPlanningLine(Rec);
+        //OrderTrackingForm.SetContratoPlanningLine(Rec);
         OrderTrackingForm.RunModal();
     end;
 
@@ -2683,30 +2683,30 @@ table 50201 "Contrato Planning Line"
         OnAfterFilterLinesForReservation(Rec, ReservationEntry, NewStatus, AvailabilityFilter, Positive);
     end;
 
-    procedure DrillDownJobInvoices()
+    procedure DrillDownContratoInvoices()
     var
-        JobInvoices: Page "Contrato Invoices";
+        ContratoInvoices: Page "Contrato Invoices";
     begin
-        JobInvoices.SetShowDetails(false);
-        //JobInvoices.SetPrJobPlanningLine(Rec);
-        JobInvoices.Run();
+        ContratoInvoices.SetShowDetails(false);
+        //ContratoInvoices.SetPrContratoPlanningLine(Rec);
+        ContratoInvoices.Run();
     end;
 
-    local procedure CheckRelatedJobPlanningLineInvoice()
+    local procedure CheckRelatedContratoPlanningLineInvoice()
     var
-        JobPlanningLineInvoice: Record "Contrato Planning Line Invoice";
+        ContratoPlanningLineInvoice: Record "Contrato Planning Line Invoice";
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeCheckRelatedJobPlanningLineInvoice(Rec, IsHandled);
+        OnBeforeCheckRelatedContratoPlanningLineInvoice(Rec, IsHandled);
         if IsHandled then
             exit;
 
-        JobPlanningLineInvoice.SetRange("Contrato No.", "Contrato No.");
-        JobPlanningLineInvoice.SetRange("Contrato Task No.", "Contrato Task No.");
-        JobPlanningLineInvoice.SetRange("Contrato Planning Line No.", "Line No.");
-        if not JobPlanningLineInvoice.IsEmpty() then
-            Error(NotPossibleJobPlanningLineErr);
+        ContratoPlanningLineInvoice.SetRange("Contrato No.", "Contrato No.");
+        ContratoPlanningLineInvoice.SetRange("Contrato Task No.", "Contrato Task No.");
+        ContratoPlanningLineInvoice.SetRange("Contrato Planning Line No.", "Line No.");
+        if not ContratoPlanningLineInvoice.IsEmpty() then
+            Error(NotPossibleContratoPlanningLineErr);
     end;
 
     procedure RowID1(): Text[250]
@@ -2752,7 +2752,7 @@ table 50201 "Contrato Planning Line"
         if "Planning Date" = 0D then
             exit(false);
         "Planning Due Date" := "Planning Date";
-        GetJob();
+        GetContrato();
         if Contrato."No." = '' then
             exit(false);
         Customer.SetLoadFields("Payment Terms Code");
@@ -2791,42 +2791,42 @@ table 50201 "Contrato Planning Line"
         OnAfterClearTracking(Rec);
     end;
 
-    procedure InitFromJobPlanningLine(FromJobPlanningLine: Record "Contrato Planning Line"; NewQuantity: Decimal)
+    procedure InitFromContratoPlanningLine(FromContratoPlanningLine: Record "Contrato Planning Line"; NewQuantity: Decimal)
     var
-        ToJobPlanningLine: Record "Contrato Planning Line";
-        JobJnlManagement: Codeunit ContratoJnlManagement;
+        ToContratoPlanningLine: Record "Contrato Planning Line";
+        ContratoJnlManagement: Codeunit ContratoJnlManagement;
     begin
-        ToJobPlanningLine := Rec;
+        ToContratoPlanningLine := Rec;
 
-        ToJobPlanningLine.Init();
-        ToJobPlanningLine.TransferFields(FromJobPlanningLine);
-        ToJobPlanningLine."Line No." := GetNextJobLineNo(FromJobPlanningLine);
-        ToJobPlanningLine.Validate("Line Type", "Line Type"::Billable);
-        ToJobPlanningLine.ClearValues();
-        ToJobPlanningLine."Contrato Contract Entry No." := JobJnlManagement.GetNextEntryNo();
-        if ToJobPlanningLine.Type <> ToJobPlanningLine.Type::Text then begin
-            ToJobPlanningLine.Validate(Quantity, NewQuantity);
-            ToJobPlanningLine.Validate("Currency Code", FromJobPlanningLine."Currency Code");
-            ToJobPlanningLine.Validate("Currency Date", FromJobPlanningLine."Currency Date");
-            ToJobPlanningLine.Validate("Currency Factor", FromJobPlanningLine."Currency Factor");
-            ToJobPlanningLine.Validate("Unit Cost", FromJobPlanningLine."Unit Cost");
-            ToJobPlanningLine.Validate("Unit Price", FromJobPlanningLine."Unit Price");
-            if FromJobPlanningLine."Line Discount %" <> 0 then
-                ToJobPlanningLine.Validate("Line Discount %", FromJobPlanningLine."Line Discount %");
+        ToContratoPlanningLine.Init();
+        ToContratoPlanningLine.TransferFields(FromContratoPlanningLine);
+        ToContratoPlanningLine."Line No." := GetNextContratoLineNo(FromContratoPlanningLine);
+        ToContratoPlanningLine.Validate("Line Type", "Line Type"::Billable);
+        ToContratoPlanningLine.ClearValues();
+        ToContratoPlanningLine."Contrato Contract Entry No." := ContratoJnlManagement.GetNextEntryNo();
+        if ToContratoPlanningLine.Type <> ToContratoPlanningLine.Type::Text then begin
+            ToContratoPlanningLine.Validate(Quantity, NewQuantity);
+            ToContratoPlanningLine.Validate("Currency Code", FromContratoPlanningLine."Currency Code");
+            ToContratoPlanningLine.Validate("Currency Date", FromContratoPlanningLine."Currency Date");
+            ToContratoPlanningLine.Validate("Currency Factor", FromContratoPlanningLine."Currency Factor");
+            ToContratoPlanningLine.Validate("Unit Cost", FromContratoPlanningLine."Unit Cost");
+            ToContratoPlanningLine.Validate("Unit Price", FromContratoPlanningLine."Unit Price");
+            if FromContratoPlanningLine."Line Discount %" <> 0 then
+                ToContratoPlanningLine.Validate("Line Discount %", FromContratoPlanningLine."Line Discount %");
         end;
 
-        OnAfterInitFromJobPlanningLine(ToJobPlanningLine, FromJobPlanningLine);
-        Rec := ToJobPlanningLine;
+        OnAfterInitFromContratoPlanningLine(ToContratoPlanningLine, FromContratoPlanningLine);
+        Rec := ToContratoPlanningLine;
     end;
 
-    protected procedure GetNextJobLineNo(FromJobPlanningLine: Record "Contrato Planning Line"): Integer
+    protected procedure GetNextContratoLineNo(FromContratoPlanningLine: Record "Contrato Planning Line"): Integer
     var
-        JobPlanningLine: Record "Contrato Planning Line";
+        ContratoPlanningLine: Record "Contrato Planning Line";
     begin
-        JobPlanningLine.SetRange("Contrato No.", FromJobPlanningLine."Contrato No.");
-        JobPlanningLine.SetRange("Contrato Task No.", FromJobPlanningLine."Contrato Task No.");
-        if JobPlanningLine.FindLast() then;
-        exit(JobPlanningLine."Line No." + 10000);
+        ContratoPlanningLine.SetRange("Contrato No.", FromContratoPlanningLine."Contrato No.");
+        ContratoPlanningLine.SetRange("Contrato Task No.", FromContratoPlanningLine."Contrato Task No.");
+        if ContratoPlanningLine.FindLast() then;
+        exit(ContratoPlanningLine."Line No." + 10000);
     end;
 
     procedure IsInventoriableItem(): Boolean
@@ -2849,34 +2849,34 @@ table 50201 "Contrato Planning Line"
         exit(Item.IsNonInventoriableType());
     end;
 
-    procedure ConvertToJobLineType() JobLineType: Enum "Contrato Line Type"
+    procedure ConvertToContratoLineType() ContratoLineType: Enum "Contrato Line Type"
     begin
-        JobLineType := Enum::"Contrato Line Type".FromInteger("Line Type".AsInteger() + 1);
+        ContratoLineType := Enum::"Contrato Line Type".FromInteger("Line Type".AsInteger() + 1);
 
-        OnAfterConvertToJobLineType(Rec, JobLineType);
+        OnAfterConvertToContratoLineType(Rec, ContratoLineType);
     end;
 
-    procedure ConvertFromJobLineType(JobLineType: Enum "Contrato Line Type") JobPlanningLineLineType: Enum ContratoPlanningLineLineType
+    procedure ConvertFromContratoLineType(ContratoLineType: Enum "Contrato Line Type") ContratoPlanningLineLineType: Enum ContratoPlanningLineLineType
     begin
-        JobPlanningLineLineType := Enum::ContratoPlanningLineLineType.FromInteger(JobLineType.AsInteger() - 1);
+        ContratoPlanningLineLineType := Enum::ContratoPlanningLineLineType.FromInteger(ContratoLineType.AsInteger() - 1);
 
-        OnAfterConvertFromJobLineType(Rec, JobLineType, JobPlanningLineLineType);
+        OnAfterConvertFromContratoLineType(Rec, ContratoLineType, ContratoPlanningLineLineType);
     end;
 
-    procedure CopyTrackingFromJobJnlLine(JobJnlLine: Record "Contrato Journal Line")
+    procedure CopyTrackingFromContratoJnlLine(ContratoJnlLine: Record "Contrato Journal Line")
     begin
-        "Serial No." := JobJnlLine."Serial No.";
-        "Lot No." := JobJnlLine."Lot No.";
+        "Serial No." := ContratoJnlLine."Serial No.";
+        "Lot No." := ContratoJnlLine."Lot No.";
 
-        OnAfterCopyTrackingFromJobJnlLine(Rec, JobJnlLine);
+        OnAfterCopyTrackingFromContratoJnlLine(Rec, ContratoJnlLine);
     end;
 
-    procedure CopyTrackingFromJobLedgEntry(JobLedgEntry: Record "Contrato Ledger Entry")
+    procedure CopyTrackingFromContratoLedgEntry(ContratoLedgEntry: Record "Contrato Ledger Entry")
     begin
-        "Serial No." := JobLedgEntry."Serial No.";
-        "Lot No." := JobLedgEntry."Lot No.";
+        "Serial No." := ContratoLedgEntry."Serial No.";
+        "Lot No." := ContratoLedgEntry."Lot No.";
 
-        OnAfterCopyTrackingFromJobLedgEntry(Rec, JobLedgEntry);
+        OnAfterCopyTrackingFromContratoLedgEntry(Rec, ContratoLedgEntry);
     end;
 
     local procedure SetDefaultBin()
@@ -2899,7 +2899,7 @@ table 50201 "Contrato Planning Line"
             exit(NewBinCode);
 
         if (Rec."No." <> '') and (Rec."Location Code" <> '') then begin
-            if FindBinFromJobTask(NewBinCode) then
+            if FindBinFromContratoTask(NewBinCode) then
                 exit(NewBinCode);
             GetLocation(Rec."Location Code");
             if Location."To-Job Bin Code" <> '' then
@@ -2910,11 +2910,11 @@ table 50201 "Contrato Planning Line"
         end;
     end;
 
-    local procedure FindBinFromJobTask(var NewBinCode: Code[20]): Boolean
+    local procedure FindBinFromContratoTask(var NewBinCode: Code[20]): Boolean
     begin
-        if JobTask.Get(Rec."Contrato No.", Rec."Contrato Task No.") and (JobTask."Bin Code" <> '')
-            and ("Location Code" = JobTask."Location Code") then begin
-            NewBinCode := JobTask."Bin Code";
+        if ContratoTask.Get(Rec."Contrato No.", Rec."Contrato Task No.") and (ContratoTask."Bin Code" <> '')
+            and ("Location Code" = ContratoTask."Location Code") then begin
+            NewBinCode := ContratoTask."Bin Code";
             exit(true);
         end;
     end;
@@ -2925,21 +2925,21 @@ table 50201 "Contrato Planning Line"
             "No.", "Variant Code", "Unit of Measure Code", Qty, "Qty. per Unit of Measure", "Qty. Rounding Precision (Base)", FieldCaption("Qty. Rounding Precision"), FromFieldName, ToFieldName));
     end;
 
-    local procedure DeleteWarehouseRequest(JobPlanningLine: Record "Contrato Planning Line")
+    local procedure DeleteWarehouseRequest(ContratoPlanningLine: Record "Contrato Planning Line")
     var
-        JobPlanningLine2: Record "Contrato Planning Line";
+        ContratoPlanningLine2: Record "Contrato Planning Line";
         WarehouseRequest: Record "Warehouse Request";
         WhsePickRequest: Record "Whse. Pick Request";
     begin
-        JobPlanningLine2.SetFilter("Contrato Contract Entry No.", '<>%1', JobPlanningLine."Contrato Contract Entry No.");
-        JobPlanningLine2.SetRange("Contrato No.", JobPlanningLine."Contrato No.");
-        JobPlanningLine2.SetRange("Location Code", JobPlanningLine."Location Code");
+        ContratoPlanningLine2.SetFilter("Contrato Contract Entry No.", '<>%1', ContratoPlanningLine."Contrato Contract Entry No.");
+        ContratoPlanningLine2.SetRange("Contrato No.", ContratoPlanningLine."Contrato No.");
+        ContratoPlanningLine2.SetRange("Location Code", ContratoPlanningLine."Location Code");
 
-        if JobPlanningLine2.IsEmpty() then
-            if WarehouseRequest.Get(Enum::"Warehouse Request Type"::Outbound, JobPlanningLine."Location Code", Database::Contrato, 0, JobPlanningLine."Contrato No.") then
+        if ContratoPlanningLine2.IsEmpty() then
+            if WarehouseRequest.Get(Enum::"Warehouse Request Type"::Outbound, ContratoPlanningLine."Location Code", Database::Contrato, 0, ContratoPlanningLine."Contrato No.") then
                 WarehouseRequest.Delete(true)
             else
-                if WhsePickRequest.Get(WhsePickRequest."Document Type"::Job, 0, JobPlanningLine."Contrato No.", JobPlanningLine."Location Code") then
+                if WhsePickRequest.Get(WhsePickRequest."Document Type"::Job, 0, ContratoPlanningLine."Contrato No.", ContratoPlanningLine."Location Code") then
                     WhsePickRequest.Delete(true);
     end;
 
@@ -2990,11 +2990,11 @@ table 50201 "Contrato Planning Line"
     procedure TestStatusOpen()
     begin
         TestField(Status, Status::Order);
-        GetJob();
+        GetContrato();
         Contrato.TestField(Status, Contrato.Status::Open);
     end;
 
-    procedure CheckIfJobPlngLineMeetsReservedFromStockSetting(QtyToPost: Decimal; ReservedFromStock: Enum "Reservation From Stock") Result: Boolean
+    procedure CheckIfContratoPlngLineMeetsReservedFromStockSetting(QtyToPost: Decimal; ReservedFromStock: Enum "Reservation From Stock") Result: Boolean
     var
         QtyReservedFromStock: Decimal;
     begin
@@ -3006,7 +3006,7 @@ table 50201 "Contrato Planning Line"
         if ReservedFromStock = ReservedFromStock::" " then
             exit(true);
 
-        //QtyReservedFromStock := JobPlanningLineReserve.GetReservedQtyFromInventory(Rec);
+        QtyReservedFromStock := ContratoPlanningLineReserve.GetReservedQtyFromInventory(Rec);
 
         case ReservedFromStock of
             ReservedFromStock::Full:
@@ -3016,7 +3016,7 @@ table 50201 "Contrato Planning Line"
                 if QtyReservedFromStock = 0 then
                     Result := false;
             else
-                OnCheckIfJobPlngLineMeetsReservedFromStockSetting(QtyToPost, ReservedFromStock, Result);
+                OnCheckIfContratoPlngLineMeetsReservedFromStockSetting(QtyToPost, ReservedFromStock, Result);
         end;
 
         exit(Result);
@@ -3045,9 +3045,9 @@ table 50201 "Contrato Planning Line"
         exit(0);
     end;
 
-    procedure ShowAsmToJobPlanningLines()
+    procedure ShowAsmToContratoPlanningLines()
     begin
-        //ATOLink.ShowAsmToJobPlanningLines(Rec);
+        ATOLink.ShowAsmToContratoPlanningLines(Rec);
     end;
 
     procedure CheckAsmToOrder(AsmHeader: Record "Assembly Header")
@@ -3058,7 +3058,7 @@ table 50201 "Contrato Planning Line"
         TestField("Location Code", AsmHeader."Location Code");
         TestField("Unit of Measure Code", AsmHeader."Unit of Measure Code");
         TestField("Variant Code", AsmHeader."Variant Code");
-        GetJob();
+        GetContrato();
         if Contrato.Status = Contrato.Status::Open then begin
             AsmHeader.CalcFields("Reserved Qty. (Base)");
             AsmHeader.TestField("Reserved Qty. (Base)", AsmHeader."Remaining Quantity (Base)");
@@ -3070,9 +3070,9 @@ table 50201 "Contrato Planning Line"
 
     procedure AsmToOrderExists(var AsmHeader: Record "Assembly Header"): Boolean
     begin
-        // if not ATOLink.AsmExistsForJobPlanningLine(Rec) then
-        //     exit(false);
-        // exit(AsmHeader.Get(ATOLink."Assembly Document Type", ATOLink."Assembly Document No."));
+        if not ATOLink.AsmExistsForContratoPlanningLine(Rec) then
+            exit(false);
+        exit(AsmHeader.Get(ATOLink."Assembly Document Type", ATOLink."Assembly Document No."));
     end;
 
     protected procedure InitQtyToAsm()
@@ -3140,7 +3140,7 @@ table 50201 "Contrato Planning Line"
     local procedure AddItems(SelectionFilter: Text)
     var
         Item: Record "Item";
-        NewJobPlanningLine: Record "Contrato Planning Line";
+        NewContratoPlanningLine: Record "Contrato Planning Line";
         IsHandled: Boolean;
     begin
         IsHandled := false;
@@ -3148,12 +3148,12 @@ table 50201 "Contrato Planning Line"
         if IsHandled then
             exit;
 
-        InitNewLine(NewJobPlanningLine);
+        InitNewLine(NewContratoPlanningLine);
         Item.SetLoadFields("No.");
         Item.SetFilter("No.", SelectionFilter);
         if Item.FindSet() then
             repeat
-                AddItem(NewJobPlanningLine, Item."No.");
+                AddItem(NewContratoPlanningLine, Item."No.");
             until Item.Next() = 0;
     end;
 
@@ -3172,25 +3172,25 @@ table 50201 "Contrato Planning Line"
         exit(false);
     end;
 
-    local procedure AddItem(var NewJobPlanningLine: Record "Contrato Planning Line"; ItemNo: Code[20])
+    local procedure AddItem(var NewContratoPlanningLine: Record "Contrato Planning Line"; ItemNo: Code[20])
     begin
-        NewJobPlanningLine."Line No." += 10000;
-        NewJobPlanningLine.Validate(Type, NewJobPlanningLine.Type::Item);
-        NewJobPlanningLine.Validate("No.", ItemNo);
-        NewJobPlanningLine.Insert(true);
+        NewContratoPlanningLine."Line No." += 10000;
+        NewContratoPlanningLine.Validate(Type, NewContratoPlanningLine.Type::Item);
+        NewContratoPlanningLine.Validate("No.", ItemNo);
+        NewContratoPlanningLine.Insert(true);
     end;
 
-    local procedure InitNewLine(var NewJobPlanningLine: Record "Contrato Planning Line")
+    local procedure InitNewLine(var NewContratoPlanningLine: Record "Contrato Planning Line")
     var
-        ExistingJobPlanningLine: Record "Contrato Planning Line";
+        ExistingContratoPlanningLine: Record "Contrato Planning Line";
     begin
-        NewJobPlanningLine.Copy(Rec);
-        ExistingJobPlanningLine.SetRange("Contrato No.", NewJobPlanningLine."Contrato No.");
-        ExistingJobPlanningLine.SetRange("Contrato Task No.", NewJobPlanningLine."Contrato Task No.");
-        if ExistingJobPlanningLine.FindLast() then
-            NewJobPlanningLine."Line No." := ExistingJobPlanningLine."Line No."
+        NewContratoPlanningLine.Copy(Rec);
+        ExistingContratoPlanningLine.SetRange("Contrato No.", NewContratoPlanningLine."Contrato No.");
+        ExistingContratoPlanningLine.SetRange("Contrato Task No.", NewContratoPlanningLine."Contrato Task No.");
+        if ExistingContratoPlanningLine.FindLast() then
+            NewContratoPlanningLine."Line No." := ExistingContratoPlanningLine."Line No."
         else
-            NewJobPlanningLine."Line No." := 0;
+            NewContratoPlanningLine."Line No." := 0;
     end;
 
     procedure IsExtendedText(): Boolean
@@ -3204,24 +3204,24 @@ table 50201 "Contrato Planning Line"
             exit(false);
 
         GetLocation(Rec."Location Code");
-        if Location."Job Consump. Whse. Handling" = Enum::"Job Consump. Whse. Handling"::"Warehouse Pick (mandatory)" then
+        if Location."Job Consump. Whse. Handling" = Enum::"ContratoConsump.Whse.Handling"::"Warehouse Pick (mandatory)" then
             exit(true);
     end;
 
     local procedure InitLocation()
     begin
-        if JobTask.Get(Rec."Contrato No.", Rec."Contrato Task No.") and (JobTask."Location Code" <> '') then
-            Validate("Location Code", JobTask."Location Code");
+        if ContratoTask.Get(Rec."Contrato No.", Rec."Contrato Task No.") and (ContratoTask."Location Code" <> '') then
+            Validate("Location Code", ContratoTask."Location Code");
     end;
 
-    procedure SetSkipCheckForMultipleJobsOnSalesLine(Skip: Boolean)
+    procedure SetSkipCheckForMultipleContratosOnSalesLine(Skip: Boolean)
     begin
-        SkipCheckForMultipleJobsOnSalesLine := Skip;
+        SkipCheckForMultipleContratosOnSalesLine := Skip;
     end;
 
-    procedure GetSkipCheckForMultipleJobsOnSalesLine(): Boolean
+    procedure GetSkipCheckForMultipleContratosOnSalesLine(): Boolean
     begin
-        exit(SkipCheckForMultipleJobsOnSalesLine);
+        exit(SkipCheckForMultipleContratosOnSalesLine);
     end;
 
     local procedure ConfirmDeletion()
@@ -3249,77 +3249,77 @@ table 50201 "Contrato Planning Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCalculateRetrievedCost(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; StockkeepingUnit: Record "Stockkeeping Unit"; Item: Record Item; var RetrievedCost: Decimal)
+    local procedure OnAfterCalculateRetrievedCost(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; StockkeepingUnit: Record "Stockkeeping Unit"; Item: Record Item; var RetrievedCost: Decimal)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCopyFromItem(var JobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; Item: Record Item)
+    local procedure OnAfterCopyFromItem(var ContratoPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; Item: Record Item)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCopyFromGLAccount(var JobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; GLAccount: Record "G/L Account")
+    local procedure OnAfterCopyFromGLAccount(var ContratoPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; GLAccount: Record "G/L Account")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCopyFieldsFromJob(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato)
+    local procedure OnAfterCopyFieldsFromContrato(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCopyTrackingFromJobJnlLine(var JobPlanningLine: Record "Contrato Planning Line"; JobJnlLine: Record "Contrato Journal Line")
+    local procedure OnAfterCopyTrackingFromContratoJnlLine(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoJnlLine: Record "Contrato Journal Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterConvertToJobLineType(var JobPlanningLine: Record "Contrato Planning Line"; var JobLineType: Enum "Contrato Line Type")
+    local procedure OnAfterConvertToContratoLineType(var ContratoPlanningLine: Record "Contrato Planning Line"; var ContratoLineType: Enum "Contrato Line Type")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterConvertFromJobLineType(var JobPlanningLine: Record "Contrato Planning Line"; var JobLineType: Enum "Contrato Line Type"; var JobPlanningLineLineType: Enum ContratoPlanningLineLineType)
+    local procedure OnAfterConvertFromContratoLineType(var ContratoPlanningLine: Record "Contrato Planning Line"; var ContratoLineType: Enum "Contrato Line Type"; var ContratoPlanningLineLineType: Enum ContratoPlanningLineLineType)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterClearTracking(var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterClearTracking(var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCopyTrackingFromJobLedgEntry(var JobPlanningLine: Record "Contrato Planning Line"; JobLedgEntry: Record "Contrato Ledger Entry")
+    local procedure OnAfterCopyTrackingFromContratoLedgEntry(var ContratoPlanningLine: Record "Contrato Planning Line"; ContratoLedgEntry: Record "Contrato Ledger Entry")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterDeleteAmounts(var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterDeleteAmounts(var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterGetJob(var JobPlanningLine: Record "Contrato Planning Line"; var Contrato: Record Contrato)
+    local procedure OnAfterGetContrato(var ContratoPlanningLine: Record "Contrato Planning Line"; var Contrato: Record Contrato)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterGetSKU(JobPlanningLine: Record "Contrato Planning Line"; var Result: Boolean)
+    local procedure OnAfterGetSKU(ContratoPlanningLine: Record "Contrato Planning Line"; var Result: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterGetRemainingQty(JobPlanningLine: Record "Contrato Planning Line"; var RemainingQty: Decimal; var RemainingQtyBase: Decimal)
+    local procedure OnAfterGetRemainingQty(ContratoPlanningLine: Record "Contrato Planning Line"; var RemainingQty: Decimal; var RemainingQtyBase: Decimal)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFilterLinesWithItemToPlan(var JobPlanningLine: Record "Contrato Planning Line"; var Item: Record Item);
+    local procedure OnAfterFilterLinesWithItemToPlan(var ContratoPlanningLine: Record "Contrato Planning Line"; var Item: Record Item);
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnAfterFilterLinesForReservation(var JobPlaningLine: Record "Contrato Planning Line"; ReservationEntry: Record "Reservation Entry"; NewStatus: Option; AvailabilityFilter: Text; Positive: Boolean)
+    local procedure OnAfterFilterLinesForReservation(var ContratoPlaningLine: Record "Contrato Planning Line"; ReservationEntry: Record "Reservation Entry"; NewStatus: Option; AvailabilityFilter: Text; Positive: Boolean)
     begin
     end;
 
@@ -3329,209 +3329,209 @@ table 50201 "Contrato Planning Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterHandleCostFactor(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; Item: Record Item)
+    local procedure OnAfterHandleCostFactor(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; Item: Record Item)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterInitJobPlanningLine(var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterInitContratoPlanningLine(var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterInitFromJobPlanningLine(var ToJobPlanningLine: Record "Contrato Planning Line"; FromJobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterInitFromContratoPlanningLine(var ToContratoPlanningLine: Record "Contrato Planning Line"; FromContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
 #if not CLEAN23
     [IntegrationEvent(false, false)]
-    local procedure OnAfterResourceFindCost(var JobPlanningLine: Record "Contrato Planning Line"; var ResourceCost: Record "Price List Line")
+    local procedure OnAfterResourceFindCost(var ContratoPlanningLine: Record "Contrato Planning Line"; var ResourceCost: Record "Price List Line")
     begin
     end;
 #endif
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterSetReservationFilters(var ReservEntry: Record "Reservation Entry"; JobPlanningLine: Record "Contrato Planning Line");
+    local procedure OnAfterSetReservationFilters(var ReservEntry: Record "Reservation Entry"; ContratoPlanningLine: Record "Contrato Planning Line");
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterSetupNewLine(var JobPlanningLine: Record "Contrato Planning Line"; LastJobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterSetupNewLine(var ContratoPlanningLine: Record "Contrato Planning Line"; LastContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterUpdateAllAmounts(var JobPlanningLine: Record "Contrato Planning Line"; var xJobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterUpdateAllAmounts(var ContratoPlanningLine: Record "Contrato Planning Line"; var xContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterUpdateCurrencyFactor(var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterUpdateCurrencyFactor(var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterUpdateTotalPrice(var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterUpdateTotalPrice(var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterUpdateUnitPrice(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; var AmountRoundingPrecision: Decimal; var AmountRoundingPrecisionFCY: Decimal)
+    local procedure OnAfterUpdateUnitPrice(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; var AmountRoundingPrecision: Decimal; var AmountRoundingPrecisionFCY: Decimal)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterUpdateAmountsAndDiscounts(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterUpdateAmountsAndDiscounts(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterValidateModification(var JobPlanningLine: Record "Contrato Planning Line"; FieldChanged: Boolean; FieldNo: Integer)
+    local procedure OnAfterValidateModification(var ContratoPlanningLine: Record "Contrato Planning Line"; FieldChanged: Boolean; FieldNo: Integer)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCalcQuantityBase(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; CurrentFieldNo: Integer; var IsHandled: Boolean)
+    local procedure OnBeforeCalcQuantityBase(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; CurrentFieldNo: Integer; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckQuantityPosted(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeCheckQuantityPosted(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCheckRelatedJobPlanningLineInvoice(JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeCheckRelatedContratoPlanningLineInvoice(ContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCopyFromResource(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeCopyFromResource(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeEnsureDirectedPutawayandPickFalse(var JobPlanningLine: Record "Contrato Planning Line"; Location: Record Location; var IsHandled: Boolean)
+    local procedure OnBeforeEnsureDirectedPutawayandPickFalse(var ContratoPlanningLine: Record "Contrato Planning Line"; Location: Record Location; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeFindPriceAndDiscount(CalledByFieldNo: Integer; var IsHandled: Boolean; var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnBeforeFindPriceAndDiscount(CalledByFieldNo: Integer; var IsHandled: Boolean; var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeHandleCostFactor(var JobPlanningLine: Record "Contrato Planning Line"; var xJobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeHandleCostFactor(var ContratoPlanningLine: Record "Contrato Planning Line"; var xContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInitJobPlanningLine(var JobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; var IsHandled: Boolean)
+    local procedure OnBeforeInitContratoPlanningLine(var ContratoPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeInitRoundingPrecisions(JobPlanningLine: Record "Contrato Planning Line"; var AmountRoundingPrecision: Decimal; var UnitAmountRoundingPrecision: Decimal; var AmountRoundingPrecisionFCY: Decimal; var UnitAmountRoundingPrecisionFCY: Decimal; var IsHandled: Boolean)
+    local procedure OnBeforeInitRoundingPrecisions(ContratoPlanningLine: Record "Contrato Planning Line"; var AmountRoundingPrecision: Decimal; var UnitAmountRoundingPrecision: Decimal; var AmountRoundingPrecisionFCY: Decimal; var UnitAmountRoundingPrecisionFCY: Decimal; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeRecalculateAmounts(var JobPlanningLine: Record "Contrato Planning Line"; var xJobPlanningLine: Record "Contrato Planning Line"; var AmountLCY: Decimal; var IsHandled: Boolean; var Amount: Decimal)
+    local procedure OnBeforeRecalculateAmounts(var ContratoPlanningLine: Record "Contrato Planning Line"; var xContratoPlanningLine: Record "Contrato Planning Line"; var AmountLCY: Decimal; var IsHandled: Boolean; var Amount: Decimal)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdatePlannedDueDate(var JobPlanningLine: Record "Contrato Planning Line"; var Changed: Boolean; var IsHandled: Boolean)
+    local procedure OnBeforeUpdatePlannedDueDate(var ContratoPlanningLine: Record "Contrato Planning Line"; var Changed: Boolean; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeOnInsert(var JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeOnInsert(var ContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateAmountsAndDiscounts(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeUpdateAmountsAndDiscounts(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateDescription(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeUpdateDescription(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateModification(var JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean; xJobPlanningLine: Record "Contrato Planning Line"; FieldNo: Integer)
+    local procedure OnBeforeValidateModification(var ContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean; xContratoPlanningLine: Record "Contrato Planning Line"; FieldNo: Integer)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidatePlanningDate(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeValidatePlanningDate(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateQuantityBase(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; CallingFieldNo: Integer; var IsHandled: Boolean)
+    local procedure OnBeforeValidateQuantityBase(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; CallingFieldNo: Integer; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateWorkTypeCode(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeValidateWorkTypeCode(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeRetrieveCostPrice(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; var ShouldRetrieveCostPrice: Boolean; var IsHandled: Boolean; CalledByFieldNo: Integer)
+    local procedure OnBeforeRetrieveCostPrice(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; var ShouldRetrieveCostPrice: Boolean; var IsHandled: Boolean; CalledByFieldNo: Integer)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateRemainingQuantity(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeUpdateRemainingQuantity(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateRemainingQuantityFromUse(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; PostedQty: Decimal; var IsHandled: Boolean)
+    local procedure OnBeforeUpdateRemainingQuantityFromUse(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; PostedQty: Decimal; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateAllAmounts(var JobPlanningLine: Record "Contrato Planning Line"; var xJobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeUpdateAllAmounts(var ContratoPlanningLine: Record "Contrato Planning Line"; var xContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateUnitCost(var JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean; xJobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnBeforeUpdateUnitCost(var ContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean; xContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateReservation(var JobPlanningLine: Record "Contrato Planning Line"; var xJobPlanningLine: Record "Contrato Planning Line"; CalledByFieldNo: Integer; var IsHandled: Boolean; CurrentFieldNo: Integer)
+    local procedure OnBeforeUpdateReservation(var ContratoPlanningLine: Record "Contrato Planning Line"; var xContratoPlanningLine: Record "Contrato Planning Line"; CalledByFieldNo: Integer; var IsHandled: Boolean; CurrentFieldNo: Integer)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateQtyToTransferToInvoice(var JobPlanningLine: Record "Contrato Planning Line"; var xJobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeValidateQtyToTransferToInvoice(var ContratoPlanningLine: Record "Contrato Planning Line"; var xContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnControlUsageLinkOnAfterGetJob(var JobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; CallingFieldNo: Integer; var IsHandling: Boolean)
+    local procedure OnControlUsageLinkOnAfterGetContrato(var ContratoPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; CallingFieldNo: Integer; var IsHandling: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnUpdateCurrencyFactorOnBeforeGetExchangeRate(JobPlanningLine: Record "Contrato Planning Line"; var CurrencyExchangeRate: Record "Currency Exchange Rate")
+    local procedure OnUpdateCurrencyFactorOnBeforeGetExchangeRate(ContratoPlanningLine: Record "Contrato Planning Line"; var CurrencyExchangeRate: Record "Currency Exchange Rate")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnUseOnBeforeModify(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; AmountRoundingPrecision: Decimal; UnitAmountRoundingPrecision: Decimal; AmountRoundingPrecisionFCY: Decimal; UnitAmountRoundingPrecisionFCY: Decimal)
+    local procedure OnUseOnBeforeModify(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; AmountRoundingPrecision: Decimal; UnitAmountRoundingPrecision: Decimal; AmountRoundingPrecisionFCY: Decimal; UnitAmountRoundingPrecisionFCY: Decimal)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnValidateNoOnAfterCopyFromAccount(var JobPlanningLine: Record "Contrato Planning Line"; var xJobPlanningLine: Record "Contrato Planning Line"; var Contrato: Record Contrato)
+    local procedure OnValidateNoOnAfterCopyFromAccount(var ContratoPlanningLine: Record "Contrato Planning Line"; var xContratoPlanningLine: Record "Contrato Planning Line"; var Contrato: Record Contrato)
     begin
     end;
 
@@ -3541,99 +3541,99 @@ table 50201 "Contrato Planning Line"
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeValidateUsageLink(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean);
+    local procedure OnBeforeValidateUsageLink(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean);
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnDeleteOnAfterSetFilterOnJobUsageLink(JobPlanningLine: Record "Contrato Planning Line"; var JobUsageLink: Record "Contrato Usage Link"; var IsHandled: Boolean)
+    local procedure OnDeleteOnAfterSetFilterOnContratoUsageLink(ContratoPlanningLine: Record "Contrato Planning Line"; var ContratoUsageLink: Record "Contrato Usage Link"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeOnRename(var JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeOnRename(var ContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnControlUsageLinkOnAfterSetFilterJobUsageLink(var JobPlanningLine: Record "Contrato Planning Line"; var JobUsageLink: Record "Contrato Usage Link"; Contrato: Record Contrato; CallingFieldNo: Integer; var IsHandling: Boolean)
+    local procedure OnControlUsageLinkOnAfterSetFilterContratoUsageLink(var ContratoPlanningLine: Record "Contrato Planning Line"; var ContratoUsageLink: Record "Contrato Usage Link"; Contrato: Record Contrato; CallingFieldNo: Integer; var IsHandling: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeFindBin(var JobPlanningLine: Record "Contrato Planning Line"; var NewBinCode: Code[20]; var IsHandled: Boolean)
+    local procedure OnBeforeFindBin(var ContratoPlanningLine: Record "Contrato Planning Line"; var NewBinCode: Code[20]; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterFindPriceAndDiscount(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; CalledByFieldNo: Integer)
+    local procedure OnAfterFindPriceAndDiscount(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; CalledByFieldNo: Integer)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeCaption(JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean; var Result: Text)
+    local procedure OnBeforeCaption(ContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean; var Result: Text)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnCheckIfJobPlngLineMeetsReservedFromStockSetting(QtyToPost: Decimal; ReservedFromStock: Enum "Reservation From Stock"; var Result: Boolean)
+    local procedure OnCheckIfContratoPlngLineMeetsReservedFromStockSetting(QtyToPost: Decimal; ReservedFromStock: Enum "Reservation From Stock"; var Result: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateUnitPrice(var JobPlanningLine: Record "Contrato Planning Line"; xJobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
+    local procedure OnBeforeUpdateUnitPrice(var ContratoPlanningLine: Record "Contrato Planning Line"; xContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean)
     begin
     end;
 
 #pragma warning disable AS0077
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateRemainingCostsAndAmounts(var JobPlanningLine: Record "Contrato Planning Line"; PostingDate: Date; CurrencyFactor: Decimal; AmountRoundingPrecisionFCY: Decimal; AmountRoundingPrecision: Decimal; var IsHandled: Boolean)
+    local procedure OnBeforeUpdateRemainingCostsAndAmounts(var ContratoPlanningLine: Record "Contrato Planning Line"; PostingDate: Date; CurrencyFactor: Decimal; AmountRoundingPrecisionFCY: Decimal; AmountRoundingPrecision: Decimal; var IsHandled: Boolean)
     begin
     end;
 #pragma warning restore AS0077
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateTotalCost(var JobPlanningLine: Record "Contrato Planning Line"; AmountRoundingPrecisionFCY: Decimal; AmountRoundingPrecision: Decimal; var IsHandled: Boolean)
+    local procedure OnBeforeUpdateTotalCost(var ContratoPlanningLine: Record "Contrato Planning Line"; AmountRoundingPrecisionFCY: Decimal; AmountRoundingPrecision: Decimal; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterClearValues(var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterClearValues(var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterControlUsageLink(var JobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; CurrFieldNo: Integer)
+    local procedure OnAfterControlUsageLink(var ContratoPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; CurrFieldNo: Integer)
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeCopyFromGLAccount(var JobPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean; Contrato: Record Contrato)
+    local procedure OnBeforeCopyFromGLAccount(var ContratoPlanningLine: Record "Contrato Planning Line"; var IsHandled: Boolean; Contrato: Record Contrato)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeSelectMultipleItems(var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnBeforeSelectMultipleItems(var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterSelectMultipleItems(var JobPlanningLine: Record "Contrato Planning Line")
+    local procedure OnAfterSelectMultipleItems(var ContratoPlanningLine: Record "Contrato Planning Line")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeAddItems(var JobPlanningLine: Record "Contrato Planning Line"; SelectionFilter: Text; var IsHandled: Boolean)
+    local procedure OnBeforeAddItems(var ContratoPlanningLine: Record "Contrato Planning Line"; SelectionFilter: Text; var IsHandled: Boolean)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnAfterCopyFromResource(var JobPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; Resource: Record Resource)
+    local procedure OnAfterCopyFromResource(var ContratoPlanningLine: Record "Contrato Planning Line"; Contrato: Record Contrato; Resource: Record Resource)
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnBeforeUpdateQtyToTransfer(var JobPlanningLine: Record "Contrato Planning Line"; CurrFieldNo: Integer; var IsHandled: Boolean)
+    local procedure OnBeforeUpdateQtyToTransfer(var ContratoPlanningLine: Record "Contrato Planning Line"; CurrFieldNo: Integer; var IsHandled: Boolean)
     begin
     end;
 }

@@ -10,77 +10,77 @@ page 50223 "Copy Contrato Tasks"
             group("Copy from")
             {
                 Caption = 'Copy from';
-                field(SourceJobNo; SourceJobNo)
+                field(SourceContratoNo; SourceContratoNo)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Project No.';
                     TableRelation = Contrato;
                     ToolTip = 'Specifies the project number.';
 
                     trigger OnValidate()
                     begin
-                        if (SourceJobNo <> '') and not SourceJob.Get(SourceJobNo) then
-                            Error(Text003, SourceJob.TableCaption(), SourceJobNo);
+                        if (SourceContratoNo <> '') and not SourceContrato.Get(SourceContratoNo) then
+                            Error(Text003, SourceContrato.TableCaption(), SourceContratoNo);
 
-                        FromJobTaskNo := '';
-                        ToJobTaskNo := '';
+                        FromContratoTaskNo := '';
+                        ToContratoTaskNo := '';
                     end;
                 }
-                field(FromJobTaskNo; FromJobTaskNo)
+                field(FromContratoTaskNo; FromContratoTaskNo)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Project Task No. from';
                     ToolTip = 'Specifies the first project task number to be copied from. Only planning lines with a project task number equal to or higher than the number specified in this field will be included.';
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        JobTask: Record "Contrato Task";
+                        ContratoTask: Record "Contrato Task";
                     begin
-                        if SourceJob."No." <> '' then begin
-                            JobTask.SetRange("Contrato No.", SourceJob."No.");
-                            OnLookupFromJobTaskNoOnAfterSetJobTaskFilters(JobTask);
-                            if PAGE.RunModal(PAGE::"Contrato Task List", JobTask) = ACTION::LookupOK then
-                                FromJobTaskNo := JobTask."Contrato Task No.";
+                        if SourceContrato."No." <> '' then begin
+                            ContratoTask.SetRange("Contrato No.", SourceContrato."No.");
+                            OnLookupFromContratoTaskNoOnAfterSetContratoTaskFilters(ContratoTask);
+                            if PAGE.RunModal(PAGE::"Contrato Task List", ContratoTask) = ACTION::LookupOK then
+                                FromContratoTaskNo := ContratoTask."Contrato Task No.";
                         end;
                     end;
 
                     trigger OnValidate()
                     var
-                        JobTask: Record "Contrato Task";
+                        ContratoTask: Record "Contrato Task";
                     begin
-                        if (FromJobTaskNo <> '') and not JobTask.Get(SourceJob."No.", FromJobTaskNo) then
-                            Error(Text003, JobTask.TableCaption(), FromJobTaskNo);
+                        if (FromContratoTaskNo <> '') and not ContratoTask.Get(SourceContrato."No.", FromContratoTaskNo) then
+                            Error(Text003, ContratoTask.TableCaption(), FromContratoTaskNo);
                     end;
                 }
-                field(ToJobTaskNo; ToJobTaskNo)
+                field(ToContratoTaskNo; ToContratoTaskNo)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Project Task No. to';
                     ToolTip = 'Specifies the last project task number to be copied from. Only planning lines with a project task number equal to or lower than the number specified in this field will be included.';
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        JobTask: Record "Contrato Task";
+                        ContratoTask: Record "Contrato Task";
                     begin
-                        if SourceJobNo <> '' then begin
-                            JobTask.SetRange("Contrato No.", SourceJobNo);
-                            OnLookupToJobTaskNoOnAfterSetJobTaskFilters(JobTask);
-                            if PAGE.RunModal(PAGE::"Contrato Task List", JobTask) = ACTION::LookupOK then
-                                ToJobTaskNo := JobTask."Contrato Task No.";
+                        if SourceContratoNo <> '' then begin
+                            ContratoTask.SetRange("Contrato No.", SourceContratoNo);
+                            OnLookupToContratoTaskNoOnAfterSetContratoTaskFilters(ContratoTask);
+                            if PAGE.RunModal(PAGE::"Contrato Task List", ContratoTask) = ACTION::LookupOK then
+                                ToContratoTaskNo := ContratoTask."Contrato Task No.";
                         end;
                     end;
 
                     trigger OnValidate()
                     var
-                        JobTask: Record "Contrato Task";
+                        ContratoTask: Record "Contrato Task";
                     begin
-                        if (ToJobTaskNo <> '') and not JobTask.Get(SourceJobNo, ToJobTaskNo) then
-                            Error(Text003, JobTask.TableCaption(), ToJobTaskNo);
+                        if (ToContratoTaskNo <> '') and not ContratoTask.Get(SourceContratoNo, ToContratoTaskNo) then
+                            Error(Text003, ContratoTask.TableCaption(), ToContratoTaskNo);
                     end;
                 }
                 field("From Source"; Source)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Source';
                     OptionCaption = 'Project Planning Lines,Project Ledger Entries,None';
                     ToolTip = 'Specifies the basis on which you want the planning lines to be copied. If, for example, you want the planning lines to reflect actual usage and invoicing of items, resources, and general ledger expenses on the project you copy from, then select Project Ledger Entries in this field.';
@@ -92,7 +92,7 @@ page 50223 "Copy Contrato Tasks"
                 }
                 field("Planning Line Type"; PlanningLineType)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Incl. Planning Line Type';
                     Enabled = PlanningLineTypeEnable;
                     OptionCaption = 'Budget+Billable,Budget,Billable';
@@ -100,7 +100,7 @@ page 50223 "Copy Contrato Tasks"
                 }
                 field("Ledger Entry Line Type"; LedgerEntryType)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Incl. Ledger Entry Line Type';
                     Enabled = LedgerEntryLineTypeEnable;
                     OptionCaption = 'Usage+Sale,Usage,Sale';
@@ -108,31 +108,31 @@ page 50223 "Copy Contrato Tasks"
                 }
                 field(FromDate; FromDate)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Starting Date';
-                    ToolTip = 'Specifies the date from which the report or batch job processes information.';
+                    ToolTip = 'Specifies the date from which the report or batch Contrato processes information.';
                 }
                 field(ToDate; ToDate)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Ending Date';
-                    ToolTip = 'Specifies the date to which the report or batch job processes information.';
+                    ToolTip = 'Specifies the date to which the report or batch Contrato processes information.';
                 }
             }
             group("Copy to")
             {
                 Caption = 'Copy to';
-                field(TargetJobNo; TargetJobNo)
+                field(TargetContratoNo; TargetContratoNo)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Project No.';
                     TableRelation = Contrato;
                     ToolTip = 'Specifies the project number.';
 
                     trigger OnValidate()
                     begin
-                        if (TargetJobNo <> '') and not TargetJob.Get(TargetJobNo) then
-                            Error(Text003, TargetJob.TableCaption(), TargetJobNo);
+                        if (TargetContratoNo <> '') and not TargetContrato.Get(TargetContratoNo) then
+                            Error(Text003, TargetContrato.TableCaption(), TargetContratoNo);
                     end;
                 }
             }
@@ -141,7 +141,7 @@ page 50223 "Copy Contrato Tasks"
                 Caption = 'Apply';
                 field(CopyQuantity; CopyQuantity)
                 {
-                    ApplicationArea = Jobs;
+                    ApplicationArea = Contratos;
                     Caption = 'Copy Quantity';
                     ToolTip = 'Specifies that the quantities will be copied to the new project.';
                 }
@@ -172,17 +172,17 @@ page 50223 "Copy Contrato Tasks"
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeOnQueryClosePage(CloseAction, SourceJob, TargetJob, IsHandled, CopyQuantity, CopyDimensions, Source, PlanningLineType, LedgerEntryType, FromJobTaskNo, ToJobTaskNo, FromDate, ToDate);
+        OnBeforeOnQueryClosePage(CloseAction, SourceContrato, TargetContrato, IsHandled, CopyQuantity, CopyDimensions, Source, PlanningLineType, LedgerEntryType, FromContratoTaskNo, ToContratoTaskNo, FromDate, ToDate);
         if IsHandled then
             exit(IsHandled);
 
         if CloseAction in [ACTION::OK, ACTION::LookupOK] then begin
             ValidateUserInput();
-            CopyJob.SetCopyOptions(false, CopyQuantity, CopyDimensions, Source, PlanningLineType, LedgerEntryType);
-            CopyJob.SetJobTaskRange(FromJobTaskNo, ToJobTaskNo);
-            CopyJob.SetJobTaskDateRange(FromDate, ToDate);
-            OnQueryClosePageOnBeforeCopyJobTasks(CopyJob, CopyQuantity, CopyDimensions, Source, PlanningLineType, LedgerEntryType);
-            CopyJob.CopyJobTasks(SourceJob, TargetJob);
+            CopyContrato.SetCopyOptions(false, CopyQuantity, CopyDimensions, Source, PlanningLineType, LedgerEntryType);
+            CopyContrato.SetContratoTaskRange(FromContratoTaskNo, ToContratoTaskNo);
+            CopyContrato.SetContratoTaskDateRange(FromDate, ToDate);
+            OnQueryClosePageOnBeforeCopyContratoTasks(CopyContrato, CopyQuantity, CopyDimensions, Source, PlanningLineType, LedgerEntryType);
+            CopyContrato.CopyContratoTasks(SourceContrato, TargetContrato);
             Message(Text001);
         end
     end;
@@ -196,9 +196,9 @@ page 50223 "Copy Contrato Tasks"
         Text005: Label 'Provide a valid target %1.';
 
     protected var
-        SourceJob, TargetJob : Record Contrato;
-        CopyJob: Codeunit "Copy Contrato";
-        SourceJobNo, FromJobTaskNo, ToJobTaskNo, TargetJobNo : Code[20];
+        SourceContrato, TargetContrato : Record Contrato;
+        CopyContrato: Codeunit "Copy Contrato";
+        SourceContratoNo, FromContratoTaskNo, ToContratoTaskNo, TargetContratoNo : Code[20];
         FromDate, ToDate : Date;
         Source: Option "Contrato Planning Lines","Contrato Ledger Entries","None";
         PlanningLineType: Option "Budget+Billable",Budget,Billable;
@@ -207,11 +207,11 @@ page 50223 "Copy Contrato Tasks"
 
     local procedure ValidateUserInput()
     begin
-        if (SourceJobNo = '') or not SourceJob.Get(SourceJobNo) then
-            Error(Text004, SourceJob.TableCaption());
+        if (SourceContratoNo = '') or not SourceContrato.Get(SourceContratoNo) then
+            Error(Text004, SourceContrato.TableCaption());
 
-        if (TargetJobNo = '') or not TargetJob.Get(TargetJobNo) then
-            Error(Text005, TargetJob.TableCaption());
+        if (TargetContratoNo = '') or not TargetContrato.Get(TargetContratoNo) then
+            Error(Text005, TargetContrato.TableCaption());
     end;
 
     local procedure ValidateSource()
@@ -235,30 +235,30 @@ page 50223 "Copy Contrato Tasks"
         end;
     end;
 
-    procedure SetFromJob(SourceJob2: Record Contrato)
+    procedure SetFromContrato(SourceContrato2: Record Contrato)
     begin
-        SourceJob := SourceJob2;
-        SourceJobNo := SourceJob."No.";
+        SourceContrato := SourceContrato2;
+        SourceContratoNo := SourceContrato."No.";
     end;
 
-    procedure SetToJob(TargetJob2: Record Contrato)
+    procedure SetToContrato(TargetContrato2: Record Contrato)
     begin
-        TargetJob := TargetJob2;
-        TargetJobNo := TargetJob."No.";
-    end;
-
-    [IntegrationEvent(false, false)]
-    local procedure OnLookupFromJobTaskNoOnAfterSetJobTaskFilters(var JobTask: Record "Contrato Task")
-    begin
+        TargetContrato := TargetContrato2;
+        TargetContratoNo := TargetContrato."No.";
     end;
 
     [IntegrationEvent(false, false)]
-    local procedure OnLookupToJobTaskNoOnAfterSetJobTaskFilters(var JobTask: Record "Contrato Task")
+    local procedure OnLookupFromContratoTaskNoOnAfterSetContratoTaskFilters(var ContratoTask: Record "Contrato Task")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnLookupToContratoTaskNoOnAfterSetContratoTaskFilters(var ContratoTask: Record "Contrato Task")
     begin
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeOnQueryClosePage(var CloseAction: Action; var SourceJob: Record Contrato; var TargetJob: Record Contrato; var IsHandled: Boolean; var CopyQuantity: Boolean; var CopyDimensions: Boolean; var Source: Option "Contrato Planning Lines","Contrato Ledger Entries","None"; var PlanningLineType: Option "Budget+Billable",Budget,Billable; var LedgerEntryType: Option "Usage+Sale",Usage,Sale; var FromJobTaskNo: Code[20]; var ToJobTaskNo: Code[20]; var FromDate: Date; var ToDate: Date)
+    local procedure OnBeforeOnQueryClosePage(var CloseAction: Action; var SourceContrato: Record Contrato; var TargetContrato: Record Contrato; var IsHandled: Boolean; var CopyQuantity: Boolean; var CopyDimensions: Boolean; var Source: Option "Contrato Planning Lines","Contrato Ledger Entries","None"; var PlanningLineType: Option "Budget+Billable",Budget,Billable; var LedgerEntryType: Option "Usage+Sale",Usage,Sale; var FromContratoTaskNo: Code[20]; var ToContratoTaskNo: Code[20]; var FromDate: Date; var ToDate: Date)
     begin
     end;
 
@@ -268,7 +268,7 @@ page 50223 "Copy Contrato Tasks"
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnQueryClosePageOnBeforeCopyJobTasks(var CopyJob: Codeunit "Copy Contrato"; var CopyQuantity: Boolean; var CopyDimensions: Boolean; var Source: Option "Contrato Planning Lines","Contrato Ledger Entries","None"; var PlanningLineType: Option "Budget+Billable",Budget,Billable; var LedgerEntryType: Option "Usage+Sale",Usage,Sale);
+    local procedure OnQueryClosePageOnBeforeCopyContratoTasks(var CopyContrato: Codeunit "Copy Contrato"; var CopyQuantity: Boolean; var CopyDimensions: Boolean; var Source: Option "Contrato Planning Lines","Contrato Ledger Entries","None"; var PlanningLineType: Option "Budget+Billable",Budget,Billable; var LedgerEntryType: Option "Usage+Sale",Usage,Sale);
     begin
     end;
 }

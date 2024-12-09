@@ -9,8 +9,8 @@ codeunit 50223 "Contrato Journal Errors Mgt."
 
     var
         TempErrorMessage: Record "Error Message" temporary;
-        TempJobJnlLineModified: Record "Contrato Journal Line" temporary;
-        TempDeletedJobJnlLine: Record "Contrato Journal Line" temporary;
+        TempContratoJnlLineModified: Record "Contrato Journal Line" temporary;
+        TempDeletedContratoJnlLine: Record "Contrato Journal Line" temporary;
         BackgroundErrorHandlingMgt: Codeunit "Background Error Handling Mgt.";
         FullBatchCheck: Boolean;
 
@@ -24,28 +24,28 @@ codeunit 50223 "Contrato Journal Errors Mgt."
         NewTempErrorMessage.Copy(TempErrorMessage, true);
     end;
 
-    procedure SetJobJnlLineOnModify(Rec: Record "Contrato Journal Line")
+    procedure SetContratoJnlLineOnModify(Rec: Record "Contrato Journal Line")
     begin
         if BackgroundErrorHandlingMgt.BackgroundValidationFeatureEnabled() then
-            SaveJobJournalLineToBuffer(Rec, TempJobJnlLineModified);
+            SaveContratoJournalLineToBuffer(Rec, TempContratoJnlLineModified);
     end;
 
-    local procedure SaveJobJournalLineToBuffer(JobJournalLine: Record "Contrato Journal Line"; var BufferLine: Record "Contrato Journal Line" temporary)
+    local procedure SaveContratoJournalLineToBuffer(ContratoJournalLine: Record "Contrato Journal Line"; var BufferLine: Record "Contrato Journal Line" temporary)
     begin
-        if BufferLine.Get(JobJournalLine."Journal Template Name", JobJournalLine."Journal Batch Name", JobJournalLine."Line No.") then begin
-            BufferLine.TransferFields(JobJournalLine);
+        if BufferLine.Get(ContratoJournalLine."Journal Template Name", ContratoJournalLine."Journal Batch Name", ContratoJournalLine."Line No.") then begin
+            BufferLine.TransferFields(ContratoJournalLine);
             BufferLine.Modify();
         end else begin
-            BufferLine := JobJournalLine;
+            BufferLine := ContratoJournalLine;
             BufferLine.Insert();
         end;
     end;
 
-    procedure GetJobJnlLinePreviousLineNo() PrevLineNo: Integer
+    procedure GetContratoJnlLinePreviousLineNo() PrevLineNo: Integer
     begin
-        if TempJobJnlLineModified.FindFirst() then begin
-            PrevLineNo := TempJobJnlLineModified."Line No.";
-            if TempJobJnlLineModified.Delete() then;
+        if TempContratoJnlLineModified.FindFirst() then begin
+            PrevLineNo := TempContratoJnlLineModified."Line No.";
+            if TempContratoJnlLineModified.Delete() then;
         end;
     end;
 
@@ -54,54 +54,54 @@ codeunit 50223 "Contrato Journal Errors Mgt."
         FullBatchCheck := NewFullBatchCheck;
     end;
 
-    procedure GetDeletedJobJnlLine(var TempJobJnlLine: Record "Contrato Journal Line" temporary; ClearBuffer: Boolean): Boolean
+    procedure GetDeletedContratoJnlLine(var TempContratoJnlLine: Record "Contrato Journal Line" temporary; ClearBuffer: Boolean): Boolean
     begin
-        if TempDeletedJobJnlLine.FindSet() then begin
+        if TempDeletedContratoJnlLine.FindSet() then begin
             repeat
-                TempJobJnlLine := TempDeletedJobJnlLine;
-                TempJobJnlLine.Insert();
-            until TempDeletedJobJnlLine.Next() = 0;
+                TempContratoJnlLine := TempDeletedContratoJnlLine;
+                TempContratoJnlLine.Insert();
+            until TempDeletedContratoJnlLine.Next() = 0;
 
             if ClearBuffer then
-                TempDeletedJobJnlLine.DeleteAll();
+                TempDeletedContratoJnlLine.DeleteAll();
             exit(true);
         end;
 
         exit(false);
     end;
 
-    procedure CollectJobJnlCheckParameters(JobJnlLine: Record "Contrato Journal Line"; var ErrorHandlingParameters: Record "Error Handling Parameters")
+    procedure CollectContratoJnlCheckParameters(ContratoJnlLine: Record "Contrato Journal Line"; var ErrorHandlingParameters: Record "Error Handling Parameters")
     begin
-        ErrorHandlingParameters."Journal Template Name" := JobJnlLine."Journal Template Name";
-        ErrorHandlingParameters."Journal Batch Name" := JobJnlLine."Journal Batch Name";
-        ErrorHandlingParameters."Line No." := JobJnlLine."Line No.";
+        ErrorHandlingParameters."Journal Template Name" := ContratoJnlLine."Journal Template Name";
+        ErrorHandlingParameters."Journal Batch Name" := ContratoJnlLine."Journal Batch Name";
+        ErrorHandlingParameters."Line No." := ContratoJnlLine."Line No.";
         ErrorHandlingParameters."Full Batch Check" := FullBatchCheck;
-        ErrorHandlingParameters."Previous Line No." := GetJobJnlLinePreviousLineNo();
+        ErrorHandlingParameters."Previous Line No." := GetContratoJnlLinePreviousLineNo();
     end;
 
-    procedure InsertDeletedJobJnlLine(JobJnlLine: Record "Contrato Journal Line")
+    procedure InsertDeletedContratoJnlLine(ContratoJnlLine: Record "Contrato Journal Line")
     begin
         if BackgroundErrorHandlingMgt.BackgroundValidationFeatureEnabled() then begin
-            TempDeletedJobJnlLine := JobJnlLine;
-            if TempDeletedJobJnlLine.Insert() then;
+            TempDeletedContratoJnlLine := ContratoJnlLine;
+            if TempDeletedContratoJnlLine.Insert() then;
         end;
     end;
 
     [EventSubscriber(ObjectType::Page, Page::"Contrato Journal", 'OnDeleteRecordEvent', '', false, false)]
-    local procedure OnDeleteRecordEventJobJournal(var Rec: Record "Contrato Journal Line"; var AllowDelete: Boolean)
+    local procedure OnDeleteRecordEventContratoJournal(var Rec: Record "Contrato Journal Line"; var AllowDelete: Boolean)
     begin
-        InsertDeletedJobJnlLine(Rec);
+        InsertDeletedContratoJnlLine(Rec);
     end;
 
     [EventSubscriber(ObjectType::Page, Page::"Contrato Journal", 'OnModifyRecordEvent', '', false, false)]
-    local procedure OnModifyRecordEventJobJournal(var Rec: Record "Contrato Journal Line"; var xRec: Record "Contrato Journal Line"; var AllowModify: Boolean)
+    local procedure OnModifyRecordEventContratoJournal(var Rec: Record "Contrato Journal Line"; var xRec: Record "Contrato Journal Line"; var AllowModify: Boolean)
     begin
-        SetJobJnlLineOnModify(Rec);
+        SetContratoJnlLineOnModify(Rec);
     end;
 
     [EventSubscriber(ObjectType::Page, Page::"Contrato Journal", 'OnInsertRecordEvent', '', false, false)]
-    local procedure OnInsertRecordEventJobJournal(var Rec: Record "Contrato Journal Line"; var xRec: Record "Contrato Journal Line"; var AllowInsert: Boolean)
+    local procedure OnInsertRecordEventContratoJournal(var Rec: Record "Contrato Journal Line"; var xRec: Record "Contrato Journal Line"; var AllowInsert: Boolean)
     begin
-        SetJobJnlLineOnModify(Rec);
+        SetContratoJnlLineOnModify(Rec);
     end;
 }
