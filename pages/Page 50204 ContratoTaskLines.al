@@ -18,7 +18,7 @@ page 50204 "Contrato Task Lines"
                 ShowCaption = false;
                 field("Contrato No."; Rec."Contrato No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Style = Strong;
                     StyleExpr = StyleIsStrong;
                     ToolTip = 'Specifies the number of the related project.';
@@ -26,122 +26,122 @@ page 50204 "Contrato Task Lines"
                 }
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Style = Strong;
                     StyleExpr = StyleIsStrong;
                     ToolTip = 'Specifies the number of the related project task.';
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Style = Strong;
                     StyleExpr = StyleIsStrong;
                     ToolTip = 'Specifies a description of the project task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the project planning line.';
                 }
                 field("Contrato Task Type"; Rec."Contrato Task Type")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the purpose of the account. Newly created accounts are automatically assigned the Posting account type, but you can change this. Choose the field to select one of the following five options:';
                 }
                 field(Totaling; Rec.Totaling)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies an interval or a list of project task numbers.';
                 }
                 field("Contrato Posting Group"; Rec."Contrato Posting Group")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the project posting group of the task.';
                 }
                 field("Location Code"; Rec."Location Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the location code of the task.';
                 }
                 field("Bin Code"; Rec."Bin Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies a bin code for specific location of the task.';
                 }
                 field("WIP-Total"; Rec."WIP-Total")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the project tasks you want to group together when calculating Work In Process (WIP) and Recognition.';
                 }
                 field("WIP Method"; Rec."WIP Method")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the name of the Work in Process calculation method that is associated with a project. The value in this field comes from the WIP method specified on the project card.';
                 }
                 field("Start Date"; Rec."Start Date")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the start date for the project task. The date is based on the date on the related project planning line.';
                 }
                 field("End Date"; Rec."End Date")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the end date for the project task. The date is based on the date on the related project planning line.';
                 }
                 field("Schedule (Total Cost)"; Rec."Schedule (Total Cost)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies, in the local currency, the total budgeted cost for the project task during the time period in the Planning Date Filter field.';
                 }
                 field("Schedule (Total Price)"; Rec."Schedule (Total Price)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies, in local currency, the total budgeted price for the project task during the time period in the Planning Date Filter field.';
                 }
                 field("Usage (Total Cost)"; Rec."Usage (Total Cost)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies, in local currency, the total cost of the usage of items, resources and general ledger expenses posted on the project task during the time period in the Posting Date Filter field.';
                 }
                 field("Usage (Total Price)"; Rec."Usage (Total Price)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies, in the local currency, the total price of the usage of items, resources and general ledger expenses posted on the project task during the time period in the Posting Date Filter field.';
                 }
                 field("Contract (Total Cost)"; Rec."Contract (Total Cost)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies, in local currency, the total billable cost for the project task during the time period in the Planning Date Filter field.';
                 }
                 field("Contract (Total Price)"; Rec."Contract (Total Price)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies, in the local currency, the total billable price for the project task during the time period in the Planning Date Filter field.';
                 }
                 field("Contract (Invoiced Cost)"; Rec."Contract (Invoiced Cost)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies, in the local currency, the total billable cost for the project task that has been invoiced during the time period in the Posting Date Filter field.';
                 }
                 field("Contract (Invoiced Price)"; Rec."Contract (Invoiced Price)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies, in the local currency, the total billable price for the project task that has been invoiced during the time period in the Posting Date Filter field.';
                 }
                 field("Remaining (Total Cost)"; Rec."Remaining (Total Cost)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the remaining total cost (LCY) as the sum of costs from project planning lines associated with the project task. The calculation occurs when you have specified that there is a usage link between the project ledger and the project planning lines.';
                 }
                 field("Remaining (Total Price)"; Rec."Remaining (Total Price)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the remaining total price (LCY) as the sum of prices from project planning lines associated with the project task. The calculation occurs when you have specified that there is a usage link between the project ledger and the project planning lines.';
                 }
                 field("EAC (Total Cost)"; Rec.CalcEACTotalCost())
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'EAC (Total Cost)';
                     ToolTip = 'Specifies the estimate at completion (EAC) total cost for a project task line. If the Apply Usage Link check box on the project is selected, then the EAC (Total Cost) field is calculated as follows:  Usage (Total Cost) + Remaining (Total Cost).';
                 }
                 field("EAC (Total Price)"; Rec.CalcEACTotalPrice())
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'EAC (Total Price)';
                     ToolTip = 'Specifies the estimate at completion (EAC) total price for a project task line. If the Apply Usage Link check box on the project is selected, then the EAC (Total Price) field is calculated as follows: Usage (Total Price) + Remaining (Total Price).';
                 }
@@ -159,7 +159,7 @@ page 50204 "Contrato Task Lines"
                 }
                 field("Outstanding Orders"; Rec."Outstanding Orders")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the sum of outstanding orders, in local currency, for this project task. The value of the Outstanding Amount (LCY) field is used for entries in the Purchase Line table of document type Order to calculate and update the contents of this field.';
                     Visible = false;
@@ -175,7 +175,7 @@ page 50204 "Contrato Task Lines"
                 }
                 field("Amt. Rcd. Not Invoiced"; Rec."Amt. Rcd. Not Invoiced")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the sum for items that have been received but have not yet been invoiced. The value in the Amt. Rcd. Not Invoiced (LCY) field is used for entries in the Purchase Line table of document type Order to calculate and update the contents of this field.';
                     Visible = false;
@@ -192,7 +192,7 @@ page 50204 "Contrato Task Lines"
 #if not CLEAN25
                 field("Coupled to Dataverse"; Rec."Coupled to Dataverse")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Visible = false;
                     ToolTip = 'Specifies if the project task is coupled to an entity in Field Service.';
                     ObsoleteReason = 'Field Service is moved to Field Service Integration app.';
@@ -227,7 +227,7 @@ page 50204 "Contrato Task Lines"
                 Image = Task;
                 action(ContratoPlanningLines)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Contrato &Planning Lines';
                     Image = JobLines;
                     ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (budget) or you can specify what you actually agreed with your customer that they should pay for the project (billable).';
@@ -251,7 +251,7 @@ page 50204 "Contrato Task Lines"
                 }
                 action(ContratoTaskStatistics)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Contrato Task &Statistics';
                     Image = StatisticsDocument;
                     RunObject = Page "Contrato Task Statistics";
@@ -262,7 +262,7 @@ page 50204 "Contrato Task Lines"
                 }
                 action("Contrato &Task Card")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Contrato &Task Card';
                     Image = Task;
                     RunObject = Page "Contrato Task Card";
@@ -316,7 +316,7 @@ page 50204 "Contrato Task Lines"
                 Image = Documents;
                 action("Sales &Invoices/Credit Memos")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Sales &Invoices/Credit Memos';
                     Image = GetSourceDoc;
                     ToolTip = 'View sales invoices or sales credit memos that are related to the selected project task.';
@@ -336,7 +336,7 @@ page 50204 "Contrato Task Lines"
                 Image = WIP;
                 action("&WIP Entries")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = '&WIP Entries';
                     Image = WIPEntries;
                     RunObject = Page "Contrato WIP Entries";
@@ -346,7 +346,7 @@ page 50204 "Contrato Task Lines"
                 }
                 action("WIP &G/L Entries")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'WIP &G/L Entries';
                     Image = WIPLedger;
                     RunObject = Page "Contrato WIP G/L Entries";
@@ -361,7 +361,7 @@ page 50204 "Contrato Task Lines"
                 Image = History;
                 action("Contrato Ledger E&ntries")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Contrato Ledger E&ntries';
                     Image = JobLedger;
                     RunObject = Page "Contrato Ledger Entries";
@@ -490,7 +490,7 @@ page 50204 "Contrato Task Lines"
                 Image = Invoice;
                 action("Create &Sales Invoice")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Create &Sales Invoice';
                     Ellipsis = true;
                     Image = JobSalesInvoice;
@@ -520,7 +520,7 @@ page 50204 "Contrato Task Lines"
                 Image = "Action";
                 action("Split &Planning Lines")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Split &Planning Lines';
                     Ellipsis = true;
                     Image = Splitlines;
@@ -545,7 +545,7 @@ page 50204 "Contrato Task Lines"
                 }
                 action("Change &Dates")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Change &Dates';
                     Ellipsis = true;
                     Image = ChangeDate;
@@ -570,7 +570,7 @@ page 50204 "Contrato Task Lines"
                 }
                 action("<Action7>")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'I&ndent Contrato Tasks';
                     Image = Indent;
                     RunObject = Codeunit "Contrato Task-Indent";
@@ -582,7 +582,7 @@ page 50204 "Contrato Task Lines"
                     Image = Copy;
                     action("Copy Contrato Planning Lines &from...")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Copy Contrato Planning Lines &from...';
                         Ellipsis = true;
                         Image = CopyToTask;
@@ -599,7 +599,7 @@ page 50204 "Contrato Task Lines"
                     }
                     action("Copy Contrato Planning Lines &to...")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Copy Contrato Planning Lines &to...';
                         Ellipsis = true;
                         Image = CopyFromTask;
@@ -621,7 +621,7 @@ page 50204 "Contrato Task Lines"
                     Image = WIP;
                     action("<Action48>")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = '&Calculate WIP';
                         Ellipsis = true;
                         Image = CalculateWIP;
@@ -642,7 +642,7 @@ page 50204 "Contrato Task Lines"
                     }
                     action("<Action49>")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = '&Post WIP to G/L';
                         Ellipsis = true;
                         Image = PostOrder;
@@ -666,7 +666,7 @@ page 50204 "Contrato Task Lines"
         {
             action("Contrato Actual to Budget (Cost)")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Contrato Actual to Budget (Cost)';
                 Image = "Report";
                 RunObject = Report "ContratoActualtoBudget(Cost)";
@@ -674,7 +674,7 @@ page 50204 "Contrato Task Lines"
             }
             action("Contrato Actual to Budget (Price)")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Contrato Actual to Budget (Price)';
                 Image = "Report";
                 RunObject = Report "ContratoActualtoBudget(Price)";
@@ -682,7 +682,7 @@ page 50204 "Contrato Task Lines"
             }
             action("Contrato Analysis")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Contrato Analysis';
                 Image = "Report";
                 RunObject = Report "Contrato Analysis";
@@ -690,7 +690,7 @@ page 50204 "Contrato Task Lines"
             }
             action("Contrato - Planning Lines")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Contrato - Planning Lines';
                 Image = "Report";
                 RunObject = Report "Contrato - Planning Lines";
@@ -698,7 +698,7 @@ page 50204 "Contrato Task Lines"
             }
             action("Contrato - Suggested Billing")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Contrato - Suggested Billing';
                 Image = "Report";
                 RunObject = Report "ContratoCostSuggestedBilling";
@@ -706,7 +706,7 @@ page 50204 "Contrato Task Lines"
             }
             action("Contratos - Transaction Detail")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Projects - Transaction Detail';
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'

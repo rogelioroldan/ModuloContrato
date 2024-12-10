@@ -2,7 +2,7 @@ report 50221 "ContratoCostTransactionDetail"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './Local/Contratos/Contrato/Reports/ContratoCostTransactionDetail.rdlc';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contrato Cost Transaction Detail';
     AdditionalSearchTerms = 'Contrato Cost Transaction Detail';
     UsageCategory = ReportsAndAnalysis;

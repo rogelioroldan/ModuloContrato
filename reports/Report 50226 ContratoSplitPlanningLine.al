@@ -1,7 +1,7 @@
 report 50226 "Contrato Split Planning Line"
 {
     AdditionalSearchTerms = 'Contrato Split Planning Line';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contrato Split Planning Line';
     ProcessingOnly = true;
     UsageCategory = Tasks;

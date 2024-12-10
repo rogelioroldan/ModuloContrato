@@ -1,7 +1,7 @@
 report 50206 "Contrato Post WIP to G/L"
 {
     AdditionalSearchTerms = 'posted work in process to general ledger,posted work in progress to general ledger, Contrato Post WIP to G/L';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contrato Post WIP to G/L';
     ProcessingOnly = true;
     UsageCategory = Tasks;
@@ -35,31 +35,31 @@ report 50206 "Contrato Post WIP to G/L"
                     Caption = 'Options';
                     field(ReversalPostingDate; PostingDate)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Reversal Posting Date';
                         ToolTip = 'Specifies the posting date for the general ledger entries that are posted by this function.';
                     }
                     field(ReversalDocumentNo; DocNo)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Reversal Document No.';
                         ToolTip = 'Specifies a document number for the general ledger entries that are posted by this function.';
                     }
                     field(ReverseOnly; JustReverse)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Reverse Only';
                         ToolTip = 'Specifies that you want to reverse previously posted WIP, but not to post new WIP to the general ledger. This is useful, for example, when you have calculated and posted WIP for a Contrato with an incorrect date and want to reverse the incorrect postings without posting new WIP entries.';
                     }
                     field(UseReversalDate; ReplacePostDate)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Use Reversal Date';
                         ToolTip = 'Specifies if you want to use the reversal date as the posting date for both the reversal of the previous WIP calculation and the posting date for the new WIP calculation. This is useful when you want to calculate and post the historical WIP for a period that is already closed. You can reverse the old postings and post the new calculation in an open period by choosing a reversal date in the open period.';
                     }
                     field(JnlTemplateName; GenJnlLineReq."Journal Template Name")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Journal Template Name';
                         TableRelation = "Gen. Journal Template";
                         ToolTip = 'Specifies the name of the journal template that is used for the posting.';
@@ -72,7 +72,7 @@ report 50206 "Contrato Post WIP to G/L"
                     }
                     field(JnlBatchName; GenJnlLineReq."Journal Batch Name")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Journal Batch Name';
                         ToolTip = 'Specifies the name of the journal batch that is used for the posting.';
                         Visible = IsJournalTemplNameVisible;

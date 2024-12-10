@@ -2853,6 +2853,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Contrato Planning Line - Field Gen. Prod. Posting Group - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1018661127 - Field 2017698725 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Grupo a facturar</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Contrato Planning Line - Field GrupoFacturar - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 1018661127 - Field 381588874 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Invoiced Amount (LCY)</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -4237,6 +4242,11 @@
           <source>End Date</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Contrato Task - Field End Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2450534821 - Field 827356635 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Estatus</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Contrato Task - Field Estatus - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 2450534821 - Field 1527563463 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>External Document No.</source>
@@ -5697,6 +5707,21 @@
           <source>Primary Key</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Contratos Setup - Field Primary Key - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2764999576 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Estatus Anexos</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table EstatusAnexo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2764999576 - Field 743017303 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Código</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table EstatusAnexo - Field Código - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2764999576 - Field 814966011 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Nombre</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table EstatusAnexo - Field Nombre - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 216603574 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>My Contrato</source>
@@ -17883,6 +17908,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Copy Contrato Tasks - Control TargetContratoNo - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1458260490 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Estatus de Anexos</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Estatus Anexo List - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1458260490 - Property 3863440606" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Estatus de anexos, Estatus Anexos</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Estatus Anexo List - Property AdditionalSearchTerms</note>
+        </trans-unit>
         <trans-unit id="Page 2265847267 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Purchase Project Price Lists</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -21072,6 +21107,16 @@
           <source>Usage (Total Price)</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Enum ContratWIPRecognizedSalesType - EnumValue Usage (Total Price) - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 2132206037 - EnumValue 2347438355 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>1</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Grupo Facturar - EnumValue 1 - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 2132206037 - EnumValue 4260528206 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Grupo Facturar - EnumValue 2 - Property Caption</note>
         </trans-unit>
         <trans-unit id="EnumExtension 2682892978 - EnumValue 1012590354 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Enum 240335121">
           <source>Contrato</source>

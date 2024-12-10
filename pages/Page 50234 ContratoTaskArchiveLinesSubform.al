@@ -50,14 +50,14 @@ page 50234 "ContrTaskArchiveLinesSubform"
                 }
                 field("Sell-to Customer No."; Rec."Sell-to Customer No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Customer No.';
                     ToolTip = 'Specifies the number of the customer who will receive the products and be billed by default for the project task.';
                     Visible = PerTaskBillingFieldsVisible;
                 }
                 field("Bill-to Customer No."; Rec."Bill-to Customer No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the customer who pays for the project task.';
                     Visible = PerTaskBillingFieldsVisible;
                 }
@@ -69,13 +69,13 @@ page 50234 "ContrTaskArchiveLinesSubform"
                 }
                 field("Location Code"; Rec."Location Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the location code of the task.';
                     Visible = false;
                 }
                 field("Bin Code"; Rec."Bin Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies a bin code for specific location of the task.';
                     Visible = false;
                 }
@@ -173,13 +173,13 @@ page 50234 "ContrTaskArchiveLinesSubform"
                 }
                 field("External Document No."; Rec."External Document No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Visible = PerTaskBillingFieldsVisible;
                     Tooltip = 'Specifies a document number that refers to the customer''s or vendor''s numbering system.';
                 }
                 field("Your Reference"; Rec."Your Reference")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Visible = PerTaskBillingFieldsVisible;
                     Tooltip = 'Specifies the customer''s reference. The content will be printed on sales documents.';
                 }
@@ -200,7 +200,7 @@ page 50234 "ContrTaskArchiveLinesSubform"
                     Image = Job;
                     action(ContratoPlanningLines)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Project &Planning Lines';
                         Image = JobLines;
                         Scope = Repeater;

@@ -16,27 +16,27 @@ page 50211 "Contrato Journal Batches"
                 ShowCaption = false;
                 field(Name; Rec.Name)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the name of this project journal. You can enter a maximum of 10 characters, both numbers and letters.';
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies a description of this journal.';
                 }
                 field("No. Series"; Rec."No. Series")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number series from which entry or record numbers are assigned to new entries or records.';
                 }
                 field("Posting No. Series"; Rec."Posting No. Series")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the code for the number series that will be used to assign document numbers to ledger entries that are posted from this journal batch. To see the number series that have been set up in the No. Series table, choose the field.';
                 }
                 field("Reason Code"; Rec."Reason Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the reason code, a supplementary source code that enables you to trace the entry.';
                     Visible = true;
                 }
@@ -63,7 +63,7 @@ page 50211 "Contrato Journal Batches"
         {
             action("Edit Journal")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Edit Journal';
                 Image = OpenJournal;
                 ShortCutKey = 'Return';
@@ -80,7 +80,7 @@ page 50211 "Contrato Journal Batches"
                 Image = Post;
                 action("Test Report")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Test Report';
                     Image = TestReport;
                     ToolTip = 'View a test report so that you can find and correct any errors before you perform the actual posting of the journal or document.';
@@ -92,7 +92,7 @@ page 50211 "Contrato Journal Batches"
                 }
                 action("P&ost")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'P&ost';
                     Image = PostOrder;
                     RunObject = Codeunit "Contrato Jnl.-B.Post";
@@ -101,7 +101,7 @@ page 50211 "Contrato Journal Batches"
                 }
                 action("Post and &Print")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Post and &Print';
                     Image = PostPrint;
                     RunObject = Codeunit "Contrato Jnl.-B.Post+Print";

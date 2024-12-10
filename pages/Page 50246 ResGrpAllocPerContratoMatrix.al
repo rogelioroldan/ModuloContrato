@@ -16,13 +16,13 @@ page 50246 "ResGrp.Alloc.perContratoMatrix"
                 ShowCaption = false;
                 field("No."; Rec."No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the number of the involved entry or record, according to the specified number series.';
                 }
                 field("Bill-to Name"; Rec."Bill-to Name")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the name of the customer that you send or sent the invoice or credit memo to.';
                 }

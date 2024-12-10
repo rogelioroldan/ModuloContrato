@@ -3,7 +3,7 @@ report 50211 "Contrato - Planning Lines"
     AdditionalSearchTerms = 'Contrato - Planning Lines';
     DefaultLayout = RDLC;
     RDLCLayout = './Contratos/Contrato/Reports/ContratoPlanningLines.rdlc';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contrato - Planning Lines';
     UsageCategory = ReportsAndAnalysis;
 
@@ -275,7 +275,7 @@ report 50211 "Contrato - Planning Lines"
                     Caption = 'Options';
                     field(CurrencyField; CurrencyField)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Currency';
                         OptionCaption = 'Local Currency,Foreign Currency';
                         ToolTip = 'Specifies the currency that amounts are shown in.';

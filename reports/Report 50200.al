@@ -20,7 +20,7 @@ report 50200 "Contr Trans To Planning Lines"
                     Caption = 'Options';
                     field(TransferTo; LineType)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Transfer To';
                         ToolTip = 'Specifies the type of planning lines that should be created.';
                     }

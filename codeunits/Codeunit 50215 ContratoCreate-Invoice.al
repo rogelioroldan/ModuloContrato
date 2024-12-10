@@ -294,8 +294,8 @@ codeunit 50215 "Contrato Create-Invoice"
 
         OnCreateSalesInvoiceContratoTaskTestContrato(Contrato, ContratoPlanningLine, PostingDate);
         TestIfBillToCustomerExistOnContratoOrContratoTask(Contrato, ContratoTask2);
-        // if Contrato.Blocked = Contrato.Blocked::All then
-        //     Contrato.TestBlocked();
+        if Contrato.Blocked = Contrato.Blocked::All then
+            Contrato.TestBlocked();
         if Contrato."Currency Code" = '' then
             ContratoInvCurrency := IsContratoInvCurrencyDependingOnBillingMethod(Contrato, ContratoTask2);
         Cust.Get(ReturnBillToCustomerNoDependingOnTaskBillingMethod(Contrato, ContratoTask2));

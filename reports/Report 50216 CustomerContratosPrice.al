@@ -2,7 +2,7 @@ report 50216 "Customer Contratos (Price)"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './Local/Sales/Reports/CustomerContratosPrice.rdlc';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Customer Contratos (Price)';
     AdditionalSearchTerms = 'Customer Contratos (Price)';
     UsageCategory = ReportsAndAnalysis;
@@ -187,7 +187,7 @@ report 50216 "Customer Contratos (Price)"
                     Caption = 'Options';
                     field(BudgetAmountsPer; BudgetAmountsPer)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Budget Amounts Per';
                         OptionCaption = 'Budget,Billable';
                         ToolTip = 'Specifies if the budget amounts must be based on budgets or billables.';

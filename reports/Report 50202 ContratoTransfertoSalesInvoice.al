@@ -19,7 +19,7 @@ report 50202 "ContratoTransfertoSalesInvoice"
                     Caption = 'Options';
                     field(CreateNewInvoice; NewInvoice)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Create New Invoice';
                         ToolTip = 'Specifies if the batch Contrato creates a new sales invoice.';
 
@@ -37,7 +37,7 @@ report 50202 "ContratoTransfertoSalesInvoice"
                     }
                     field(PostingDate; PostingDate)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Posting Date';
                         ToolTip = 'Specifies the posting date for the document.';
 
@@ -55,7 +55,7 @@ report 50202 "ContratoTransfertoSalesInvoice"
                     }
                     field("Document Date"; DocumentDate)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Document Date';
                         ToolTip = 'Specifies the document date.';
 
@@ -67,7 +67,7 @@ report 50202 "ContratoTransfertoSalesInvoice"
                     }
                     field(AppendToSalesInvoiceNo; InvoiceNo)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Append to Sales Invoice No.';
                         ToolTip = 'Specifies the number of the sales invoice that you want to append the lines to if you did not select the Create New Sales Invoice field.';
 
@@ -110,7 +110,7 @@ report 50202 "ContratoTransfertoSalesInvoice"
                     }
                     field(InvoicePostingDate; InvoicePostingDate)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Invoice Posting Date';
                         Editable = false;
                         ToolTip = 'Specifies, if you filled in the Append to Sales Invoice No. field, the posting date of the invoice.';

@@ -112,7 +112,7 @@ table 50201 "Contrato Planning Line"
                             InitLocation();
                         if "Bin Code" = '' then
                             SetDefaultBin();
-                        ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("No."));
+                        //ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("No."));
                     end;
                     if "No." = '' then
                         exit;
@@ -199,10 +199,14 @@ table 50201 "Contrato Planning Line"
                     Validate("Qty. to Assemble");
 
                 if not BypassQtyValidation then
-                    ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo(Quantity));
+                    //ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo(Quantity));
 
                 BypassQtyValidation := false;
             end;
+        }
+        field(10; "GrupoFacturar"; Enum "Grupo Facturar")
+        {
+            Caption = 'Grupo a facturar';
         }
         field(11; "Direct Unit Cost (LCY)"; Decimal)
         {
@@ -299,7 +303,7 @@ table 50201 "Contrato Planning Line"
                               UOMMgt.GetQtyPerUnitOfMeasure(Item, "Unit of Measure Code");
                             "Qty. Rounding Precision" := UOMMgt.GetQtyRoundingPrecision(Item, "Unit of Measure Code");
                             "Qty. Rounding Precision (Base)" := UOMMgt.GetQtyRoundingPrecision(Item, Item."Base Unit of Measure");
-                            ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Unit of Measure Code"));
+                            //ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Unit of Measure Code"));
                         end;
                     Type::Resource:
                         begin
@@ -361,7 +365,7 @@ table 50201 "Contrato Planning Line"
                     UpdateReservation(FieldNo("Location Code"));
                     Validate(Quantity);
                     SetDefaultBin();
-                    ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Location Code"));
+                    //ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Location Code"));
                     InitQtyToAsm();
                     //ATOLink.UpdateAsmFromContratoPlanningLine(Rec);
 
@@ -457,7 +461,7 @@ table 50201 "Contrato Planning Line"
 
             trigger OnValidate()
             begin
-                ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Planning Due Date"));
+                //ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Planning Due Date"));
             end;
         }
         field(900; "Qty. to Assemble"; Decimal)
@@ -797,7 +801,7 @@ table 50201 "Contrato Planning Line"
 
             trigger OnValidate()
             begin
-                ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo(Status));
+                //ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo(Status));
             end;
         }
         field(1050; "Ledger Entry Type"; Enum "Contrato Ledger Entry Type")
@@ -1084,7 +1088,7 @@ table 50201 "Contrato Planning Line"
                 UpdateReservation(FieldNo("Variant Code"));
                 InitQtyToAsm();
                 //ATOLink.UpdateAsmFromContratoPlanningLine(Rec);
-                ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Variant Code"));
+                //ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Variant Code"));
             end;
         }
         field(5403; "Bin Code"; Code[20])
@@ -1114,7 +1118,7 @@ table 50201 "Contrato Planning Line"
                 end;
 
                 UpdateReservation(FieldNo("Bin Code"));
-                ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Bin Code"));
+                //ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(Rec, xRec, FieldNo("Bin Code"));
                 // ATOLink.UpdateAsmBinCodeFromContratoPlanningLine(Rec);
             end;
 

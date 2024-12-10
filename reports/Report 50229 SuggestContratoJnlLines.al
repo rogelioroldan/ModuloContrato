@@ -20,33 +20,33 @@ report 50229 "Suggest Contrato Jnl. Lines"
                     Caption = 'Options';
                     field(StartingDate; StartingDate)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Starting Date';
                         ToolTip = 'Specifies the date from which the report or batch Contrato processes information.';
                     }
                     field(EndingDate; EndingDate)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Ending Date';
                         ToolTip = 'Specifies the date to which the report or batch Contrato processes information.';
                     }
                     field(ResourceNoFilter; ResourceNoFilter)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Resource No. Filter';
                         TableRelation = Resource;
                         ToolTip = 'Specifies the resource number that the batch Contrato will suggest Contrato lines for.';
                     }
                     field(ContratoNoFilter; ContratoNoFilter)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Contrato No. Filter';
                         TableRelation = Contrato;
                         ToolTip = 'Specifies a filter for the Contrato numbers that will be included in the report.';
                     }
                     field(ContratoTaskNoFilter; ContratoTaskNoFilter)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Contrato Task No. Filter';
                         ToolTip = 'Specifies a filter for the Contrato task numbers that will be included in the report.';
 

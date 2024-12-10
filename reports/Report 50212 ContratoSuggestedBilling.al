@@ -3,7 +3,7 @@ report 50212 "Contrato Suggested Billing"
     AdditionalSearchTerms = 'Contrato Suggested Billing';
     DefaultLayout = RDLC;
     RDLCLayout = './Contratos/Contrato/Reports/ContratoSuggestedBilling.rdlc';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contrato Suggested Billing';
     UsageCategory = ReportsAndAnalysis;
 
@@ -275,7 +275,7 @@ report 50212 "Contrato Suggested Billing"
                     Caption = 'Options';
                     field("CurrencyField[1]"; CurrencyField[1])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Currency';
                         OptionCaption = 'Local Currency,Foreign Currency';
                         ToolTip = 'Specifies the currency that amounts are shown in.';

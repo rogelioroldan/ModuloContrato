@@ -10,7 +10,7 @@ page 50238 "Contrato No. of Prices FactBox"
         {
             field("No."; Rec."No.")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Project No.';
                 ToolTip = 'Specifies the project number.';
 
@@ -22,7 +22,7 @@ page 50238 "Contrato No. of Prices FactBox"
 #if not CLEAN23
             field(NoOfResourcePrices; NoOfResourcePrices)
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Resource';
                 Visible = not ExtendedPriceEnabled;
                 ToolTip = 'Specifies prices for the resource.';
@@ -41,7 +41,7 @@ page 50238 "Contrato No. of Prices FactBox"
             }
             field(NoOfItemPrices; NoOfItemPrices)
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Item';
                 Visible = not ExtendedPriceEnabled;
                 ToolTip = 'Specifies the total usage cost of items associated with this project.';
@@ -60,7 +60,7 @@ page 50238 "Contrato No. of Prices FactBox"
             }
             field(NoOfAccountPrices; NoOfAccountPrices)
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'G/L Account';
                 Visible = not ExtendedPriceEnabled;
                 ToolTip = 'Specifies the sum of values in the Project G/L Account Prices window.';
@@ -80,7 +80,7 @@ page 50238 "Contrato No. of Prices FactBox"
 #endif
             field(NoOfResPrices; NoOfResourcePrices)
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Resource';
                 Visible = ExtendedPriceEnabled;
                 ToolTip = 'Specifies prices for the resource.';
@@ -92,7 +92,7 @@ page 50238 "Contrato No. of Prices FactBox"
             }
             field(NoOfItemsPrices; NoOfItemPrices)
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Item';
                 Visible = ExtendedPriceEnabled;
                 ToolTip = 'Specifies the total usage cost of items associated with this project.';
@@ -104,7 +104,7 @@ page 50238 "Contrato No. of Prices FactBox"
             }
             field(NoOfAccPrices; NoOfAccountPrices)
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'G/L Account';
                 Visible = ExtendedPriceEnabled;
                 ToolTip = 'Specifies the sum of values in the Project G/L Account Prices window.';

@@ -12,7 +12,7 @@ page 50219 "Copy Contrato Planning Lines"
                 Caption = 'Copy from';
                 field(SourceContratoNo; SourceContratoNo)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Project No.';
                     TableRelation = Contrato;
                     ToolTip = 'Specifies the project number.';
@@ -29,7 +29,7 @@ page 50219 "Copy Contrato Planning Lines"
                 }
                 field(SourceContratoTaskNo; SourceContratoTaskNo)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Project Task No.';
                     ToolTip = 'Specifies the project task number.';
 
@@ -54,20 +54,20 @@ page 50219 "Copy Contrato Planning Lines"
                 }
                 field("Planning Line Type"; PlanningLineType)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Incl. Planning Line Type';
                     OptionCaption = 'Budget+Billable,Budget,Billable';
                     ToolTip = 'Specifies how copy planning lines. Budget+Billable: All planning lines are copied. Budget: Only lines of type Budget or type Both Budget and Billable are copied. Billable: Only lines of type Billable or type Both Budget and Billable are copied.';
                 }
                 field(FromDate; FromDate)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Starting Date';
                     ToolTip = 'Specifies the date from which the report or batch Contrato processes information.';
                 }
                 field(ToDate; ToDate)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Ending Date';
                     ToolTip = 'Specifies the date to which the report or batch Contrato processes information.';
                 }
@@ -77,7 +77,7 @@ page 50219 "Copy Contrato Planning Lines"
                 Caption = 'Copy to';
                 field(TargetContratoNo; TargetContratoNo)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Project No.';
                     TableRelation = Contrato;
                     ToolTip = 'Specifies the project number.';
@@ -94,7 +94,7 @@ page 50219 "Copy Contrato Planning Lines"
                 }
                 field(TargetContratoTaskNo; TargetContratoTaskNo)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Project Task No.';
                     ToolTip = 'Specifies the project task number.';
 
@@ -123,13 +123,13 @@ page 50219 "Copy Contrato Planning Lines"
                 Caption = 'Apply';
                 field(CopyQuantity; CopyQuantity)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Copy Quantity';
                     ToolTip = 'Specifies that the quantities will be copied to the new project.';
                 }
                 field(CopyContratoPrices; CopyContratoPrices)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Copy Project Prices';
                     ToolTip = 'Specifies that item prices, resource prices, and G/L prices will be copied from the project that you specified on the Copy From FastTab.';
                 }

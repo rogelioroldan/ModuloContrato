@@ -263,10 +263,10 @@ codeunit 50217 "ContratoWhseValidateSourceLine"
 #endif
 
 #if not CLEAN23
-    procedure ContratoPlanningLineVerifyChange(var NewContratoPlanningLine: Record "Contrato Planning Line"; var OldContratoPlanningLine: Record "Contrato Planning Line"; FieldNo: Integer)
-    begin
-        ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(NewContratoPlanningLine, OldContratoPlanningLine, FieldNo);
-    end;
+    // procedure ContratoPlanningLineVerifyChange(var NewContratoPlanningLine: Record "Contrato Planning Line"; var OldContratoPlanningLine: Record "Contrato Planning Line"; FieldNo: Integer)
+    // begin
+    //     ContratoWarehouseMgt.ContratoPlanningLineVerifyChange(NewContratoPlanningLine, OldContratoPlanningLine, FieldNo);
+    // end;
 #endif
 
 #if not CLEAN23

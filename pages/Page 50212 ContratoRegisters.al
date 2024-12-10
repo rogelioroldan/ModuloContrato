@@ -1,7 +1,7 @@
 page 50212 "Contrato Registers"
 {
     AdditionalSearchTerms = 'Contrato Registers';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Project Registers';
     Editable = false;
     PageType = List;
@@ -17,22 +17,22 @@ page 50212 "Contrato Registers"
                 ShowCaption = false;
                 field("No."; Rec."No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the involved entry or record, according to the specified number series.';
                 }
                 field("Creation Date"; Rec."Creation Date")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the date on which you posted the entries in the journal.';
                 }
                 field("Creation Time"; Rec."Creation Time")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the time on which you posted the entries in the journal.';
                 }
                 field("User ID"; Rec."User ID")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the ID of the user who posted the entry, to be used, for example, in the change log.';
 
                     trigger OnDrillDown()
@@ -44,22 +44,22 @@ page 50212 "Contrato Registers"
                 }
                 field("Source Code"; Rec."Source Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the source code that specifies where the entry was created.';
                 }
                 field("Journal Batch Name"; Rec."Journal Batch Name")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the name of the journal batch, a personalized journal layout, that the entries were posted from.';
                 }
                 field("From Entry No."; Rec."From Entry No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the first item entry number in the register.';
                 }
                 field("To Entry No."; Rec."To Entry No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the entry number of the last entry line you included before you posted the entries in the journal.';
                 }
             }
@@ -89,7 +89,7 @@ page 50212 "Contrato Registers"
                 Image = Register;
                 action("Contrato Ledger")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Project Ledger';
                     Image = JobLedger;
                     RunObject = Codeunit "Contrato Reg.-Show Ledger";

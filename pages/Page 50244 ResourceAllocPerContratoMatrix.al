@@ -16,13 +16,13 @@ page 50244 "ResourceAllocperContratoMatrix"
                 ShowCaption = false;
                 field("No."; Rec."No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the number of the involved entry or record, according to the specified number series.';
                 }
                 field("Bill-to Name"; Rec."Bill-to Name")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the name of the customer that you send or sent the invoice or credit memo to.';
                 }
                 field(Col1; MatrixCellData[1])

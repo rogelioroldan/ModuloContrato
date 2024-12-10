@@ -2,7 +2,7 @@ report 50223 "Contrato Cost Budget"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './Local/Contratos/Contrato/Reports/ContratoCostBudget.rdlc';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contrato Cost Budget';
     AdditionalSearchTerms = 'Contrato Cost Budget';
     UsageCategory = ReportsAndAnalysis;
@@ -236,7 +236,7 @@ report 50223 "Contrato Cost Budget"
                     Caption = 'Options';
                     field(BudgetAmountsPer; BudgetAmountsPer)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Budget Amounts Per';
                         OptionCaption = 'Budget,Billable';
                         ToolTip = 'Specifies if the budget amounts must be based on budgets or billables.';

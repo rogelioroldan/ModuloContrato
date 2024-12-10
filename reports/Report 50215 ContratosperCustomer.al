@@ -3,7 +3,7 @@ report 50215 "Contratos per Customer"
     AdditionalSearchTerms = 'Contratos per Customer';
     DefaultLayout = RDLC;
     RDLCLayout = './Contratos/Contrato/Reports/ContratosperCustomer.rdlc';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contratos per Customer';
     UsageCategory = ReportsAndAnalysis;
 

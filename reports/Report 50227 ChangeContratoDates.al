@@ -1,7 +1,7 @@
 report 50227 "Change Contrato Dates"
 {
     AdditionalSearchTerms = 'Change Contrato Planning Line Dates';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Change Contrato Planning Line Dates';
     ProcessingOnly = true;
     UsageCategory = Tasks;
@@ -51,13 +51,13 @@ report 50227 "Change Contrato Dates"
                         Caption = 'Currency Date';
                         field(ChangeCurrencyDate; ChangeCurrencyDate)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Change Currency Date';
                             ToolTip = 'Specifies that currencies will be updated on the Contratos that are included in the batch Contrato.';
                         }
                         field(ChangeDateExpressionCurrency; PeriodLength)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Change Date Expression';
                             ToolTip = 'Specifies how the dates on the entries that are copied will be changed by using a date formula.';
 
@@ -68,7 +68,7 @@ report 50227 "Change Contrato Dates"
                         }
                         field(FixedDateCurrency; FixedDate)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Fixed Date';
                             ToolTip = 'Specifies a date that the currency date on all planning lines will be moved to.';
 
@@ -79,20 +79,20 @@ report 50227 "Change Contrato Dates"
                         }
                         field(IncludeLineTypeCurrency; Linetype)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Include Line type';
                             OptionCaption = ' ,Budget,Billable,Budget+Billable';
                             ToolTip = 'Specifies the Contrato planning line type you want to change the currency date for.';
                         }
                         field(IncludeCurrDateFrom; StartingDate)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Include Curr. Date From';
                             ToolTip = 'Specifies the starting date of the period for which you want currency dates to be moved. Only planning lines with a currency date on or after this date are included.';
                         }
                         field(IncludeCurrDateTo; EndingDate)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Include Curr. Date To';
                             ToolTip = 'Specifies the ending date of the period for which you want currency dates to be moved. Only planning lines with a currency date on or before this date are included.';
                         }
@@ -102,13 +102,13 @@ report 50227 "Change Contrato Dates"
                         Caption = 'Planning Date';
                         field(ChangePlanningDate; ChangePlanningDate)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Change Planning Date';
                             ToolTip = 'Specifies that planning dates will be changed on the Contratos that are included in the batch Contrato.';
                         }
                         field(ChangeDateExpressionPlanning; PeriodLength2)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Change Date Expression';
                             ToolTip = 'Specifies how the dates on the entries that are copied will be changed by using a date formula.';
 
@@ -119,7 +119,7 @@ report 50227 "Change Contrato Dates"
                         }
                         field(FixedDatePlanning; FixedDate2)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Fixed Date';
                             ToolTip = 'Specifies a date that the planning date on all planning lines will be moved to.';
 
@@ -130,20 +130,20 @@ report 50227 "Change Contrato Dates"
                         }
                         field(IncludeLineTypePlanning; Linetype2)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Include Line type';
                             OptionCaption = ' ,Budget,Billable,Budget+Billable';
                             ToolTip = 'Specifies the Contrato planning line type you want to change the planning date for.';
                         }
                         field(IncludePlanDateFrom; StartingDate2)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Include Plan. Date From';
                             ToolTip = 'Specifies the starting date of the period for which you want a Planning Date to be moved. Only planning lines with a Planning Date on or after this date are included.';
                         }
                         field(IncludePlanDateTo; EndingDate2)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Include Plan. Date To';
                             ToolTip = 'Specifies the ending date of the period for which you want a Planning Date to be moved. Only planning lines with a Planning Date on or before this date are included.';
                         }

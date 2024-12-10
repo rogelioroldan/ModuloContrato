@@ -20,64 +20,64 @@ page 50209 "Contrato Ledger Entries"
                 ShowCaption = false;
                 field("Posting Date"; Rec."Posting Date")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the posting date for the entry.';
                 }
                 field("Entry Type"; Rec."Entry Type")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the type of the entry. There are two types of entries:';
                 }
                 field("Document No."; Rec."Document No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the document number on the project ledger entry.';
                 }
                 field("Contrato No."; Rec."Contrato No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the number of the project.';
                 }
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the related project task.';
                 }
                 field(Type; Rec.Type)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the type of account to which the project ledger entry is posted.';
                 }
                 field("No."; Rec."No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the involved entry or record, according to the specified number series.';
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the description of the project ledger entry.';
                 }
                 field("Gen. Bus. Posting Group"; Rec."Gen. Bus. Posting Group")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the vendor''s or customer''s trade type to link transactions made for this business partner with the appropriate general ledger account according to the general posting setup.';
                     Visible = false;
                 }
                 field("Gen. Prod. Posting Group"; Rec."Gen. Prod. Posting Group")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the item''s product type to link transactions made for this item with the appropriate general ledger account according to the general posting setup.';
                     Visible = false;
                 }
                 field("Contrato Posting Group"; Rec."Contrato Posting Group")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the posting group that was used when the entry was posted. The value depends on the account type. For inventoriable items, the field contains the Inventory Posting Group. For other account types the field is blank.';
                     Visible = false;
                 }
@@ -95,137 +95,137 @@ page 50209 "Contrato Ledger Entries"
                 }
                 field("Work Type Code"; Rec."Work Type Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies which work type the resource applies to. Prices are updated based on this entry.';
                 }
                 field("Unit of Measure Code"; Rec."Unit of Measure Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.';
                 }
                 field(Quantity; Rec.Quantity)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the quantity that was posted on the entry.';
                 }
                 field("Direct Unit Cost (LCY)"; Rec."Direct Unit Cost (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the cost, in the local currency, of one unit of the selected item or resource.';
                     Visible = false;
                 }
                 field("Unit Cost"; Rec."Unit Cost")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the cost of one unit of the item or resource on the line.';
                 }
                 field("Unit Cost (LCY)"; Rec."Unit Cost (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the cost, in LCY, of one unit of the item or resource on the line.';
                 }
                 field("Total Cost"; Rec."Total Cost")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the total cost for the posted entry, in the currency specified for the project.';
                 }
                 field("Total Cost (LCY)"; Rec."Total Cost (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the total cost of the posted entry in local currency. If you update the project ledger costs for item ledger cost adjustments, this field will be adjusted to include the item cost adjustments.';
                 }
                 field("Unit Price"; Rec."Unit Price")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the price of one unit of the item or resource. You can enter a price manually or have it entered according to the Price/Profit Calculation field on the related card.';
                 }
                 field("Unit Price (LCY)"; Rec."Unit Price (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the price, in LCY, of one unit of the item or resource. You can enter a price manually or have it entered according to the Price/Profit Calculation field on the related card.';
                     Visible = false;
                 }
                 field("Line Amount"; Rec."Line Amount")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of products on the entry.';
                 }
                 field("Line Discount Amount"; Rec."Line Discount Amount")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the line discount amount for the posted entry, in the currency specified for the project.';
                 }
                 field("Line Discount %"; Rec."Line Discount %")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the line discount percent of the posted entry.';
                 }
                 field("Total Price"; Rec."Total Price")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the total price for the posted entry, in the currency specified for the project.';
                     Visible = false;
                 }
                 field("Total Price (LCY)"; Rec."Total Price (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the total price (in local currency) of the posted entry.';
                     Visible = false;
                 }
                 field("Line Amount (LCY)"; Rec."Line Amount (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value in the local currency of products on the entry.';
                     Visible = false;
                 }
                 field("Amt. to Post to G/L"; Rec."Amt. to Post to G/L")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the amount that will be posted to the general ledger.';
                     Visible = false;
                 }
                 field("Amt. Posted to G/L"; Rec."Amt. Posted to G/L")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the amount that has been posted to the general ledger.';
                     Visible = false;
                 }
                 field("Original Unit Cost"; Rec."Original Unit Cost")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the unit cost for the posted entry at the time of posting, in the currency specified for the project. No item cost adjustments are included.';
                     Visible = false;
                 }
                 field("Original Unit Cost (LCY)"; Rec."Original Unit Cost (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the unit cost of the posted entry in local currency at the time the entry was posted. It does not include any item cost adjustments.';
                     Visible = false;
                 }
                 field("Original Total Cost"; Rec."Original Total Cost")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the total cost for the posted entry at the time of posting, in the currency specified for the project. No item cost adjustments are included.';
                     Visible = false;
                 }
                 field("Original Total Cost (LCY)"; Rec."Original Total Cost (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the total cost of the posted entry in local currency at the time the entry was posted. It does not include any item cost adjustments.';
                     Visible = false;
                 }
                 field("Original Total Cost (ACY)"; Rec."Original Total Cost (ACY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the total cost of the posted entry in the additional reporting currency at the time of posting. No item cost adjustments are included.';
                     Visible = false;
                 }
                 field("User ID"; Rec."User ID")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the ID of the user who posted the entry, to be used, for example, in the change log.';
                     Visible = false;
@@ -239,14 +239,14 @@ page 50209 "Contrato Ledger Entries"
                 }
                 field("Source Code"; Rec."Source Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the source code that specifies where the entry was created.';
                     Visible = false;
                 }
                 field("Reason Code"; Rec."Reason Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the reason code, a supplementary source code that enables you to trace the entry.';
                     Visible = false;
@@ -266,28 +266,28 @@ page 50209 "Contrato Ledger Entries"
                 }
                 field("Ledger Entry Type"; Rec."Ledger Entry Type")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the entry type that the project ledger entry is linked to.';
                 }
                 field("Ledger Entry No."; Rec."Ledger Entry No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the entry number (Resource, Item or G/L) to which the project ledger entry is linked.';
                 }
                 field("Entry No."; Rec."Entry No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the number of the entry, as assigned from the specified number series when the entry was created.';
                 }
                 field(Adjusted; Rec.Adjusted)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies whether a project ledger entry has been modified or adjusted. The value in this field is inserted by the Adjust Cost - Item Entries batch Contrato. The Adjusted check box is selected if applicable.';
                 }
                 field("DateTime Adjusted"; Rec."DateTime Adjusted")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the time stamp of a project ledger entry adjustment or modification.';
                 }
                 field("Dimension Set ID"; Rec."Dimension Set ID")
@@ -404,7 +404,7 @@ page 50209 "Contrato Ledger Entries"
                 }
                 action("<Action28>")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Show Linked Project Planning Lines';
                     Image = JobLines;
                     ToolTip = 'View the planning lines that are associated with project journal entries that have been posted to the project ledger. This requires that the Apply Usage Link check box has been selected for the project, or is the default setting for all projects in your organization.';
@@ -436,7 +436,7 @@ page 50209 "Contrato Ledger Entries"
                 Image = "Action";
                 action("Transfer To Planning Lines")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Transfer To Planning Lines';
                     Ellipsis = true;
                     Image = TransferToLines;
@@ -458,7 +458,7 @@ page 50209 "Contrato Ledger Entries"
             }
             action("&Navigate")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Find entries...';
                 Image = Navigate;
                 ShortCutKey = 'Ctrl+Alt+Q';

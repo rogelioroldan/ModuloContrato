@@ -41,19 +41,19 @@ report 50228 "Contrato Calc. Remaining Usage"
                     Caption = 'Options';
                     field(DocumentNo; DocNo)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Document No.';
                         ToolTip = 'Specifies the number of a document that the calculation will apply to.';
                     }
                     field(PostingDate; PostingDate)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Posting Date';
                         ToolTip = 'Specifies the posting date for the document.';
                     }
                     field(TemplateName; TemplateName)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Template Name';
                         Editable = false;
                         Lookup = false;
@@ -76,7 +76,7 @@ report 50228 "Contrato Calc. Remaining Usage"
                     }
                     field(BatchName; BatchName)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Batch Name';
                         Editable = false;
                         Lookup = false;

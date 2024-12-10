@@ -3,7 +3,7 @@ report 50220 "Contrato - Transaction Detail"
     AdditionalSearchTerms = 'Contrato - Transaction Detail';
     DefaultLayout = RDLC;
     RDLCLayout = './Contratos/Contrato/Reports/ContratoTransactionDetail.rdlc';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contrato Task - Transaction Detail';
     UsageCategory = ReportsAndAnalysis;
 
@@ -333,7 +333,7 @@ report 50220 "Contrato - Transaction Detail"
                     Caption = 'Options';
                     field(CurrencyField; CurrencyFieldReq)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Currency';
                         OptionCaption = 'Local Currency,Foreign Currency';
                         ToolTip = 'Specifies the currency that amounts are shown in.';

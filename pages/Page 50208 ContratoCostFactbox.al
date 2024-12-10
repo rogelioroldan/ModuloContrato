@@ -12,7 +12,7 @@ page 50208 "Contrato Cost Factbox"
         {
             field("No."; Rec."No.")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Contrato No.';
                 ToolTip = 'Specifies the project number.';
 
@@ -26,7 +26,7 @@ page 50208 "Contrato Cost Factbox"
                 Caption = 'Budget Cost';
                 field(PlaceHolderLbl; PlaceHolderLbl)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     Enabled = false;
                     ToolTip = 'Specifies nothing.';
@@ -34,7 +34,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(ScheduleCostLCY; CL[1])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Resource';
                     Editable = false;
                     ToolTip = 'Specifies the total budgeted cost of resources associated with this project.';
@@ -46,7 +46,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(ScheduleCostLCYItem; CL[2])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Item';
                     Editable = false;
                     ToolTip = 'Specifies the total budgeted cost of items associated with this project.';
@@ -58,7 +58,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(ScheduleCostLCYGLAcc; CL[3])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'G/L Account';
                     Editable = false;
                     ToolTip = 'Specifies the total budgeted cost of general journal entries associated with this project.';
@@ -70,7 +70,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(ScheduleCostLCYTotal; CL[4])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Total';
                     Editable = false;
                     Style = Strong;
@@ -88,7 +88,7 @@ page 50208 "Contrato Cost Factbox"
                 Caption = 'Actual Cost';
                 field(Placeholder2; PlaceHolderLbl)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     Enabled = false;
                     ToolTip = 'Specifies nothing.';
@@ -96,7 +96,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(UsageCostLCY; CL[5])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Resource';
                     Editable = false;
                     ToolTip = 'Specifies the total usage cost of resources associated with this project.';
@@ -108,7 +108,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(UsageCostLCYItem; CL[6])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Item';
                     Editable = false;
                     ToolTip = 'Specifies the total usage cost of items associated with this project.';
@@ -120,7 +120,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(UsageCostLCYGLAcc; CL[7])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'G/L Account';
                     Editable = false;
                     ToolTip = 'Specifies the total usage cost of general journal entries associated with this project.';
@@ -132,7 +132,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(UsageCostLCYTotal; CL[8])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Total';
                     Editable = false;
                     Style = Strong;
@@ -150,7 +150,7 @@ page 50208 "Contrato Cost Factbox"
                 Caption = 'Billable Price';
                 field(Placeholder3; PlaceHolderLbl)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     Enabled = false;
                     ToolTip = 'Specifies nothing.';
@@ -158,7 +158,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(BillablePriceLCY; PL[9])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Resource';
                     Editable = false;
                     ToolTip = 'Specifies the total billable price of resources associated with this project.';
@@ -175,7 +175,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(BillablePriceLCYItem; PL[10])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Item';
                     Editable = false;
                     ToolTip = 'Specifies the total billable price of items associated with this project.';
@@ -192,7 +192,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(BillablePriceLCYGLAcc; PL[11])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'G/L Account';
                     Editable = false;
                     ToolTip = 'Specifies the total billable price for project planning lines of type G/L account.';
@@ -209,7 +209,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(BillablePriceLCYTotal; PL[12])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Total';
                     Editable = false;
                     Style = Strong;
@@ -232,7 +232,7 @@ page 50208 "Contrato Cost Factbox"
                 Caption = 'Invoiced Price';
                 field(Placeholder4; PlaceHolderLbl)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Editable = false;
                     Enabled = false;
                     ToolTip = 'Specifies nothing.';
@@ -240,7 +240,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(InvoicedPriceLCY; PL[13])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Resource';
                     Editable = false;
                     ToolTip = 'Specifies the total invoiced price of resources associated with this project.';
@@ -257,7 +257,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(InvoicedPriceLCYItem; PL[14])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Item';
                     Editable = false;
                     ToolTip = 'Specifies the total invoiced price of items associated with this project.';
@@ -274,7 +274,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(InvoicedPriceLCYGLAcc; PL[15])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'G/L Account';
                     Editable = false;
                     ToolTip = 'Specifies the total invoiced price of general journal entries associated with this project.';
@@ -291,7 +291,7 @@ page 50208 "Contrato Cost Factbox"
                 }
                 field(InvoicedPriceLCYTotal; PL[16])
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Total';
                     Editable = false;
                     Style = Strong;

@@ -2,7 +2,7 @@ report 50214 "Customer Contratos (Cost)"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './Local/Sales/Reports/CustomerContratosCost.rdlc';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Customer Contratos (Cost)';
     AdditionalSearchTerms = 'Customer Contratos (Cost)';
     UsageCategory = ReportsAndAnalysis;

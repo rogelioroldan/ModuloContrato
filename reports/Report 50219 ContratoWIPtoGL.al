@@ -3,7 +3,7 @@ report 50219 "Contrato WIP To G/L"
     DefaultLayout = RDLC;
     RDLCLayout = './Contratos/Contrato/Reports/ContratoWIPToGL.rdlc';
     AdditionalSearchTerms = 'work in process to general ledger,work in progress to general ledger, Contrato WIP To G/L';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contrato WIP To G/L';
     UsageCategory = ReportsAndAnalysis;
 

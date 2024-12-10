@@ -1,7 +1,7 @@
 page 50205 "Contrato Journal"
 {
     AdditionalSearchTerms = 'Contrato posting, Contrato Journals';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     AutoSplitKey = true;
     Caption = 'Contrato Journals';
     DataCaptionFields = "Journal Batch Name";
@@ -17,7 +17,7 @@ page 50205 "Contrato Journal"
         {
             field(CurrentJnlBatchName; CurrentJnlBatchName)
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Batch Name';
                 Lookup = true;
                 ToolTip = 'Specifies the name of the journal batch, a personalized journal layout, that the journal is based on.';
@@ -41,35 +41,35 @@ page 50205 "Contrato Journal"
                 ShowCaption = false;
                 field("Line Type"; Rec."Line Type")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the type of planning line to create when a Contrato ledger entry is posted. If the field is empty, no planning lines are created.';
                 }
                 field("Posting Date"; Rec."Posting Date")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the posting date you want to assign to each journal line. For more information, see Entering Dates and Times.';
                 }
                 field("Document Date"; Rec."Document Date")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the date when the related document was created.';
                     Visible = false;
                 }
                 field("Document No."; Rec."Document No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies a document number for the journal line.';
                     ShowMandatory = true;
                 }
                 field("External Document No."; Rec."External Document No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies a document number that refers to the customer''s or vendor''s numbering system.';
                     Visible = false;
                 }
                 field("Contrato No."; Rec."Contrato No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the Contrato.';
 
                     trigger OnValidate()
@@ -80,7 +80,7 @@ page 50205 "Contrato Journal"
                 }
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the related Contrato task.';
 
                     trigger OnValidate()
@@ -90,7 +90,7 @@ page 50205 "Contrato Journal"
                 }
                 field(Type; Rec.Type)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies an account type for Contrato usage to be posted in the Contrato journal. You can choose from the following options:';
 
                     trigger OnValidate()
@@ -112,7 +112,7 @@ page 50205 "Contrato Journal"
                 }
                 field("No."; Rec."No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the involved entry or record, according to the specified number series.';
 
                     trigger OnValidate()
@@ -123,30 +123,30 @@ page 50205 "Contrato Journal"
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the name of the resource, item, or general ledger account to which this entry applies. You can change the description.';
                 }
                 field("Description 2"; Rec."Description 2")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies information in addition to the description.';
                     Visible = false;
                 }
                 field("Contrato Planning Line No."; Rec."Contrato Planning Line No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the Contrato planning line number that the usage should be linked to when the Contrato journal is posted. You can only link to Contrato planning lines that have the Apply Usage Link option enabled.';
                     Visible = false;
                 }
                 field("Gen. Bus. Posting Group"; Rec."Gen. Bus. Posting Group")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the vendor''s or customer''s trade type to link transactions made for this business partner with the appropriate general ledger account according to the general posting setup.';
                     Visible = false;
                 }
                 field("Gen. Prod. Posting Group"; Rec."Gen. Prod. Posting Group")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the item''s product type to link transactions made for this item with the appropriate general ledger account according to the general posting setup.';
                     Visible = false;
                 }
@@ -168,12 +168,12 @@ page 50205 "Contrato Journal"
                 }
                 field("Work Type Code"; Rec."Work Type Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies which work type the resource applies to. Prices are updated based on this entry.';
                 }
                 field("Currency Code"; Rec."Currency Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the Contrato''s currency code that listed in the Currency Code field in the Contrato Card. You can only create a Contrato Journal using this currency code.';
                     Visible = false;
 
@@ -190,24 +190,24 @@ page 50205 "Contrato Journal"
                 }
                 field("Unit of Measure Code"; Rec."Unit of Measure Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.';
                 }
                 field(Quantity; Rec.Quantity)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of units of the Contrato journal''s No. field, that is, either the resource, item, or G/L account number, that applies. If you later change the value in the No. field, the quantity does not change on the journal line.';
                 }
                 field("Remaining Qty."; Rec."Remaining Qty.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the quantity of the resource or item that remains to complete a Contrato. The remaining quantity is calculated as the difference between Quantity and Qty. Posted. You can modify this field to indicate the quantity you want to remain on the Contrato planning line after you post usage.';
                     Visible = false;
                 }
 #if not CLEAN25
                 field(QuantityToTransferToInvoice; Rec."Qty. to Transfer to Invoice")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Visible = false;
                     ToolTip = 'Specifies the number of units of the Contrato journal''s No. field, that is, either the resource, item, or G/L account number, that applies. If you later change the value in the No. field, the quantity does not change on the journal line.';
                     ObsoleteReason = 'Field Service is moved to Field Service Integration app.';
@@ -217,88 +217,88 @@ page 50205 "Contrato Journal"
 #endif
                 field("Direct Unit Cost (LCY)"; Rec."Direct Unit Cost (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the cost, in the local currency, of one unit of the selected item or resource.';
                     Visible = false;
                 }
                 field("Unit Cost"; Rec."Unit Cost")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the cost of one unit of the item or resource on the line.';
                 }
                 field("Unit Cost (LCY)"; Rec."Unit Cost (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the cost, in LCY, of one unit of the item or resource on the line.';
                 }
                 field("Total Cost"; Rec."Total Cost")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the total cost for the journal line. The total cost is calculated based on the Contrato currency, which comes from the Currency Code field on the Contrato card.';
                 }
                 field("Total Cost (LCY)"; Rec."Total Cost (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the total cost for this journal line. The amount is in the local currency.';
                 }
                 field("Unit Price"; Rec."Unit Price")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the price of one unit of the item or resource. You can enter a price manually or have it entered according to the Price/Profit Calculation field on the related card.';
                 }
                 field("Unit Price (LCY)"; Rec."Unit Price (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the price, in LCY, of one unit of the item or resource. You can enter a price manually or have it entered according to the Price/Profit Calculation field on the related card.';
                     Visible = false;
                 }
                 field("Line Amount"; Rec."Line Amount")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the amount that will be posted to the Contrato ledger.';
                 }
                 field("Line Amount (LCY)"; Rec."Line Amount (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the amount in the local currency that will be posted to the Contrato ledger.';
                     Visible = false;
                 }
                 field("Line Discount Amount"; Rec."Line Discount Amount")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the discount amount that is granted for the item on the line.';
                 }
                 field("Line Discount %"; Rec."Line Discount %")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the line discount percentage.';
                 }
                 field("Total Price"; Rec."Total Price")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the total price in the Contrato currency on the journal line.';
                     Visible = false;
                 }
                 field("Total Price (LCY)"; Rec."Total Price (LCY)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the total price for the journal line. The amount is in the local currency.';
                     Visible = false;
                 }
                 field("Applies-to Entry"; Rec."Applies-to Entry")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies if the Contrato journal line has of type Item and the usage of the item will be applied to an already-posted item ledger entry. If this is the case, enter the entry number that the usage will be applied to.';
                 }
                 field("Applies-from Entry"; Rec."Applies-from Entry")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the item ledger entry that the journal line costs have been applied from. This should be done when you reverse the usage of an item in a Contrato and you want to return the item to inventory at the same cost as before it was used in the Contrato.';
                     Visible = false;
                 }
                 field("Country/Region Code"; Rec."Country/Region Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the country/region of the address.';
                     Visible = false;
                 }
@@ -316,19 +316,19 @@ page 50205 "Contrato Journal"
                 }
                 field("Time Sheet No."; Rec."Time Sheet No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of a time sheet. A number is assigned to each time sheet when it is created. You cannot edit the number.';
                     Visible = false;
                 }
                 field("Time Sheet Line No."; Rec."Time Sheet Line No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the line number for a time sheet.';
                     Visible = false;
                 }
                 field("Time Sheet Date"; Rec."Time Sheet Date")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the date that a time sheet is created.';
                     Visible = false;
                 }
@@ -464,7 +464,7 @@ page 50205 "Contrato Journal"
                         Caption = 'Contrato Description';
                         field(ContratoDescription; ContratoDescription)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Editable = false;
                             ShowCaption = false;
                             ToolTip = 'Specifies a description of the Contrato.';
@@ -475,7 +475,7 @@ page 50205 "Contrato Journal"
                         Caption = 'Account Name';
                         field(AccName; AccName)
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Account Name';
                             Editable = false;
                             ToolTip = 'Specifies the name of the customer or vendor that the Contrato is related to.';
@@ -551,7 +551,7 @@ page 50205 "Contrato Journal"
                 Image = Job;
                 action(Card)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Card';
                     Image = EditLines;
                     RunObject = Page "Contrato Card";
@@ -561,7 +561,7 @@ page 50205 "Contrato Journal"
                 }
                 action("Ledger E&ntries")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Ledger E&ntries';
                     Image = CustomerLedger;
                     RunObject = Page "Contrato Ledger Entries";
@@ -580,7 +580,7 @@ page 50205 "Contrato Journal"
                 Image = "Action";
                 action(CalcRemainingUsage)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Calc. Remaining Usage';
                     Ellipsis = true;
                     Image = CalculateRemainingUsage;
@@ -600,7 +600,7 @@ page 50205 "Contrato Journal"
                 }
                 action(SuggestLinesFromTimeSheets)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Suggest Lines from Time Sheets';
                     Ellipsis = true;
                     Image = SuggestLines;
@@ -621,7 +621,7 @@ page 50205 "Contrato Journal"
                 Image = Post;
                 action(Reconcile)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Reconcile';
                     Image = Reconcile;
                     ShortCutKey = 'Ctrl+F11';
@@ -635,7 +635,7 @@ page 50205 "Contrato Journal"
                 }
                 action("Test Report")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Test Report';
                     Ellipsis = true;
                     Image = TestReport;
@@ -648,7 +648,7 @@ page 50205 "Contrato Journal"
                 }
                 action("P&ost")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'P&ost';
                     Image = PostOrder;
                     ShortCutKey = 'F9';
@@ -663,7 +663,7 @@ page 50205 "Contrato Journal"
                 }
                 action(PreviewPosting)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Preview Posting';
                     Image = ViewPostedOrder;
                     ShortCutKey = 'Ctrl+Alt+F9';
@@ -677,7 +677,7 @@ page 50205 "Contrato Journal"
                 }
                 action("Post and &Print")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Post and &Print';
                     Image = PostPrint;
                     ShortCutKey = 'Shift+F9';

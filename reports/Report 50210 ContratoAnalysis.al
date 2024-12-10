@@ -3,7 +3,7 @@ report 50210 "Contrato Analysis"
     AdditionalSearchTerms = 'Contrato overview, Contrato Analysis';
     DefaultLayout = RDLC;
     RDLCLayout = './Contratos/Contrato/Reports/ContratoAnalysis.rdlc';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contrato Analysis';
     UsageCategory = ReportsAndAnalysis;
     DataAccessIntent = ReadOnly;
@@ -170,119 +170,119 @@ report 50210 "Contrato Analysis"
                     Caption = 'Options';
                     field("AmountField[1]"; AmountField[1])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Amount Field 1 ';
                         OptionCaption = ' ,Budget Price,Usage Price,Billable Price,Invoiced Price,Budget Cost,Usage Cost,Billable Cost,Invoiced Cost,Budget Profit,Usage Profit,Billable Profit,Invoiced Profit';
                         ToolTip = 'Specifies that you want to use a combination of the available Amount fields to create your own analysis. For each field, select one of the following prices, costs, or profit values: Budget, Usage, Billable, and Invoiced.';
                     }
                     field("CurrencyField[1]"; CurrencyField[1])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Currency Field 1';
                         OptionCaption = 'Local Currency,Foreign Currency';
                         ToolTip = 'Specifies if the currency is specified in the local currency or in a foreign currency.';
                     }
                     field("AmountField[2]"; AmountField[2])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Amount Field 2';
                         OptionCaption = ' ,Budget Price,Usage Price,Billable Price,Invoiced Price,Budget Cost,Usage Cost,Billable Cost,Invoiced Cost,Budget Profit,Usage Profit,Billable Profit,Invoiced Profit';
                         ToolTip = 'Specifies an Amount field that you use to create your own analysis. For each field, select one of the following prices, costs, or profit values: Budget, Usage, Billable, and Invoiced.';
                     }
                     field("CurrencyField[2]"; CurrencyField[2])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Currency Field 2';
                         OptionCaption = 'Local Currency,Foreign Currency';
                         ToolTip = 'Specifies if the currency is specified in the local currency or in a foreign currency.';
                     }
                     field("AmountField[3]"; AmountField[3])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Amount Field 3';
                         OptionCaption = ' ,Budget Price,Usage Price,Billable Price,Invoiced Price,Budget Cost,Usage Cost,Billable Cost,Invoiced Cost,Budget Profit,Usage Profit,Billable Profit,Invoiced Profit';
                         ToolTip = 'Specifies an Amount field that you use to create your own analysis. For each field, select one of the following prices, costs, or profit values: Budget, Usage, Billable, and Invoiced.';
                     }
                     field("CurrencyField[3]"; CurrencyField[3])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Currency Field 3';
                         OptionCaption = 'Local Currency,Foreign Currency';
                         ToolTip = 'Specifies if the currency is specified in the local currency or in a foreign currency.';
                     }
                     field("AmountField[4]"; AmountField[4])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Amount Field 4';
                         OptionCaption = ' ,Budget Price,Usage Price,Billable Price,Invoiced Price,Budget Cost,Usage Cost,Billable Cost,Invoiced Cost,Budget Profit,Usage Profit,Billable Profit,Invoiced Profit';
                         ToolTip = 'Specifies an Amount field that you use to create your own analysis. For each field, select one of the following prices, costs, or profit values: Budget, Usage, Billable, and Invoiced.';
                     }
                     field("CurrencyField[4]"; CurrencyField[4])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Currency Field 4';
                         OptionCaption = 'Local Currency,Foreign Currency';
                         ToolTip = 'Specifies if the currency is specified in the local currency or in a foreign currency.';
                     }
                     field("AmountField[5]"; AmountField[5])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Amount Field 5';
                         OptionCaption = ' ,Budget Price,Usage Price,Billable Price,Invoiced Price,Budget Cost,Usage Cost,Billable Cost,Invoiced Cost,Budget Profit,Usage Profit,Billable Profit,Invoiced Profit';
                         ToolTip = 'Specifies an Amount field that you use to create your own analysis. For each field, select one of the following prices, costs, or profit values: Budget, Usage, Billable, and Invoiced.';
                     }
                     field("CurrencyField[5]"; CurrencyField[5])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Currency Field 5';
                         OptionCaption = 'Local Currency,Foreign Currency';
                         ToolTip = 'Specifies if the currency is specified in the local currency or in a foreign currency.';
                     }
                     field("AmountField[6]"; AmountField[6])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Amount Field 6';
                         OptionCaption = ' ,Budget Price,Usage Price,Billable Price,Invoiced Price,Budget Cost,Usage Cost,Billable Cost,Invoiced Cost,Budget Profit,Usage Profit,Billable Profit,Invoiced Profit';
                         ToolTip = 'Specifies an Amount field that you use to create your own analysis. For each field, select one of the following prices, costs, or profit values: Budget, Usage, Billable, and Invoiced.';
                     }
                     field("CurrencyField[6]"; CurrencyField[6])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Currency Field 6';
                         OptionCaption = 'Local Currency,Foreign Currency';
                         ToolTip = 'Specifies if the currency is specified in the local currency or in a foreign currency.';
                     }
                     field("AmountField[7]"; AmountField[7])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Amount Field 7';
                         OptionCaption = ' ,Budget Price,Usage Price,Billable Price,Invoiced Price,Budget Cost,Usage Cost,Billable Cost,Invoiced Cost,Budget Profit,Usage Profit,Billable Profit,Invoiced Profit';
                         ToolTip = 'Specifies an Amount field that you use to create your own analysis. For each field, select one of the following prices, costs, or profit values: Budget, Usage, Billable, and Invoiced.';
                     }
                     field("CurrencyField[7]"; CurrencyField[7])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Currency Field 7';
                         OptionCaption = 'Local Currency,Foreign Currency';
                         ToolTip = 'Specifies if the currency is specified in the local currency or in a foreign currency.';
                     }
                     field("AmountField[8]"; AmountField[8])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Amount Field 8';
                         OptionCaption = ' ,Budget Price,Usage Price,Billable Price,Invoiced Price,Budget Cost,Usage Cost,Billable Cost,Invoiced Cost,Budget Profit,Usage Profit,Billable Profit,Invoiced Profit';
                         ToolTip = 'Specifies an Amount field that you use to create your own analysis. For each field, select one of the following prices, costs, or profit values: Budget, Usage, Billable, and Invoiced.';
                     }
                     field("CurrencyField[8]"; CurrencyField[8])
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Currency Field 8';
                         OptionCaption = 'Local Currency,Foreign Currency';
                         ToolTip = 'Specifies if the currency is specified in the local currency or in a foreign currency.';
                     }
                     field(ExcludeContratoTask; ExcludeContratoTask)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Exclude Zero-Lines';
                         MultiLine = true;
                         ToolTip = 'Specifies that lines with zero content are excluded from the view.';

@@ -887,6 +887,20 @@ table 50202 "Contrato Task"
             ObsoleteTag = '28.0';
 #endif
         }
+        field(722; "Estatus"; Text[35])
+        {
+            Caption = 'Estatus';
+            DataClassification = CustomerContent;
+
+            TableRelation = EstatusAnexo.Nombre;
+        }
+        field(723; "GrupoFacturar"; Text[35])
+        {
+            Caption = 'Estatus';
+            DataClassification = CustomerContent;
+
+            TableRelation = EstatusAnexo.Nombre;
+        }
     }
 
     keys

@@ -19,7 +19,7 @@ report 50203 "ContratoTransfertoCreditMemo"
                     Caption = 'Options';
                     field(CreateNewCreditMemo; NewCreditMemo)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Create New Credit Memo';
                         ToolTip = 'Specifies if the batch Contrato creates a new sales credit memo.';
 
@@ -37,7 +37,7 @@ report 50203 "ContratoTransfertoCreditMemo"
                     }
                     field(PostingDate; PostingDate)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Posting Date';
                         ToolTip = 'Specifies the posting date for the document.';
 
@@ -55,7 +55,7 @@ report 50203 "ContratoTransfertoCreditMemo"
                     }
                     field("Document Date"; DocumentDate)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Document Date';
                         ToolTip = 'Specifies the document date.';
 
@@ -67,7 +67,7 @@ report 50203 "ContratoTransfertoCreditMemo"
                     }
                     field(AppendToCreditMemoNo; CreditMemoNo)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Append to Credit Memo No.';
                         ToolTip = 'Specifies the number of the credit memo that you want to append the lines to if you did not select the Create New Credit Memo field.';
 
@@ -106,7 +106,7 @@ report 50203 "ContratoTransfertoCreditMemo"
                     }
                     field(CrMemoPostingDate; CrMemoPostingDate)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Cr. Memo Posting Date';
                         Editable = false;
                         ToolTip = 'Specifies the posting date of that credit memo if you filled the Append to Credit Memo No. field.';

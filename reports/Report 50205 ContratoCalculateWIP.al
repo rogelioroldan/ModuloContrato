@@ -1,7 +1,7 @@
 report 50205 "Contrato Calculate WIP"
 {
     AdditionalSearchTerms = 'calculate work in process,calculate work in progress, Contrato Calculate WIP';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contrato Calculate WIP';
     ProcessingOnly = true;
     UsageCategory = Tasks;
@@ -36,13 +36,13 @@ report 50205 "Contrato Calculate WIP"
                     Caption = 'Options';
                     field(PostingDate; PostingDate)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Posting Date';
                         ToolTip = 'Specifies the posting date for the document.';
                     }
                     field(DocumentNo; DocNo)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Document No.';
                         ToolTip = 'Specifies the number of a document that the calculation will apply to.';
                     }

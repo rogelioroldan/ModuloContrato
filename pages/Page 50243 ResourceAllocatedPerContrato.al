@@ -18,7 +18,7 @@ page 50243 "ResourceAllocatedperContrato"
                 Caption = 'General';
                 field(ResourceFilter; ResourceFilter)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Resource Filter';
                     Lookup = true;
                     LookupPageID = "Resource List";
@@ -27,7 +27,7 @@ page 50243 "ResourceAllocatedperContrato"
                 }
                 field(AmountType; AmountType)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Amount Type';
                     ToolTip = 'Specifies if the amount is for prices, costs, or profit values.';
                 }
@@ -37,7 +37,7 @@ page 50243 "ResourceAllocatedperContrato"
                 Caption = 'Matrix Options';
                 field(PeriodType; PeriodType)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'View by';
                     ToolTip = 'Specifies by which period amounts are displayed.';
 
@@ -49,7 +49,7 @@ page 50243 "ResourceAllocatedperContrato"
                 }
                 field(DateFilter; DateFilter)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Date Filter';
                     ToolTip = 'Specifies the dates that will be used to filter the amounts in the window.';
 
@@ -62,7 +62,7 @@ page 50243 "ResourceAllocatedperContrato"
                 }
                 field(ColumnsSet; ColumnsSet)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Column set';
                     Editable = false;
                     ToolTip = 'Specifies the range of values that are displayed in the matrix window, for example, the total period. To change the contents of the field, choose Next Set or Previous Set.';
@@ -77,7 +77,7 @@ page 50243 "ResourceAllocatedperContrato"
         {
             action(ShowMatrix)
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Show Matrix';
                 Image = ShowMatrix;
                 ToolTip = 'Open the matrix window to see data according to the specified values.';
@@ -103,7 +103,7 @@ page 50243 "ResourceAllocatedperContrato"
             }
             action("Previous Set")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Previous Set';
                 Image = PreviousSet;
                 ToolTip = 'Go to the previous set of data.';
@@ -115,7 +115,7 @@ page 50243 "ResourceAllocatedperContrato"
             }
             action("Next Set")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Next Set';
                 Image = NextSet;
                 ToolTip = 'Go to the next set of data.';

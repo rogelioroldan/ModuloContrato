@@ -10,7 +10,7 @@ codeunit 50201 "Contrato Calculate Batches"
         PeriodLength2: DateFormula;
 
         Text000: Label '%1 lines were successfully transferred to the journal.';
-        Text001: Label 'There is no remaining usage on the project(s).';
+        Text001: Label 'There is no remaining usage on the contrato(s).';
         Text002: Label 'The lines were successfully changed.';
         Text003: Label 'The From Date is later than the To Date.';
         Text004: Label 'You must specify %1.';

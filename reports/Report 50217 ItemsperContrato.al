@@ -3,7 +3,7 @@ report 50217 "Items per Contrato"
     AdditionalSearchTerms = 'Items per Contrato';
     DefaultLayout = RDLC;
     RDLCLayout = './Contratos/Contrato/Reports/ItemsperContrato.rdlc';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Items per Contrato';
     UsageCategory = ReportsAndAnalysis;
 

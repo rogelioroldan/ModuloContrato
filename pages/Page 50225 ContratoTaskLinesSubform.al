@@ -57,7 +57,7 @@ page 50206 "Contrato Task Lines Subform"
                 }
                 field("Sell-to Customer No."; Rec."Sell-to Customer No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Customer No.';
                     ToolTip = 'Specifies the number of the customer who will receive the products and be billed by default for the Contrato task.';
                     Visible = PerTaskBillingFieldsVisible;
@@ -65,7 +65,7 @@ page 50206 "Contrato Task Lines Subform"
                 }
                 field("Bill-to Customer No."; Rec."Bill-to Customer No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the customer who pays for the Contrato task.';
                     Visible = PerTaskBillingFieldsVisible;
                     Editable = PostingTypeRow;
@@ -78,13 +78,13 @@ page 50206 "Contrato Task Lines Subform"
                 }
                 field("Location Code"; Rec."Location Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the location code of the task.';
                     Visible = false;
                 }
                 field("Bin Code"; Rec."Bin Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies a bin code for specific location of the task.';
                     Visible = false;
                 }
@@ -109,6 +109,10 @@ page 50206 "Contrato Task Lines Subform"
                 {
                     ApplicationArea = Basic, Suite, Contratos;
                     ToolTip = 'Specifies the end date for the Contrato task. The date is based on the date on the related Contrato planning line.';
+                }
+                field("Estatus"; Rec.Estatus)
+                {
+                    ApplicationArea = Basic, Suite, Contratos;
                 }
                 field("Schedule (Total Cost)"; Rec."Schedule (Total Cost)")
                 {
@@ -196,14 +200,14 @@ page 50206 "Contrato Task Lines Subform"
                 }
                 field("External Document No."; Rec."External Document No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Visible = PerTaskBillingFieldsVisible;
                     Editable = PerTaskBillingFieldsVisible;
                     Tooltip = 'Specifies a document number that refers to the customer''s or vendor''s numbering system.';
                 }
                 field("Your Reference"; Rec."Your Reference")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Visible = PerTaskBillingFieldsVisible;
                     Editable = PerTaskBillingFieldsVisible;
                     Tooltip = 'Specifies the customer''s reference. The content will be printed on sales documents.';
@@ -269,7 +273,7 @@ page 50206 "Contrato Task Lines Subform"
                     Image = Job;
                     action(ContratoPlanningLines)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Contrato &Planning Lines';
                         Image = JobLines;
                         Scope = Repeater;
@@ -338,7 +342,7 @@ page 50206 "Contrato Task Lines Subform"
                     Image = Invoice;
                     action("Create &Sales Invoice")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Create &Sales Invoice';
                         Ellipsis = true;
                         Image = JobSalesInvoice;
@@ -363,7 +367,7 @@ page 50206 "Contrato Task Lines Subform"
                     }
                     action(SalesInvoicesCreditMemos)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Sales &Invoices/Credit Memos';
                         Image = GetSourceDoc;
                         ToolTip = 'View sales invoices or sales credit memos that are related to the selected Contrato task.';
@@ -383,7 +387,7 @@ page 50206 "Contrato Task Lines Subform"
                     Image = History;
                     action("Contrato Ledger E&ntries")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Contrato Ledger E&ntries';
                         Image = JobLedger;
                         RunObject = Page "Contrato Ledger Entries";
@@ -400,7 +404,7 @@ page 50206 "Contrato Task Lines Subform"
                     Image = "Action";
                     action("Split &Planning Lines")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Split &Planning Lines';
                         Ellipsis = true;
                         Image = Splitlines;
@@ -425,7 +429,7 @@ page 50206 "Contrato Task Lines Subform"
                     }
                     action("Change &Dates")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Change &Dates';
                         Ellipsis = true;
                         Image = ChangeDate;
@@ -450,7 +454,7 @@ page 50206 "Contrato Task Lines Subform"
                     }
                     action("<Action7>")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'I&ndent Contrato Tasks';
                         Image = Indent;
                         RunObject = Codeunit "Job Task-Indent";
@@ -462,7 +466,7 @@ page 50206 "Contrato Task Lines Subform"
                         Image = Copy;
                         action("Copy Contrato Planning Lines &from...")
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Copy Contrato Planning Lines &from...';
                             Ellipsis = true;
                             Image = CopyToTask;
@@ -479,7 +483,7 @@ page 50206 "Contrato Task Lines Subform"
                         }
                         action("Copy Contrato Planning Lines &to...")
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Copy Contrato Planning Lines &to...';
                             Ellipsis = true;
                             Image = CopyFromTask;
@@ -501,7 +505,7 @@ page 50206 "Contrato Task Lines Subform"
                         Image = WIP;
                         action("<Action48>")
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = '&Calculate WIP';
                             Ellipsis = true;
                             Image = CalculateWIP;
@@ -519,7 +523,7 @@ page 50206 "Contrato Task Lines Subform"
                         }
                         action("<Action49>")
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = '&Post WIP to G/L';
                             Ellipsis = true;
                             Image = PostOrder;

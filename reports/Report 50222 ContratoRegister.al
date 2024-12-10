@@ -3,7 +3,7 @@ report 50222 "Contrato Register"
     AdditionalSearchTerms = 'Contrato Register';
     DefaultLayout = RDLC;
     RDLCLayout = './Contratos/Contrato/Reports/ContratoRegister.rdlc';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contrato Register';
     UsageCategory = ReportsAndAnalysis;
 
@@ -195,7 +195,7 @@ report 50222 "Contrato Register"
                     Caption = 'Options';
                     field(PrintContratoDescriptions; PrintContratoDescriptions)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Print Contrato Descriptions';
                         ToolTip = 'Specifies that you want to include a section with the Contrato description based on the value in the Description field on the Contrato ledger entry.';
                     }

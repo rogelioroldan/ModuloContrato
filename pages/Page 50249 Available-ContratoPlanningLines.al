@@ -21,12 +21,12 @@ page 50249 "AvailableContratoPlanningLines"
                 ShowCaption = false;
                 field(Status; Rec.Status)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the status of a Contrato order.';
                 }
                 field("Document No."; Rec."Document No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies a document number for the planning line.';
                 }
                 field("Location Code"; Rec."Location Code")
@@ -36,12 +36,12 @@ page 50249 "AvailableContratoPlanningLines"
                 }
                 field("Planning Date"; Rec."Planning Date")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the date of the planning line. You can use the planning date for filtering the totals of the Contrato, for example, if you want to see the budgeted usage for a specific month of the year.';
                 }
                 field("Remaining Qty. (Base)"; Rec."Remaining Qty. (Base)")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the remaining quantity of the resource, item, or general ledger account that remains to complete a Contrato, expressed in base units of measure. The quantity is calculated as the difference between Quantity and Qty. Posted.';
                 }
                 field("Reserved Quantity"; Rec."Reserved Quantity")
@@ -78,7 +78,7 @@ page 50249 "AvailableContratoPlanningLines"
                 }
                 field("Work Type Code"; Rec."Work Type Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies which work type the resource applies to. Prices are updated based on this entry.';
                     Visible = false;
                 }
@@ -145,7 +145,7 @@ page 50249 "AvailableContratoPlanningLines"
                 }
                 action(ShowDocument)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = '&Show Document';
                     Image = View;
                     ShortCutKey = 'Shift+F7';

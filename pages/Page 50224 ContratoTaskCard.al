@@ -14,29 +14,29 @@ page 50224 "Contrato Task Card"
                 Caption = 'General';
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the related project task.';
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies a description of the project task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the project planning line.';
                 }
                 field("Contrato Task Type"; Rec."Contrato Task Type")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the purpose of the account. Newly created accounts are automatically assigned the Posting account type, but you can change this. Choose the field to select one of the following five options:';
                 }
                 field("Sell-to Customer No."; Rec."Sell-to Customer No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Customer No.';
                     ToolTip = 'Specifies the number of the customer who will receive the products and be billed by default for the project task.';
                     Visible = PerTaskBillingFieldsVisible;
                 }
                 field("Sell-to Customer Name"; Rec."Sell-to Customer Name")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Customer Name';
                     Importance = Promoted;
                     NotBlank = true;
@@ -61,7 +61,7 @@ page 50224 "Contrato Task Card"
 
                     field("Sell-to Address"; Rec."Sell-to Address")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Address';
                         Importance = Additional;
                         QuickEntry = false;
@@ -69,7 +69,7 @@ page 50224 "Contrato Task Card"
                     }
                     field("Sell-to Address 2"; Rec."Sell-to Address 2")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Address 2';
                         Importance = Additional;
                         QuickEntry = false;
@@ -77,7 +77,7 @@ page 50224 "Contrato Task Card"
                     }
                     field("Sell-to City"; Rec."Sell-to City")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'City';
                         Importance = Additional;
                         QuickEntry = false;
@@ -89,7 +89,7 @@ page 50224 "Contrato Task Card"
                         Visible = IsSellToCountyVisible;
                         field("Sell-to County"; Rec."Sell-to County")
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'County';
                             Importance = Additional;
                             QuickEntry = false;
@@ -98,7 +98,7 @@ page 50224 "Contrato Task Card"
                     }
                     field("Sell-to Post Code"; Rec."Sell-to Post Code")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Post Code';
                         Importance = Additional;
                         QuickEntry = false;
@@ -106,7 +106,7 @@ page 50224 "Contrato Task Card"
                     }
                     field("Sell-to Country/Region Code"; Rec."Sell-to Country/Region Code")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Country/Region Code';
                         Importance = Additional;
                         QuickEntry = false;
@@ -119,7 +119,7 @@ page 50224 "Contrato Task Card"
                     }
                     field("Sell-to Contact No."; Rec."Sell-to Contact No.")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Contact No.';
                         Importance = Additional;
                         ToolTip = 'Specifies the number of the contact person that the sales document will be sent to.';
@@ -144,7 +144,7 @@ page 50224 "Contrato Task Card"
                     }
                     field("Sell-to Contact"; Rec."Sell-to Contact")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Contact';
                         Importance = Additional;
                         Editable = Rec."Sell-to Customer No." <> '';
@@ -153,35 +153,35 @@ page 50224 "Contrato Task Card"
                 }
                 field(Totaling; Rec.Totaling)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies an interval or a list of project task numbers.';
                 }
                 field("External Document No."; Rec."External Document No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Visible = PerTaskBillingFieldsVisible;
                     Tooltip = 'Specifies a document number that refers to the customer''s or vendor''s numbering system.';
                 }
                 field("Your Reference"; Rec."Your Reference")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Visible = PerTaskBillingFieldsVisible;
                     Tooltip = 'Specifies the customer''s reference. The content will be printed on sales documents.';
                 }
                 field("New Page"; Rec."New Page")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies whether you want a new page to start immediately after this project task when you print the project tasks. To start a new page after this project task, select the New Page check box.';
                 }
                 field("No. of Blank Lines"; Rec."No. of Blank Lines")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of blank lines that you want inserted before this project task in reports that shows project tasks.';
                 }
             }
             part(ContratoPlanningLines; "Contrato Planning Lines Part")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 SubPageLink = "Contrato No." = field("Contrato No."),
                               "Contrato Task No." = field("Contrato Task No.");
             }
@@ -190,22 +190,22 @@ page 50224 "Contrato Task Card"
                 Caption = 'Posting';
                 field("Contrato Posting Group"; Rec."Contrato Posting Group")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the project posting group of the task.';
                 }
                 field("WIP Method"; Rec."WIP Method")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the method that is used to calculate the value of work in process for the project.';
                 }
                 field("Location Code"; Rec."Location Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the location code of the task.';
                 }
                 field("Bin Code"; Rec."Bin Code")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies a bin code for specific location of the task.';
                 }
             }
@@ -219,7 +219,7 @@ page 50224 "Contrato Task Card"
                     Caption = 'Bill-to';
                     field(BillToOptions; BillToOptions)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Bill-to';
                         ToolTip = 'Specifies the customer that the sales invoice will be sent to. Default (Customer): The same as the customer on the sales invoice. Another Customer: Any customer that you specify in the fields below.';
 
@@ -240,7 +240,7 @@ page 50224 "Contrato Task Card"
 
                         field("Bill-to Customer No."; Rec."Bill-to Customer No.")
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Importance = Promoted;
                             ToolTip = 'Specifies the number of the customer who pays for the project.';
                             Visible = false;
@@ -253,7 +253,7 @@ page 50224 "Contrato Task Card"
                         field("Bill-to Name"; Rec."Bill-to Name")
                         {
                             Caption = 'Name';
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Importance = Promoted;
                             ToolTip = 'Specifies the name of the customer who pays for the project.';
                             Editable = ((BillToOptions = BillToOptions::"Another Customer") or ((BillToOptions = BillToOptions::"Custom Address") and not ShouldSearchForCustByName));
@@ -274,7 +274,7 @@ page 50224 "Contrato Task Card"
                         field("Bill-to Address"; Rec."Bill-to Address")
                         {
                             Caption = 'Address';
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Importance = Additional;
                             QuickEntry = false;
                             ToolTip = 'Specifies the address of the customer to whom you will send the invoice.';
@@ -284,7 +284,7 @@ page 50224 "Contrato Task Card"
                         field("Bill-to Address 2"; Rec."Bill-to Address 2")
                         {
                             Caption = 'Address 2';
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Importance = Additional;
                             QuickEntry = false;
                             ToolTip = 'Specifies an additional line of the address.';
@@ -294,7 +294,7 @@ page 50224 "Contrato Task Card"
                         field("Bill-to City"; Rec."Bill-to City")
                         {
                             Caption = 'City';
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Importance = Additional;
                             QuickEntry = false;
                             ToolTip = 'Specifies the city of the address.';
@@ -307,7 +307,7 @@ page 50224 "Contrato Task Card"
                             Visible = IsBillToCountyVisible;
                             field("Bill-to County"; Rec."Bill-to County")
                             {
-                                ApplicationArea = Contratos;
+                                ApplicationArea = All;
                                 QuickEntry = false;
                                 Importance = Additional;
                                 ToolTip = 'Specifies the county code of the customer''s billing address.';
@@ -319,7 +319,7 @@ page 50224 "Contrato Task Card"
                         field("Bill-to Post Code"; Rec."Bill-to Post Code")
                         {
                             Caption = 'Post Code';
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Importance = Additional;
                             QuickEntry = false;
                             ToolTip = 'Specifies the postal code of the customer who pays for the project.';
@@ -329,7 +329,7 @@ page 50224 "Contrato Task Card"
                         field("Bill-to Country/Region Code"; Rec."Bill-to Country/Region Code")
                         {
                             Caption = 'Country/Region';
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Importance = Additional;
                             QuickEntry = false;
                             ToolTip = 'Specifies the country/region code of the customer''s billing address.';
@@ -344,7 +344,7 @@ page 50224 "Contrato Task Card"
                         field("Bill-to Contact No."; Rec."Bill-to Contact No.")
                         {
                             Caption = 'Contact No.';
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             ToolTip = 'Specifies the number of the contact person at the customer''s billing address.';
                             Importance = Additional;
                             Editable = BillToInformationEditable;
@@ -367,7 +367,7 @@ page 50224 "Contrato Task Card"
                         field("Bill-to Contact"; Rec."Bill-to Contact")
                         {
                             Caption = 'Contact';
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Importance = Additional;
                             ToolTip = 'Specifies the name of the contact person at the customer who pays for the project.';
                             Editable = BillToInformationEditable;
@@ -381,12 +381,12 @@ page 50224 "Contrato Task Card"
 
                     field("Payment Terms Code"; Rec."Payment Terms Code")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Tooltip = 'Specifies a formula that calculates the payment due date, payment discount date, and payment discount amount.';
                     }
                     field("Payment Method Code"; Rec."Payment Method Code")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Tooltip = 'Specifies how to make payment, such as with bank transfer, cash, or check.';
                         Importance = Additional;
                     }
@@ -397,7 +397,7 @@ page 50224 "Contrato Task Card"
 
                     field(ShippingOptions; ShipToOptions)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Ship-to';
                         ToolTip = 'Specifies the address that the products on the sales document are shipped to. Default (Sell-to Address): The same as the customer''s sell-to address. Alternate Ship-to Address: One of the customer''s alternate ship-to addresses. Custom Address: Any ship-to address that you specify in the fields below.';
 
@@ -439,7 +439,7 @@ page 50224 "Contrato Task Card"
                         Visible = not (ShipToOptions = ShipToOptions::"Default (Sell-to Address)");
                         field("Ship-to Code"; Rec."Ship-to Code")
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Code';
                             Editable = ShipToOptions = ShipToOptions::"Alternate Shipping Address";
                             Importance = Promoted;
@@ -460,14 +460,14 @@ page 50224 "Contrato Task Card"
                         }
                         field("Ship-to Name"; Rec."Ship-to Name")
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Name';
                             Editable = ShipToOptions = ShipToOptions::"Custom Address";
                             ToolTip = 'Specifies the name that products on the sales document will be shipped to.';
                         }
                         field("Ship-to Address"; Rec."Ship-to Address")
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Address';
                             Editable = ShipToOptions = ShipToOptions::"Custom Address";
                             QuickEntry = false;
@@ -475,7 +475,7 @@ page 50224 "Contrato Task Card"
                         }
                         field("Ship-to Address 2"; Rec."Ship-to Address 2")
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Address 2';
                             Editable = ShipToOptions = ShipToOptions::"Custom Address";
                             QuickEntry = false;
@@ -483,7 +483,7 @@ page 50224 "Contrato Task Card"
                         }
                         field("Ship-to City"; Rec."Ship-to City")
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'City';
                             Editable = ShipToOptions = ShipToOptions::"Custom Address";
                             QuickEntry = false;
@@ -495,7 +495,7 @@ page 50224 "Contrato Task Card"
                             Visible = IsShipToCountyVisible;
                             field("Ship-to County"; Rec."Ship-to County")
                             {
-                                ApplicationArea = Contratos;
+                                ApplicationArea = All;
                                 Caption = 'County';
                                 Editable = ShipToOptions = ShipToOptions::"Custom Address";
                                 QuickEntry = false;
@@ -504,7 +504,7 @@ page 50224 "Contrato Task Card"
                         }
                         field("Ship-to Post Code"; Rec."Ship-to Post Code")
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Post Code';
                             Editable = ShipToOptions = ShipToOptions::"Custom Address";
                             QuickEntry = false;
@@ -512,7 +512,7 @@ page 50224 "Contrato Task Card"
                         }
                         field("Ship-to Country/Region Code"; Rec."Ship-to Country/Region Code")
                         {
-                            ApplicationArea = Contratos;
+                            ApplicationArea = All;
                             Caption = 'Country/Region';
                             Editable = ShipToOptions = ShipToOptions::"Custom Address";
                             Importance = Additional;
@@ -527,7 +527,7 @@ page 50224 "Contrato Task Card"
                     }
                     field("Ship-to Contact"; Rec."Ship-to Contact")
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Contact';
                         ToolTip = 'Specifies the name of the contact person at the address that products on the sales document will be shipped to.';
                     }

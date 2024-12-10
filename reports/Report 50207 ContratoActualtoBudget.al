@@ -3,7 +3,7 @@ report 50207 "Contrato Actual To Budget"
     AdditionalSearchTerms = 'Contrato Actual To Budget';
     DefaultLayout = RDLC;
     RDLCLayout = './Contratos/Contrato/Reports/ContratoActualToBudget.rdlc';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contrato Actual To Budget';
     UsageCategory = ReportsAndAnalysis;
 
@@ -340,7 +340,7 @@ report 50207 "Contrato Actual To Budget"
                     Caption = 'Options';
                     field(CurrencyField; CurrencyFieldReq)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Currency';
                         OptionCaption = 'Local Currency,Foreign Currency';
                         ToolTip = 'Specifies the currency that amounts are shown in.';

@@ -16,47 +16,47 @@ page 50220 "Contrato Task List"
                 ShowCaption = false;
                 field("Contrato No."; Rec."Contrato No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Style = Strong;
                     StyleExpr = StyleIsStrong;
                     ToolTip = 'Specifies the number of the related Contrato.';
                 }
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Style = Strong;
                     StyleExpr = StyleIsStrong;
                     ToolTip = 'Specifies the number of the related Contrato task.';
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies a description of the Contrato task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the Contrato planning line.';
                 }
                 field("Contrato Task Type"; Rec."Contrato Task Type")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the purpose of the account. Newly created accounts are automatically assigned the Posting account type, but you can change this. Choose the field to select one of the following five options:';
                 }
                 field("WIP-Total"; Rec."WIP-Total")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the Contrato tasks you want to group together when calculating Work In Process (WIP) and Recognition.';
                 }
                 field(Totaling; Rec.Totaling)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies an interval or a list of Contrato task numbers.';
                 }
                 field("Contrato Posting Group"; Rec."Contrato Posting Group")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the Contrato posting group of the task.';
                 }
 #if not CLEAN25
                 field("Coupled to Dataverse"; Rec."Coupled to Dataverse")
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies if the Contrato task is coupled to an entity in Field Service.';
                     Visible = false;
                     ObsoleteReason = 'Field Service is moved to Field Service Integration app.';
@@ -125,7 +125,7 @@ page 50220 "Contrato Task List"
                 }
                 action(ContratoTaskStatistics)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Statistics';
                     Image = StatisticsDocument;
                     RunObject = Page "Contrato Task Statistics";
@@ -249,7 +249,7 @@ page 50220 "Contrato Task List"
         {
             action("Split Planning Lines")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Split Planning Lines';
                 Image = Splitlines;
                 RunObject = Report "Contrato Split Planning Line";
@@ -257,7 +257,7 @@ page 50220 "Contrato Task List"
             }
             action("Change Planning Line Dates")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Change Planning Line Dates';
                 Image = ChangeDates;
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
@@ -267,7 +267,7 @@ page 50220 "Contrato Task List"
             }
             action("Copy Contrato Task From")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Copy Contrato Task From';
                 Ellipsis = true;
                 Image = CopyFromTask;
@@ -286,7 +286,7 @@ page 50220 "Contrato Task List"
             }
             action("Copy Contrato Task To")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Copy Contrato Task To';
                 Ellipsis = true;
                 Image = CopyToTask;
@@ -308,7 +308,7 @@ page 50220 "Contrato Task List"
         {
             action("Contrato Actual to Budget (Cost)")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Contrato Actual to Budget (Cost)';
                 Image = "Report";
                 RunObject = Report "ContratoActualtoBudget(Cost)";
@@ -316,7 +316,7 @@ page 50220 "Contrato Task List"
             }
             action("<Report Contrato Actual to Budget (Price)>")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Contrato Actual to Budget (Price)';
                 Image = "Report";
                 RunObject = Report "ContratoActualtoBudget(Price)";
@@ -324,7 +324,7 @@ page 50220 "Contrato Task List"
             }
             action("Contrato Analysis")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Contrato Analysis';
                 Image = "Report";
                 RunObject = Report "Contrato Analysis";
@@ -332,7 +332,7 @@ page 50220 "Contrato Task List"
             }
             action("Contrato - Planning Lines")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Contrato - Planning Lines';
                 Image = "Report";
                 RunObject = Report "Contrato - Planning Lines";
@@ -340,7 +340,7 @@ page 50220 "Contrato Task List"
             }
             action("Contrato - Suggested Billing")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Contrato - Suggested Billing';
                 Image = "Report";
                 RunObject = Report "ContratoCostSuggestedBilling";
@@ -348,7 +348,7 @@ page 50220 "Contrato Task List"
             }
             action("Contratos - Transaction Detail")
             {
-                ApplicationArea = Contratos;
+                ApplicationArea = All;
                 Caption = 'Contratos - Transaction Detail';
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'

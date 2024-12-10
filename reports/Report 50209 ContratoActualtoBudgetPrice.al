@@ -2,7 +2,7 @@ report 50209 "ContratoActualtoBudget(Price)"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './Local/Contratos/Contrato/Reports/ContratoActualtoBudgetPrice.rdlc';
-    ApplicationArea = Contratos;
+    ApplicationArea = All;
     Caption = 'Contrato Actual to Budget (Price)';
     AdditionalSearchTerms = 'Contrato Actual to Budget (Price)';
     UsageCategory = ReportsAndAnalysis;
@@ -385,21 +385,21 @@ report 50209 "ContratoActualtoBudget(Price)"
                     Caption = 'Options';
                     field(BudgetAmountsPer; BudgetAmountsPer)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Budget Amounts Per';
                         OptionCaption = 'Budget,Billable';
                         ToolTip = 'Specifies if the budget amounts must be based on budgets or billables.';
                     }
                     field(ActualAmountsPer; ActualAmountsPer)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Actual Amounts Per';
                         OptionCaption = 'Usage,Invoices';
                         ToolTip = 'Specifies if the actual amounts must be based on time used or invoiced. ';
                     }
                     field(PrintToExcel; PrintToExcel)
                     {
-                        ApplicationArea = Contratos;
+                        ApplicationArea = All;
                         Caption = 'Print to Excel';
                         ToolTip = 'Specifies if you want to export the data to an Excel spreadsheet for additional analysis or formatting before printing.';
                     }

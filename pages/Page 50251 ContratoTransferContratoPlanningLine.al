@@ -14,13 +14,13 @@ page 50251 "ContrTransferContrPlanningLine"
                 Caption = 'General';
                 field(PostingDate; PostingDate)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Posting Date';
                     ToolTip = 'Specifies the posting date for the document.';
                 }
                 field(ContratoJournalTemplateName; ContratoJournalTemplateName)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Contrato Journal Template';
                     Lookup = true;
                     TableRelation = "Contrato Journal Template".Name where("Page ID" = const(201),
@@ -34,7 +34,7 @@ page 50251 "ContrTransferContrPlanningLine"
                 }
                 field(ContratoJournalBatchName; ContratoJournalBatchName)
                 {
-                    ApplicationArea = Contratos;
+                    ApplicationArea = All;
                     Caption = 'Contrato Journal Batch';
                     Lookup = true;
                     TableRelation = "Contrato Journal Batch".Name where("Journal Template Name" = field(Name));
