@@ -1,6 +1,6 @@
 table 50224 "Contrato Archive"
 {
-    Caption = 'Project Archive';
+    Caption = 'contrato Archive';
     DataCaptionFields = "No.", Description, "Version No.";
     DrillDownPageID = "Contrato Archive List";
     LookupPageID = "Contrato Archive List";
@@ -68,7 +68,7 @@ table 50224 "Contrato Archive"
         }
         field(23; "Contrato Posting Group"; Code[20])
         {
-            Caption = 'Project Posting Group';
+            Caption = 'contrato Posting Group';
             TableRelation = "Contrato Posting Group";
         }
         field(24; Blocked; Enum "Contrato Blocked")
@@ -294,7 +294,7 @@ table 50224 "Contrato Archive"
         field(1027; "WIP Posting Method"; Option)
         {
             Caption = 'WIP Posting Method';
-            OptionCaption = 'Per Project,Per Project Ledger Entry';
+            OptionCaption = 'Per contrato,Per contrato Ledger Entry';
             OptionMembers = "Per Contrato","Per Contrato Ledger Entry";
         }
         field(1030; "Calc. Recog. Sales Amount"; Decimal)
@@ -339,7 +339,7 @@ table 50224 "Contrato Archive"
         }
         field(1036; "Project Manager"; Code[50])
         {
-            Caption = 'Project Manager';
+            Caption = 'contrato Manager';
             TableRelation = "User Setup";
         }
         field(2000; "Sell-to Customer No."; Code[20])

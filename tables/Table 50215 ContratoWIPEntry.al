@@ -1,6 +1,6 @@
 table 50215 "Contrato WIP Entry"
 {
-    Caption = 'Project WIP Entry';
+    Caption = 'contrato WIP Entry';
     DrillDownPageID = "Contrato WIP Entries";
     LookupPageID = "Contrato WIP Entries";
     DataClassification = CustomerContent;
@@ -13,7 +13,7 @@ table 50215 "Contrato WIP Entry"
         }
         field(2; "Contrato No."; Code[20])
         {
-            Caption = 'Project No.';
+            Caption = 'contrato No.';
             TableRelation = Contrato;
         }
         field(3; "Document No."; Code[20])
@@ -36,7 +36,7 @@ table 50215 "Contrato WIP Entry"
         }
         field(7; "Contrato Posting Group"; Code[20])
         {
-            Caption = 'Project Posting Group';
+            Caption = 'contrato Posting Group';
             TableRelation = "Contrato Posting Group";
         }
         field(8; Type; Enum "Contrato WIP Buffer Type")
@@ -56,11 +56,11 @@ table 50215 "Contrato WIP Entry"
         }
         field(11; "Contrato Complete"; Boolean)
         {
-            Caption = 'Project Complete';
+            Caption = 'contrato Complete';
         }
         field(12; "Contrato WIP Total Entry No."; Integer)
         {
-            Caption = 'Project WIP Total Entry No.';
+            Caption = 'contrato WIP Total Entry No.';
             TableRelation = "Contrato WIP Total";
         }
         field(13; Reverse; Boolean)
@@ -71,7 +71,7 @@ table 50215 "Contrato WIP Entry"
         field(14; "WIP Posting Method Used"; Option)
         {
             Caption = 'WIP Posting Method Used';
-            OptionCaption = 'Per Project,Per Project Ledger Entry';
+            OptionCaption = 'Per contrato,Per contrato Ledger Entry';
             OptionMembers = "Per Contrato","Per Contrato Ledger Entry";
         }
         field(60; "Global Dimension 1 Code"; Code[20])

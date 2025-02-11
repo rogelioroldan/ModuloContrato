@@ -2,7 +2,7 @@ page 50212 "Contrato Registers"
 {
     AdditionalSearchTerms = 'Contrato Registers';
     ApplicationArea = All;
-    Caption = 'Project Registers';
+    Caption = 'contrato Registers';
     Editable = false;
     PageType = List;
     SourceTable = "Contrato Register";
@@ -90,10 +90,10 @@ page 50212 "Contrato Registers"
                 action("Contrato Ledger")
                 {
                     ApplicationArea = All;
-                    Caption = 'Project Ledger';
+                    Caption = 'contrato Ledger';
                     Image = JobLedger;
                     RunObject = Codeunit "Contrato Reg.-Show Ledger";
-                    ToolTip = 'View the project ledger entries.';
+                    ToolTip = 'View the contrato ledger entries.';
                 }
             }
         }

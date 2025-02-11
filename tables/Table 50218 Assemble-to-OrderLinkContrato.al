@@ -50,12 +50,12 @@ table 50218 "Assemble-to-OrderLinkContrato"
         }
         field(40; "Contrato No."; Code[20])
         {
-            Caption = 'Project No.';
+            Caption = 'contrato No.';
             TableRelation = Contrato;
         }
         field(41; "Contrato Task No."; Code[20])
         {
-            Caption = 'Project Task No.';
+            Caption = 'contrato Task No.';
             TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
         }
     }
@@ -92,9 +92,9 @@ table 50218 "Assemble-to-OrderLinkContrato"
         Text006: Label 'The status of the linked assembly order will be changed to %1. Do you want to continue?';
         Text007: Label 'A %1 exists for the %2. \\If you want to record and post a different %3, then you must do this in the %4 field on the related %1.';
         Text008: Label '%1 %2', Comment = 'Key Value, say: %1=Line No. %2=10000';
-        ItemTrackingQtyDiffErr: Label 'The item tracking defined on Assembly Header with Document Type %1, No. %2 exceeds %3 on Project Planning Line with Contrato No. %4, Contrato Task No. %5, Line No. %6.\\ You must adjust the existing item tracking before you can reenter the new quantity.', Comment = '%1 = Document Type, %2 = No., %3 = Qty. to Assemble (Base), %4 = Contrato No., %5 = Contrato Task No., %6 = Line No.';
+        ItemTrackingQtyDiffErr: Label 'The item tracking defined on Assembly Header with Document Type %1, No. %2 exceeds %3 on contrato Planning Line with Contrato No. %4, Contrato Task No. %5, Line No. %6.\\ You must adjust the existing item tracking before you can reenter the new quantity.', Comment = '%1 = Document Type, %2 = No., %3 = Qty. to Assemble (Base), %4 = Contrato No., %5 = Contrato Task No., %6 = Line No.';
         CreateAsmForContratoErr: Label 'It is not possible to create an assembly order for a Contrato task that is completed.';
-        AssebmlyOrderExistsForContratoErr: Label 'One or more assembly orders exists for the project %1.\\You must delete the assembly order before you can change the Contrato status.', Comment = '%1 = Contrato No.';
+        AssebmlyOrderExistsForContratoErr: Label 'One or more assembly orders exists for the contrato %1.\\You must delete the assembly order before you can change the Contrato status.', Comment = '%1 = Contrato No.';
 
     procedure UpdateAsmFromSalesLine(var NewSalesLine: Record "Sales Line")
     begin
@@ -624,7 +624,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
         IsHandled: Boolean;
     begin
         IsHandled := false;
-        OnBeforeNeedsSynchronizationForProjectPlanningLine(AsmHeader, ContratoPlanningLine, Result, IsHandled);
+        OnBeforeNeedsSynchronizationForcontratoPlanningLine(AsmHeader, ContratoPlanningLine, Result, IsHandled);
         if IsHandled then
             exit(Result);
 
@@ -1906,7 +1906,7 @@ table 50218 "Assemble-to-OrderLinkContrato"
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnBeforeNeedsSynchronizationForProjectPlanningLine(AssemblyHeader: Record "Assembly Header"; ContratoPlanningLine: Record "Contrato Planning Line"; var Result: Boolean; var IsHandled: Boolean)
+    local procedure OnBeforeNeedsSynchronizationForcontratoPlanningLine(AssemblyHeader: Record "Assembly Header"; ContratoPlanningLine: Record "Contrato Planning Line"; var Result: Boolean; var IsHandled: Boolean)
     begin
     end;
 

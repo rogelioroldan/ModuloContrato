@@ -1,6 +1,6 @@
 table 50206 "Contrato Journal Template"
 {
-    Caption = 'Project Journal Template';
+    Caption = 'contrato Journal Template';
     DrillDownPageID = "Contrato Journal Template List";
     LookupPageID = "Contrato Journal Template List";
     ReplicateData = true;

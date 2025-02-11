@@ -15,7 +15,7 @@ table 50201 "Contrato Planning Line"
         }
         field(2; "Contrato No."; Code[20])
         {
-            Caption = 'Project No.';
+            Caption = 'contrato No.';
             NotBlank = true;
             TableRelation = Contrato;
         }
@@ -524,7 +524,7 @@ table 50201 "Contrato Planning Line"
         }
         field(1000; "Contrato Task No."; Code[20])
         {
-            Caption = 'Project Task No.';
+            Caption = 'contrato Task No.';
             NotBlank = true;
             TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
         }
@@ -745,7 +745,7 @@ table 50201 "Contrato Planning Line"
         }
         field(1030; "Contrato Contract Entry No."; Integer)
         {
-            Caption = 'Project Contract Entry No.';
+            Caption = 'contrato Contract Entry No.';
             Editable = false;
         }
         field(1035; "Invoiced Amount (LCY)"; Decimal)
@@ -789,7 +789,7 @@ table 50201 "Contrato Planning Line"
         field(1043; "Contrato Ledger Entry No."; Integer)
         {
             BlankZero = true;
-            Caption = 'Project Ledger Entry No.';
+            Caption = 'contrato Ledger Entry No.';
             Editable = false;
             TableRelation = "Contrato Ledger Entry";
         }
@@ -1464,26 +1464,26 @@ table 50201 "Contrato Planning Line"
         UOMMgt: Codeunit "Unit of Measure Management";
         ItemCheckAvail: Codeunit "Item-Check Avail.";
         CurrencyFactorErr: Label 'cannot be specified without %1', Comment = '%1 = Currency Code field name';
-        RecordRenameErr: Label 'You cannot change the %1 or %2 of this %3.', Comment = '%1 = Project Number field name; %2 = Project Task Number field name; %3 = Project Planning Line table name';
+        RecordRenameErr: Label 'You cannot change the %1 or %2 of this %3.', Comment = '%1 = contrato Number field name; %2 = contrato Task Number field name; %3 = contrato Planning Line table name';
         CurrencyDate: Date;
         MissingItemResourceGLErr: Label 'You must specify %1 %2 in planning line.', Comment = '%1 = Document Type (Item, Resoure, or G/L); %2 = Field name';
         HasGotGLSetup: Boolean;
         QtyLessErr: Label '%1 cannot be less than %2.', Comment = '%1 = Name of first field to compare; %2 = Name of second field to compare';
-        ControlUsageLinkErr: Label 'The %1 must be a %2 and %3 must be enabled, because linked Project Ledger Entries exist.', Comment = '%1 = Project Planning Line table name; %2 = Caption for field Schedule Line; %3 = Captiion for field Usage Link';
-        ContratoUsageLinkErr: Label 'This %1 cannot be deleted because linked project ledger entries exist.', Comment = '%1 = Project Planning Line table name';
+        ControlUsageLinkErr: Label 'The %1 must be a %2 and %3 must be enabled, because linked contrato Ledger Entries exist.', Comment = '%1 = contrato Planning Line table name; %2 = Caption for field Schedule Line; %3 = Captiion for field Usage Link';
+        ContratoUsageLinkErr: Label 'This %1 cannot be deleted because linked contrato ledger entries exist.', Comment = '%1 = contrato Planning Line table name';
         BypassQtyValidation: Boolean;
         SkipCheckForMultipleContratosOnSalesLine: Boolean;
         CalledFromHeader: Boolean;
-        LinkedContratoLedgerErr: Label 'You cannot change this value because linked project ledger entries exist.';
-        LineTypeErr: Label 'The %1 cannot be of %2 %3 because it is transferred to an invoice.', Comment = 'The Project Planning Line cannot be of Line Type Schedule, because it is transferred to an invoice.';
+        LinkedContratoLedgerErr: Label 'You cannot change this value because linked contrato ledger entries exist.';
+        LineTypeErr: Label 'The %1 cannot be of %2 %3 because it is transferred to an invoice.', Comment = 'The contrato Planning Line cannot be of Line Type Schedule, because it is transferred to an invoice.';
         QtyToTransferToInvoiceErr: Label '%1 may not be lower than %2 and may not exceed %3.', Comment = '%1 = Qty. to Transfer to Invoice field name; %2 = First value in comparison; %3 = Second value in comparison';
         AutoReserveQst: Label 'Automatic reservation is not possible.\Do you want to reserve items manually?';
-        NoContractLineErr: Label '%1 cannot be set on a %2 of type %3.', Comment = '%1 = Qty. to Transfer to Invoice field name; %2 = Project Planning Line table name; %3 = The project''s line type';
-        QtyAlreadyTransferredErr: Label 'The %1 has already been completely transferred.', Comment = '%1 = Project Planning Line table name';
-        UsageLinkErr: Label '%1 cannot be enabled on a %2 with %3 %4.', Comment = 'Usage Link cannot be enabled on a Project Planning Line with Line Type Schedule';
+        NoContractLineErr: Label '%1 cannot be set on a %2 of type %3.', Comment = '%1 = Qty. to Transfer to Invoice field name; %2 = contrato Planning Line table name; %3 = The contrato''s line type';
+        QtyAlreadyTransferredErr: Label 'The %1 has already been completely transferred.', Comment = '%1 = contrato Planning Line table name';
+        UsageLinkErr: Label '%1 cannot be enabled on a %2 with %3 %4.', Comment = 'Usage Link cannot be enabled on a contrato Planning Line with Line Type Schedule';
         QtyGreaterErr: Label '%1 cannot be higher than %2.', Comment = '%1 = Caption for field Quantity; %2 = Captiion for field Qty. Transferred to Invoice';
         RequestedDeliveryDateErr: Label 'You cannot change the %1 when the %2 has been filled in.', Comment = '%1 = Caption for field Requested Delivery Date; %2 = Captiion for field Promised Delivery Date';
-        NotPossibleContratoPlanningLineErr: Label 'It is not possible to deleted project planning line transferred to an invoice.';
+        NotPossibleContratoPlanningLineErr: Label 'It is not possible to deleted contrato planning line transferred to an invoice.';
         NegativeQtyToAssembleErr: Label ' must be positive.', Comment = 'Qty. to Assemble can''t be negative';
         DifferentQtyToAssembleErr: Label ' must be equal to %1.', Comment = 'Qty. to Assemble must be equal to Quantity, %1 = Quantity';
         CannotBeMoreErr: Label 'cannot be more than %1', Comment = '%1 = Quantity';

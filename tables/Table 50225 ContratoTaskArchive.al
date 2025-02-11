@@ -1,6 +1,6 @@
 table 50225 "Contrato Task Archive"
 {
-    Caption = 'Project Task';
+    Caption = 'contrato Task';
     DrillDownPageID = "Contrato Task Archive Lines";
     LookupPageID = "Contrato Task Archive Lines";
     DataClassification = CustomerContent;
@@ -9,14 +9,14 @@ table 50225 "Contrato Task Archive"
     {
         field(1; "Contrato No."; Code[20])
         {
-            Caption = 'Project No.';
+            Caption = 'contrato No.';
             Editable = false;
             NotBlank = true;
             TableRelation = "Contrato Archive";
         }
         field(2; "Contrato Task No."; Code[20])
         {
-            Caption = 'Project Task No.';
+            Caption = 'contrato Task No.';
             NotBlank = true;
         }
         field(3; Description; Text[100])
@@ -25,7 +25,7 @@ table 50225 "Contrato Task Archive"
         }
         field(4; "Contrato Task Type"; Enum "Contrato Task Type")
         {
-            Caption = 'Project Task Type';
+            Caption = 'contrato Task Type';
         }
         field(6; "WIP-Total"; Option)
         {
@@ -35,7 +35,7 @@ table 50225 "Contrato Task Archive"
         }
         field(7; "Contrato Posting Group"; Code[20])
         {
-            Caption = 'Project Posting Group';
+            Caption = 'contrato Posting Group';
             TableRelation = "Contrato Posting Group";
         }
         field(9; "WIP Method"; Code[20])

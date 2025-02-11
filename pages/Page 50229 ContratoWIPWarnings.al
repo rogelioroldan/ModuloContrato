@@ -14,22 +14,22 @@ page 50229 "Contrato WIP Warnings"
                 field("Contrato No."; Rec."Contrato No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the related project.';
+                    ToolTip = 'Specifies the number of the related contrato.';
                 }
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the related project task.';
+                    ToolTip = 'Specifies the number of the related contrato task.';
                 }
                 field("Contrato WIP Total Entry No."; Rec."Contrato WIP Total Entry No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the entry number from the associated project WIP total.';
+                    ToolTip = 'Specifies the entry number from the associated contrato WIP total.';
                 }
                 field("Warning Message"; Rec."Warning Message")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies a warning message that is related to a project WIP calculation.';
+                    ToolTip = 'Specifies a warning message that is related to a contrato WIP calculation.';
                 }
             }
         }

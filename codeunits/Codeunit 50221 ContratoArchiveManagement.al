@@ -16,11 +16,11 @@ codeunit 50221 "Contrato Archive Management"
         RestoreQst: Label 'Do you want to Restore %1 %2 Version %3?', Comment = '%1 = Contrato Caption, %2 = Contrato No., %3 = Version No.';
         RestoreMsg: Label '%1 %2 has been restored.', Comment = '%1 = Contrato Caption, %2 = Contrato No.';
         ArchiveQst: Label 'Archive %1 no.: %2?', Comment = '%1 = Contrato Caption, %2 = Contrato No.';
-        ContratoArchiveMsg: Label 'Project %1 has been archived.', Comment = '%1 = Project No.';
-        MissingContratoErr: Label 'Project %1 does not exist anymore.\It is not possible to restore the Project.', Comment = '%1 = Project No.';
-        CompletedContratoStatusErr: Label 'Status must not be Completed in order to restore the Project: No. = %1', Comment = '%1 = Project No.';
-        ContratoLedgerEntryExistErr: Label 'Project Ledger Entries exist for Project No. %1.\It is not possible to restore the Project.', Comment = '%1 = Project No.';
-        SalesInvoiceExistErr: Label 'Outstanding Sales Invoice exists for Project No. %1.\It is not possible to restore the Project.', Comment = '%1 = Project No.';
+        ContratoArchiveMsg: Label 'Contrato %1 has been archived.', Comment = '%1 = Contrato No.';
+        MissingContratoErr: Label 'Contrato %1 does not exist anymore.\It is not possible to restore the Contrato.', Comment = '%1 = Contrato No.';
+        CompletedContratoStatusErr: Label 'Status must not be Completed in order to restore the Contrato: No. = %1', Comment = '%1 = Contrato No.';
+        ContratoLedgerEntryExistErr: Label 'Contrato Ledger Entries exist for Contrato No. %1.\It is not possible to restore the Contrato.', Comment = '%1 = Contrato No.';
+        SalesInvoiceExistErr: Label 'Outstanding Sales Invoice exists for Contrato No. %1.\It is not possible to restore the Contrato.', Comment = '%1 = Contrato No.';
 
     procedure AutoArchiveContrato(var Contrato: Record Contrato)
     var

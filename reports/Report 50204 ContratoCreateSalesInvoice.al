@@ -86,11 +86,6 @@ report 50204 "Contrato Create Sales Invoice"
                         OptionCaption = 'Contrato,Contrato Task';
                         ToolTip = 'Specifies, if you select the Contrato Task option, that you want to create one invoice per Contrato task rather than the one invoice per Contrato that is created by default.';
                     }
-                    field(GrupoFacturar; GrupoFacturarRequest)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Grupo a facturar';
-                    }
                 }
             }
         }
@@ -141,7 +136,6 @@ report 50204 "Contrato Create Sales Invoice"
         OldContratoNo: Code[20];
         OldJTNo: Code[20];
         Text000: Label 'A', Comment = 'A';
-        GrupoFacturarRequest: Enum "Grupo Facturar";
 
     protected var
         ContratoChoice: Option Contrato,"Contrato Task";

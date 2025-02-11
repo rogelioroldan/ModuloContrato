@@ -1,6 +1,6 @@
 report 50202 "ContratoTransfertoSalesInvoice"
 {
-    Caption = 'Project Transfer to Sales Invoice';
+    Caption = 'Contrato Transfer to Sales Invoice';
     ProcessingOnly = true;
 
     dataset
@@ -121,6 +121,11 @@ report 50202 "ContratoTransfertoSalesInvoice"
                                 NewInvoice := false;
                         end;
                     }
+                    field(GrupoFacturar; GrupoFacturarRequest)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Grupo a facturar';
+                    }
                 }
             }
         }
@@ -156,6 +161,7 @@ report 50202 "ContratoTransfertoSalesInvoice"
         DocumentDate: Date;
         InvoicePostingDate: Date;
         Done: Boolean;
+        GrupoFacturarRequest: Enum "Grupo Facturar";
 
     protected var
         Contrato: Record Contrato;

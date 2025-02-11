@@ -26,7 +26,7 @@ codeunit 50215 "Contrato Create-Invoice"
         Text007: Label 'You must specify %1.';
         Text008: Label 'The lines were successfully transferred to a credit memo.';
         Text009: Label 'The selected planning lines must have the same %1.';
-        Text010: Label 'The currency dates on all planning lines will be updated based on the invoice posting date because there is a difference in currency exchange rates. Recalculations will be based on the Exch. Calculation setup for the Cost and Price values for the project. Do you want to continue?';
+        Text010: Label 'The currency dates on all planning lines will be updated based on the invoice posting date because there is a difference in currency exchange rates. Recalculations will be based on the Exch. Calculation setup for the Cost and Price values for the contrato. Do you want to continue?';
         Text011: Label 'The currency exchange rate on all planning lines will be updated based on the exchange rate on the sales invoice. Do you want to continue?';
         Text012: Label 'The %1 %2 does not exist anymore. A printed copy of the document was created before the document was deleted.', Comment = 'The Sales Invoice Header 103001 does not exist in the system anymore. A printed copy of the document was created before deletion.';
 
@@ -48,14 +48,14 @@ codeunit 50215 "Contrato Create-Invoice"
         OnCreateSalesInvoiceOnBeforeRunReport(ContratoPlanningLine, Done, NewInvoice, PostingDate, InvoiceNo, IsHandled, CrMemo);
         if not IsHandled then
             if not CrMemo then begin
-                //GetSalesInvoiceNo.SetCustomer(ContratoPlanningLine);
+                GetSalesInvoiceNo.SetCustomer(ContratoPlanningLine);
                 GetSalesInvoiceNo.RunModal();
                 IsHandled := false;
                 OnBeforeGetInvoiceNo(ContratoPlanningLine, Done, NewInvoice, PostingDate, InvoiceNo, IsHandled);
                 if not IsHandled then
                     GetSalesInvoiceNo.GetInvoiceNo(Done, NewInvoice, PostingDate, DocumentDate, InvoiceNo);
             end else begin
-                //GetSalesCrMemoNo.SetCustomer(ContratoPlanningLine);
+                GetSalesCrMemoNo.SetCustomer(ContratoPlanningLine);
                 GetSalesCrMemoNo.RunModal();
                 IsHandled := false;
                 OnBeforeGetCrMemoNo(ContratoPlanningLine, Done, NewInvoice, PostingDate, InvoiceNo, IsHandled);
@@ -130,8 +130,8 @@ codeunit 50215 "Contrato Create-Invoice"
         ClearAll();
         Contrato.Get(ContratoNo);
         OnCreateSalesInvoiceLinesOnBeforeTestContrato(Contrato);
-        // if Contrato.Blocked = Contrato.Blocked::All then
-        //     Contrato.TestBlocked();
+        if Contrato.Blocked = Contrato.Blocked::All then
+            Contrato.TestBlocked();
         if Contrato."Currency Code" = '' then
             ContratoInvCurrency := IsContratoInvCurrencyDependingOnBillingMethod(Contrato, ContratoPlanningLineSource);
 

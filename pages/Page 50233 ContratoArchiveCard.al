@@ -1,11 +1,11 @@
 page 50233 "Contrato Archive Card"
 {
-    Caption = 'Project Archive Card';
+    Caption = 'contrato Archive Card';
     PageType = Document;
     DeleteAllowed = false;
     Editable = false;
     SourceTable = "Contrato Archive";
-    AdditionalSearchTerms = 'Project, Archive';
+    AdditionalSearchTerms = 'contrato, Archive';
 
     layout
     {
@@ -24,7 +24,7 @@ page 50233 "Contrato Archive Card"
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies a short description of the project.';
+                    ToolTip = 'Specifies a short description of the contrato.';
                 }
                 field("Sell-to Customer No."; Rec."Sell-to Customer No.")
                 {
@@ -147,7 +147,7 @@ page 50233 "Contrato Archive Card"
                 {
                     ApplicationArea = All;
                     Importance = Additional;
-                    ToolTip = 'Specifies an additional description of the project for searching purposes.';
+                    ToolTip = 'Specifies an additional description of the contrato for searching purposes.';
                 }
                 field("External Document No."; Rec."External Document No.")
                 {
@@ -165,7 +165,7 @@ page 50233 "Contrato Archive Card"
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
-                    ToolTip = 'Specifies the person at your company who is responsible for the project.';
+                    ToolTip = 'Specifies the person at your company who is responsible for the contrato.';
                 }
                 field(Blocked; Rec.Blocked)
                 {
@@ -175,7 +175,7 @@ page 50233 "Contrato Archive Card"
                 field("Last Date Modified"; Rec."Last Date Modified")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies when the project card was last modified.';
+                    ToolTip = 'Specifies when the contrato card was last modified.';
                 }
                 field("Project Manager"; Rec."Project Manager")
                 {
@@ -199,49 +199,49 @@ page 50233 "Contrato Archive Card"
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
-                    ToolTip = 'Specifies a current status of the project. You can change the status for the project as it progresses. Final calculations can be made on completed projects.';
+                    ToolTip = 'Specifies a current status of the contrato. You can change the status for the contrato as it progresses. Final calculations can be made on completed contratos.';
                 }
                 field("Contrato Posting Group"; Rec."Contrato Posting Group")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the posting group that links transactions made for the project with the appropriate general ledger accounts according to the general posting setup.';
+                    ToolTip = 'Specifies the posting group that links transactions made for the contrato with the appropriate general ledger accounts according to the general posting setup.';
                 }
                 field("Location Code"; Rec."Location Code")
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
-                    ToolTip = 'Specifies the location code of the project.';
+                    ToolTip = 'Specifies the location code of the contrato.';
                 }
                 field("Bin Code"; Rec."Bin Code")
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
-                    ToolTip = 'Specifies a bin code for specific location of the project.';
+                    ToolTip = 'Specifies a bin code for specific location of the contrato.';
                 }
                 field("WIP Method"; Rec."WIP Method")
                 {
                     ApplicationArea = All;
                     Importance = Additional;
-                    ToolTip = 'Specifies the method that is used to calculate the value of work in process for the project.';
+                    ToolTip = 'Specifies the method that is used to calculate the value of work in process for the contrato.';
                 }
                 field("WIP Posting Method"; Rec."WIP Posting Method")
                 {
                     ApplicationArea = All;
                     Importance = Additional;
-                    ToolTip = 'Specifies how WIP posting is performed. Per Project: The total WIP costs and the sales value is used to calculate WIP. Per Project Ledger Entry: The accumulated values of WIP costs and sales are used to calculate WIP.';
+                    ToolTip = 'Specifies how WIP posting is performed. Per contrato: The total WIP costs and the sales value is used to calculate WIP. Per contrato Ledger Entry: The accumulated values of WIP costs and sales are used to calculate WIP.';
                 }
                 field("Allow Schedule/Contract Lines"; Rec."Allow Schedule/Contract Lines")
                 {
                     ApplicationArea = All;
                     Caption = 'Allow Budget/Billable Lines';
                     Importance = Additional;
-                    ToolTip = 'Specifies if you can add planning lines of both type Budget and type Billable to the project.';
+                    ToolTip = 'Specifies if you can add planning lines of both type Budget and type Billable to the contrato.';
                 }
                 field("Apply Usage Link"; Rec."Apply Usage Link")
                 {
                     ApplicationArea = All;
                     Importance = Additional;
-                    ToolTip = 'Specifies whether usage entries, from the project journal or purchase line, for example, are linked to project planning lines. Select this check box if you want to be able to track the quantities and amounts of the remaining work needed to complete a project and to create a relationship between demand planning, usage, and sales. On a project card, you can select this check box if there are no existing project planning lines that include type Budget that have been posted. The usage link only applies to project planning lines that include type Budget.';
+                    ToolTip = 'Specifies whether usage entries, from the contrato journal or purchase line, for example, are linked to contrato planning lines. Select this check box if you want to be able to track the quantities and amounts of the remaining work needed to complete a contrato and to create a relationship between demand planning, usage, and sales. On a contrato card, you can select this check box if there are no existing contrato planning lines that include type Budget that have been posted. The usage link only applies to contrato planning lines that include type Budget.';
                 }
             }
             group("Invoice and Shipping")
@@ -267,7 +267,7 @@ page 50233 "Contrato Archive Card"
                             ApplicationArea = All;
                             Importance = Promoted;
                             ShowMandatory = true;
-                            ToolTip = 'Specifies the number of the customer who pays for the project.';
+                            ToolTip = 'Specifies the number of the customer who pays for the contrato.';
                             Visible = false;
                         }
                         field("Bill-to Name"; Rec."Bill-to Name")
@@ -275,7 +275,7 @@ page 50233 "Contrato Archive Card"
                             Caption = 'Name';
                             ApplicationArea = All;
                             Importance = Promoted;
-                            ToolTip = 'Specifies the name of the customer who pays for the project.';
+                            ToolTip = 'Specifies the name of the customer who pays for the contrato.';
                             Editable = ((BillToOptions = BillToOptions::"Another Customer") or ((BillToOptions = BillToOptions::"Custom Address") and not ShouldSearchForCustByName));
                             Enabled = ((BillToOptions = BillToOptions::"Another Customer") or ((BillToOptions = BillToOptions::"Custom Address") and not ShouldSearchForCustByName));
                             NotBlank = true;
@@ -331,7 +331,7 @@ page 50233 "Contrato Archive Card"
                             ApplicationArea = All;
                             Importance = Additional;
                             QuickEntry = false;
-                            ToolTip = 'Specifies the postal code of the customer who pays for the project.';
+                            ToolTip = 'Specifies the postal code of the customer who pays for the contrato.';
                             Editable = BillToInformationEditable;
                             Enabled = BillToInformationEditable;
                         }
@@ -366,7 +366,7 @@ page 50233 "Contrato Archive Card"
                             Editable = false;
                             Importance = Additional;
                             ExtendedDatatype = PhoneNo;
-                            ToolTip = 'Specifies the telephone number of the customer contact person for the project.';
+                            ToolTip = 'Specifies the telephone number of the customer contact person for the contrato.';
                         }
                         field(ContactMobilePhoneNo; BillToContact."Mobile Phone No.")
                         {
@@ -375,7 +375,7 @@ page 50233 "Contrato Archive Card"
                             Editable = false;
                             Importance = Additional;
                             ExtendedDatatype = PhoneNo;
-                            ToolTip = 'Specifies the mobile telephone number of the customer contact person for the project.';
+                            ToolTip = 'Specifies the mobile telephone number of the customer contact person for the contrato.';
                         }
                         field(ContactEmail; BillToContact."E-Mail")
                         {
@@ -384,14 +384,14 @@ page 50233 "Contrato Archive Card"
                             ExtendedDatatype = EMail;
                             Editable = false;
                             Importance = Additional;
-                            ToolTip = 'Specifies the email address of the customer contact person for the project.';
+                            ToolTip = 'Specifies the email address of the customer contact person for the contratoo.';
                         }
                         field("Bill-to Contact"; Rec."Bill-to Contact")
                         {
                             Caption = 'Contact';
                             ApplicationArea = All;
                             Importance = Additional;
-                            ToolTip = 'Specifies the name of the contact person at the customer who pays for the project.';
+                            ToolTip = 'Specifies the name of the contact person at the customer who pays for the contrato.';
                             Editable = BillToInformationEditable;
                             Enabled = BillToInformationEditable;
                         }
@@ -517,18 +517,18 @@ page 50233 "Contrato Archive Card"
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
-                    ToolTip = 'Specifies the date on which the project actually starts.';
+                    ToolTip = 'Specifies the date on which the contrato actually starts.';
                 }
                 field("Ending Date"; Rec."Ending Date")
                 {
                     ApplicationArea = All;
                     Importance = Promoted;
-                    ToolTip = 'Specifies the date on which the project is expected to be completed.';
+                    ToolTip = 'Specifies the date on which the contrato is expected to be completed.';
                 }
                 field("Creation Date"; Rec."Creation Date")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the date on which you set up the project.';
+                    ToolTip = 'Specifies the date on which you set up the contrato.';
                 }
             }
             group("Foreign Trade")
@@ -538,12 +538,12 @@ page 50233 "Contrato Archive Card"
                 {
                     ApplicationArea = Suite;
                     Importance = Promoted;
-                    ToolTip = 'Specifies the currency code for the project. By default, the currency code is empty. If you enter a foreign currency code, it results in the project being planned and invoiced in that currency.';
+                    ToolTip = 'Specifies the currency code for the contrato. By default, the currency code is empty. If you enter a foreign currency code, it results in the contrato being planned and invoiced in that currency.';
                 }
                 field("Invoice Currency Code"; Rec."Invoice Currency Code")
                 {
                     ApplicationArea = Suite;
-                    ToolTip = 'Specifies the currency code you want to apply when creating invoices for a project. By default, the invoice currency code for a project is based on what currency code is defined on the customer card.';
+                    ToolTip = 'Specifies the currency code you want to apply when creating invoices for a contrato. By default, the invoice currency code for a contrato is based on what currency code is defined on the customer card.';
                 }
                 field("Price Calculation Method"; Rec."Price Calculation Method")
                 {
@@ -562,12 +562,12 @@ page 50233 "Contrato Archive Card"
                 field("Exch. Calculation (Cost)"; Rec."Exch. Calculation (Cost)")
                 {
                     ApplicationArea = Suite;
-                    ToolTip = 'Specifies how project costs are calculated if you change the Currency Date or the Currency Code fields on a project planning Line or run the Change Project Planning Line Dates batch project. Fixed LCY option: The project costs in the local currency are fixed. Any change in the currency exchange rate will change the value of project costs in a foreign currency. Fixed FCY option: The project costs in a foreign currency are fixed. Any change in the currency exchange rate will change the value of project costs in the local currency.';
+                    ToolTip = 'Specifies how contrato costs are calculated if you change the Currency Date or the Currency Code fields on a contrato planning Line or run the Change contrato Planning Line Dates batch contrato. Fixed LCY option: The contrato costs in the local currency are fixed. Any change in the currency exchange rate will change the value of contrato costs in a foreign currency. Fixed FCY option: The contrato costs in a foreign currency are fixed. Any change in the currency exchange rate will change the value of contrato costs in the local currency.';
                 }
                 field("Exch. Calculation (Price)"; Rec."Exch. Calculation (Price)")
                 {
                     ApplicationArea = Suite;
-                    ToolTip = 'Specifies how project sales prices are calculated if you change the Currency Date or the Currency Code fields on a project planning Line or run the Change Project Planning Line Dates batch project. Fixed LCY option: The project prices in the local currency are fixed. Any change in the currency exchange rate will change the value of project prices in a foreign currency. Fixed FCY option: The project prices in a foreign currency are fixed. Any change in the currency exchange rate will change the value of project prices in the local currency.';
+                    ToolTip = 'Specifies how contrato sales prices are calculated if you change the Currency Date or the Currency Code fields on a contrato planning Line or run the Change contrato Planning Line Dates batch contrato. Fixed LCY option: The contratoo prices in the local currency are fixed. Any change in the currency exchange rate will change the value of contrato prices in a foreign currency. Fixed FCY option: The contrato prices in a foreign currency are fixed. Any change in the currency exchange rate will change the value of contrato prices in the local currency.';
                 }
             }
             group(Version)
@@ -623,14 +623,14 @@ page 50233 "Contrato Archive Card"
         {
             group("&Contrato")
             {
-                Caption = '&Project';
+                Caption = '&contrato';
                 Image = Job;
                 action(ContratoPlanningLines)
                 {
                     ApplicationArea = All;
-                    Caption = 'Project &Planning Lines';
+                    Caption = 'contrato &Planning Lines';
                     Image = JobLines;
-                    ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (Budget) or you can specify what you actually agreed with your customer that he should pay for the project (Billable).';
+                    ToolTip = 'View all planning lines for the contrato. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a contrato (Budget) or you can specify what you actually agreed with your customer that he should pay for the contrato (Billable).';
 
                     trigger OnAction()
                     var
@@ -665,7 +665,7 @@ page 50233 "Contrato Archive Card"
                     ApplicationArea = All;
                     Caption = '&Online Map';
                     Image = Map;
-                    ToolTip = 'View online map for addresses assigned to this project.';
+                    ToolTip = 'View online map for addresses assigned to this contrato.';
 
                     trigger OnAction()
                     begin
@@ -682,7 +682,7 @@ page 50233 "Contrato Archive Card"
                 Caption = '&Restore';
                 Ellipsis = true;
                 Image = Restore;
-                ToolTip = 'Transfer the contents of this archived version to the original project.';
+                ToolTip = 'Transfer the contents of this archived version to the original contrato.';
 
                 trigger OnAction()
                 var
@@ -704,7 +704,7 @@ page 50233 "Contrato Archive Card"
             }
             group(Category_Category7)
             {
-                Caption = 'Project', Comment = 'Generated from the PromotedActionCategories property index 6.';
+                Caption = 'contrato', Comment = 'Generated from the PromotedActionCategories property index 6.';
 
                 actionref("Co&mments_Promoted"; "Co&mments")
                 {

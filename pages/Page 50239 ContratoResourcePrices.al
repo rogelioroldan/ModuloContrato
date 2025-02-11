@@ -17,17 +17,17 @@ page 50239 "Contrato Resource Prices"
                 field("Contrato No."; Rec."Contrato No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the related project.';
+                    ToolTip = 'Specifies the number of the related contrato.';
                 }
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the project task if the resource price should only apply to a specific project task.';
+                    ToolTip = 'Specifies the number of the contrato task if the resource price should only apply to a specific contrato task.';
                 }
                 field(Type; Rec.Type)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies whether the price that you are setting up for the project should apply to a resource, to a resource group, or to all resources and resource groups.';
+                    ToolTip = 'Specifies whether the price that you are setting up for the contrato should apply to a resource, to a resource group, or to all resources and resource groups.';
                 }
                 field("Code"; Rec.Code)
                 {
@@ -57,7 +57,7 @@ page 50239 "Contrato Resource Prices"
                 field("Line Discount %"; Rec."Line Discount %")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies a line discount percent that applies to this resource, or resource group. This is useful, for example if you want invoice lines for the project to show a discount percent.';
+                    ToolTip = 'Specifies a line discount percent that applies to this resource, or resource group. This is useful, for example if you want invoice lines for the contrato to show a discount percent.';
                 }
                 field(Description; Rec.Description)
                 {
@@ -67,13 +67,13 @@ page 50239 "Contrato Resource Prices"
                 field("Apply Contrato Discount"; Rec."Apply Contrato Discount")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies whether to apply a discount to the project. Select this field if the discount percent for this resource or resource group should apply to the project, even if the discount percent is zero.';
+                    ToolTip = 'Specifies whether to apply a discount to the contrato. Select this field if the discount percent for this resource or resource group should apply to the contrato, even if the discount percent is zero.';
                     Visible = false;
                 }
                 field("Apply Contrato Price"; Rec."Apply Contrato Price")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies whether the price for this resource, or resource group, should apply to the project, even if the price is zero.';
+                    ToolTip = 'Specifies whether the price for this resource, or resource group, should apply to the contrato, even if the price is zero.';
                     Visible = false;
                 }
             }

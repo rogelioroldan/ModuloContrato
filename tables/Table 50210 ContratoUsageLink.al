@@ -1,18 +1,18 @@
 table 50210 "Contrato Usage Link"
 {
-    Caption = 'Project Usage Link';
+    Caption = 'contrato Usage Link';
     DataClassification = CustomerContent;
 
     fields
     {
         field(1; "Contrato No."; Code[20])
         {
-            Caption = 'Project No.';
+            Caption = 'contrato No.';
             TableRelation = Contrato;
         }
         field(2; "Contrato Task No."; Code[20])
         {
-            Caption = 'Project Task No.';
+            Caption = 'contrato Task No.';
             TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
         }
         field(3; "Line No."; Integer)

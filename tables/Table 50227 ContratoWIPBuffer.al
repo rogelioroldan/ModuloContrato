@@ -1,6 +1,6 @@
 table 50227 "Contrato WIP Buffer"
 {
-    Caption = 'Project WIP Buffer';
+    Caption = 'contrato WIP Buffer';
     ReplicateData = false;
     DataClassification = CustomerContent;
 
@@ -41,7 +41,7 @@ table 50227 "Contrato WIP Buffer"
         }
         field(7; "Contrato No."; Code[20])
         {
-            Caption = 'Project No.';
+            Caption = 'contrato No.';
             DataClassification = SystemMetadata;
             Editable = false;
             NotBlank = true;
@@ -49,12 +49,12 @@ table 50227 "Contrato WIP Buffer"
         }
         field(8; "Contrato Complete"; Boolean)
         {
-            Caption = 'Project Complete';
+            Caption = 'contrato Complete';
             DataClassification = SystemMetadata;
         }
         field(9; "Contrato WIP Total Entry No."; Integer)
         {
-            Caption = 'Project WIP Total Entry No.';
+            Caption = 'contrato WIP Total Entry No.';
             DataClassification = SystemMetadata;
             TableRelation = "Contrato WIP Total";
         }
@@ -68,7 +68,7 @@ table 50227 "Contrato WIP Buffer"
         {
             Caption = 'WIP Posting Method Used';
             DataClassification = SystemMetadata;
-            OptionCaption = 'Per Project,Per Project Ledger Entry';
+            OptionCaption = 'Per contrato,Per contrato Ledger Entry';
             OptionMembers = "Per Contrato","Per Contrato Ledger Entry";
         }
         field(71; "Dim Combination ID"; Integer)

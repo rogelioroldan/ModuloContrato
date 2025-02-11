@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Contrato_No_">
+          <DataField>Contrato_No_</DataField>
+        </Field>
+        <Field Name="Contrato_Planning_Date_Filter">
+          <DataField>Contrato_Planning_Date_Filter</DataField>
+        </Field>
+        <Field Name="Contrato_Posting_Date_Filter">
+          <DataField>Contrato_Posting_Date_Filter</DataField>
+        </Field>
+        <Field Name="USERID">
+          <DataField>USERID</DataField>
+        </Field>
+        <Field Name="TIME">
+          <DataField>TIME</DataField>
+        </Field>
+        <Field Name="FORMAT_TODAY_0_4_">
+          <DataField>FORMAT_TODAY_0_4_</DataField>
+        </Field>
+        <Field Name="STRSUBSTNO_Text000_Contrato__No___">
+          <DataField>STRSUBSTNO_Text000_Contrato__No___</DataField>
+        </Field>
+        <Field Name="CompanyInformation_Name">
+          <DataField>CompanyInformation_Name</DataField>
+        </Field>
+        <Field Name="BudgetOptionText">
+          <DataField>BudgetOptionText</DataField>
+        </Field>
+        <Field Name="Contrato_Task___No__of_Blank_Lines_">
+          <DataField>Contrato_Task___No__of_Blank_Lines_</DataField>
+        </Field>
+        <Field Name="PageGroupNo">
+          <DataField>PageGroupNo</DataField>
+        </Field>
+        <Field Name="PrintToExcel">
+          <DataField>PrintToExcel</DataField>
+        </Field>
+        <Field Name="Contrato_TABLECAPTION_____Filters______ContratoFilter">
+          <DataField>Contrato_TABLECAPTION_____Filters______ContratoFilter</DataField>
+        </Field>
+        <Field Name="ContratoFilter">
+          <DataField>ContratoFilter</DataField>
+        </Field>
+        <Field Name="Contrato_Task__TABLECAPTION_____Filters______ContratoTaskFilter">
+          <DataField>Contrato_Task__TABLECAPTION_____Filters______ContratoTaskFilter</DataField>
+        </Field>
+        <Field Name="ContratoTaskFilter">
+          <DataField>ContratoTaskFilter</DataField>
+        </Field>
+        <Field Name="Contrato__Description_2_">
+          <DataField>Contrato__Description_2_</DataField>
+        </Field>
+        <Field Name="Contrato_FIELDCAPTION__Ending_Date____________FORMAT_Contrato__Ending_Date__">
+          <DataField>Contrato_FIELDCAPTION__Ending_Date____________FORMAT_Contrato__Ending_Date__</DataField>
+        </Field>
+        <Field Name="Contrato_Description">
+          <DataField>Contrato_Description</DataField>
+        </Field>
+        <Field Name="Contrato_FIELDCAPTION__Starting_Date____________FORMAT_Contrato__Starting_Date__">
+          <DataField>Contrato_FIELDCAPTION__Starting_Date____________FORMAT_Contrato__Starting_Date__</DataField>
+        </Field>
+        <Field Name="PageHeader_Number">
+          <DataField>PageHeader_Number</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENOCaption">
+          <DataField>CurrReport_PAGENOCaption</DataField>
+        </Field>
+        <Field Name="Contrato_DescriptionCaption">
+          <DataField>Contrato_DescriptionCaption</DataField>
+        </Field>
+        <Field Name="VarianceCaption">
+          <DataField>VarianceCaption</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff__Budgeted_Total_Cost_Caption">
+          <DataField>ContratoDiffBuff__Budgeted_Total_Cost_Caption</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff__Total_Cost_Caption">
+          <DataField>ContratoDiffBuff__Total_Cost_Caption</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff__No__Caption">
+          <DataField>ContratoDiffBuff__No__Caption</DataField>
+        </Field>
+        <Field Name="FORMAT_ContratoDiffBuff_Type_Caption">
+          <DataField>FORMAT_ContratoDiffBuff_Type_Caption</DataField>
+        </Field>
+        <Field Name="Variance__Caption">
+          <DataField>Variance__Caption</DataField>
+        </Field>
+        <Field Name="PADSTR____2____Contrato_Task__Indentation_____Contrato_Task__Description_Control1480005Caption">
+          <DataField>PADSTR____2____Contrato_Task__Indentation_____Contrato_Task__Description_Control1480005Caption</DataField>
+        </Field>
+        <Field Name="Contrato_Task___Contrato_Task_No___Control1480006Caption">
+          <DataField>Contrato_Task___Contrato_Task_No___Control1480006Caption</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff_DescriptionCaption">
+          <DataField>ContratoDiffBuff_DescriptionCaption</DataField>
+        </Field>
+        <Field Name="Contrato_Task_Contrato_No_">
+          <DataField>Contrato_Task_Contrato_No_</DataField>
+        </Field>
+        <Field Name="Contrato_Task_Contrato_Task_No_">
+          <DataField>Contrato_Task_Contrato_Task_No_</DataField>
+        </Field>
+        <Field Name="PADSTR____2____Contrato_Task__Indentation_____Contrato_Task__Description">
+          <DataField>PADSTR____2____Contrato_Task__Indentation_____Contrato_Task__Description</DataField>
+        </Field>
+        <Field Name="Contrato_Task___Contrato_Task_No__">
+          <DataField>Contrato_Task___Contrato_Task_No__</DataField>
+        </Field>
+        <Field Name="Contrato_Task___Contrato_Task_Type__IN">
+          <DataField>Contrato_Task___Contrato_Task_Type__IN</DataField>
+        </Field>
+        <Field Name="Contrato__No__">
+          <DataField>Contrato__No__</DataField>
+        </Field>
+        <Field Name="PADSTR____2____Contrato_Task__Indentation_____Contrato_Task__Description_Control1480005">
+          <DataField>PADSTR____2____Contrato_Task__Indentation_____Contrato_Task__Description_Control1480005</DataField>
+        </Field>
+        <Field Name="Contrato_Task___Contrato_Task_No___Control1480006">
+          <DataField>Contrato_Task___Contrato_Task_No___Control1480006</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff__Total_Cost_">
+          <DataField>ContratoDiffBuff__Total_Cost_</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff__Total_Cost_Format">
+          <DataField>ContratoDiffBuff__Total_Cost_Format</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff__Budgeted_Total_Cost_">
+          <DataField>ContratoDiffBuff__Budgeted_Total_Cost_</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff__Budgeted_Total_Cost_Format">
+          <DataField>ContratoDiffBuff__Budgeted_Total_Cost_Format</DataField>
+        </Field>
+        <Field Name="Variance">
+          <DataField>Variance</DataField>
+        </Field>
+        <Field Name="VarianceFormat">
+          <DataField>VarianceFormat</DataField>
+        </Field>
+        <Field Name="Variance__">
+          <DataField>Variance__</DataField>
+        </Field>
+        <Field Name="Variance__Format">
+          <DataField>Variance__Format</DataField>
+        </Field>
+        <Field Name="FORMAT_ContratoDiffBuff_Type_">
+          <DataField>FORMAT_ContratoDiffBuff_Type_</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff__No__">
+          <DataField>ContratoDiffBuff__No__</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff_Description">
+          <DataField>ContratoDiffBuff_Description</DataField>
+        </Field>
+        <Field Name="Contrato_Task___Contrato_Task_Type_____Contrato_Task___Contrato_Task_Type___Posting">
+          <DataField>Contrato_Task___Contrato_Task_Type_____Contrato_Task___Contrato_Task_Type___Posting</DataField>
+        </Field>
+        <Field Name="PADSTR____2____Contrato_Task__Indentation_____Contrato_Task__Description_Control1480007">
+          <DataField>PADSTR____2____Contrato_Task__Indentation_____Contrato_Task__Description_Control1480007</DataField>
+        </Field>
+        <Field Name="Contrato_Task___Contrato_Task_No___Control1480008">
+          <DataField>Contrato_Task___Contrato_Task_No___Control1480008</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff__Total_Cost__Control1480013">
+          <DataField>ContratoDiffBuff__Total_Cost__Control1480013</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff__Total_Cost__Control1480013Format">
+          <DataField>ContratoDiffBuff__Total_Cost__Control1480013Format</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff__Budgeted_Total_Cost__Control1480014">
+          <DataField>ContratoDiffBuff__Budgeted_Total_Cost__Control1480014</DataField>
+        </Field>
+        <Field Name="ContratoDiffBuff__Budgeted_Total_Cost__Control1480014Format">
+          <DataField>ContratoDiffBuff__Budgeted_Total_Cost__Control1480014Format</DataField>
+        </Field>
+        <Field Name="Variance_Control1480015">
+          <DataField>Variance_Control1480015</DataField>
+        </Field>
+        <Field Name="Variance_Control1480015Format">
+          <DataField>Variance_Control1480015Format</DataField>
+        </Field>
+        <Field Name="Variance___Control1480016">
+          <DataField>Variance___Control1480016</DataField>
+        </Field>
+        <Field Name="Variance___Control1480016Format">
+          <DataField>Variance___Control1480016Format</DataField>
+        </Field>
+        <Field Name="Contrato_Task___Contrato_Task_Type__IN___Contrato_Task___Contrato_Task_Type___Total">
+          <DataField>Contrato_Task___Contrato_Task_Type__IN___Contrato_Task___Contrato_Task_Type___Total</DataField>
+        </Field>
+        <Field Name="Integer_Number">
+          <DataField>Integer_Number</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

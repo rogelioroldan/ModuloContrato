@@ -1,6 +1,6 @@
 page 50238 "Contrato No. of Prices FactBox"
 {
-    Caption = 'Project Details - No. of Prices';
+    Caption = 'contrato Details - No. of Prices';
     PageType = CardPart;
     SourceTable = Contrato;
 
@@ -11,8 +11,8 @@ page 50238 "Contrato No. of Prices FactBox"
             field("No."; Rec."No.")
             {
                 ApplicationArea = All;
-                Caption = 'Project No.';
-                ToolTip = 'Specifies the project number.';
+                Caption = 'contrato No.';
+                ToolTip = 'Specifies the contrato number.';
 
                 trigger OnDrillDown()
                 begin
@@ -44,7 +44,7 @@ page 50238 "Contrato No. of Prices FactBox"
                 ApplicationArea = All;
                 Caption = 'Item';
                 Visible = not ExtendedPriceEnabled;
-                ToolTip = 'Specifies the total usage cost of items associated with this project.';
+                ToolTip = 'Specifies the total usage cost of items associated with this contrato.';
                 ObsoleteState = Pending;
                 ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation.';
                 ObsoleteTag = '16.0';
@@ -63,7 +63,7 @@ page 50238 "Contrato No. of Prices FactBox"
                 ApplicationArea = All;
                 Caption = 'G/L Account';
                 Visible = not ExtendedPriceEnabled;
-                ToolTip = 'Specifies the sum of values in the Project G/L Account Prices window.';
+                ToolTip = 'Specifies the sum of values in the contrato G/L Account Prices window.';
                 ObsoleteState = Pending;
                 ObsoleteReason = 'Replaced by the new implementation (V16) of price calculation.';
                 ObsoleteTag = '16.0';
@@ -95,7 +95,7 @@ page 50238 "Contrato No. of Prices FactBox"
                 ApplicationArea = All;
                 Caption = 'Item';
                 Visible = ExtendedPriceEnabled;
-                ToolTip = 'Specifies the total usage cost of items associated with this project.';
+                ToolTip = 'Specifies the total usage cost of items associated with this contrato.';
 
                 trigger OnDrillDown()
                 begin
@@ -107,7 +107,7 @@ page 50238 "Contrato No. of Prices FactBox"
                 ApplicationArea = All;
                 Caption = 'G/L Account';
                 Visible = ExtendedPriceEnabled;
-                ToolTip = 'Specifies the sum of values in the Project G/L Account Prices window.';
+                ToolTip = 'Specifies the sum of values in the contrato G/L Account Prices window.';
 
                 trigger OnDrillDown()
                 begin

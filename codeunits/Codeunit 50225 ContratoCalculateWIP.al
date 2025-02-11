@@ -25,13 +25,13 @@ codeunit 50225 "Contrato Calculate WIP"
         Text002: Label 'Recognition %1', Comment = 'Recognition GUILDFORD, 10 CR';
         Text003: Label 'Completion %1', Comment = 'Completion GUILDFORD, 10 CR';
         ContratoComplete: Boolean;
-        Text004: Label 'WIP G/L entries posted for Project %1 cannot be reversed at an earlier date than %2.';
+        Text004: Label 'WIP G/L entries posted for Contrato %1 cannot be reversed at an earlier date than %2.';
         Text005: Label '..%1';
         HasGotGLSetup: Boolean;
         ContratoWIPTotalChanged: Boolean;
         WIPAmount: Decimal;
         RecognizedAllocationPercentage: Decimal;
-        CannotModifyAssociatedEntriesErr: Label 'The %1 cannot be modified because the project has associated project WIP entries.', Comment = '%1=The project task table name.';
+        CannotModifyAssociatedEntriesErr: Label 'The %1 cannot be modified because the contrato has associated contrato WIP entries.', Comment = '%1=The contrato task table name.';
 
     procedure ContratoCalcWIP(var Contrato: Record Contrato; WIPPostingDate2: Date; DocNo2: Code[20])
     var

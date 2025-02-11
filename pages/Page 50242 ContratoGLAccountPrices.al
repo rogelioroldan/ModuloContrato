@@ -15,12 +15,12 @@ page 50242 "Contrato G/L Account Prices"
                 field("Contrato No."; Rec."Contrato No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the related project.';
+                    ToolTip = 'Specifies the number of the related contrato.';
                 }
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the project task if the general ledger price should only apply to a specific project task.';
+                    ToolTip = 'Specifies the number of the contrato task if the general ledger price should only apply to a specific contrato task.';
                 }
                 field("G/L Account No."; Rec."G/L Account No.")
                 {
@@ -45,7 +45,7 @@ page 50242 "Contrato G/L Account Prices"
                 field("Line Discount %"; Rec."Line Discount %")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies a line discount percent that applies to expenses related to this general ledger account. This is useful, for example if you want invoice lines for the project to show a discount percent.';
+                    ToolTip = 'Specifies a line discount percent that applies to expenses related to this general ledger account. This is useful, for example if you want invoice lines for the contrato to show a discount percent.';
                 }
                 field("Unit Cost"; Rec."Unit Cost")
                 {

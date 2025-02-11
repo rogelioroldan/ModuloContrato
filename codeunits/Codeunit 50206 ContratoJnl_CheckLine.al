@@ -18,7 +18,7 @@ codeunit 50206 "Contrato Jnl.-Check Line"
         CombinationBlockedErr: Label 'The combination of dimensions used in %1 %2, %3, %4 is blocked. %5.', Comment = '%1 = table name, %2 = template name, %3 = batch name, %4 = line no., %5 - error text';
         DimensionCausedErr: Label 'A dimension used in %1 %2, %3, %4 has caused an error. %5.', Comment = '%1 = table name, %2 = template name, %3 = batch name, %4 = line no., %5 - error text';
         Text004: Label 'You must post more usage of %1 %2 in %3 %4 before you can post contrato journal %5 %6 = %7.', Comment = '%1=Item;%2=contratoJnlline."No.";%3=contrato;%4=contratoJnlline."contrato No.";%5=ProjectJnlline."Journal Batch Name";%6="Line No";%7=ProjectJnlline."Line No."';
-        WhseRemainQtyPickedErr: Label 'You cannot post usage for project number %1 with project planning line %2 because a quantity of %3 remains to be picked.', Comment = '%1 = 12345, %2 = 1000, %3 = 5';
+        WhseRemainQtyPickedErr: Label 'You cannot post usage for contrato number %1 with contrato planning line %2 because a quantity of %3 remains to be picked.', Comment = '%1 = 12345, %2 = 1000, %3 = 5';
 
     procedure RunCheck(var ContratoJnlLine: Record "Contrato Journal Line")
     begin

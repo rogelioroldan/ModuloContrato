@@ -1,6 +1,6 @@
 table 50205 "Contrato Journal Line"
 {
-    Caption = 'Project Journal Line';
+    Caption = 'contrato Journal Line';
     DataClassification = CustomerContent;
 
     fields
@@ -16,7 +16,7 @@ table 50205 "Contrato Journal Line"
         }
         field(3; "Contrato No."; Code[20])
         {
-            Caption = 'Project No.';
+            Caption = 'contrato No.';
             TableRelation = Contrato;
 
             trigger OnValidate()
@@ -636,7 +636,7 @@ table 50205 "Contrato Journal Line"
         }
         field(1000; "Contrato Task No."; Code[20])
         {
-            Caption = 'Project Task No.';
+            Caption = 'contrato Task No.';
             TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
 
             trigger OnValidate()
@@ -721,7 +721,7 @@ table 50205 "Contrato Journal Line"
         }
         field(1005; "Contrato Posting Only"; Boolean)
         {
-            Caption = 'Project Posting Only';
+            Caption = 'contrato Posting Only';
         }
         field(1006; "Line Discount %"; Decimal)
         {
@@ -852,7 +852,7 @@ table 50205 "Contrato Journal Line"
         field(1019; "Contrato Planning Line No."; Integer)
         {
             BlankZero = true;
-            Caption = 'Project Planning Line No.';
+            Caption = 'contrato Planning Line No.';
 
             trigger OnLookup()
             var
@@ -1162,7 +1162,7 @@ table 50205 "Contrato Journal Line"
         Text003: Label 'must be negative';
         Text004: Label '%1 is only editable when a %2 is defined.';
         Text006: Label '%1 cannot be changed when %2 is set.';
-        Text007: Label '%1 %2 is already linked to %3 %4. Hence %5 cannot be calculated correctly. Posting the line may update the linked %3 unexpectedly. Do you want to continue?', Comment = 'Project Journal Line project DEFAULT 30000 is already linked to Project Planning Line  DEERFIELD, 8 WP 1120 10000. Hence Remaining Qty. cannot be calculated correctly. Posting the line may update the linked %3 unexpectedly. Do you want to continue?';
+        Text007: Label '%1 %2 is already linked to %3 %4. Hence %5 cannot be calculated correctly. Posting the line may update the linked %3 unexpectedly. Do you want to continue?', Comment = 'contrato Journal Line contrato DEFAULT 30000 is already linked to contrato Planning Line  DEERFIELD, 8 WP 1120 10000. Hence Remaining Qty. cannot be calculated correctly. Posting the line may update the linked %3 unexpectedly. Do you want to continue?';
 
     protected var
         ContratoJnlTemplate: Record "Contrato Journal Template";

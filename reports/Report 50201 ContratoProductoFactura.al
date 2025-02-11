@@ -1,7 +1,7 @@
 report 50201 "Contrato Producto Factura"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './Local/Projects/Project/Reports/ContratoCostSuggestedBilling.rdlc';
+    RDLCLayout = './Local/contratos/contrato/Reports/ContratoCostSuggestedBilling.rdlc';
     Caption = 'Contrato Producto Factura';
     AdditionalSearchTerms = 'Contrato Producto Factura';
     UsageCategory = ReportsAndAnalysis;
@@ -55,7 +55,7 @@ report 50201 "Contrato Producto Factura"
         ContractPrice: Decimal;
         UsagePrice: Decimal;
         InvoicedPrice: Decimal;
-        Contrato_Cost_Suggested_BillingCaptionLbl: Label 'Project Cost Suggested Billing';
+        Contrato_Cost_Suggested_BillingCaptionLbl: Label 'contrato Cost Suggested Billing';
         CurrReport_PAGENOCaptionLbl: Label 'Page';
         ContractPriceCaptionLbl: Label 'Billable Price';
         UsagePriceCaptionLbl: Label 'Usage Amount';

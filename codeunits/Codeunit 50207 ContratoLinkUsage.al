@@ -10,8 +10,8 @@ codeunit 50207 "Contrato Link Usage"
         UOMMgt: Codeunit "Unit of Measure Management";
         CalledFromInvtPutawayPick: Boolean;
 
-        Text001: Label 'The specified %1 does not have %2 enabled.', Comment = 'The specified Project Planning Line does not have Usage Link enabled.';
-        ConfirmUsageWithBlankLineTypeQst: Label 'Usage will not be linked to the project planning line because the Line Type field is empty.\\Do you want to continue?';
+        Text001: Label 'The specified %1 does not have %2 enabled.', Comment = 'The specified contrato Planning Line does not have Usage Link enabled.';
+        ConfirmUsageWithBlankLineTypeQst: Label 'Usage will not be linked to the contrato planning line because the Line Type field is empty.\\Do you want to continue?';
 
     internal procedure ApplyUsage(ContratoLedgerEntry: Record "Contrato Ledger Entry"; ContratoJournalLine: Record "Contrato Journal Line"; IsCalledFromInventoryPutawayPick: Boolean)
     begin

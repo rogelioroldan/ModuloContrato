@@ -12,10 +12,10 @@ codeunit 50212 ContratoJnlManagement
         LastContratoJnlLine: Record "Contrato Journal Line";
         OpenFromBatch: Boolean;
 
-        Text000: Label 'PROJECT';
-        Text001: Label 'Project Journal';
+        Text000: Label 'contrato';
+        Text001: Label 'contrato Journal';
         Text002: Label 'RECURRING';
-        Text003: Label 'Recurring Project Journal';
+        Text003: Label 'Recurring contrato Journal';
         Text004: Label 'DEFAULT';
         Text005: Label 'Default Journal';
 

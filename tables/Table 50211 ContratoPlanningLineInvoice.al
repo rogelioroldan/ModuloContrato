@@ -9,19 +9,19 @@ table 50211 "Contrato Planning Line Invoice"
     {
         field(1; "Contrato No."; Code[20])
         {
-            Caption = 'Project No.';
+            Caption = 'contrato No.';
             Editable = false;
             TableRelation = Contrato;
         }
         field(2; "Contrato Task No."; Code[20])
         {
-            Caption = 'Project Task No.';
+            Caption = 'contrato Task No.';
             Editable = false;
             TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
         }
         field(3; "Contrato Planning Line No."; Integer)
         {
-            Caption = 'Project Planning Line No.';
+            Caption = 'contrato Planning Line No.';
             Editable = false;
             TableRelation = "Contrato Planning Line"."Line No." where("Contrato No." = field("Contrato No."),
                                                                   "Contrato Task No." = field("Contrato Task No."));
@@ -68,7 +68,7 @@ table 50211 "Contrato Planning Line Invoice"
         field(12; "Contrato Ledger Entry No."; Integer)
         {
             BlankZero = true;
-            Caption = 'Project Ledger Entry No.';
+            Caption = 'contrato Ledger Entry No.';
             Editable = false;
             TableRelation = "Contrato Ledger Entry";
         }

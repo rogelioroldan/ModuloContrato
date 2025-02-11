@@ -36,7 +36,7 @@ page 50202 "Contrato Invoices"
                 field("Quantity Transferred"; Rec."Quantity Transferred")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the quantity transferred from the project planning line to the invoice or credit memo.';
+                    ToolTip = 'Specifies the quantity transferred from the contrato planning line to the invoice or credit memo.';
                 }
                 field("Transferred Date"; Rec."Transferred Date")
                 {
@@ -63,7 +63,7 @@ page 50202 "Contrato Invoices"
                 field("Contrato Ledger Entry No."; Rec."Contrato Ledger Entry No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies a link to the project ledger entry that was created when the document was posted.';
+                    ToolTip = 'Specifies a link to the contrato ledger entry that was created when the document was posted.';
                     Visible = ShowDetails;
                 }
             }

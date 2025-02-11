@@ -1,7 +1,7 @@
 page 50236 "ContratoPlanningArchiveLines"
 {
     AutoSplitKey = true;
-    Caption = 'Project Planning Archive Lines';
+    Caption = 'contrato Planning Archive Lines';
     DataCaptionExpression = Caption();
     PageType = List;
     Editable = false;
@@ -17,13 +17,13 @@ page 50236 "ContratoPlanningArchiveLines"
                 field("Contrato No."; Rec."Contrato No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the related project.';
+                    ToolTip = 'Specifies the number of the related contratoo.';
                     Visible = false;
                 }
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the related project task.';
+                    ToolTip = 'Specifies the number of the related contrato task.';
                     Visible = false;
                 }
                 field("Line Type"; Rec."Line Type")
@@ -34,18 +34,18 @@ page 50236 "ContratoPlanningArchiveLines"
                 field("Usage Link"; Rec."Usage Link")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies whether the Usage Link field applies to the project planning line. When this check box is selected, usage entries are linked to the project planning line. Selecting this check box creates a link to the project planning line from places where usage has been posted, such as the project journal or a purchase line. You can select this check box only if the line type of the project planning line is Budget or Both Budget and Billable.';
+                    ToolTip = 'Specifies whether the Usage Link field applies to the contratoo planning line. When this check box is selected, usage entries are linked to thecontratot planning line. Selecting this check box creates a link to the contrato planning line from places where usage has been posted, such as the contrato journal or a purchase line. You can select this check box only if the line type of the contrato planning line is Budget or Both Budget and Billable.';
                     Visible = false;
                 }
                 field("Planning Date"; Rec."Planning Date")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the date of the planning line. You can use the planning date for filtering the totals of the project, for example, if you want to see the scheduled usage for a specific month of the year.';
+                    ToolTip = 'Specifies the date of the planning line. You can use the planning date for filtering the totals of the contrato, for example, if you want to see the scheduled usage for a specific month of the year.';
                 }
                 field("Planned Delivery Date"; Rec."Planned Delivery Date")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the date that is planned to deliver the item connected to the project planning line. For a resource, the planned delivery date is the date that the resource performs services with respect to the project.';
+                    ToolTip = 'Specifies the date that is planned to deliver the item connected to the contrato planning line. For a resource, the planned delivery date is the date that the resource performs services with respect to the contrato.';
                 }
                 field("Currency Date"; Rec."Currency Date")
                 {
@@ -122,7 +122,7 @@ page 50236 "ContratoPlanningArchiveLines"
                 field("Bin Code"; Rec."Bin Code")
                 {
                     ApplicationArea = Warehouse;
-                    ToolTip = 'Specifies the bin where the selected item will be put away or picked in warehouse and inventory processes. If you specify a bin code in the To-Project Bin Code field on the Location page, that bin will be suggested when you choose the location.';
+                    ToolTip = 'Specifies the bin where the selected item will be put away or picked in warehouse and inventory processes. If you specify a bin code in the To-contrato Bin Code field on the Location page, that bin will be suggested when you choose the location.';
                     Visible = false;
                 }
                 field("Work Type Code"; Rec."Work Type Code")
@@ -151,7 +151,7 @@ page 50236 "ContratoPlanningArchiveLines"
                 field("Reserved Quantity"; Rec."Reserved Quantity")
                 {
                     ApplicationArea = Reservation;
-                    ToolTip = 'Specifies the quantity of the item that is reserved for the project planning line.';
+                    ToolTip = 'Specifies the quantity of the item that is reserved for the contrato planning line.';
                     Visible = false;
                 }
                 field("Quantity (Base)"; Rec."Quantity (Base)")
@@ -163,7 +163,7 @@ page 50236 "ContratoPlanningArchiveLines"
                 field("Remaining Qty."; Rec."Remaining Qty.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the remaining quantity of the resource, item, or G/L Account that remains to complete a project. The quantity is calculated as the difference between Quantity and Qty. Posted.';
+                    ToolTip = 'Specifies the remaining quantity of the resource, item, or G/L Account that remains to complete a contrato. The quantity is calculated as the difference between Quantity and Qty. Posted.';
                     Visible = false;
                 }
                 field("Direct Unit Cost (LCY)"; Rec."Direct Unit Cost (LCY)")
@@ -187,12 +187,12 @@ page 50236 "ContratoPlanningArchiveLines"
                 field("Total Cost"; Rec."Total Cost")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the total cost for the planning line. The total cost is in the project currency, which comes from the Currency Code field in the Project Card.';
+                    ToolTip = 'Specifies the total cost for the planning line. The total cost is in the contrato currency, which comes from the Currency Code field in the contrato Card.';
                 }
                 field("Remaining Total Cost"; Rec."Remaining Total Cost")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the remaining total cost for the planning line. The total cost is in the project currency, which comes from the Currency Code field in the Project Card.';
+                    ToolTip = 'Specifies the remaining total cost for the planning line. The total cost is in the contratoo currency, which comes from the Currency Code field in theccontratot Card.';
                     Visible = false;
                 }
                 field("Total Cost (LCY)"; Rec."Total Cost (LCY)")
@@ -221,24 +221,24 @@ page 50236 "ContratoPlanningArchiveLines"
                 field("Line Amount"; Rec."Line Amount")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the amount that will be posted to the project ledger.';
+                    ToolTip = 'Specifies the amount that will be posted to the contrato ledger.';
                 }
                 field("Remaining Line Amount"; Rec."Remaining Line Amount")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the amount that will be posted to the project ledger.';
+                    ToolTip = 'Specifies the amount that will be posted to the contrato ledger.';
                     Visible = false;
                 }
                 field("Line Amount (LCY)"; Rec."Line Amount (LCY)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the amount in the local currency that will be posted to the project ledger.';
+                    ToolTip = 'Specifies the amount in the local currency that will be posted to the contrato ledger.';
                     Visible = false;
                 }
                 field("Remaining Line Amount (LCY)"; Rec."Remaining Line Amount (LCY)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the amount in the local currency that will be posted to the project ledger.';
+                    ToolTip = 'Specifies the amount in the local currency that will be posted to the contrato ledger.';
                     Visible = false;
                 }
                 field("Line Discount Amount"; Rec."Line Discount Amount")
@@ -256,7 +256,7 @@ page 50236 "ContratoPlanningArchiveLines"
                 field("Total Price"; Rec."Total Price")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the total price in the project currency on the planning line.';
+                    ToolTip = 'Specifies the total price in the contrato currency on the planning line.';
                     Visible = false;
                 }
                 field("Total Price (LCY)"; Rec."Total Price (LCY)")
@@ -268,36 +268,36 @@ page 50236 "ContratoPlanningArchiveLines"
                 field("Qty. Posted"; Rec."Qty. Posted")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the quantity that has been posted to the project ledger, if the Usage Link check box has been selected.';
+                    ToolTip = 'Specifies the quantity that has been posted to the contrato ledger, if the Usage Link check box has been selected.';
                     Visible = false;
                 }
                 field("Qty. to Transfer to Journal"; Rec."Qty. to Transfer to Journal")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the quantity you want to transfer to the project journal. Its default value is calculated as quantity minus the quantity that has already been posted, if the Apply Usage Link check box has been selected.';
+                    ToolTip = 'Specifies the quantity you want to transfer to the contrato journal. Its default value is calculated as quantity minus the quantity that has already been posted, if the Apply Usage Link check box has been selected.';
                 }
                 field("Posted Total Cost"; Rec."Posted Total Cost")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the total cost that has been posted to the project ledger, if the Usage Link check box has been selected.';
+                    ToolTip = 'Specifies the total cost that has been posted to the contrato ledger, if the Usage Link check box has been selected.';
                     Visible = false;
                 }
                 field("Posted Total Cost (LCY)"; Rec."Posted Total Cost (LCY)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the total cost (LCY) that has been posted to the project ledger, if the Usage Link check box has been selected.';
+                    ToolTip = 'Specifies the total cost (LCY) that has been posted to the contrato ledger, if the Usage Link check box has been selected.';
                     Visible = false;
                 }
                 field("Posted Line Amount"; Rec."Posted Line Amount")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the amount that has been posted to the project ledger. This field is only filled in if the Apply Usage Link check box selected on the project card.';
+                    ToolTip = 'Specifies the amount that has been posted to the contrato ledger. This field is only filled in if the Apply Usage Link check box selected on the contrato card.';
                     Visible = false;
                 }
                 field("Posted Line Amount (LCY)"; Rec."Posted Line Amount (LCY)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the amount in the local currency that has been posted to the project ledger. This field is only filled in if the Apply Usage Link check box selected on the project card.';
+                    ToolTip = 'Specifies the amount in the local currency that has been posted to the contrato ledger. This field is only filled in if the Apply Usage Link check box selected on the contrato card.';
                     Visible = false;
                 }
                 field("Qty. to Transfer to Invoice"; Rec."Qty. to Transfer to Invoice")
@@ -328,49 +328,49 @@ page 50236 "ContratoPlanningArchiveLines"
                 field("Serial No."; Rec."Serial No.")
                 {
                     ApplicationArea = ItemTracking;
-                    ToolTip = 'Specifies the serial number that is applied to the posted item if the planning line was created from the posting of a project journal line.';
+                    ToolTip = 'Specifies the serial number that is applied to the posted item if the planning line was created from the posting of a contrato journal line.';
                     Visible = false;
                 }
                 field("Lot No."; Rec."Lot No.")
                 {
                     ApplicationArea = ItemTracking;
-                    ToolTip = 'Specifies the lot number that is applied to the posted item if the planning line was created from the posting of a project journal line.';
+                    ToolTip = 'Specifies the lot number that is applied to the posted item if the planning line was created from the posting of a contrato journal line.';
                     Visible = false;
                 }
                 field("Contrato Contract Entry No."; Rec."Contrato Contract Entry No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the entry number of the project planning line that the sales line is linked to.';
+                    ToolTip = 'Specifies the entry number of the contrato planning line that the sales line is linked to.';
                     Visible = false;
                 }
                 field("Ledger Entry Type"; Rec."Ledger Entry Type")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the entry type of the project ledger entry associated with the planning line.';
+                    ToolTip = 'Specifies the entry type of the contrato ledger entry associated with the planning line.';
                     Visible = false;
                 }
                 field("Ledger Entry No."; Rec."Ledger Entry No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the entry number of the project ledger entry associated with the project planning line.';
+                    ToolTip = 'Specifies the entry number of the contrato ledger entry associated with the contrato planning line.';
                     Visible = false;
                 }
                 field("System-Created Entry"; Rec."System-Created Entry")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies that an entry has been created by Business Central and is related to a project ledger entry. The check box is selected automatically.';
+                    ToolTip = 'Specifies that an entry has been created by Business Central and is related to a contrato ledger entry. The check box is selected automatically.';
                     Visible = false;
                 }
                 field("Qty. Picked"; Rec."Qty. Picked")
                 {
                     ApplicationArea = Warehouse;
-                    ToolTip = 'Specifies the quantity of the item you have picked for the project planning line.';
+                    ToolTip = 'Specifies the quantity of the item you have picked for the contrato planning line.';
                     Visible = false;
                 }
                 field("Qty. Picked (Base)"; Rec."Qty. Picked (Base)")
                 {
                     ApplicationArea = Warehouse;
-                    ToolTip = 'Specifies the base quantity of the item you have picked for the project planning line.';
+                    ToolTip = 'Specifies the base quantity of the item you have picked for the contrato planning line.';
                     Visible = false;
                 }
                 field("Contract Line"; Rec."Contract Line")

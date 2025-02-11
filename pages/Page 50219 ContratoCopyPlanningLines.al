@@ -1,6 +1,6 @@
 page 50219 "Copy Contrato Planning Lines"
 {
-    Caption = 'Copy Project Planning Lines';
+    Caption = 'Copy contrato Planning Lines';
     PageType = StandardDialog;
 
     layout
@@ -13,9 +13,9 @@ page 50219 "Copy Contrato Planning Lines"
                 field(SourceContratoNo; SourceContratoNo)
                 {
                     ApplicationArea = All;
-                    Caption = 'Project No.';
+                    Caption = 'contrato No.';
                     TableRelation = Contrato;
-                    ToolTip = 'Specifies the project number.';
+                    ToolTip = 'Specifies the contrato number.';
 
                     trigger OnValidate()
                     var
@@ -30,8 +30,8 @@ page 50219 "Copy Contrato Planning Lines"
                 field(SourceContratoTaskNo; SourceContratoTaskNo)
                 {
                     ApplicationArea = All;
-                    Caption = 'Project Task No.';
-                    ToolTip = 'Specifies the project task number.';
+                    Caption = 'contrato Task No.';
+                    ToolTip = 'Specifies the contrato task number.';
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
@@ -78,9 +78,9 @@ page 50219 "Copy Contrato Planning Lines"
                 field(TargetContratoNo; TargetContratoNo)
                 {
                     ApplicationArea = All;
-                    Caption = 'Project No.';
+                    Caption = 'contrato No.';
                     TableRelation = Contrato;
-                    ToolTip = 'Specifies the project number.';
+                    ToolTip = 'Specifies the contrato number.';
 
                     trigger OnValidate()
                     var
@@ -95,8 +95,8 @@ page 50219 "Copy Contrato Planning Lines"
                 field(TargetContratoTaskNo; TargetContratoTaskNo)
                 {
                     ApplicationArea = All;
-                    Caption = 'Project Task No.';
-                    ToolTip = 'Specifies the project task number.';
+                    Caption = 'contrato Task No.';
+                    ToolTip = 'Specifies the contrato task number.';
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
@@ -125,13 +125,13 @@ page 50219 "Copy Contrato Planning Lines"
                 {
                     ApplicationArea = All;
                     Caption = 'Copy Quantity';
-                    ToolTip = 'Specifies that the quantities will be copied to the new project.';
+                    ToolTip = 'Specifies that the quantities will be copied to the new contrato.';
                 }
                 field(CopyContratoPrices; CopyContratoPrices)
                 {
                     ApplicationArea = All;
-                    Caption = 'Copy Project Prices';
-                    ToolTip = 'Specifies that item prices, resource prices, and G/L prices will be copied from the project that you specified on the Copy From FastTab.';
+                    Caption = 'Copy contrato Prices';
+                    ToolTip = 'Specifies that item prices, resource prices, and G/L prices will be copied from the contrato that you specified on the Copy From FastTab.';
                 }
             }
         }
@@ -164,8 +164,8 @@ page 50219 "Copy Contrato Planning Lines"
         SourceContratoTaskNo: Code[20];
         TargetContratoNo: Code[20];
         TargetContratoTaskNo: Code[20];
-        Text001: Label 'The project was successfully copied.';
-        Text003: Label '%1 %2 does not exist.', Comment = 'Project Task 1000 does not exist.';
+        Text001: Label 'The contrato was successfully copied.';
+        Text003: Label '%1 %2 does not exist.', Comment = 'contrato Task 1000 does not exist.';
         PlanningLineType: Option "Budget+Billable",Budget,Billable;
         FromDate: Date;
         ToDate: Date;

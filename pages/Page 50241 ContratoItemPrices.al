@@ -1,6 +1,6 @@
 page 50241 "Contrato Item Prices"
 {
-    Caption = 'Project Item Prices';
+    Caption = 'contrato Item Prices';
     PageType = List;
     SourceTable = "Contrato Item Price";
 
@@ -14,12 +14,12 @@ page 50241 "Contrato Item Prices"
                 field("Contrato No."; Rec."Contrato No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the related project.';
+                    ToolTip = 'Specifies the number of the related contrato.';
                 }
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the project task if the item price should only apply to a specific project task.';
+                    ToolTip = 'Specifies the number of the contrato task if the item price should only apply to a specific contrato task.';
                 }
                 field("Item No."; Rec."Item No.")
                 {
@@ -40,7 +40,7 @@ page 50241 "Contrato Item Prices"
                 field("Currency Code"; Rec."Currency Code")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the default currency code that is defined for a project. Project item prices will only be used if the currency code for the project item is the same as the currency code set for the project.';
+                    ToolTip = 'Specifies the default currency code that is defined for a contrato. contrato item prices will only be used if the currency code for the contrato item is the same as the currency code set for the contrato.';
                 }
                 field("Unit Price"; Rec."Unit Price")
                 {
@@ -55,7 +55,7 @@ page 50241 "Contrato Item Prices"
                 field("Line Discount %"; Rec."Line Discount %")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies a project-specific line discount percent that applies to this line. This is useful, for example, if you want invoice lines for the project to show a discount percent.';
+                    ToolTip = 'Specifies a contrato-specific line discount percent that applies to this line. This is useful, for example, if you want invoice lines for the contrato to show a discount percent.';
                 }
                 field(Description; Rec.Description)
                 {
@@ -65,13 +65,13 @@ page 50241 "Contrato Item Prices"
                 field("Apply Contrato Discount"; Rec."Apply Contrato Discount")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the check box for this field if the project-specific discount percent for this item should apply to the project. The default line discount for the line that is defined is included when project entries are created, but you can modify this value.';
+                    ToolTip = 'Specifies the check box for this field if the contrato-specific discount percent for this item should apply to the contrato. The default line discount for the line that is defined is included when contrato entries are created, but you can modify this value.';
                     Visible = false;
                 }
                 field("Apply Contrato Price"; Rec."Apply Contrato Price")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies whether the project-specific price or unit cost factor for this item should apply to the project. The default project price that is defined is included when project-related entries are created, but you can modify this value.';
+                    ToolTip = 'Specifies whether the contrato-specific price or unit cost factor for this item should apply to the contrato. The default contrato price that is defined is included when contrato-related entries are created, but you can modify this value.';
                     Visible = false;
                 }
             }

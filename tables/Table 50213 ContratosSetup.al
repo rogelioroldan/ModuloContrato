@@ -26,13 +26,13 @@ table 50213 "Contratos Setup"
         }
         field(5; "Default Contrato Posting Group"; Code[20])
         {
-            Caption = 'Default Project Posting Group';
+            Caption = 'Default contrato Posting Group';
             TableRelation = "Contrato Posting Group".Code;
         }
         field(6; "Default WIP Posting Method"; Option)
         {
             Caption = 'Default WIP Posting Method';
-            OptionCaption = 'Per Project,Per Project Ledger Entry';
+            OptionCaption = 'Per contrato,Per contrato Ledger Entry';
             OptionMembers = "Per Contrato","Per Contrato Ledger Entry";
         }
         field(7; "Allow Sched/Contract Lines Def"; Boolean)
@@ -42,7 +42,7 @@ table 50213 "Contratos Setup"
         }
         field(9; "Document No. Is Contrato No."; Boolean)
         {
-            Caption = 'Document No. Is Project No.';
+            Caption = 'Document No. Is contrato No.';
             InitValue = true;
         }
         field(10; "Default Task Billing Method"; Enum "Task Billing Method")
@@ -58,12 +58,12 @@ table 50213 "Contratos Setup"
         }
         field(40; "Contrato WIP Nos."; Code[20])
         {
-            Caption = 'Project WIP Nos.';
+            Caption = 'contrato WIP Nos.';
             TableRelation = "No. Series";
         }
         field(50; "Archive Contratos"; Option)
         {
-            Caption = 'Archive Projects';
+            Caption = 'Archive contratos';
             OptionCaption = 'Never,Question,Always';
             OptionMembers = Never,Question,Always;
             DataClassification = CustomerContent;
@@ -71,7 +71,7 @@ table 50213 "Contratos Setup"
         field(1001; "AutomaticUpdateContraItemCost"; Boolean)
         {
             AccessByPermission = TableData Item = R;
-            Caption = 'Automatic Update Project Item Cost';
+            Caption = 'Automatic Update contrato Item Cost';
         }
         field(7000; "Price List Nos."; Code[20])
         {

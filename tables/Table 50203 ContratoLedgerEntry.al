@@ -13,7 +13,7 @@ table 50203 "Contrato Ledger Entry"
         }
         field(2; "Contrato No."; Code[20])
         {
-            Caption = 'Project No.';
+            Caption = 'contrato No.';
             TableRelation = Contrato;
         }
         field(3; "Posting Date"; Date)
@@ -295,7 +295,7 @@ table 50203 "Contrato Ledger Entry"
         }
         field(1000; "Contrato Task No."; Code[20])
         {
-            Caption = 'Project Task No.';
+            Caption = 'contrato Task No.';
             TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
         }
         field(1001; "Line Amount (LCY)"; Decimal)

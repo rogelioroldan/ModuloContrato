@@ -1,12 +1,12 @@
 page 50232 "Contrato Archive List"
 {
-    AdditionalSearchTerms = 'Projects, Projects List, Archive, Contratos Archives';
+    AdditionalSearchTerms = 'contratos, contratos List, Archive, Contratos Archives';
     ApplicationArea = All;
-    Caption = 'Project Archives';
+    Caption = 'contrato Archives';
     CardPageID = "Contrato Archive Card";
     Editable = false;
     PageType = List;
-    QueryCategory = 'Project Archive List';
+    QueryCategory = 'contrato Archive List';
     SourceTable = "Contrato Archive";
     UsageCategory = History;
 
@@ -57,40 +57,40 @@ page 50232 "Contrato Archive List"
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies a short description of the project.';
+                    ToolTip = 'Specifies a short description of the contrato.';
                 }
                 field("Bill-to Customer No."; Rec."Bill-to Customer No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the customer who pays for the project.';
+                    ToolTip = 'Specifies the number of the customer who pays for the contrato.';
                 }
                 field(Status; Rec.Status)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies a status for the current project. You can change the status for the project as it progresses. Final calculations can be made on completed projects.';
+                    ToolTip = 'Specifies a status for the current contrato. You can change the status for the contrato as it progresses. Final calculations can be made on completed contratos.';
                 }
                 field("Person Responsible"; Rec."Person Responsible")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the name of the person responsible for the project. You can select a name from the list of resources available in the Resource List window. The name is copied from the No. field in the Resource table. You can choose the field to see a list of resources.';
+                    ToolTip = 'Specifies the name of the person responsible for the contrato. You can select a name from the list of resources available in the Resource List window. The name is copied from the No. field in the Resource table. You can choose the field to see a list of resources.';
                     Visible = false;
                 }
                 field("Next Invoice Date"; Rec."Next Invoice Date")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the next invoice date for the project.';
+                    ToolTip = 'Specifies the next invoice date for the contrato.';
                     Visible = false;
                 }
                 field("Contrato Posting Group"; Rec."Contrato Posting Group")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies a project posting group code for a project. To see the available codes, choose the field.';
+                    ToolTip = 'Specifies a contrato posting group code for a contrato. To see the available codes, choose the field.';
                     Visible = false;
                 }
                 field("Search Description"; Rec."Search Description")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the additional name for the project. The field is used for searching purposes.';
+                    ToolTip = 'Specifies the additional name for the contrato. The field is used for searching purposes.';
                 }
                 field("Project Manager"; Rec."Project Manager")
                 {
@@ -132,16 +132,16 @@ page 50232 "Contrato Archive List"
         {
             group("&Contrato")
             {
-                Caption = '&Project';
+                Caption = '&contrato';
                 Image = Job;
                 action("Contrato Task &Lines")
                 {
                     ApplicationArea = All;
-                    Caption = 'Project Task &Lines';
+                    Caption = 'contrato Task &Lines';
                     Image = TaskList;
                     RunObject = Page "Contrato Task Archive Lines";
                     RunPageLink = "Contrato No." = field("No."), "Version No." = field("Version No.");
-                    ToolTip = 'Plan how you want to set up your planning information. In this window you can specify the tasks involved in a project. To start planning a project or to post usage for a project, you must set up at least one project task.';
+                    ToolTip = 'Plan how you want to set up your planning information. In this window you can specify the tasks involved in a contrato. To start planning a contrato or to post usage for a contrato, you must set up at least one contrato task.';
                 }
                 action("Co&mments")
                 {
@@ -160,7 +160,7 @@ page 50232 "Contrato Archive List"
         {
             group(Category_Category5)
             {
-                Caption = 'Project', Comment = 'Generated from the PromotedActionCategories property index 4.';
+                Caption = 'contrato', Comment = 'Generated from the PromotedActionCategories property index 4.';
 
                 actionref("Co&mments_Promoted"; "Co&mments")
                 {

@@ -1,6 +1,6 @@
 page 50222 "Contrato Task Statistics"
 {
-    Caption = 'Project Task Statistics';
+    Caption = 'contrato Task Statistics';
     DataCaptionExpression = Rec.Caption();
     Editable = false;
     LinksAllowed = false;
@@ -32,7 +32,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget';
                             Editable = false;
-                            ToolTip = 'Specifies values for budgeted projects.';
+                            ToolTip = 'Specifies values for budgeted contratos.';
 
                             trigger OnDrillDown()
                             begin
@@ -44,7 +44,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage';
                             Editable = false;
-                            ToolTip = 'Specifies values for project usage.';
+                            ToolTip = 'Specifies values for contrato usage.';
 
                             trigger OnDrillDown()
                             begin
@@ -68,7 +68,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced';
                             Editable = false;
-                            ToolTip = 'Specifies values for invoiced projects.';
+                            ToolTip = 'Specifies values for invoiced contratos.';
 
                             trigger OnDrillDown()
                             begin
@@ -79,7 +79,7 @@ page 50222 "Contrato Task Statistics"
                         {
                             ApplicationArea = All;
                             Caption = 'Cost LCY';
-                            ToolTip = 'Specifies the project cost amount, expressed in the local currency.';
+                            ToolTip = 'Specifies the contrato cost amount, expressed in the local currency.';
                             Visible = false;
                         }
                         field(ScheduleCostLCY; CL[1])
@@ -87,7 +87,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget';
                             Editable = false;
-                            ToolTip = 'Specifies values for budgeted projects.';
+                            ToolTip = 'Specifies values for budgeted contratos.';
 
                             trigger OnDrillDown()
                             begin
@@ -99,7 +99,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage';
                             Editable = false;
-                            ToolTip = 'Specifies values for project usage.';
+                            ToolTip = 'Specifies values for contrato usage.';
 
                             trigger OnDrillDown()
                             begin
@@ -123,7 +123,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced';
                             Editable = false;
-                            ToolTip = 'Specifies values for invoiced projects.';
+                            ToolTip = 'Specifies values for invoiced contratos.';
 
                             trigger OnDrillDown()
                             begin
@@ -142,7 +142,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget';
                             Editable = false;
-                            ToolTip = 'Specifies values for budgeted projects.';
+                            ToolTip = 'Specifies values for budgeted contratos.';
 
                             trigger OnDrillDown()
                             begin
@@ -154,7 +154,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage';
                             Editable = false;
-                            ToolTip = 'Specifies values for project usage.';
+                            ToolTip = 'Specifies values for contrato usage.';
 
                             trigger OnDrillDown()
                             begin
@@ -178,7 +178,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced';
                             Editable = false;
-                            ToolTip = 'Specifies values for invoiced projects.';
+                            ToolTip = 'Specifies values for invoiced contratos.';
 
                             trigger OnDrillDown()
                             begin
@@ -199,7 +199,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Price LCY (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies budgeted prices for the project task that are related to items, expressed in the local currency.';
+                            ToolTip = 'Specifies budgeted prices for the contrato task that are related to items, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -211,7 +211,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Price LCY (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies usage prices for the project task that are related to items, expressed in the local currency.';
+                            ToolTip = 'Specifies usage prices for the contrato task that are related to items, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -223,7 +223,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Price LCY (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies billable prices for the project task that are related to items, expressed in the local currency.';
+                            ToolTip = 'Specifies billable prices for the contrato task that are related to items, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -235,7 +235,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Price LCY (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies invoiced prices for the project task that are related to items, expressed in the local currency.';
+                            ToolTip = 'Specifies invoiced prices for the contrato task that are related to items, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -252,7 +252,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Cost LCY (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies budgeted costs for the project task that are related to items, expressed in the local currency.';
+                            ToolTip = 'Specifies budgeted costs for the contrato task that are related to items, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -264,7 +264,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Cost LCY (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies usage costs for the project task that are related to items, expressed in the local currency.';
+                            ToolTip = 'Specifies usage costs for the contrato task that are related to items, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -276,7 +276,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Cost LCY (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies billable costs for the project task that are related to items, expressed in the local currency.';
+                            ToolTip = 'Specifies billable costs for the contrato task that are related to items, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -288,7 +288,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Cost LCY (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies invoiced costs for the project task that are related to items, expressed in the local currency.';
+                            ToolTip = 'Specifies invoiced costs for the contrato task that are related to items, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -305,7 +305,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Profit LCY (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies budgeted profits for the project task that are related to items, expressed in the local currency.';
+                            ToolTip = 'Specifies budgeted profits for the contrato task that are related to items, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -317,7 +317,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Profit LCY (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies usage profits for the project task that are related to items, expressed in the local currency.';
+                            ToolTip = 'Specifies usage profits for the contrato task that are related to items, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -329,7 +329,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Profit LCY (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies billable profits for the project task that are related to items, expressed in the local currency.';
+                            ToolTip = 'Specifies billable profits for the contrato task that are related to items, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -341,7 +341,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Profit LCY (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies invoiced profits for the project task that are related to items, expressed in the local currency.';
+                            ToolTip = 'Specifies invoiced profits for the contrato task that are related to items, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -362,7 +362,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Price LCY (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies budgeted prices for the project task that are related to G/L accounts, expressed in the local currency.';
+                            ToolTip = 'Specifies budgeted prices for the contrato task that are related to G/L accounts, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -374,7 +374,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Price LCY (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies usage prices for the project task that are related to G/L accounts, expressed in the local currency.';
+                            ToolTip = 'Specifies usage prices for the contrato task that are related to G/L accounts, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -386,7 +386,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Price LCY (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies billable prices for the project task that are related to G/L accounts, expressed in the local currency.';
+                            ToolTip = 'Specifies billable prices for the contrato task that are related to G/L accounts, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -398,7 +398,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Price LCY (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies invoiced prices for the project task that are related to G/L accounts, expressed in the local currency.';
+                            ToolTip = 'Specifies invoiced prices for the contrato task that are related to G/L accounts, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -415,7 +415,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Cost LCY (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies budgeted costs for the project task that are related to G/L accounts, expressed in the local currency.';
+                            ToolTip = 'Specifies budgeted costs for the contrato task that are related to G/L accounts, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -427,7 +427,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Cost LCY (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies usage costs for the project task that are related to G/L accounts, expressed in the local currency.';
+                            ToolTip = 'Specifies usage costs for the contrato task that are related to G/L accounts, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -439,7 +439,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Cost LCY (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies billable costs for the project task that are related to G/L accounts, expressed in the local currency.';
+                            ToolTip = 'Specifies billable costs for the contrato task that are related to G/L accounts, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -451,7 +451,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Cost LCY (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies invoiced costs for the project task that are related to G/L accounts, expressed in the local currency.';
+                            ToolTip = 'Specifies invoiced costs for the contrato task that are related to G/L accounts, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -468,7 +468,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Profit LCY (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies budgeted profits for the project task that are related to G/L accounts, expressed in the local currency.';
+                            ToolTip = 'Specifies budgeted profits for the contrato task that are related to G/L accounts, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -480,7 +480,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Profit LCY (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies usage profits for the project task that are related to G/L accounts, expressed in the local currency.';
+                            ToolTip = 'Specifies usage profits for the contrato task that are related to G/L accounts, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -492,7 +492,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Profit LCY (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies billable profits for the project task that are related to G/L accounts, expressed in the local currency.';
+                            ToolTip = 'Specifies billable profits for the contrato task that are related to G/L accounts, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -504,7 +504,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Profit LCY (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies invoiced profits for the project task that are related to G/L accounts, expressed in the local currency.';
+                            ToolTip = 'Specifies invoiced profits for the contrato task that are related to G/L accounts, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -525,7 +525,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Price LCY (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all budgeted prices for the project task, expressed in the local currency.';
+                            ToolTip = 'Specifies all budgeted prices for the contrato task, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -537,7 +537,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Price LCY (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all usage prices for the project task, expressed in the local currency.';
+                            ToolTip = 'Specifies all usage prices for the contrato task, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -549,7 +549,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Price LCY (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all billable prices for the project task, expressed in the local currency.';
+                            ToolTip = 'Specifies all billable prices for the contrato task, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -561,7 +561,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Price LCY (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all invoiced prices for the project task, expressed in the local currency.';
+                            ToolTip = 'Specifies all invoiced prices for the contrato task, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -578,7 +578,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Cost LCY (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all budgeted costs for the project task, expressed in the local currency.';
+                            ToolTip = 'Specifies all budgeted costs for the contrato task, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -590,7 +590,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Cost LCY (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all usage costs for the project task, expressed in the local currency.';
+                            ToolTip = 'Specifies all usage costs for the contrato task, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -602,7 +602,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Cost LCY (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all billable costs for the project task, expressed in the local currency.';
+                            ToolTip = 'Specifies all billable costs for the contrato task, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -614,7 +614,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Cost LCY (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all invoiced costs for the project task, expressed in the local currency.';
+                            ToolTip = 'Specifies all invoiced costs for the contrato task, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -631,7 +631,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Profit LCY (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all budgeted profits for the project task, expressed in the local currency.';
+                            ToolTip = 'Specifies all budgeted profits for the contrato task, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -643,7 +643,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Profit LCY (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all usage profits for the project task, expressed in the local currency.';
+                            ToolTip = 'Specifies all usage profits for the contrato task, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -655,7 +655,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Profit LCY (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all billable profits for the project task, expressed in the local currency.';
+                            ToolTip = 'Specifies all billable profits for the contrato task, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -667,7 +667,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Profit LCY (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all invoiced profits for the project task, expressed in the local currency.';
+                            ToolTip = 'Specifies all invoiced profits for the contrato task, expressed in the local currency.';
 
                             trigger OnDrillDown()
                             begin
@@ -698,7 +698,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget';
                             Editable = false;
-                            ToolTip = 'Specifies values for budgeted projects.';
+                            ToolTip = 'Specifies values for budgeted contratos.';
 
                             trigger OnDrillDown()
                             begin
@@ -710,7 +710,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage';
                             Editable = false;
-                            ToolTip = 'Specifies values for project usage.';
+                            ToolTip = 'Specifies values for contrato usage.';
 
                             trigger OnDrillDown()
                             begin
@@ -734,7 +734,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced';
                             Editable = false;
-                            ToolTip = 'Specifies values for invoiced projects.';
+                            ToolTip = 'Specifies values for invoiced contratos.';
 
                             trigger OnDrillDown()
                             begin
@@ -751,7 +751,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget';
                             Editable = false;
-                            ToolTip = 'Specifies values for budgeted projects.';
+                            ToolTip = 'Specifies values for budgeted contratos.';
 
                             trigger OnDrillDown()
                             begin
@@ -763,7 +763,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage';
                             Editable = false;
-                            ToolTip = 'Specifies values for project usage.';
+                            ToolTip = 'Specifies values for contrato usage.';
 
                             trigger OnDrillDown()
                             begin
@@ -787,7 +787,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced';
                             Editable = false;
-                            ToolTip = 'Specifies values for invoiced projects.';
+                            ToolTip = 'Specifies values for invoiced contratos.';
 
                             trigger OnDrillDown()
                             begin
@@ -804,7 +804,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget';
                             Editable = false;
-                            ToolTip = 'Specifies values for budgeted projects.';
+                            ToolTip = 'Specifies values for budgeted contratos.';
 
                             trigger OnDrillDown()
                             begin
@@ -816,7 +816,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage';
                             Editable = false;
-                            ToolTip = 'Specifies values for project usage.';
+                            ToolTip = 'Specifies values for contrato usage.';
 
                             trigger OnDrillDown()
                             begin
@@ -840,7 +840,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced';
                             Editable = false;
-                            ToolTip = 'Specifies values for invoiced projects.';
+                            ToolTip = 'Specifies values for invoiced contratos.';
 
                             trigger OnDrillDown()
                             begin
@@ -861,7 +861,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Price (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies budgeted prices for the project task that are related to items.';
+                            ToolTip = 'Specifies budgeted prices for the contrato task that are related to items.';
 
                             trigger OnDrillDown()
                             begin
@@ -873,7 +873,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Price (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies usage prices for the project task that are related to items.';
+                            ToolTip = 'Specifies usage prices for the contrato task that are related to items.';
 
                             trigger OnDrillDown()
                             begin
@@ -885,7 +885,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Price (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies billable prices for the project task that are related to items.';
+                            ToolTip = 'Specifies billable prices for the contrato task that are related to items.';
 
                             trigger OnDrillDown()
                             begin
@@ -897,7 +897,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Price (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies invoiced prices for the project task that are related to items.';
+                            ToolTip = 'Specifies invoiced prices for the contrato task that are related to items.';
 
                             trigger OnDrillDown()
                             begin
@@ -914,7 +914,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Cost (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies budgeted costs for the project tasks that are related to items.';
+                            ToolTip = 'Specifies budgeted costs for the contrato tasks that are related to items.';
 
                             trigger OnDrillDown()
                             begin
@@ -926,7 +926,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Cost (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies usage costs for the project task that are related to items.';
+                            ToolTip = 'Specifies usage costs for the contrato task that are related to items.';
 
                             trigger OnDrillDown()
                             begin
@@ -938,7 +938,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Cost (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies billable costs for the project task that are related to items.';
+                            ToolTip = 'Specifies billable costs for the contrato task that are related to items.';
 
                             trigger OnDrillDown()
                             begin
@@ -950,7 +950,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Cost (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies invoiced costs for the project task that are related to items.';
+                            ToolTip = 'Specifies invoiced costs for the contrato task that are related to items.';
 
                             trigger OnDrillDown()
                             begin
@@ -967,7 +967,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Profit (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies budgeted profits for the project task that are related to items.';
+                            ToolTip = 'Specifies budgeted profits for the contrato task that are related to items.';
 
                             trigger OnDrillDown()
                             begin
@@ -979,7 +979,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Profit (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies usage profits for the project task that are related to items.';
+                            ToolTip = 'Specifies usage profits for the contrato task that are related to items.';
 
                             trigger OnDrillDown()
                             begin
@@ -991,7 +991,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Profit (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies billable profits for the project task that are related to items.';
+                            ToolTip = 'Specifies billable profits for the contrato task that are related to items.';
 
                             trigger OnDrillDown()
                             begin
@@ -1003,7 +1003,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Profit (Item)';
                             Editable = false;
-                            ToolTip = 'Specifies invoiced profits for the project task that are related to items.';
+                            ToolTip = 'Specifies invoiced profits for the contrato task that are related to items.';
 
                             trigger OnDrillDown()
                             begin
@@ -1024,7 +1024,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Price (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies budgeted prices for the project task that are related to G/L accounts.';
+                            ToolTip = 'Specifies budgeted prices for the contrato task that are related to G/L accounts.';
 
                             trigger OnDrillDown()
                             begin
@@ -1036,7 +1036,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Price (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies usage prices for the project task that are related to G/L accounts.';
+                            ToolTip = 'Specifies usage prices for the contratoo task that are related to G/L accounts.';
 
                             trigger OnDrillDown()
                             begin
@@ -1048,7 +1048,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Price (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies billable prices for the project task that are related to G/L accounts.';
+                            ToolTip = 'Specifies billable prices for the contratoo task that are related to G/L accounts.';
 
                             trigger OnDrillDown()
                             begin
@@ -1060,7 +1060,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Price (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies invoiced prices for the project task that are related to G/L accounts.';
+                            ToolTip = 'Specifies invoiced prices for the contrato task that are related to G/L accounts.';
 
                             trigger OnDrillDown()
                             begin
@@ -1077,7 +1077,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Cost (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies budgeted costs for the project task that are related to G/L accounts.';
+                            ToolTip = 'Specifies budgeted costs for the contrato task that are related to G/L accounts.';
 
                             trigger OnDrillDown()
                             begin
@@ -1089,7 +1089,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Cost (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies usage costs for the project task that are related to G/L accounts.';
+                            ToolTip = 'Specifies usage costs for the contrato task that are related to G/L accounts.';
 
                             trigger OnDrillDown()
                             begin
@@ -1101,7 +1101,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Cost (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies billable costs for the project task that are related to items.';
+                            ToolTip = 'Specifies billable costs for the contrato task that are related to items.';
 
                             trigger OnDrillDown()
                             begin
@@ -1113,7 +1113,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Cost (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies invoiced costs for the project task that are related to G/L accounts.';
+                            ToolTip = 'Specifies invoiced costs for the contrato task that are related to G/L accounts.';
 
                             trigger OnDrillDown()
                             begin
@@ -1130,7 +1130,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Profit (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies budgeted profits for the project task that are related to G/L accounts.';
+                            ToolTip = 'Specifies budgeted profits for the contrato task that are related to G/L accounts.';
 
                             trigger OnDrillDown()
                             begin
@@ -1142,7 +1142,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Profit (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies usage profits for the project task that are related to G/L accounts.';
+                            ToolTip = 'Specifies usage profits for the contrato task that are related to G/L accounts.';
 
                             trigger OnDrillDown()
                             begin
@@ -1154,7 +1154,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Profit (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies billable profits for the project task that are related to G/L accounts.';
+                            ToolTip = 'Specifies billable profits for the contrato task that are related to G/L accounts.';
 
                             trigger OnDrillDown()
                             begin
@@ -1166,7 +1166,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Profit (G/L Acc.)';
                             Editable = false;
-                            ToolTip = 'Specifies invoiced profits for the project task that are related to G/L accounts.';
+                            ToolTip = 'Specifies invoiced profits for the contrato task that are related to G/L accounts.';
 
                             trigger OnDrillDown()
                             begin
@@ -1187,7 +1187,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Price (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all budgeted prices for the project task.';
+                            ToolTip = 'Specifies all budgeted prices for the contrato task.';
 
                             trigger OnDrillDown()
                             begin
@@ -1199,7 +1199,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Price (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all usage prices for the project task.';
+                            ToolTip = 'Specifies all usage prices for the contrato task.';
 
                             trigger OnDrillDown()
                             begin
@@ -1211,7 +1211,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Price (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all billable prices for the project task.';
+                            ToolTip = 'Specifies all billable prices for the contrato task.';
 
                             trigger OnDrillDown()
                             begin
@@ -1223,7 +1223,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Price (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all invoiced prices for the project task.';
+                            ToolTip = 'Specifies all invoiced prices for the contrato task.';
 
                             trigger OnDrillDown()
                             begin
@@ -1240,7 +1240,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Cost (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all budgeted costs for the project task.';
+                            ToolTip = 'Specifies all budgeted costs for the contrato task.';
 
                             trigger OnDrillDown()
                             begin
@@ -1252,7 +1252,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Cost (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all usage costs for the project task.';
+                            ToolTip = 'Specifies all usage costs for the contrato task.';
 
                             trigger OnDrillDown()
                             begin
@@ -1264,7 +1264,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Cost (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all billable costs for the project task.';
+                            ToolTip = 'Specifies all billable costs for the contrato task.';
 
                             trigger OnDrillDown()
                             begin
@@ -1276,7 +1276,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Cost (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all invoiced costs for the project task.';
+                            ToolTip = 'Specifies all invoiced costs for the contrato task.';
 
                             trigger OnDrillDown()
                             begin
@@ -1293,7 +1293,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Budget Profit (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all budgeted profits for the project task.';
+                            ToolTip = 'Specifies all budgeted profits for the contrato task.';
 
                             trigger OnDrillDown()
                             begin
@@ -1305,7 +1305,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Usage Profit (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all usage profits for the project task.';
+                            ToolTip = 'Specifies all usage profits for the contrato task.';
 
                             trigger OnDrillDown()
                             begin
@@ -1317,7 +1317,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Billable Profit (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all billable profits for the project task.';
+                            ToolTip = 'Specifies all billable profits for the contrato task.';
 
                             trigger OnDrillDown()
                             begin
@@ -1329,7 +1329,7 @@ page 50222 "Contrato Task Statistics"
                             ApplicationArea = All;
                             Caption = 'Invoiced Profit (Total)';
                             Editable = false;
-                            ToolTip = 'Specifies all invoiced profits for the project task.';
+                            ToolTip = 'Specifies all invoiced profits for the contrato task.';
 
                             trigger OnDrillDown()
                             begin

@@ -16,13 +16,13 @@ page 50203 "Contrato Planning Lines"
                 field("Contrato No."; Rec."Contrato No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the related project.';
+                    ToolTip = 'Specifies the number of the related contrato.';
                     Visible = false;
                 }
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the related project task.';
+                    ToolTip = 'Specifies the number of the related contrato task.';
                     Visible = ContratoTaskNoVisible;
                 }
                 field("Line Type"; Rec."Line Type")
@@ -33,7 +33,7 @@ page 50203 "Contrato Planning Lines"
                 field("Usage Link"; Rec."Usage Link")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies whether the Usage Link field applies to the project planning line. When this check box is selected, usage entries are linked to the project planning line. Selecting this check box creates a link to the project planning line from places where usage has been posted, such as the project journal or a purchase line. You can select this check box only if the line type of the project planning line is Budget or Both Budget and Billable.';
+                    ToolTip = 'Specifies whether the Usage Link field applies to the contrato planning line. When this check box is selected, usage entries are linked to the contrato planning line. Selecting this check box creates a link to the contrato planning line from places where usage has been posted, such as the contrato journal or a purchase line. You can select this check box only if the line type of the contrato planning line is Budget or Both Budget and Billable.';
                     Visible = false;
 
                     trigger OnValidate()
@@ -45,7 +45,7 @@ page 50203 "Contrato Planning Lines"
                 {
                     ApplicationArea = All;
                     Editable = PlanningDateEditable;
-                    ToolTip = 'Specifies the date of the planning line. You can use the planning date for filtering the totals of the project, for example, if you want to see the scheduled usage for a specific month of the year.';
+                    ToolTip = 'Specifies the date of the planning line. You can use the planning date for filtering the totals of the contrato, for example, if you want to see the scheduled usage for a specific month of the year.';
 
                     trigger OnValidate()
                     begin
@@ -55,7 +55,7 @@ page 50203 "Contrato Planning Lines"
                 field("Planned Delivery Date"; Rec."Planned Delivery Date")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the date that is planned to deliver the item connected to the project planning line. For a resource, the planned delivery date is the date that the resource performs services with respect to the project.';
+                    ToolTip = 'Specifies the date that is planned to deliver the item connected to the contrato planning line. For a resource, the planned delivery date is the date that the resource performs services with respect to the contrato.';
                 }
                 field("Currency Date"; Rec."Currency Date")
                 {
@@ -227,7 +227,7 @@ page 50203 "Contrato Planning Lines"
                 {
                     ApplicationArea = Assembly;
                     BlankZero = true;
-                    ToolTip = 'Specifies how many units of the project planning line quantity that you want to supply by assembly.';
+                    ToolTip = 'Specifies how many units of the contrato planning line quantity that you want to supply by assembly.';
                     Visible = true;
 
                     trigger OnDrillDown()
@@ -243,7 +243,7 @@ page 50203 "Contrato Planning Lines"
                 field("Reserved Quantity"; Rec."Reserved Quantity")
                 {
                     ApplicationArea = Reservation;
-                    ToolTip = 'Specifies the quantity of the item that is reserved for the project planning line.';
+                    ToolTip = 'Specifies the quantity of the item that is reserved for the contrato planning line.';
                     Visible = false;
                 }
                 field("Quantity (Base)"; Rec."Quantity (Base)")
@@ -255,7 +255,7 @@ page 50203 "Contrato Planning Lines"
                 field("Remaining Qty."; Rec."Remaining Qty.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the remaining quantity of the resource, item, or G/L Account that remains to complete a project. The quantity is calculated as the difference between Quantity and Qty. Posted.';
+                    ToolTip = 'Specifies the remaining quantity of the resource, item, or G/L Account that remains to complete a contrato. The quantity is calculated as the difference between Quantity and Qty. Posted.';
                     Visible = false;
                 }
                 field("Direct Unit Cost (LCY)"; Rec."Direct Unit Cost (LCY)")
@@ -280,12 +280,12 @@ page 50203 "Contrato Planning Lines"
                 field("Total Cost"; Rec."Total Cost")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the total cost for the planning line. The total cost is in the project currency, which comes from the Currency Code field in the Contrato Card.';
+                    ToolTip = 'Specifies the total cost for the planning line. The total cost is in the contrato currency, which comes from the Currency Code field in the Contrato Card.';
                 }
                 field("Remaining Total Cost"; Rec."Remaining Total Cost")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the remaining total cost for the planning line. The total cost is in the project currency, which comes from the Currency Code field in the Contrato Card.';
+                    ToolTip = 'Specifies the remaining total cost for the planning line. The total cost is in the contrato currency, which comes from the Currency Code field in the Contrato Card.';
                     Visible = false;
                 }
                 field("Total Cost (LCY)"; Rec."Total Cost (LCY)")
@@ -316,24 +316,24 @@ page 50203 "Contrato Planning Lines"
                 {
                     ApplicationArea = All;
                     Editable = LineAmountEditable;
-                    ToolTip = 'Specifies the amount that will be posted to the project ledger.';
+                    ToolTip = 'Specifies the amount that will be posted to the contrato ledger.';
                 }
                 field("Remaining Line Amount"; Rec."Remaining Line Amount")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the amount that will be posted to the project ledger.';
+                    ToolTip = 'Specifies the amount that will be posted to the contrato ledger.';
                     Visible = false;
                 }
                 field("Line Amount (LCY)"; Rec."Line Amount (LCY)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the amount in the local currency that will be posted to the project ledger.';
+                    ToolTip = 'Specifies the amount in the local currency that will be posted to the contrato ledger.';
                     Visible = false;
                 }
                 field("Remaining Line Amount (LCY)"; Rec."Remaining Line Amount (LCY)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the amount in the local currency that will be posted to the project ledger.';
+                    ToolTip = 'Specifies the amount in the local currency that will be posted to the contrato ledger.';
                     Visible = false;
                 }
                 field("Line Discount Amount"; Rec."Line Discount Amount")
@@ -353,7 +353,7 @@ page 50203 "Contrato Planning Lines"
                 field("Total Price"; Rec."Total Price")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the total price in the project currency on the planning line.';
+                    ToolTip = 'Specifies the total price in the contrato currency on the planning line.';
                     Visible = false;
                 }
                 field("Total Price (LCY)"; Rec."Total Price (LCY)")
@@ -365,36 +365,36 @@ page 50203 "Contrato Planning Lines"
                 field("Qty. Posted"; Rec."Qty. Posted")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the quantity that has been posted to the project ledger, if the Usage Link check box has been selected.';
+                    ToolTip = 'Specifies the quantity that has been posted to the contrato ledger, if the Usage Link check box has been selected.';
                     Visible = false;
                 }
                 field("Qty. to Transfer to Journal"; Rec."Qty. to Transfer to Journal")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the quantity you want to transfer to the project journal. Its default value is calculated as quantity minus the quantity that has already been posted, if the Apply Usage Link check box has been selected.';
+                    ToolTip = 'Specifies the quantity you want to transfer to the contrato journal. Its default value is calculated as quantity minus the quantity that has already been posted, if the Apply Usage Link check box has been selected.';
                 }
                 field("Posted Total Cost"; Rec."Posted Total Cost")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the total cost that has been posted to the project ledger, if the Usage Link check box has been selected.';
+                    ToolTip = 'Specifies the total cost that has been posted to the contrato ledger, if the Usage Link check box has been selected.';
                     Visible = false;
                 }
                 field("Posted Total Cost (LCY)"; Rec."Posted Total Cost (LCY)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the total cost (LCY) that has been posted to the project ledger, if the Usage Link check box has been selected.';
+                    ToolTip = 'Specifies the total cost (LCY) that has been posted to the contrato ledger, if the Usage Link check box has been selected.';
                     Visible = false;
                 }
                 field("Posted Line Amount"; Rec."Posted Line Amount")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the amount that has been posted to the project ledger. This field is only filled in if the Apply Usage Link check box selected on the project card.';
+                    ToolTip = 'Specifies the amount that has been posted to the contrato ledger. This field is only filled in if the Apply Usage Link check box selected on the contrato card.';
                     Visible = false;
                 }
                 field("Posted Line Amount (LCY)"; Rec."Posted Line Amount (LCY)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the amount in the local currency that has been posted to the project ledger. This field is only filled in if the Apply Usage Link check box selected on the project card.';
+                    ToolTip = 'Specifies the amount in the local currency that has been posted to the contrato ledger. This field is only filled in if the Apply Usage Link check box selected on the contrato card.';
                     Visible = false;
                 }
                 field("Qty. Transferred to Invoice"; Rec."Qty. Transferred to Invoice")
@@ -468,37 +468,37 @@ page 50203 "Contrato Planning Lines"
                 field("Serial No."; Rec."Serial No.")
                 {
                     ApplicationArea = ItemTracking;
-                    ToolTip = 'Specifies the serial number that is applied to the posted item if the planning line was created from the posting of a project journal line.';
+                    ToolTip = 'Specifies the serial number that is applied to the posted item if the planning line was created from the posting of a contrato journal line.';
                     Visible = false;
                 }
                 field("Lot No."; Rec."Lot No.")
                 {
                     ApplicationArea = ItemTracking;
-                    ToolTip = 'Specifies the lot number that is applied to the posted item if the planning line was created from the posting of a project journal line.';
+                    ToolTip = 'Specifies the lot number that is applied to the posted item if the planning line was created from the posting of a contrato journal line.';
                     Visible = false;
                 }
                 field("Contrato Contract Entry No."; Rec."Contrato Contract Entry No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the entry number of the project planning line that the sales line is linked to.';
+                    ToolTip = 'Specifies the entry number of the contrato planning line that the sales line is linked to.';
                     Visible = false;
                 }
                 field("Ledger Entry Type"; Rec."Ledger Entry Type")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the entry type of the project ledger entry associated with the planning line.';
+                    ToolTip = 'Specifies the entry type of the contrato ledger entry associated with the planning line.';
                     Visible = false;
                 }
                 field("Ledger Entry No."; Rec."Ledger Entry No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the entry number of the project ledger entry associated with the project planning line.';
+                    ToolTip = 'Specifies the entry number of the contrato ledger entry associated with the contrato planning line.';
                     Visible = false;
                 }
                 field("System-Created Entry"; Rec."System-Created Entry")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies that an entry has been created by Business Central and is related to a project ledger entry. The check box is selected automatically.';
+                    ToolTip = 'Specifies that an entry has been created by Business Central and is related to a contrato ledger entry. The check box is selected automatically.';
                     Visible = false;
                 }
                 field(Overdue; Rec.Overdue())
@@ -506,19 +506,19 @@ page 50203 "Contrato Planning Lines"
                     ApplicationArea = All;
                     Caption = 'Overdue';
                     Editable = false;
-                    ToolTip = 'Specifies that the project is overdue. ';
+                    ToolTip = 'Specifies that the contrato is overdue. ';
                     Visible = false;
                 }
                 field("Qty. Picked"; Rec."Qty. Picked")
                 {
                     ApplicationArea = Warehouse;
-                    ToolTip = 'Specifies the quantity of the item you have picked for the project planning line.';
+                    ToolTip = 'Specifies the quantity of the item you have picked for the contrato planning line.';
                     Visible = false;
                 }
                 field("Qty. Picked (Base)"; Rec."Qty. Picked (Base)")
                 {
                     ApplicationArea = Warehouse;
-                    ToolTip = 'Specifies the base quantity of the item you have picked for the project planning line.';
+                    ToolTip = 'Specifies the base quantity of the item you have picked for the contrato planning line.';
                     Visible = false;
                 }
                 field("Contract Line"; Rec."Contract Line")
@@ -558,7 +558,7 @@ page 50203 "Contrato Planning Lines"
                     Caption = 'Linked Contrato Ledger E&ntries';
                     Image = JobLedger;
                     ShortCutKey = 'Ctrl+F7';
-                    ToolTip = 'View project ledger entries related to the project planning line.';
+                    ToolTip = 'View contrato ledger entries related to the contrato planning line.';
 
                     trigger OnAction()
                     var
@@ -617,7 +617,7 @@ page 50203 "Contrato Planning Lines"
                     Image = CalendarChanged;
                     RunObject = Codeunit "ContratoPlanningLine-Calendar";
                     RunPageOnRec = true;
-                    ToolTip = 'Create a calendar appointment for the resource on each project planning line.';
+                    ToolTip = 'Create a calendar appointment for the resource on each contrato planning line.';
                     Visible = CanSendToCalendar;
                 }
                 action("Put-away/Pick Lines/Movement Lines")
@@ -630,7 +630,7 @@ page 50203 "Contrato Planning Lines"
                                   "Source Subtype" = const("0"),
                                   "Source No." = field("Contrato No."),
                                   "Source Line No." = field("Contrato Contract Entry No.");
-                    ToolTip = 'View the list of ongoing inventory put-aways, picks, or movements for the project.';
+                    ToolTip = 'View the list of ongoing inventory put-aways, picks, or movements for the contrato.';
                 }
                 action(ItemTrackingLines)
                 {
@@ -638,7 +638,7 @@ page 50203 "Contrato Planning Lines"
                     Caption = 'Item Tracking Lines';
                     Image = ItemTrackingLines;
                     ShortCutKey = 'Ctrl+Alt+I';
-                    ToolTip = 'View or edit serial numbers and lot numbers that are assigned to the item on the project planning line.';
+                    ToolTip = 'View or edit serial numbers and lot numbers that are assigned to the item on the contrato planning line.';
 
                     trigger OnAction()
                     begin
@@ -655,7 +655,7 @@ page 50203 "Contrato Planning Lines"
                         ApplicationArea = Assembly;
                         Image = AssemblyBOM;
                         Caption = 'Assemble-to-Order Lines';
-                        ToolTip = 'View any linked assembly order lines if the documents represents an assemble-to-order project.';
+                        ToolTip = 'View any linked assembly order lines if the documents represents an assemble-to-order contrato.';
 
                         trigger OnAction()
                         begin
@@ -676,7 +676,7 @@ page 50203 "Contrato Planning Lines"
                     ApplicationArea = All;
                     Caption = 'Create Contrato &Journal Lines';
                     Image = PostOrder;
-                    ToolTip = 'Use a batch Contrato to help you create sales journal lines for the involved project planning lines.';
+                    ToolTip = 'Use a batch Contrato to help you create sales journal lines for the involved contrato planning lines.';
 
                     trigger OnAction()
                     var
@@ -710,7 +710,7 @@ page 50203 "Contrato Planning Lines"
                     RunObject = Page "Contrato Journal";
                     RunPageLink = "Contrato No." = field("Contrato No."),
                                   "Contrato Task No." = field("Contrato Task No.");
-                    ToolTip = 'Open the project journal, for example, to post usage for a project.';
+                    ToolTip = 'Open the contrato journal, for example, to post usage for a contrato.';
                 }
                 separator(Action16)
                 {
@@ -721,7 +721,7 @@ page 50203 "Contrato Planning Lines"
                     Caption = 'Create &Sales Invoice';
                     Ellipsis = true;
                     Image = JobSalesInvoice;
-                    ToolTip = 'Use a batch Contrato to help you create sales invoices for the involved project tasks.';
+                    ToolTip = 'Use a batch Contrato to help you create sales invoices for the involved contrato tasks.';
 
                     trigger OnAction()
                     var
@@ -739,7 +739,7 @@ page 50203 "Contrato Planning Lines"
                     Caption = 'Create Sales &Credit Memo';
                     Ellipsis = true;
                     Image = CreditMemo;
-                    ToolTip = 'Create a sales credit memo for the selected project planning line.';
+                    ToolTip = 'Create a sales credit memo for the selected contrato planning line.';
 
                     trigger OnAction()
                     var
@@ -757,7 +757,7 @@ page 50203 "Contrato Planning Lines"
                     Caption = 'Sales &Invoices/Credit Memos';
                     Ellipsis = true;
                     Image = GetSourceDoc;
-                    ToolTip = 'View sales invoices or sales credit memos that are related to the selected project.';
+                    ToolTip = 'View sales invoices or sales credit memos that are related to the selected contrato.';
 
                     trigger OnAction()
                     begin
@@ -773,7 +773,7 @@ page 50203 "Contrato Planning Lines"
                     Caption = '&Reserve';
                     Ellipsis = true;
                     Image = Reserve;
-                    ToolTip = 'Reserve one or more units of the item on the project planning line, either from inventory or from incoming supply.';
+                    ToolTip = 'Reserve one or more units of the item on the contrato planning line, either from inventory or from incoming supply.';
 
                     trigger OnAction()
                     begin
@@ -800,7 +800,7 @@ page 50203 "Contrato Planning Lines"
                     ApplicationArea = Planning;
                     Caption = '&Demand Overview';
                     Image = Forecast;
-                    ToolTip = 'Get an overview of demand planning related to projects, such as the availability of spare parts or other items that you may use in a project. For example, you can determine whether the item you need is in stock, and if it is not, you can determine when the item will be in stock.';
+                    ToolTip = 'Get an overview of demand planning related to contratos, such as the availability of spare parts or other items that you may use in a contrato. For example, you can determine whether the item you need is in stock, and if it is not, you can determine when the item will be in stock.';
 
                     trigger OnAction()
                     var
@@ -850,7 +850,7 @@ page 50203 "Contrato Planning Lines"
                 Caption = 'Contrato Actual to Budget (Cost)';
                 Image = "Report";
                 RunObject = Report "ContratoActualtoBudget(Cost)";
-                ToolTip = 'Compare budgeted and usage amounts for selected projects. All lines of the selected project show quantity, total cost, and line amount.';
+                ToolTip = 'Compare budgeted and usage amounts for selected contratos. All lines of the selected contrato show quantity, total cost, and line amount.';
             }
             action("<Report Contrato Actual to Budget (Price)>")
             {
@@ -858,7 +858,7 @@ page 50203 "Contrato Planning Lines"
                 Caption = 'Contrato Actual to Budget (Price)';
                 Image = "Report";
                 RunObject = Report "ContratoActualtoBudget(Price)";
-                ToolTip = 'Compare the actual price of your projects to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
+                ToolTip = 'Compare the actual price of your contratos to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
             }
             action("Contrato Analysis")
             {
@@ -866,7 +866,7 @@ page 50203 "Contrato Planning Lines"
                 Caption = 'Contrato Analysis';
                 Image = "Report";
                 RunObject = Report "Contrato Analysis";
-                ToolTip = 'Analyze the project, such as the scheduled prices, usage prices, and contract prices, and then compares the three sets of prices.';
+                ToolTip = 'Analyze the contrato, such as the scheduled prices, usage prices, and contract prices, and then compares the three sets of prices.';
             }
             action("Contrato - Planning Lines")
             {
@@ -874,7 +874,7 @@ page 50203 "Contrato Planning Lines"
                 Caption = 'Contrato - Planning Lines';
                 Image = "Report";
                 RunObject = Report "Contrato - Planning Lines";
-                ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (Budget) or you can specify what you actually agreed with your customer that he should pay for the project (Billable).';
+                ToolTip = 'View all planning lines for the contrato. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a contrato (Budget) or you can specify what you actually agreed with your customer that he should pay for the contrato (Billable).';
             }
             action("Contrato - Suggested Billing")
             {
@@ -882,17 +882,17 @@ page 50203 "Contrato Planning Lines"
                 Caption = 'Contrato - Suggested Billing';
                 Image = "Report";
                 RunObject = Report "ContratoCostSuggestedBilling";
-                ToolTip = 'View a list of all projects, grouped by customer, how much the customer has already been invoiced, and how much remains to be invoiced, that is, the suggested billing.';
+                ToolTip = 'View a list of all contratos, grouped by customer, how much the customer has already been invoiced, and how much remains to be invoiced, that is, the suggested billing.';
             }
             action("Contratos - Transaction Detail")
             {
                 ApplicationArea = All;
-                Caption = 'Projects - Transaction Detail';
+                Caption = 'contratos - Transaction Detail';
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
                 RunObject = Report "ContratoCostTransactionDetail";
-                ToolTip = 'View all postings with entries for a selected project for a selected period, which have been charged to a certain project. At the end of each project list, the amounts are totaled separately for the Sales and Usage entry types.';
+                ToolTip = 'View all postings with entries for a selected contrato for a selected period, which have been charged to a certain contrato. At the end of each contrato list, the amounts are totaled separately for the Sales and Usage entry types.';
             }
         }
         area(Promoted)
@@ -1025,7 +1025,7 @@ page 50203 "Contrato Planning Lines"
 
     var
         ContratoCreateInvoice: Codeunit "Contrato Create-Invoice";
-        Text001: Label 'This project planning line was automatically generated. Do you want to continue?';
+        Text001: Label 'This contrato planning line was automatically generated. Do you want to continue?';
         Text002: Label 'The %1 was successfully transferred to a %2.';
         ExtendedPriceEnabled: Boolean;
         VariantCodeMandatory: Boolean;

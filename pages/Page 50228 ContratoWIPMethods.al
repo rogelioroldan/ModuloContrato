@@ -22,7 +22,7 @@ page 50228 "Contrato WIP Methods"
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the description of the project WIP method. If the WIP method is system-defined, you cannot edit the description.';
+                    ToolTip = 'Specifies the description of the contrato WIP method. If the WIP method is system-defined, you cannot edit the description.';
                 }
                 field("Recognized Costs"; Rec."Recognized Costs")
                 {
@@ -47,7 +47,7 @@ page 50228 "Contrato WIP Methods"
                 field(Valid; Rec.Valid)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies whether a WIP method can be associated with a project when you are creating or modifying a project. If you select this check box in the Contrato WIP Methods window, you can then set the method as a default WIP method in the Projects Setup window.';
+                    ToolTip = 'Specifies whether a WIP method can be associated with a contrato when you are creating or modifying a contrato. If you select this check box in the Contrato WIP Methods window, you can then set the method as a default WIP method in the contratos Setup window.';
                 }
                 field("System Defined"; Rec."System Defined")
                 {

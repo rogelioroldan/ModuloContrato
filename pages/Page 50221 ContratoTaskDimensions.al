@@ -1,6 +1,6 @@
 page 50221 "Contrato Task Dimensions"
 {
-    Caption = 'Project Task Dimensions';
+    Caption = 'contrato Task Dimensions';
     DelayedInsert = true;
     PageType = List;
     SourceTable = "Contrato Task Dimension";

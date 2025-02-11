@@ -1,6 +1,6 @@
 page 50223 "Copy Contrato Tasks"
 {
-    Caption = 'Copy Project Tasks';
+    Caption = 'Copy contrato Tasks';
     PageType = StandardDialog;
 
     layout
@@ -13,9 +13,9 @@ page 50223 "Copy Contrato Tasks"
                 field(SourceContratoNo; SourceContratoNo)
                 {
                     ApplicationArea = All;
-                    Caption = 'Project No.';
+                    Caption = 'contrato No.';
                     TableRelation = Contrato;
-                    ToolTip = 'Specifies the project number.';
+                    ToolTip = 'Specifies the contrato number.';
 
                     trigger OnValidate()
                     begin
@@ -29,8 +29,8 @@ page 50223 "Copy Contrato Tasks"
                 field(FromContratoTaskNo; FromContratoTaskNo)
                 {
                     ApplicationArea = All;
-                    Caption = 'Project Task No. from';
-                    ToolTip = 'Specifies the first project task number to be copied from. Only planning lines with a project task number equal to or higher than the number specified in this field will be included.';
+                    Caption = 'contrato Task No. from';
+                    ToolTip = 'Specifies the first contrato task number to be copied from. Only planning lines with a contrato task number equal to or higher than the number specified in this field will be included.';
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
@@ -55,8 +55,8 @@ page 50223 "Copy Contrato Tasks"
                 field(ToContratoTaskNo; ToContratoTaskNo)
                 {
                     ApplicationArea = All;
-                    Caption = 'Project Task No. to';
-                    ToolTip = 'Specifies the last project task number to be copied from. Only planning lines with a project task number equal to or lower than the number specified in this field will be included.';
+                    Caption = 'contrato Task No. to';
+                    ToolTip = 'Specifies the last contrato task number to be copied from. Only planning lines with a contrato task number equal to or lower than the number specified in this field will be included.';
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
@@ -82,8 +82,8 @@ page 50223 "Copy Contrato Tasks"
                 {
                     ApplicationArea = All;
                     Caption = 'Source';
-                    OptionCaption = 'Project Planning Lines,Project Ledger Entries,None';
-                    ToolTip = 'Specifies the basis on which you want the planning lines to be copied. If, for example, you want the planning lines to reflect actual usage and invoicing of items, resources, and general ledger expenses on the project you copy from, then select Project Ledger Entries in this field.';
+                    OptionCaption = 'contrato Planning Lines,contrato Ledger Entries,None';
+                    ToolTip = 'Specifies the basis on which you want the planning lines to be copied. If, for example, you want the planning lines to reflect actual usage and invoicing of items, resources, and general ledger expenses on the contrato you copy from, then select contrato Ledger Entries in this field.';
 
                     trigger OnValidate()
                     begin
@@ -104,7 +104,7 @@ page 50223 "Copy Contrato Tasks"
                     Caption = 'Incl. Ledger Entry Line Type';
                     Enabled = LedgerEntryLineTypeEnable;
                     OptionCaption = 'Usage+Sale,Usage,Sale';
-                    ToolTip = 'Specifies how to copy project ledger entries. Usage+Sale: All project ledger entries are copied. Entries of type Usage are copied to new planning lines of type Budget. Entries of type Sale are copied to new planning lines of type Billable. Usage: All project ledger entries of type Usage are copied to new planning lines of type Budget. Sale: All project ledger entries of type Sale are copied to new planning lines of type Billable.';
+                    ToolTip = 'Specifies how to copy contrato ledger entries. Usage+Sale: All contrato ledger entries are copied. Entries of type Usage are copied to new planning lines of type Budget. Entries of type Sale are copied to new planning lines of type Billable. Usage: All contrato ledger entries of type Usage are copied to new planning lines of type Budget. Sale: All contrato ledger entries of type Sale are copied to new planning lines of type Billable.';
                 }
                 field(FromDate; FromDate)
                 {
@@ -125,9 +125,9 @@ page 50223 "Copy Contrato Tasks"
                 field(TargetContratoNo; TargetContratoNo)
                 {
                     ApplicationArea = All;
-                    Caption = 'Project No.';
+                    Caption = 'contrato No.';
                     TableRelation = Contrato;
-                    ToolTip = 'Specifies the project number.';
+                    ToolTip = 'Specifies the contrato number.';
 
                     trigger OnValidate()
                     begin
@@ -143,13 +143,13 @@ page 50223 "Copy Contrato Tasks"
                 {
                     ApplicationArea = All;
                     Caption = 'Copy Quantity';
-                    ToolTip = 'Specifies that the quantities will be copied to the new project.';
+                    ToolTip = 'Specifies that the quantities will be copied to the new contrato.';
                 }
                 field(CopyDimensions; CopyDimensions)
                 {
                     ApplicationArea = Dimensions;
                     Caption = 'Copy Dimensions';
-                    ToolTip = 'Specifies that the dimensions will be copied to the new project task.';
+                    ToolTip = 'Specifies that the dimensions will be copied to the new contrato task.';
                 }
             }
         }
@@ -188,8 +188,8 @@ page 50223 "Copy Contrato Tasks"
     end;
 
     var
-        Text001: Label 'The project was successfully copied.';
-        Text003: Label '%1 %2 does not exist.', Comment = 'Project Task 1000 does not exist.';
+        Text001: Label 'The contrato was successfully copied.';
+        Text003: Label '%1 %2 does not exist.', Comment = 'contrato Task 1000 does not exist.';
         PlanningLineTypeEnable: Boolean;
         LedgerEntryLineTypeEnable: Boolean;
         Text004: Label 'Provide a valid source %1.';

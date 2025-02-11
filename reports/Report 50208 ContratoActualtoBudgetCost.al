@@ -1,9 +1,9 @@
 report 50208 "ContratoActualtoBudget(Cost)"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './Local/Projects/Project/Reports/ContratoActualtoBudgetCost.rdlc';
+    RDLCLayout = './Local/contratos/contrato/Reports/ContratoActualtoBudgetCost.rdlc';
     ApplicationArea = All;
-    Caption = 'Project Actual to Budget (Cost)';
+    Caption = 'contrato Actual to Budget (Cost)';
     AdditionalSearchTerms = 'Contrato Actual to Budget (Cost)';
     UsageCategory = ReportsAndAnalysis;
 
@@ -410,40 +410,40 @@ report 50208 "ContratoActualtoBudget(Cost)"
         ContratoTaskFilter: Text;
         Variance: Decimal;
         "Variance%": Decimal;
-        Text000: Label 'Actual Cost to Budget Cost for Project %1';
+        Text000: Label 'Actual Cost to Budget Cost for contrato %1';
         Text001: Label 'Budgeted Amounts are per the Budget';
         Text002: Label 'Budgeted Amounts are per the Contract';
         BudgetAmountsPer: Option Schedule,Contract;
         BudgetOptionText: Text[50];
         PrintToExcel: Boolean;
-        Text003: Label 'When printing to Excel, you must select only one Project.';
+        Text003: Label 'When printing to Excel, you must select only one contrato.';
         Text101: Label 'Data';
-        Text102: Label 'Project Actual to Budget (Cost)';
+        Text102: Label 'contrato Actual to Budget (Cost)';
         Text103: Label 'Company Name';
         Text104: Label 'Report No.';
         Text105: Label 'Report Name';
         Text106: Label 'User ID';
         Text107: Label 'Date / Time';
-        Text108: Label 'Project Filters';
-        Text109: Label 'Project Task Filters';
+        Text108: Label 'contrato Filters';
+        Text109: Label 'contrato Task Filters';
         Text110: Label 'Variance';
         Text111: Label 'Percent Variance';
         Text112: Label 'Budget Option';
-        Text113: Label 'Project Information:';
+        Text113: Label 'contrato Information:';
         Text114: Label 'Starting / Ending Dates';
         Text115: Label 'Actual Total Cost';
         PageGroupNo: Integer;
         NextPageGroupNo: Integer;
         CurrReport_PAGENOCaptionLbl: Label 'Page';
-        Contrato_DescriptionCaptionLbl: Label 'Project Description';
+        Contrato_DescriptionCaptionLbl: Label 'contrato Description';
         VarianceCaptionLbl: Label 'Variance';
         ContratoDiffBuff__Budgeted_Total_Cost_CaptionLbl: Label 'Budgeted Total Cost';
         ContratoDiffBuff__Total_Cost_CaptionLbl: Label 'Actual Total Cost';
         ContratoDiffBuff__No__CaptionLbl: Label 'No.';
         FORMAT_ContratoDiffBuff_Type_CaptionLbl: Label 'Type';
         Variance__CaptionLbl: Label 'Percent Variance';
-        PADSTR____2____Contrato_Task__Indentation_____Contrato_Task__Description_Control1480005CaptionLbl: Label 'Project Task Description';
-        Contrato_Task___Contrato_Task_No___Control1480006CaptionLbl: Label 'Project Task No.';
+        PADSTR____2____Contrato_Task__Indentation_____Contrato_Task__Description_Control1480005CaptionLbl: Label 'contrato Task Description';
+        Contrato_Task___Contrato_Task_No___Control1480006CaptionLbl: Label 'contrato Task No.';
         ContratoDiffBuff_DescriptionCaptionLbl: Label 'Description';
 
     procedure GetItemDescription(Type: Option Resource,Item,"G/L Account"; No: Code[20]): Text[50]

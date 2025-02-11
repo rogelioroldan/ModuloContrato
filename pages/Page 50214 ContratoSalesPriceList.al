@@ -1,6 +1,6 @@
 page 50214 "Sales Contrato Price Lists"
 {
-    Caption = 'Sales Project Price Lists';
+    Caption = 'Sales contrato Price Lists';
     CardPageID = "Sales Price List";
     Editable = false;
     PageType = List;
@@ -58,7 +58,7 @@ page 50214 "Sales Contrato Price Lists"
                     ApplicationArea = All;
                     Caption = 'Assign-to Group';
                     Visible = false;
-                    ToolTip = 'Specifies whether the prices come from groups of customers, vendors or projects.';
+                    ToolTip = 'Specifies whether the prices come from groups of customers, vendors or contratos.';
                 }
                 field(SourceType; CurrRec."Source Type")
                 {
@@ -75,8 +75,8 @@ page 50214 "Sales Contrato Price Lists"
                 field(ParentSourceNo; CurrRec."Parent Source No.")
                 {
                     ApplicationArea = All;
-                    Caption = 'Assign-to Project No.';
-                    ToolTip = 'Specifies the project to which the prices are assigned. If you choose an entity, the price list will be used only for that entity.';
+                    Caption = 'Assign-to contrato No.';
+                    ToolTip = 'Specifies the contrato to which the prices are assigned. If you choose an entity, the price list will be used only for that entity.';
                 }
                 field("Starting Date"; CurrRec."Starting Date")
                 {

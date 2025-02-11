@@ -14,7 +14,7 @@ page 50208 "Contrato Cost Factbox"
             {
                 ApplicationArea = All;
                 Caption = 'Contrato No.';
-                ToolTip = 'Specifies the project number.';
+                ToolTip = 'Specifies the contrato number.';
 
                 trigger OnDrillDown()
                 begin
@@ -37,7 +37,7 @@ page 50208 "Contrato Cost Factbox"
                     ApplicationArea = All;
                     Caption = 'Resource';
                     Editable = false;
-                    ToolTip = 'Specifies the total budgeted cost of resources associated with this project.';
+                    ToolTip = 'Specifies the total budgeted cost of resources associated with this contrato.';
 
                     trigger OnDrillDown()
                     begin
@@ -49,7 +49,7 @@ page 50208 "Contrato Cost Factbox"
                     ApplicationArea = All;
                     Caption = 'Item';
                     Editable = false;
-                    ToolTip = 'Specifies the total budgeted cost of items associated with this project.';
+                    ToolTip = 'Specifies the total budgeted cost of items associated with this contrato.';
 
                     trigger OnDrillDown()
                     begin
@@ -61,7 +61,7 @@ page 50208 "Contrato Cost Factbox"
                     ApplicationArea = All;
                     Caption = 'G/L Account';
                     Editable = false;
-                    ToolTip = 'Specifies the total budgeted cost of general journal entries associated with this project.';
+                    ToolTip = 'Specifies the total budgeted cost of general journal entries associated with this contrato.';
 
                     trigger OnDrillDown()
                     begin
@@ -75,7 +75,7 @@ page 50208 "Contrato Cost Factbox"
                     Editable = false;
                     Style = Strong;
                     StyleExpr = true;
-                    ToolTip = 'Specifies the total budget cost of a project.';
+                    ToolTip = 'Specifies the total budget cost of a contrato.';
 
                     trigger OnDrillDown()
                     begin
@@ -99,7 +99,7 @@ page 50208 "Contrato Cost Factbox"
                     ApplicationArea = All;
                     Caption = 'Resource';
                     Editable = false;
-                    ToolTip = 'Specifies the total usage cost of resources associated with this project.';
+                    ToolTip = 'Specifies the total usage cost of resources associated with this contrato.';
 
                     trigger OnDrillDown()
                     begin
@@ -111,7 +111,7 @@ page 50208 "Contrato Cost Factbox"
                     ApplicationArea = All;
                     Caption = 'Item';
                     Editable = false;
-                    ToolTip = 'Specifies the total usage cost of items associated with this project.';
+                    ToolTip = 'Specifies the total usage cost of items associated with this contrato.';
 
                     trigger OnDrillDown()
                     begin
@@ -123,7 +123,7 @@ page 50208 "Contrato Cost Factbox"
                     ApplicationArea = All;
                     Caption = 'G/L Account';
                     Editable = false;
-                    ToolTip = 'Specifies the total usage cost of general journal entries associated with this project.';
+                    ToolTip = 'Specifies the total usage cost of general journal entries associated with this contrato.';
 
                     trigger OnDrillDown()
                     begin
@@ -137,7 +137,7 @@ page 50208 "Contrato Cost Factbox"
                     Editable = false;
                     Style = Strong;
                     StyleExpr = true;
-                    ToolTip = 'Specifies the total costs used for a project.';
+                    ToolTip = 'Specifies the total costs used for a contrato.';
 
                     trigger OnDrillDown()
                     begin
@@ -161,7 +161,7 @@ page 50208 "Contrato Cost Factbox"
                     ApplicationArea = All;
                     Caption = 'Resource';
                     Editable = false;
-                    ToolTip = 'Specifies the total billable price of resources associated with this project.';
+                    ToolTip = 'Specifies the total billable price of resources associated with this contrato.';
 
                     trigger OnDrillDown()
                     var
@@ -178,7 +178,7 @@ page 50208 "Contrato Cost Factbox"
                     ApplicationArea = All;
                     Caption = 'Item';
                     Editable = false;
-                    ToolTip = 'Specifies the total billable price of items associated with this project.';
+                    ToolTip = 'Specifies the total billable price of items associated with this contrato.';
 
                     trigger OnDrillDown()
                     var
@@ -195,7 +195,7 @@ page 50208 "Contrato Cost Factbox"
                     ApplicationArea = All;
                     Caption = 'G/L Account';
                     Editable = false;
-                    ToolTip = 'Specifies the total billable price for project planning lines of type G/L account.';
+                    ToolTip = 'Specifies the total billable price for contrato planning lines of type G/L account.';
 
                     trigger OnDrillDown()
                     var
@@ -214,7 +214,7 @@ page 50208 "Contrato Cost Factbox"
                     Editable = false;
                     Style = Strong;
                     StyleExpr = true;
-                    ToolTip = 'Specifies the total billable price used for a project.';
+                    ToolTip = 'Specifies the total billable price used for a contrato.';
 
                     trigger OnDrillDown()
                     var
@@ -243,7 +243,7 @@ page 50208 "Contrato Cost Factbox"
                     ApplicationArea = All;
                     Caption = 'Resource';
                     Editable = false;
-                    ToolTip = 'Specifies the total invoiced price of resources associated with this project.';
+                    ToolTip = 'Specifies the total invoiced price of resources associated with this contrato.';
 
                     trigger OnDrillDown()
                     var
@@ -260,7 +260,7 @@ page 50208 "Contrato Cost Factbox"
                     ApplicationArea = All;
                     Caption = 'Item';
                     Editable = false;
-                    ToolTip = 'Specifies the total invoiced price of items associated with this project.';
+                    ToolTip = 'Specifies the total invoiced price of items associated with this contrato.';
 
                     trigger OnDrillDown()
                     var
@@ -277,7 +277,7 @@ page 50208 "Contrato Cost Factbox"
                     ApplicationArea = All;
                     Caption = 'G/L Account';
                     Editable = false;
-                    ToolTip = 'Specifies the total invoiced price of general journal entries associated with this project.';
+                    ToolTip = 'Specifies the total invoiced price of general journal entries associated with this contrato.';
 
                     trigger OnDrillDown()
                     var
@@ -296,7 +296,7 @@ page 50208 "Contrato Cost Factbox"
                     Editable = false;
                     Style = Strong;
                     StyleExpr = true;
-                    ToolTip = 'Specifies the total invoiced price of a project.';
+                    ToolTip = 'Specifies the total invoiced price of a contrato.';
 
                     trigger OnDrillDown()
                     var

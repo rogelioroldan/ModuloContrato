@@ -1,6 +1,6 @@
 page 50211 "Contrato Journal Batches"
 {
-    Caption = 'Project Journal Batches';
+    Caption = 'contrato Journal Batches';
     DataCaptionExpression = DataCaption();
     Editable = true;
     PageType = List;
@@ -17,7 +17,7 @@ page 50211 "Contrato Journal Batches"
                 field(Name; Rec.Name)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the name of this project journal. You can enter a maximum of 10 characters, both numbers and letters.';
+                    ToolTip = 'Specifies the name of this contrato journal. You can enter a maximum of 10 characters, both numbers and letters.';
                 }
                 field(Description; Rec.Description)
                 {

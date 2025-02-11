@@ -15,12 +15,12 @@ page 50224 "Contrato Task Card"
                 field("Contrato Task No."; Rec."Contrato Task No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the related project task.';
+                    ToolTip = 'Specifies the number of the related contrato task.';
                 }
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies a description of the project task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the project planning line.';
+                    ToolTip = 'Specifies a description of the contrato task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the contrato planning line.';
                 }
                 field("Contrato Task Type"; Rec."Contrato Task Type")
                 {
@@ -31,7 +31,7 @@ page 50224 "Contrato Task Card"
                 {
                     ApplicationArea = All;
                     Caption = 'Customer No.';
-                    ToolTip = 'Specifies the number of the customer who will receive the products and be billed by default for the project task.';
+                    ToolTip = 'Specifies the number of the customer who will receive the products and be billed by default for the contrato task.';
                     Visible = PerTaskBillingFieldsVisible;
                 }
                 field("Sell-to Customer Name"; Rec."Sell-to Customer Name")
@@ -154,7 +154,7 @@ page 50224 "Contrato Task Card"
                 field(Totaling; Rec.Totaling)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies an interval or a list of project task numbers.';
+                    ToolTip = 'Specifies an interval or a list of contrato task numbers.';
                 }
                 field("External Document No."; Rec."External Document No.")
                 {
@@ -171,12 +171,12 @@ page 50224 "Contrato Task Card"
                 field("New Page"; Rec."New Page")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies whether you want a new page to start immediately after this project task when you print the project tasks. To start a new page after this project task, select the New Page check box.';
+                    ToolTip = 'Specifies whether you want a new page to start immediately after this contrato task when you print the contrato tasks. To start a new page after this contrato task, select the New Page check box.';
                 }
                 field("No. of Blank Lines"; Rec."No. of Blank Lines")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of blank lines that you want inserted before this project task in reports that shows project tasks.';
+                    ToolTip = 'Specifies the number of blank lines that you want inserted before this contrato task in reports that shows contrato tasks.';
                 }
             }
             part(ContratoPlanningLines; "Contrato Planning Lines Part")
@@ -191,12 +191,12 @@ page 50224 "Contrato Task Card"
                 field("Contrato Posting Group"; Rec."Contrato Posting Group")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the project posting group of the task.';
+                    ToolTip = 'Specifies the contrato posting group of the task.';
                 }
                 field("WIP Method"; Rec."WIP Method")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the method that is used to calculate the value of work in process for the project.';
+                    ToolTip = 'Specifies the method that is used to calculate the value of work in process for the contrato.';
                 }
                 field("Location Code"; Rec."Location Code")
                 {
@@ -242,7 +242,7 @@ page 50224 "Contrato Task Card"
                         {
                             ApplicationArea = All;
                             Importance = Promoted;
-                            ToolTip = 'Specifies the number of the customer who pays for the project.';
+                            ToolTip = 'Specifies the number of the customer who pays for the contrato.';
                             Visible = false;
 
                             trigger OnValidate()
@@ -255,7 +255,7 @@ page 50224 "Contrato Task Card"
                             Caption = 'Name';
                             ApplicationArea = All;
                             Importance = Promoted;
-                            ToolTip = 'Specifies the name of the customer who pays for the project.';
+                            ToolTip = 'Specifies the name of the customer who pays for the contrato.';
                             Editable = ((BillToOptions = BillToOptions::"Another Customer") or ((BillToOptions = BillToOptions::"Custom Address") and not ShouldSearchForCustByName));
                             Enabled = ((BillToOptions = BillToOptions::"Another Customer") or ((BillToOptions = BillToOptions::"Custom Address") and not ShouldSearchForCustByName));
                             NotBlank = true;
@@ -322,7 +322,7 @@ page 50224 "Contrato Task Card"
                             ApplicationArea = All;
                             Importance = Additional;
                             QuickEntry = false;
-                            ToolTip = 'Specifies the postal code of the customer who pays for the project.';
+                            ToolTip = 'Specifies the postal code of the customer who pays for the contrato.';
                             Editable = BillToInformationEditable;
                             Enabled = BillToInformationEditable;
                         }
@@ -369,7 +369,7 @@ page 50224 "Contrato Task Card"
                             Caption = 'Contact';
                             ApplicationArea = All;
                             Importance = Additional;
-                            ToolTip = 'Specifies the name of the contact person at the customer who pays for the project.';
+                            ToolTip = 'Specifies the name of the contact person at the customer who pays for the contrato.';
                             Editable = BillToInformationEditable;
                             Enabled = BillToInformationEditable;
                         }
@@ -542,7 +542,7 @@ page 50224 "Contrato Task Card"
                 {
                     ApplicationArea = Suite;
                     Editable = InvoiceCurrencyCodeEditable;
-                    ToolTip = 'Specifies the currency code you want to apply when creating invoices for a project. By default, the invoice currency code for a project is based on what currency code is defined on the customer card.';
+                    ToolTip = 'Specifies the currency code you want to apply when creating invoices for a contrato. By default, the invoice currency code for a contrato is based on what currency code is defined on the customer card.';
                 }
                 field("Price Calculation Method"; Rec."Price Calculation Method")
                 {
@@ -554,7 +554,7 @@ page 50224 "Contrato Task Card"
                 field("Language Code"; Rec."Language Code")
                 {
                     ApplicationArea = Basic, Suite;
-                    ToolTip = 'Specifies the language to be used on printouts for this project.';
+                    ToolTip = 'Specifies the language to be used on printouts for this contrato.';
                     Visible = false;
                 }
             }
@@ -591,7 +591,7 @@ page 50224 "Contrato Task Card"
                     RunPageLink = "Contrato No." = field("Contrato No."),
                                   "Contrato Task No." = field("Contrato Task No.");
                     ShortCutKey = 'Alt+D';
-                    ToolTip = 'View or edit dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.';
+                    ToolTip = 'View or edit dimensions, such as area, contrato, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.';
                 }
                 action(AssemblyOrders)
                 {
@@ -599,7 +599,7 @@ page 50224 "Contrato Task Card"
                     ApplicationArea = Assembly;
                     Caption = 'Assembly Orders';
                     Image = AssemblyOrder;
-                    ToolTip = 'View ongoing assembly orders related to the project task. ';
+                    ToolTip = 'View ongoing assembly orders related to the contrato task. ';
 
                     trigger OnAction()
                     var
@@ -747,7 +747,7 @@ page 50224 "Contrato Task Card"
                 ApplicationArea = Suite;
                 Caption = 'Send Contrato Task Quote';
                 Image = SendTo;
-                ToolTip = 'Send the project task quote to the customer. You can change the way that the document is sent in the window that appears.';
+                ToolTip = 'Send the contrato task quote to the customer. You can change the way that the document is sent in the window that appears.';
                 Visible = PerTaskBillingFieldsVisible;
 
                 trigger OnAction()

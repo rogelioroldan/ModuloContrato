@@ -2,7 +2,7 @@ page 50218 "Contrato WIP Entries"
 {
     AdditionalSearchTerms = 'Contrato WIP Entries';
     ApplicationArea = All;
-    Caption = 'Project WIP Entries';
+    Caption = 'contrato WIP Entries';
     DataCaptionFields = "Contrato No.";
     Editable = false;
     PageType = List;
@@ -19,22 +19,22 @@ page 50218 "Contrato WIP Entries"
                 field("WIP Posting Date"; Rec."WIP Posting Date")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the posting date you entered in the Posting Date field on the Options FastTab in the Project Calculate WIP batch Contrato.';
+                    ToolTip = 'Specifies the posting date you entered in the Posting Date field on the Options FastTab in the contrato Calculate WIP batch Contrato.';
                 }
                 field("Document No."; Rec."Document No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the document number you entered in the Document No. field on the Options FastTab in the Project Calculate WIP batch Contrato.';
+                    ToolTip = 'Specifies the document number you entered in the Document No. field on the Options FastTab in the contrato Calculate WIP batch Contrato.';
                 }
                 field("Contrato No."; Rec."Contrato No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the number of the related project.';
+                    ToolTip = 'Specifies the number of the related contrato.';
                 }
                 field("Contrato Complete"; Rec."Contrato Complete")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies whether the Project WIP Entry was created for a project with a Completed status.';
+                    ToolTip = 'Specifies whether the contrato WIP Entry was created for a contrato with a Completed status.';
                 }
                 field("Contrato WIP Total Entry No."; Rec."Contrato WIP Total Entry No.")
                 {
@@ -44,22 +44,22 @@ page 50218 "Contrato WIP Entries"
                 field("G/L Account No."; Rec."G/L Account No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the general ledger account number to which the WIP on this entry will be posted, if you run the Project Post WIP to the general ledger batch Contrato.';
+                    ToolTip = 'Specifies the general ledger account number to which the WIP on this entry will be posted, if you run the contrato Post WIP to the general ledger batch Contrato.';
                 }
                 field("G/L Bal. Account No."; Rec."G/L Bal. Account No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the general ledger balancing account number that WIP on this entry will be posted to, if you run the Project Post WIP to general ledger batch Contrato.';
+                    ToolTip = 'Specifies the general ledger balancing account number that WIP on this entry will be posted to, if you run the contrato Post WIP to general ledger batch Contrato.';
                 }
                 field("WIP Method Used"; Rec."WIP Method Used")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the WIP method that was specified for the project when you ran the Project Calculate WIP batch Contrato.';
+                    ToolTip = 'Specifies the WIP method that was specified for the contrato when you ran the contrato Calculate WIP batch Contrato.';
                 }
                 field("WIP Posting Method Used"; Rec."WIP Posting Method Used")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the WIP posting method used. The information in this field comes from the setting you have specified on the project card.';
+                    ToolTip = 'Specifies the WIP posting method used. The information in this field comes from the setting you have specified on the contrato card.';
                 }
                 field(Type; Rec.Type)
                 {
@@ -69,7 +69,7 @@ page 50218 "Contrato WIP Entries"
                 field("WIP Entry Amount"; Rec."WIP Entry Amount")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the WIP amount that will be posted for this entry, if you run the Project Post WIP to G/L batch Contrato.';
+                    ToolTip = 'Specifies the WIP amount that will be posted for this entry, if you run the contrato Post WIP to G/L batch Contrato.';
                 }
                 field("Contrato Posting Group"; Rec."Contrato Posting Group")
                 {
@@ -178,7 +178,7 @@ page 50218 "Contrato WIP Entries"
                     Image = EntriesList;
                     RunObject = Page "Contrato WIP Totals";
                     RunPageLink = "Entry No." = field("Contrato WIP Total Entry No.");
-                    ToolTip = 'View the project''s WIP totals.';
+                    ToolTip = 'View the contrato''s WIP totals.';
                 }
                 action(Dimensions)
                 {
@@ -187,7 +187,7 @@ page 50218 "Contrato WIP Entries"
                     Caption = 'Dimensions';
                     Image = Dimensions;
                     ShortCutKey = 'Alt+D';
-                    ToolTip = 'View or edit dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.';
+                    ToolTip = 'View or edit dimensions, such as area, contrato, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.';
 
                     trigger OnAction()
                     begin

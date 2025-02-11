@@ -1,6 +1,6 @@
 table 50212 "Contrato Posting Group"
 {
-    Caption = 'Project Posting Group';
+    Caption = 'contrato Posting Group';
     DrillDownPageID = "Contrato Posting Groups";
     LookupPageID = "Contrato Posting Groups";
     DataClassification = CustomerContent;
@@ -24,12 +24,12 @@ table 50212 "Contrato Posting Group"
         }
         field(4; "Contrato Costs Applied Account"; Code[20])
         {
-            Caption = 'Project Costs Applied Account';
+            Caption = 'contrato Costs Applied Account';
             TableRelation = "G/L Account";
         }
         field(5; "ContratCostsAdjustmentAccount"; Code[20])
         {
-            Caption = 'Project Costs Adjustment Account';
+            Caption = 'contrato Costs Adjustment Account';
             TableRelation = "G/L Account";
         }
         field(6; "G/L Expense Acc. (Contract)"; Code[20])
@@ -39,7 +39,7 @@ table 50212 "Contrato Posting Group"
         }
         field(7; "ContratoSalesAdjustmentAccount"; Code[20])
         {
-            Caption = 'Project Sales Adjustment Account';
+            Caption = 'contrato Sales Adjustment Account';
             TableRelation = "G/L Account";
         }
         field(8; "WIP Accrued Sales Account"; Code[20])
@@ -54,7 +54,7 @@ table 50212 "Contrato Posting Group"
         }
         field(10; "Contrato Sales Applied Account"; Code[20])
         {
-            Caption = 'Project Sales Applied Account';
+            Caption = 'contrato Sales Applied Account';
             TableRelation = "G/L Account";
         }
         field(11; "Recognized Costs Account"; Code[20])

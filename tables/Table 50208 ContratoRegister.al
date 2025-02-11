@@ -1,6 +1,6 @@
 table 50208 "Contrato Register"
 {
-    Caption = 'Project Register';
+    Caption = 'contrato Register';
     DrillDownPageID = "Contrato Registers";
     ;
     LookupPageID = "Contrato Registers";

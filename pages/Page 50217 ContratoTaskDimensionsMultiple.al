@@ -1,6 +1,6 @@
 page 50217 "ContratoTaskDimensionsMultiple"
 {
-    Caption = 'Project Task Dimensions Multiple';
+    Caption = 'contrato Task Dimensions Multiple';
     PageType = List;
     SourceTable = "Contrato Task Dimension";
     SourceTableTemporary = true;

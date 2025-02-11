@@ -1,6 +1,6 @@
 table 50207 "Contrato Journal Batch"
 {
-    Caption = 'Project Journal Batch';
+    Caption = 'contrato Journal Batch';
     DataCaptionFields = Name, Description;
     LookupPageID = "Contrato Journal Batches";
     DataClassification = CustomerContent;

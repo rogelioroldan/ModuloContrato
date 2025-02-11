@@ -1,6 +1,6 @@
 table 50229 "Contrato Item Price"
 {
-    Caption = 'Project Item Price';
+    Caption = 'contrato Item Price';
 
     DrillDownPageID = "Contrato Item Prices";
     LookupPageID = "Contrato Item Prices";
@@ -11,7 +11,7 @@ table 50229 "Contrato Item Price"
     {
         field(1; "Contrato No."; Code[20])
         {
-            Caption = 'Project No.';
+            Caption = 'contrato No.';
             NotBlank = true;
             TableRelation = Contrato;
 
@@ -25,7 +25,7 @@ table 50229 "Contrato Item Price"
         }
         field(2; "Contrato Task No."; Code[20])
         {
-            Caption = 'Project Task No.';
+            Caption = 'contrato Task No.';
             TableRelation = "Contrato Task"."Contrato Task No." where("Contrato No." = field("Contrato No."));
 
 #if not CLEAN23
@@ -111,12 +111,12 @@ table 50229 "Contrato Item Price"
         }
         field(11; "Apply Contrato Price"; Boolean)
         {
-            Caption = 'Apply Project Price';
+            Caption = 'Apply contrato Price';
             InitValue = true;
         }
         field(12; "Apply Contrato Discount"; Boolean)
         {
-            Caption = 'Apply Project Discount';
+            Caption = 'Apply contrato Discount';
             InitValue = true;
         }
     }

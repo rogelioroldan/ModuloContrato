@@ -21,7 +21,7 @@ page 50204 "Contrato Task Lines"
                     ApplicationArea = All;
                     Style = Strong;
                     StyleExpr = StyleIsStrong;
-                    ToolTip = 'Specifies the number of the related project.';
+                    ToolTip = 'Specifies the number of the related contrato.';
                     Visible = false;
                 }
                 field("Contrato Task No."; Rec."Contrato Task No.")
@@ -29,14 +29,14 @@ page 50204 "Contrato Task Lines"
                     ApplicationArea = All;
                     Style = Strong;
                     StyleExpr = StyleIsStrong;
-                    ToolTip = 'Specifies the number of the related project task.';
+                    ToolTip = 'Specifies the number of the related contrato task.';
                 }
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
                     Style = Strong;
                     StyleExpr = StyleIsStrong;
-                    ToolTip = 'Specifies a description of the project task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the project planning line.';
+                    ToolTip = 'Specifies a description of the contrato task. You can enter anything that is meaningful in describing the task. The description is copied and used in descriptions on the contrato planning line.';
                 }
                 field("Contrato Task Type"; Rec."Contrato Task Type")
                 {
@@ -46,12 +46,12 @@ page 50204 "Contrato Task Lines"
                 field(Totaling; Rec.Totaling)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies an interval or a list of project task numbers.';
+                    ToolTip = 'Specifies an interval or a list of contrato task numbers.';
                 }
                 field("Contrato Posting Group"; Rec."Contrato Posting Group")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the project posting group of the task.';
+                    ToolTip = 'Specifies the contrato posting group of the task.';
                 }
                 field("Location Code"; Rec."Location Code")
                 {
@@ -66,84 +66,84 @@ page 50204 "Contrato Task Lines"
                 field("WIP-Total"; Rec."WIP-Total")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the project tasks you want to group together when calculating Work In Process (WIP) and Recognition.';
+                    ToolTip = 'Specifies the contrato tasks you want to group together when calculating Work In Process (WIP) and Recognition.';
                 }
                 field("WIP Method"; Rec."WIP Method")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the name of the Work in Process calculation method that is associated with a project. The value in this field comes from the WIP method specified on the project card.';
+                    ToolTip = 'Specifies the name of the Work in Process calculation method that is associated with a contrato. The value in this field comes from the WIP method specified on the contrato card.';
                 }
                 field("Start Date"; Rec."Start Date")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the start date for the project task. The date is based on the date on the related project planning line.';
+                    ToolTip = 'Specifies the start date for the contrato task. The date is based on the date on the related contrato planning line.';
                 }
                 field("End Date"; Rec."End Date")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the end date for the project task. The date is based on the date on the related project planning line.';
+                    ToolTip = 'Specifies the end date for the contrato task. The date is based on the date on the related contrato planning line.';
                 }
                 field("Schedule (Total Cost)"; Rec."Schedule (Total Cost)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies, in the local currency, the total budgeted cost for the project task during the time period in the Planning Date Filter field.';
+                    ToolTip = 'Specifies, in the local currency, the total budgeted cost for the contrato task during the time period in the Planning Date Filter field.';
                 }
                 field("Schedule (Total Price)"; Rec."Schedule (Total Price)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies, in local currency, the total budgeted price for the project task during the time period in the Planning Date Filter field.';
+                    ToolTip = 'Specifies, in local currency, the total budgeted price for the contrato task during the time period in the Planning Date Filter field.';
                 }
                 field("Usage (Total Cost)"; Rec."Usage (Total Cost)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies, in local currency, the total cost of the usage of items, resources and general ledger expenses posted on the project task during the time period in the Posting Date Filter field.';
+                    ToolTip = 'Specifies, in local currency, the total cost of the usage of items, resources and general ledger expenses posted on the contrato task during the time period in the Posting Date Filter field.';
                 }
                 field("Usage (Total Price)"; Rec."Usage (Total Price)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies, in the local currency, the total price of the usage of items, resources and general ledger expenses posted on the project task during the time period in the Posting Date Filter field.';
+                    ToolTip = 'Specifies, in the local currency, the total price of the usage of items, resources and general ledger expenses posted on the contrato task during the time period in the Posting Date Filter field.';
                 }
                 field("Contract (Total Cost)"; Rec."Contract (Total Cost)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies, in local currency, the total billable cost for the project task during the time period in the Planning Date Filter field.';
+                    ToolTip = 'Specifies, in local currency, the total billable cost for the contrato task during the time period in the Planning Date Filter field.';
                 }
                 field("Contract (Total Price)"; Rec."Contract (Total Price)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies, in the local currency, the total billable price for the project task during the time period in the Planning Date Filter field.';
+                    ToolTip = 'Specifies, in the local currency, the total billable price for the contrato task during the time period in the Planning Date Filter field.';
                 }
                 field("Contract (Invoiced Cost)"; Rec."Contract (Invoiced Cost)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies, in the local currency, the total billable cost for the project task that has been invoiced during the time period in the Posting Date Filter field.';
+                    ToolTip = 'Specifies, in the local currency, the total billable cost for the contrato task that has been invoiced during the time period in the Posting Date Filter field.';
                 }
                 field("Contract (Invoiced Price)"; Rec."Contract (Invoiced Price)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies, in the local currency, the total billable price for the project task that has been invoiced during the time period in the Posting Date Filter field.';
+                    ToolTip = 'Specifies, in the local currency, the total billable price for the contrato task that has been invoiced during the time period in the Posting Date Filter field.';
                 }
                 field("Remaining (Total Cost)"; Rec."Remaining (Total Cost)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the remaining total cost (LCY) as the sum of costs from project planning lines associated with the project task. The calculation occurs when you have specified that there is a usage link between the project ledger and the project planning lines.';
+                    ToolTip = 'Specifies the remaining total cost (LCY) as the sum of costs from contrato planning lines associated with the contrato task. The calculation occurs when you have specified that there is a usage link between the contrato ledger and the contrato planning lines.';
                 }
                 field("Remaining (Total Price)"; Rec."Remaining (Total Price)")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the remaining total price (LCY) as the sum of prices from project planning lines associated with the project task. The calculation occurs when you have specified that there is a usage link between the project ledger and the project planning lines.';
+                    ToolTip = 'Specifies the remaining total price (LCY) as the sum of prices from contrato planning lines associated with the contrato task. The calculation occurs when you have specified that there is a usage link between the contrato ledger and the contrato planning lines.';
                 }
                 field("EAC (Total Cost)"; Rec.CalcEACTotalCost())
                 {
                     ApplicationArea = All;
                     Caption = 'EAC (Total Cost)';
-                    ToolTip = 'Specifies the estimate at completion (EAC) total cost for a project task line. If the Apply Usage Link check box on the project is selected, then the EAC (Total Cost) field is calculated as follows:  Usage (Total Cost) + Remaining (Total Cost).';
+                    ToolTip = 'Specifies the estimate at completion (EAC) total cost for a contrato task line. If the Apply Usage Link check box on the contrato is selected, then the EAC (Total Cost) field is calculated as follows:  Usage (Total Cost) + Remaining (Total Cost).';
                 }
                 field("EAC (Total Price)"; Rec.CalcEACTotalPrice())
                 {
                     ApplicationArea = All;
                     Caption = 'EAC (Total Price)';
-                    ToolTip = 'Specifies the estimate at completion (EAC) total price for a project task line. If the Apply Usage Link check box on the project is selected, then the EAC (Total Price) field is calculated as follows: Usage (Total Price) + Remaining (Total Price).';
+                    ToolTip = 'Specifies the estimate at completion (EAC) total price for a contrato task line. If the Apply Usage Link check box on the contrato is selected, then the EAC (Total Price) field is calculated as follows: Usage (Total Price) + Remaining (Total Price).';
                 }
                 field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
                 {
@@ -161,7 +161,7 @@ page 50204 "Contrato Task Lines"
                 {
                     ApplicationArea = All;
                     Editable = false;
-                    ToolTip = 'Specifies the sum of outstanding orders, in local currency, for this project task. The value of the Outstanding Amount (LCY) field is used for entries in the Purchase Line table of document type Order to calculate and update the contents of this field.';
+                    ToolTip = 'Specifies the sum of outstanding orders, in local currency, for this contrato task. The value of the Outstanding Amount (LCY) field is used for entries in the Purchase Line table of document type Order to calculate and update the contents of this field.';
                     Visible = false;
 
                     trigger OnDrillDown()
@@ -194,7 +194,7 @@ page 50204 "Contrato Task Lines"
                 {
                     ApplicationArea = All;
                     Visible = false;
-                    ToolTip = 'Specifies if the project task is coupled to an entity in Field Service.';
+                    ToolTip = 'Specifies if the contrato task is coupled to an entity in Field Service.';
                     ObsoleteReason = 'Field Service is moved to Field Service Integration app.';
                     ObsoleteState = Pending;
                     ObsoleteTag = '25.0';
@@ -230,7 +230,7 @@ page 50204 "Contrato Task Lines"
                     ApplicationArea = All;
                     Caption = 'Contrato &Planning Lines';
                     Image = JobLines;
-                    ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (budget) or you can specify what you actually agreed with your customer that they should pay for the project (billable).';
+                    ToolTip = 'View all planning lines for the contrato. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a contrato (budget) or you can specify what you actually agreed with your customer that they should pay for the contrato (billable).';
 
                     trigger OnAction()
                     var
@@ -258,7 +258,7 @@ page 50204 "Contrato Task Lines"
                     RunPageLink = "Contrato No." = field("Contrato No."),
                                   "Contrato Task No." = field("Contrato Task No.");
                     ShortCutKey = 'F7';
-                    ToolTip = 'View statistics for the project task.';
+                    ToolTip = 'View statistics for the contrato task.';
                 }
                 action("Contrato &Task Card")
                 {
@@ -269,7 +269,7 @@ page 50204 "Contrato Task Lines"
                     RunPageLink = "Contrato No." = field("Contrato No."),
                                   "Contrato Task No." = field("Contrato Task No.");
                     ShortCutKey = 'Shift+F7';
-                    ToolTip = 'View detailed information about a project task, such as the description of the task and the type, which can be either a heading, a posting, a begin-total, an end-total, or a total.';
+                    ToolTip = 'View detailed information about a contrato task, such as the description of the task and the type, which can be either a heading, a posting, a begin-total, an end-total, or a total.';
                 }
                 separator("-")
                 {
@@ -319,7 +319,7 @@ page 50204 "Contrato Task Lines"
                     ApplicationArea = All;
                     Caption = 'Sales &Invoices/Credit Memos';
                     Image = GetSourceDoc;
-                    ToolTip = 'View sales invoices or sales credit memos that are related to the selected project task.';
+                    ToolTip = 'View sales invoices or sales credit memos that are related to the selected contrato task.';
 
                     trigger OnAction()
                     var
@@ -342,7 +342,7 @@ page 50204 "Contrato Task Lines"
                     RunObject = Page "Contrato WIP Entries";
                     RunPageLink = "Contrato No." = field("Contrato No.");
                     RunPageView = sorting("Contrato No.", "Contrato Posting Group", "WIP Posting Date");
-                    ToolTip = 'View entries for the project that are posted as work in process.';
+                    ToolTip = 'View entries for the contrato that are posted as work in process.';
                 }
                 action("WIP &G/L Entries")
                 {
@@ -352,7 +352,7 @@ page 50204 "Contrato Task Lines"
                     RunObject = Page "Contrato WIP G/L Entries";
                     RunPageLink = "Contrato No." = field("Contrato No.");
                     RunPageView = sorting("Contrato No.");
-                    ToolTip = 'View the project''s WIP G/L entries.';
+                    ToolTip = 'View the contrato''s WIP G/L entries.';
                 }
             }
             group(History)
@@ -369,7 +369,7 @@ page 50204 "Contrato Task Lines"
                                   "Contrato Task No." = field("Contrato Task No.");
                     RunPageView = sorting("Contrato No.", "Contrato Task No.");
                     ShortCutKey = 'Ctrl+F7';
-                    ToolTip = 'View the project ledger entries.';
+                    ToolTip = 'View the contrato ledger entries.';
                 }
             }
 #if not CLEAN25
@@ -494,7 +494,7 @@ page 50204 "Contrato Task Lines"
                     Caption = 'Create &Sales Invoice';
                     Ellipsis = true;
                     Image = JobSalesInvoice;
-                    ToolTip = 'Use a batch Contrato to help you create sales invoices for the involved project tasks.';
+                    ToolTip = 'Use a batch Contrato to help you create sales invoices for the involved contrato tasks.';
 
                     trigger OnAction()
                     var
@@ -549,7 +549,7 @@ page 50204 "Contrato Task Lines"
                     Caption = 'Change &Dates';
                     Ellipsis = true;
                     Image = ChangeDate;
-                    ToolTip = 'Use a batch Contrato to help you move planning lines on a project from one date interval to another.';
+                    ToolTip = 'Use a batch Contrato to help you move planning lines on a contrato from one date interval to another.';
 
                     trigger OnAction()
                     var
@@ -574,7 +574,7 @@ page 50204 "Contrato Task Lines"
                     Caption = 'I&ndent Contrato Tasks';
                     Image = Indent;
                     RunObject = Codeunit "Contrato Task-Indent";
-                    ToolTip = 'Move the selected lines in one position to show that the tasks are subcategories of other tasks. Contrato tasks that are totaled are the ones that lie between one pair of corresponding Begin-Total and End-Total project tasks.';
+                    ToolTip = 'Move the selected lines in one position to show that the tasks are subcategories of other tasks. Contrato tasks that are totaled are the ones that lie between one pair of corresponding Begin-Total and End-Total contrato tasks.';
                 }
                 group("&Copy")
                 {
@@ -586,7 +586,7 @@ page 50204 "Contrato Task Lines"
                         Caption = 'Copy Contrato Planning Lines &from...';
                         Ellipsis = true;
                         Image = CopyToTask;
-                        ToolTip = 'Use a batch Contrato to help you copy planning lines from one project task to another. You can copy from a project task within the project you are working with or from a project task linked to a different project.';
+                        ToolTip = 'Use a batch Contrato to help you copy planning lines from one contrato task to another. You can copy from a contrato task within the contrato you are working with or from a contrato task linked to a different contrato.';
 
                         trigger OnAction()
                         var
@@ -603,7 +603,7 @@ page 50204 "Contrato Task Lines"
                         Caption = 'Copy Contrato Planning Lines &to...';
                         Ellipsis = true;
                         Image = CopyFromTask;
-                        ToolTip = 'Use a batch Contrato to help you copy planning lines from one project task to another. You can copy from a project task within the project you are working with or from a project task linked to a different project.';
+                        ToolTip = 'Use a batch Contrato to help you copy planning lines from one contrato task to another. You can copy from a contrato task within the contrato you are working with or from a contrato task linked to a different contrato.';
 
                         trigger OnAction()
                         var
@@ -670,7 +670,7 @@ page 50204 "Contrato Task Lines"
                 Caption = 'Contrato Actual to Budget (Cost)';
                 Image = "Report";
                 RunObject = Report "ContratoActualtoBudget(Cost)";
-                ToolTip = 'Compare budgeted and usage amounts for selected projects. All lines of the selected project show quantity, total cost, and line amount.';
+                ToolTip = 'Compare budgeted and usage amounts for selected contratos. All lines of the selected contrato show quantity, total cost, and line amount.';
             }
             action("Contrato Actual to Budget (Price)")
             {
@@ -678,7 +678,7 @@ page 50204 "Contrato Task Lines"
                 Caption = 'Contrato Actual to Budget (Price)';
                 Image = "Report";
                 RunObject = Report "ContratoActualtoBudget(Price)";
-                ToolTip = 'Compare the actual price of your projects to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
+                ToolTip = 'Compare the actual price of your contratos to the price that was budgeted. The report shows budget and actual amounts for each phase, task, and steps.';
             }
             action("Contrato Analysis")
             {
@@ -686,7 +686,7 @@ page 50204 "Contrato Task Lines"
                 Caption = 'Contrato Analysis';
                 Image = "Report";
                 RunObject = Report "Contrato Analysis";
-                ToolTip = 'Analyze the project, such as the budgeted prices, usage prices, and billable prices, and then compares the three sets of prices.';
+                ToolTip = 'Analyze the contrato, such as the budgeted prices, usage prices, and billable prices, and then compares the three sets of prices.';
             }
             action("Contrato - Planning Lines")
             {
@@ -694,7 +694,7 @@ page 50204 "Contrato Task Lines"
                 Caption = 'Contrato - Planning Lines';
                 Image = "Report";
                 RunObject = Report "Contrato - Planning Lines";
-                ToolTip = 'View all planning lines for the project. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a project (budget) or you can specify what you actually agreed with your customer that he should pay for the project (billable).';
+                ToolTip = 'View all planning lines for the contrato. You use this window to plan what items, resources, and general ledger expenses that you expect to use on a contrato (budget) or you can specify what you actually agreed with your customer that he should pay for the contrato (billable).';
             }
             action("Contrato - Suggested Billing")
             {
@@ -702,17 +702,17 @@ page 50204 "Contrato Task Lines"
                 Caption = 'Contrato - Suggested Billing';
                 Image = "Report";
                 RunObject = Report "ContratoCostSuggestedBilling";
-                ToolTip = 'View a list of all projects, grouped by customer, how much the customer has already been invoiced, and how much remains to be invoiced, that is, the suggested billing.';
+                ToolTip = 'View a list of all contratos, grouped by customer, how much the customer has already been invoiced, and how much remains to be invoiced, that is, the suggested billing.';
             }
             action("Contratos - Transaction Detail")
             {
                 ApplicationArea = All;
-                Caption = 'Projects - Transaction Detail';
+                Caption = 'contratos - Transaction Detail';
                 Image = "Report";
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = "Report";
                 RunObject = Report "Contrato - Transaction Detail";
-                ToolTip = 'View all postings with entries for a selected project for a selected period, which have been charged to a certain project. At the end of each project list, the amounts are totaled separately for the Sales and Usage entry types.';
+                ToolTip = 'View all postings with entries for a selected contrato for a selected period, which have been charged to a certain contrato. At the end of each contrato list, the amounts are totaled separately for the Sales and Usage entry types.';
             }
         }
         area(Promoted)

@@ -20,7 +20,7 @@ page 50210 "Contrato Journal Template List"
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies a description of the project journal template for easy identification.';
+                    ToolTip = 'Specifies a description of the contrato journal template for easy identification.';
                 }
                 field("Test Report ID"; Rec."Test Report ID")
                 {
@@ -73,7 +73,7 @@ page 50210 "Contrato Journal Template List"
                 field("Posting Report Caption"; Rec."Posting Report Caption")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the name of the posting report that is printed when you print the project journal.';
+                    ToolTip = 'Specifies the name of the posting report that is printed when you print the contrato journal.';
                     Visible = false;
                 }
             }

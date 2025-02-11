@@ -15,7 +15,7 @@ page 50248 "Copy Contrato"
                     ApplicationArea = All;
                     Caption = 'Contrato No.';
                     TableRelation = Contrato;
-                    ToolTip = 'Specifies the project number.';
+                    ToolTip = 'Specifies the contrato number.';
 
                     trigger OnValidate()
                     begin
@@ -33,7 +33,7 @@ page 50248 "Copy Contrato"
                 {
                     ApplicationArea = All;
                     Caption = 'Contrato Task No. from';
-                    ToolTip = 'Specifies the first project task number to be copied from. Only planning lines with a project task number equal to or higher than the number specified in this field will be included.';
+                    ToolTip = 'Specifies the first contrato task number to be copied from. Only planning lines with a contrato task number equal to or higher than the number specified in this field will be included.';
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
@@ -59,7 +59,7 @@ page 50248 "Copy Contrato"
                 {
                     ApplicationArea = All;
                     Caption = 'Contrato Task No. to';
-                    ToolTip = 'Specifies the last project task number to be copied from. Only planning lines with a project task number equal to or lower than the number specified in this field will be included.';
+                    ToolTip = 'Specifies the last contrato task number to be copied from. Only planning lines with a contrato task number equal to or lower than the number specified in this field will be included.';
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
@@ -86,7 +86,7 @@ page 50248 "Copy Contrato"
                     ApplicationArea = All;
                     Caption = 'Source';
                     OptionCaption = 'Contrato Planning Lines,Contrato Ledger Entries,None';
-                    ToolTip = 'Specifies the basis on which you want the planning lines to be copied. If, for example, you want the planning lines to reflect actual usage and invoicing of items, resources, and general ledger expenses on the project you copy from, then select Contrato Ledger Entries in this field.';
+                    ToolTip = 'Specifies the basis on which you want the planning lines to be copied. If, for example, you want the planning lines to reflect actual usage and invoicing of items, resources, and general ledger expenses on the contrato you copy from, then select Contrato Ledger Entries in this field.';
 
                     trigger OnValidate()
                     begin
@@ -107,7 +107,7 @@ page 50248 "Copy Contrato"
                     Caption = 'Incl. Ledger Entry Line Type';
                     Enabled = LedgerEntryLineTypeEnable;
                     OptionCaption = 'Usage+Sale,Usage,Sale';
-                    ToolTip = 'Specifies how to copy project ledger entries. Usage+Sale: All project ledger entries are copied. Entries of type Usage are copied to new planning lines of type Budget. Entries of type Sale are copied to new planning lines of type Billable. Usage: All project ledger entries of type Usage are copied to new planning lines of type Budget. Sale: All project ledger entries of type Sale are copied to new planning lines of type Billable.';
+                    ToolTip = 'Specifies how to copy contrato ledger entries. Usage+Sale: All contrato ledger entries are copied. Entries of type Usage are copied to new planning lines of type Budget. Entries of type Sale are copied to new planning lines of type Billable. Usage: All contrato ledger entries of type Usage are copied to new planning lines of type Budget. Sale: All contrato ledger entries of type Sale are copied to new planning lines of type Billable.';
                 }
                 field(FromDate; FromDate)
                 {
@@ -129,27 +129,27 @@ page 50248 "Copy Contrato"
                 {
                     ApplicationArea = All;
                     Caption = 'Contrato No.';
-                    ToolTip = 'Specifies the project number.';
+                    ToolTip = 'Specifies the contrato number.';
                 }
                 field(TargetContratoDescription; TargetContratoDescription)
                 {
                     ApplicationArea = All;
                     Caption = 'Contrato Description';
-                    ToolTip = 'Specifies a description of the project.';
+                    ToolTip = 'Specifies a description of the contrato.';
                 }
                 field(TargetSellToCustomerNo; TargetSellToCustomerNo)
                 {
                     ApplicationArea = All;
                     Caption = 'Sell-To Customer No.';
                     TableRelation = Customer;
-                    ToolTip = 'Specifies the number of an alternate customer that the project is sold to instead of the main customer.';
+                    ToolTip = 'Specifies the number of an alternate customer that the contrato is sold to instead of the main customer.';
                 }
                 field(TargetBillToCustomerNo; TargetBillToCustomerNo)
                 {
                     ApplicationArea = All;
                     Caption = 'Bill-To Customer No.';
                     TableRelation = Customer;
-                    ToolTip = 'Specifies the number of an alternate customer that the project is billed to instead of the main customer.';
+                    ToolTip = 'Specifies the number of an alternate customer that the contrato is billed to instead of the main customer.';
                 }
             }
             group(Apply)
@@ -159,19 +159,19 @@ page 50248 "Copy Contrato"
                 {
                     ApplicationArea = All;
                     Caption = 'Copy Contrato Prices';
-                    ToolTip = 'Specifies that item prices, resource prices, and G/L prices will be copied from the project that you specified on the Copy From FastTab.';
+                    ToolTip = 'Specifies that item prices, resource prices, and G/L prices will be copied from the contrato that you specified on the Copy From FastTab.';
                 }
                 field(CopyQuantity; CopyQuantity)
                 {
                     ApplicationArea = All;
                     Caption = 'Copy Quantity';
-                    ToolTip = 'Specifies that the quantities will be copied to the new project.';
+                    ToolTip = 'Specifies that the quantities will be copied to the new contrato.';
                 }
                 field(CopyDimensions; CopyDimensions)
                 {
                     ApplicationArea = Dimensions;
                     Caption = 'Copy Dimensions';
-                    ToolTip = 'Specifies that the dimensions will be copied to the new project.';
+                    ToolTip = 'Specifies that the dimensions will be copied to the new contrato.';
                 }
             }
         }
@@ -213,7 +213,7 @@ page 50248 "Copy Contrato"
         PlanningLineTypeEnable: Boolean;
         LedgerEntryLineTypeEnable: Boolean;
 
-        Text001: Label 'The project no. %1 was successfully copied to the new project no. %2 with the status %3.', Comment = '%1 - The "No." of source project; %2 - The "No." of target project, %3 - project status.';
+        Text001: Label 'The contrato no. %1 was successfully copied to the new contrato no. %2 with the status %3.', Comment = '%1 - The "No." of source contrato; %2 - The "No." of target contrato, %3 - contrato status.';
         Text002: Label 'Contrato No. %1 will be assigned to the new Contrato. Do you want to continue?';
         Text003: Label '%1 %2 does not exist.', Comment = 'Contrato Task 1000 does not exist.';
         Text004: Label 'Provide a valid source %1.';
