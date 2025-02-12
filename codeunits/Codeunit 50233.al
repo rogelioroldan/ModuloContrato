@@ -61,7 +61,7 @@ codeunit 50233 "Sales-Post (Yes/No) Contrato"
 
     local procedure RunSalesPost(var SalesHeader: Record "Sales Header")
     var
-        SalesPost: Codeunit "Sales-Post";
+        SalesPost: Codeunit "Sales-Post Contrato";
         IsHandled: Boolean;
         SuppressCommit: Boolean;
     begin

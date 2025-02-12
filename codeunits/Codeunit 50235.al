@@ -225,18 +225,18 @@ codeunit 50235 "Contrato Queue Management"
 
     internal procedure SendForApproval(var ContratoQueueEntry: Record "Contrato Queue Entry")
     var
-        ApprovalsMgmt: Codeunit "Approvals Mgmt.";
+        ApprovalsMgmt: Codeunit "Approvals Mgmt. Contrato";
         FeatureTelemetry: Codeunit "Feature Telemetry";
     begin
-        /*  if ApprovalsMgmt.CheckContratoQueueEntryApprovalEnabled() then begin
-             ContratoQueueEntry.SetStatus(ContratoQueueEntry.Status::"On Hold");
-             Commit();
-             ApprovalsMgmt.OnSendContratoQueueEntryForApproval(ContratoQueueEntry);
-             FeatureTelemetry.LogUsage('0000JQE', ContratoQueueDelegatedAdminCategoryTxt, DelegatedAdminSendingApprovalLbl);
-         end else begin
-             FeatureTelemetry.LogError('0000JQD', ContratoQueueDelegatedAdminCategoryTxt, DelegatedAdminSendingApprovalLbl, ContratoQueueWorkflowSetupErr);
-             Error(ContratoQueueWorkflowSetupErr);
-         end; */
+        if ApprovalsMgmt.CheckContratoQueueEntryApprovalEnabled() then begin
+            ContratoQueueEntry.SetStatus(ContratoQueueEntry.Status::"On Hold");
+            Commit();
+            ApprovalsMgmt.OnSendContratoQueueEntryForApproval(ContratoQueueEntry);
+            FeatureTelemetry.LogUsage('0000JQE', ContratoQueueDelegatedAdminCategoryTxt, DelegatedAdminSendingApprovalLbl);
+        end else begin
+            FeatureTelemetry.LogError('0000JQD', ContratoQueueDelegatedAdminCategoryTxt, DelegatedAdminSendingApprovalLbl, ContratoQueueWorkflowSetupErr);
+            Error(ContratoQueueWorkflowSetupErr);
+        end;
     end;
 
     procedure CheckAndRefreshCategoryRecoveryTasks()
@@ -379,7 +379,7 @@ codeunit 50235 "Contrato Queue Management"
         CurrentLanguage := GlobalLanguage();
         GlobalLanguage(1033);
 
-        //TelemetrySubscribers.SetContratoQueueTelemetryDimensions(ContratoQueueEntry, Dimensions);
+        //TelemetrySubscribers.SetJobQueueTelemetryDimensions(ContratoQueueEntry, Dimensions);
 
         Session.LogMessage('0000FMH', TelemetryStaleContratoQueueEntryTxt, Verbosity::Warning, DataClassification::OrganizationIdentifiableInformation, TelemetryScope::ExtensionPublisher, Dimensions);
 
