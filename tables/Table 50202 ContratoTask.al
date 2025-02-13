@@ -892,7 +892,7 @@ table 50202 "Contrato Task"
             Caption = 'Estatus';
             DataClassification = CustomerContent;
 
-            TableRelation = EstatusAnexo.Nombre;
+            TableRelation = EstatusAnexo;
         }
         field(723; "GrupoFacturar"; enum "Grupo Facturar")
         {

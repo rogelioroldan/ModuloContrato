@@ -2,15 +2,15 @@ pageextension 50254 SalesInvoiceExtMsg2 extends "Sales Invoice"
 {
     actions
     {
-        addafter("P&osting")
+        addafter("Post")
         {
 
             action("Post Contrato")
             {
                 ApplicationArea = Basic, Suite;
-                Caption = 'Post Contrato';
+                Caption = 'Registrar Contrato';
                 Image = PostOrder;
-                ToolTip = 'Post the sales invoice using the Sales-Post (Yes/No) Contrato codeunit.';
+                ToolTip = 'Usar para registrar solo contratos.';
 
                 trigger OnAction()
                 begin
